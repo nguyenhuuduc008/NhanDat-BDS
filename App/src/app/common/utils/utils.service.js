@@ -265,20 +265,18 @@
 		];
 		var arrLoaiHau = [{
 				value: '0',
-				text: 'Nở',
-			}
-			,{
+				text: 'Nở'
+			},{
 			    value: '1',
-			    text: 'Tóp',
+			    text: 'Tóp'
 			}
 		];
 		var arrLoaiBDS = [{
 				value: '0',
-				text: 'BDS 00',
-			}
-			,{
+				text: 'BDS 00'
+			},{
 			    value: '1',
-			    text: 'BDS 01',
+			    text: 'BDS 01'
 			}
 		];
 

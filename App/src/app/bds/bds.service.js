@@ -74,7 +74,7 @@
                     });
                 });
                 // asynchronous function, which calls
-                deferred.resolve({ data: result }) //on sucess
+                deferred.resolve({ data: result }); //on sucess
             } catch (e) {
                 deferred.reject(e);
             }
@@ -83,46 +83,15 @@
         }
 
 		function searchAll(allCates, keyword) {
-			var self = this;
 			var reqs = [];
 			_.forEach(allCates, function (cate) {
-				var itemReq = self.search(cate.value, keyword);
+				var itemReq = search(cate.value, keyword);
 				reqs.push(itemReq);
 			});
 			// Array of Promises
 			return $q.all(reqs).then(function(arr){
 				return getDataFromArr(arr);
 			});
-
-
-			// Object hash of Promises
-			// this is ES2015 shorthand for { promiseOne: promiseOne, promiseTwo: promiseTwo }
-			// $q.all({
-			// 	promiseOne,
-			// 	promiseTwo
-			// }).then(data => {
-			// 	console.log('Both promises have resolved', data);
-			// });
-			// console.log('-----------allCates');
-			// console.log(allCates);
-			// return $firebaseArray(bdsRef).$loaded().then(function (data) {
-			// 	bdsRef.onDisconnect();
-			// 	return $filter('filter')(data, function (item) {
-			// 		_.forEach(allCates, function (cate) {
-			// 			console.log('-------cate');
-			// 			console.log(cate);
-			// 			var itemRs = item[cate.value];
-			// 			console.log(itemRs);
-			// 		});
-
-			// 		for (var attr in item) {
-			// 			if (searchMatch(item[attr] + '', keyword) && (!item.isDeleted || item.isDeleted === '')) {
-			// 				return true;
-			// 			}
-			// 		}
-			// 		return false;
-			// 	});
-			// });
 		}
 
 		function searchMatch(haystack, needle) {

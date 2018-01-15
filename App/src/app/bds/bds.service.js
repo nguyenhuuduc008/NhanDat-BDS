@@ -12,10 +12,12 @@
 			create: create,
 			deleteItem: deleteItem,
 			search: search,
-			searchAll: searchAll
+			searchAll: searchAll,
+			getLinkToCategory: getLinkToCategory
 		};
 
 		var bdsRef = firebaseDataRef.child('bds');
+		var bdsCategoryRef = firebaseDataRef.child('bds-danh-muc');
 
 		return service;
 
@@ -23,8 +25,8 @@
 			return $firebaseArray(bdsRef);
 		}
 
-		function get(id) {
-			var ref = bdsRef.child(id);
+		function get(danhMucId, id) {
+			var ref = bdsRef.child(danhMucId + '/' + id);
 			return $firebaseObject(ref);
 		}
 
@@ -34,6 +36,10 @@
 			obj.timestampModified = ts;
 			obj.timestampCreated = ts;
 			return bdsRef.child(danhMucBDS).child(key).set(obj).then(function (res) {
+				createBdsLinkToCategory(key, {
+					danhMucId: obj.danhMuc,
+					timestampCreated: obj.timestampCreated
+				});
 				return { result: true, key: key };
 			}).catch(function (error) {
 				return { result: false, errorMsg: error };
@@ -49,8 +55,31 @@
 			});
 		}
 
-		function search(cateKey, keyword) {
-			var cateRef = firebaseDataRef.child('bds/' + cateKey);
+		function getLinkToCategory(bdsId) {
+			var ref = bdsCategoryRef.child(bdsId);
+			return $firebaseObject(ref);
+		}
+
+		function createBdsLinkToCategory(bdsId, obj){
+			return bdsCategoryRef.child(bdsId).set(obj).then(function (res) {
+				return { result: true, key: key };
+			}).catch(function (error) {
+				return { result: false, errorMsg: error };
+			});
+		}
+		
+		function deleteLinkToCategory(bdsId) {
+			var ts = appUtils.getTimestamp();
+			return bdsCategoryRef.child(bdsId).update({ isDeleted: true, timestampModified: ts }).then(function (res) {
+				return { result: true };
+			}).catch(function (error) {
+				return { result: false, errorMsg: error };
+			});
+		}
+
+
+		function search(danhMucId, keyword) {
+			var cateRef = firebaseDataRef.child('bds/' + danhMucId);
 			return $firebaseArray(cateRef).$loaded().then(function (data) {
 				cateRef.onDisconnect();
 				return $filter('filter')(data, function (item) {
@@ -63,24 +92,24 @@
 				});
 			});
 		}
-		
-        function getDataFromArr(arr) {
-            var deferred = $q.defer();
-            try {
-                var result = [];
-                _.forEach(arr, function (rs) {
-                    _.forEach(rs, function (item) {
-                        result.push(item);
-                    });
-                });
-                // asynchronous function, which calls
-                deferred.resolve({ data: result }); //on sucess
-            } catch (e) {
-                deferred.reject(e);
-            }
 
-            return deferred.promise;
-        }
+		function getDataFromArr(arr) {
+			var deferred = $q.defer();
+			try {
+				var result = [];
+				_.forEach(arr, function (rs) {
+					_.forEach(rs, function (item) {
+						result.push(item);
+					});
+				});
+				// asynchronous function, which calls
+				deferred.resolve({ data: result }); //on sucess
+			} catch (e) {
+				deferred.reject(e);
+			}
+
+			return deferred.promise;
+		}
 
 		function searchAll(allCates, keyword) {
 			var reqs = [];
@@ -89,7 +118,7 @@
 				reqs.push(itemReq);
 			});
 			// Array of Promises
-			return $q.all(reqs).then(function(arr){
+			return $q.all(reqs).then(function (arr) {
 				return getDataFromArr(arr);
 			});
 		}

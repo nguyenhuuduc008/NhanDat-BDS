@@ -78,6 +78,53 @@
 			}
 		};
 
+		states['bds.thongTin'] = {
+			url: '/detail/thongTin?id',
+			templateUrl: './app/bds/add_edit/edit-bds.tpl.html',
+			controller: 'editBdsCtrl as vm',
+			data: {
+				pageTitle: 'Chi Tiết BĐS',
+				module: 'bds',
+				parent: 'bds',
+				hide: true
+			},
+			resolve: {
+				deps: ['$ocLazyLoad', function($ocLazyLoad){
+					return $ocLazyLoad.load({
+						cache: true,
+						name: 'app.bds.detail',
+						files: [
+							'./app/bds/add_edit/edit-bds.js'		
+						]
+					});
+				}]
+			}
+		};
+
+		states['bds.tacNghiep'] = {
+			url: '/detail/tac-nghiep?bdsId&id',
+			templateUrl: './app/bds/add_edit/edit-tac-nghiep.tpl.html',
+			controller: 'editTacNghiepCtrl as vm',
+			data: {
+				pageTitle: 'Chi Tiết BĐS',
+				module: 'bds',
+				parent: 'bds',
+				hide: true
+			},
+			resolve: {
+				deps: ['$ocLazyLoad', function($ocLazyLoad){
+					return $ocLazyLoad.load({
+						cache: true,
+						name: 'app.bds.tacNghiep',
+						files: [
+							'./app/bds/add_edit/edit-tac-nghiep.js',
+							'./app/bds/tacNghiep.service.js'
+						]
+					});
+				}]
+			}
+		};
+
 		for(var state in states){
 			$stateProvider.state(state, states[state]);
 		}

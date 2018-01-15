@@ -30,7 +30,7 @@
                                                 <label class="control-label">Danh mục <span class="required-field">*</span></label>
                                                 <select name="bdsCate" ng-model="vm.model.danhMuc" class="form-control" required>
                                                     <option value="" disabled >Chọn Danh Mục</option>
-                                                    <option ng-repeat="item in vm.bdsCategories" value="{{item.value}}" ng-selected="item.value == vm.danhMuc">{{item.text}}</option>
+                                                    <option ng-repeat="item in vm.cacDanhMucBDS" value="{{item.value}}" ng-selected="item.value == vm.danhMuc">{{item.text}}</option>
                                                 </select>
                                             </div> 
                                             <div class="form-group col-md-3" ng-class="{'has-error': (vm.showInvalid && createForm.soNha.$error.required)}"} >
@@ -73,7 +73,7 @@
                                                 <label class="control-label">Hậu <span class="required-field">*</span></label>
                                                 <select name="hau" ng-model="vm.model.hau" class="form-control" required>
                                                     <option value="" disabled >Chọn Hậu</option>
-                                                    <option ng-repeat="item in vm.arrLoaiHau" value="{{item.value}}" ng-selected="item.value == vm.model.hau">{{item.text}}</option>
+                                                    <option ng-repeat="item in vm.cacLoaiHau" value="{{item.value}}" ng-selected="item.value == vm.model.hau">{{item.text}}</option>
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-3" ng-class="{'has-error': (vm.showInvalid && createForm.dienTichKhuonVien.$error.required)}"} >
@@ -188,7 +188,7 @@
                                                 <label class="control-label">Loại BĐS <span class="required-field">*</span></label>
                                                 <select name="loaiBDS" ng-model="vm.model.loaiBDS" class="form-control" required>
                                                     <option value="" disabled >Chọn Loại BĐS</option>
-                                                    <option ng-repeat="item in vm.arrLoaiBDS" value="{{item.value}}" ng-selected="item.value == vm.model.loaiBDS">{{item.text}}</option>
+                                                    <option ng-repeat="item in vm.cacLoaiBDS" value="{{item.value}}" ng-selected="item.value == vm.model.loaiBDS">{{item.text}}</option>
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-3" ng-class="{'has-error': (vm.showInvalid && createForm.tyLeMG.$error.required)}"} >

@@ -18,9 +18,9 @@
 		vm.showInvalid = false;
 		vm.numberRegx = /^\d+$/;
 		
-		vm.bdsCategories = appSettings.bdsCategories;
-		vm.arrLoaiHau = appUtils.arrLoaiHau;
-		vm.arrLoaiBDS = appUtils.arrLoaiBDS;
+		vm.cacDanhMucBDS = appSettings.cacDanhMucBDS;
+		vm.cacLoaiHau = appSettings.cacLoaiHau;
+		vm.cacLoaiBDS = appSettings.cacLoaiBDS;
         
         vm.model = {
             danhMuc: 'bds-khosocap',
@@ -88,6 +88,7 @@
                 appUtils.hideLoading();
                 toaster.pop('success','Success', "Created success!");
                 vm.model = {};
+				$state.go('bds.thongTin', { id: res.key });
             }, function(res){
                 $ngBootbox.alert(res.errorMsg);
                 appUtils.hideLoading();

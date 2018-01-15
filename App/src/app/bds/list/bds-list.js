@@ -33,7 +33,7 @@
             totalRecord: 0
         };
 
-        vm.bdsCategories = appSettings.bdsCategories;
+        vm.cacDanhMucBDS = appSettings.cacDanhMucBDS;
 
         /*=============================================================*/
 
@@ -83,7 +83,7 @@
         vm.searchAllItems = function (keyword) {
             var self = this;
             appUtils.showLoading();
-            bdsService.searchAll(vm.bdsCategories, keyword).then(function (rs) {
+            bdsService.searchAll(vm.cacDanhMucBDS, keyword).then(function (rs) {
                 appUtils.hideLoading();
                 var result = rs.data;
                 console.log('------result');
@@ -152,6 +152,9 @@
             $state.go('bds.add');
         };
 
+        vm.edit = function (id) {
+            $state.go('bds.thongTin', { id: id });
+        };
 
         //Init
         vm.searchAllItems('');

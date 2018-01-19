@@ -96,7 +96,7 @@
 
 		vm.changePage = function () {
 			vm.groupToPages();
-		}
+		};
 
 		$scope.changePage = function () {
 			vm.groupToPages();

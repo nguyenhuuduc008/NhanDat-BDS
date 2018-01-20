@@ -57,7 +57,7 @@
 			var onSuccess = function(res){
 				if(!res || !res.result){
 					appUtils.hideLoading();
-					$ngBootbox.alert(res.errorMsg);
+					$ngBootbox.alert(res.errorMsg.message);
 				    return;	
 				}
 				//Add more info of user in firebase
@@ -66,7 +66,7 @@
 
 				userService.createUser(userAddVm.user,res.uid).then(function(res){
 					if(!res.result){				
-						$ngBootbox.alert(res.errorMsg);
+						$ngBootbox.alert(res.errorMsg.message);
 						return;
 					}
 					toaster.pop('success','Success', "Account Created.");
@@ -78,14 +78,14 @@
 					//$rootScope.reProcessSideBar = true;
 					$state.go('user.details', {id: res.data});		
 				}, function(res){
-					$ngBootbox.alert(res.errorMsg);
+					$ngBootbox.alert(res.errorMsg.message);
 					appUtils.hideLoading();
 					return;
 				});
 			};//on Success
 
 			var onFail = function(res){
-				$ngBootbox.alert(res.errorMsg);
+				$ngBootbox.alert(res.errorMsg.message);
 				appUtils.hideLoading();
 			    return;
 			};

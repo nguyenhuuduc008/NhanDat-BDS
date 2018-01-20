@@ -79,18 +79,19 @@
 			}
 
 			vm.model.createdBy = currentUser.email.trim();
+			vm.model.uid = currentUser.$id;
             bdsService.create(vm.model.danhMuc.trim(), vm.model).then(function(res){
                 if(!res.result){				
-                    $ngBootbox.alert(res.errorMsg);
+                    $ngBootbox.alert(res.errorMsg.message);
                     return;
                 }
 				
                 appUtils.hideLoading();
                 toaster.pop('success','Success', "Created success!");
                 vm.model = {};
-				$state.go('bds.thongTin', { id: res.key });
+				$state.go('bds.thongTin', { bdsId: res.key });
             }, function(res){
-                $ngBootbox.alert(res.errorMsg);
+                $ngBootbox.alert(res.errorMsg.message);
                 appUtils.hideLoading();
                 return;
             });

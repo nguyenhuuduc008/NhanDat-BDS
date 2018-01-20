@@ -16,8 +16,6 @@
 		if ($stateParams.id) {
 			vm.model.$id = $stateParams.id;
 		}
-		console.log('--------vm.bdsId');
-		console.log(vm.bdsId);
 		vm.nameRegx = /^(a-z|A-Z|0-9)*[^!#$%^&*()'"\/\\;:@=+,?\[\]\/]*$/;
 		vm.showInvalid = false;
 		vm.showAddNew = true;
@@ -36,15 +34,10 @@
 			viTri: {
 				title: 'Vị Trí'
 			},
-			info2: {
-				title: 'Info'
+			lienKetUsers: {
+				title: 'Liên Kết Users'
 			},
 		};
-
-		vm.cacDanhMucBDS = appSettings.cacDanhMucBDS;
-		vm.cacLoaiHau = appSettings.cacLoaiHau;
-		vm.cacLoaiBDS = appSettings.cacLoaiBDS;
-		vm.cacLoaiTacNghiep = appSettings.cacLoaiTacNghiep;
 
 		//Functions
 		vm.loadTab = function(key){

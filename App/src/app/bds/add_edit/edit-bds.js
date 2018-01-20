@@ -14,8 +14,6 @@
 		vm.bdsId = $stateParams.bdsId;
 		vm.model = {};
 		vm.model.$id = vm.bdsId;
-		console.log('--------vm.model.$id');
-		console.log(vm.model.$id);
 		$scope.zipcodeRegx = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
 		$scope.nameRegx = /^(a-z|A-Z|0-9)*[^!#$%^&*()'"\/\\;:@=+,?\[\]\/]*$/;
 		$scope.addressRegx = /^(a-z|A-Z|0-9)*[^!$%^&*()'"\/\\;:@=+,?\[\]]*$/;
@@ -33,8 +31,8 @@
 			viTri: {
 				title: 'Vị Trí'
 			},
-			info2: {
-				title: 'Info'
+			lienKetUsers: {
+				title: 'Liên Kết Users'
 			},			
 		};
 		
@@ -53,13 +51,13 @@
 			appUtils.showLoading();
 			bdsService.update(vm.model).then(function(res){
                 if(!res.result){				
-                    $ngBootbox.alert(res.errorMsg);
+                    $ngBootbox.alert(res.errorMsg.message);
                     return;
                 }
                 appUtils.hideLoading();
                 toaster.pop('success','Success', "Save success!");
             }, function(res){
-                $ngBootbox.alert(res.errorMsg);
+                $ngBootbox.alert(res.errorMsg.message);
                 appUtils.hideLoading();
                 return;
             });

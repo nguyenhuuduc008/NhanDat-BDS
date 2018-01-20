@@ -46,7 +46,7 @@
             req.then(function (res) {
                 console.log(res.result);
                 if (!res.result) {
-                    $ngBootbox.alert(res.errorMsg);
+                    $ngBootbox.alert(res.errorMsg.message);
                     return;
                 }
                 toaster.pop('success', 'Success', "Setting Updated.");

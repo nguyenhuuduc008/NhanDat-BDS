@@ -148,6 +148,32 @@
 				}]
 			}
 		};
+		
+		states['bds.lienKetUsers'] = {
+			url: '/detail/lienketusers?bdsId',
+			templateUrl: './app/bds/add_edit/edit-lien-ket-users.tpl.html',
+			controller: 'editLienKetUsersCtrl as vm',
+			data: {
+				pageTitle: 'Chi Tiết BĐS',
+				module: 'bds',
+				parent: 'bds',
+				hide: true
+			},
+			resolve: {
+				deps: ['$ocLazyLoad', function($ocLazyLoad){
+					return $ocLazyLoad.load({
+						cache: true,
+						name: 'app.bds.lienKetUsers',
+						files: [
+							'./app/bds/add_edit/edit-lien-ket-users.js',
+							'./app/bds/add_edit/_popup-lien-ket-users.js',
+							'./app/bds/lientKetUsers.service.js',
+							'./app/user/user.service.js',
+						]
+					});
+				}]
+			}
+		};
 
 		for(var state in states){
 			$stateProvider.state(state, states[state]);

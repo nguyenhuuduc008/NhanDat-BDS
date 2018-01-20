@@ -139,7 +139,7 @@
             var req = menusService.updateMoreMenus($scope.menus, type);
             req.then(function (res) {
                 if (!res.result) {
-                    $ngBootbox.alert(res.errorMsg);
+                    $ngBootbox.alert(res.errorMsg.message);
                     return;
                 }
                 toaster.pop('success', 'Success', "Setting Updated.");
@@ -150,7 +150,7 @@
             var req = menusService.updateMenus($scope.menus);
             req.then(function (res) {
                 if (!res.result) {
-                    $ngBootbox.alert(res.errorMsg);
+                    $ngBootbox.alert(res.errorMsg.message);
                     return;
                 }
                 toaster.pop('success', 'Success', "Setting Updated.");
@@ -313,7 +313,7 @@
             };
             menusService.updateNavigation($scope.navigation).then(function (res) {
                 if (!res.result) {
-                    $ngBootbox.alert(res.errorMsg);
+                    $ngBootbox.alert(res.errorMsg.message);
                     return;
                 }
                 $scope.showInvalidAddMenuType = false;
@@ -384,7 +384,7 @@
             $ngBootbox.confirm('Are you sure you want to remove this menu?').then(function () {
                 menusService.deleteMenu(menu.$id).then(function (res) {
                     if (!res.result) {
-                        $ngBootbox.alert(res.errorMsg);
+                        $ngBootbox.alert(res.errorMsg.message);
                         return;
                     }
                     toaster.pop('success', 'Success', "Remove Menu Success.");

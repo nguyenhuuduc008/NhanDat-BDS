@@ -40,7 +40,9 @@
 			return bdsRef.child(danhMucBDS).child(key).set(obj).then(function (res) {
 				createBdsLinkToCategory(key, {
 					danhMucId: obj.danhMuc,
-					timestampCreated: obj.timestampCreated
+					timestampCreated: obj.timestampCreated,
+					uid: obj.uid,
+					createdBy: obj.createdBy
 				});
 				return { result: true, key: key };
 			}).catch(function (error) {

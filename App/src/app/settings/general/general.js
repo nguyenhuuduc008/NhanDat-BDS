@@ -48,7 +48,7 @@
             var req = settingsService.updateGeneralSetting($scope.settings);
             req.then(function (res) {
                 if (!res.result) {
-                    $ngBootbox.alert(res.errorMsg);
+                    $ngBootbox.alert(res.errorMsg.message);
                     return;
                 }
                 

@@ -32,15 +32,10 @@
 				title: 'Vị Trí',
 				url: './app/bds/add_edit/_tab-vi-tri.tpl.html'
 			},
-			info2: {
-				title: 'Info'
+			lienKetUsers: {
+				title: 'Liên Kết Users'
 			},
 		};
-
-		vm.cacDanhMucBDS = appSettings.cacDanhMucBDS;
-		vm.cacLoaiHau = appSettings.cacLoaiHau;
-		vm.cacLoaiBDS = appSettings.cacLoaiBDS;
-		vm.cacLoaiTacNghiep = appSettings.cacLoaiTacNghiep;
 
 		//Functions
 		vm.loadTab = function (key) {
@@ -55,7 +50,7 @@
 			};
 			bdsViTriService.create(vm.bdsId, vm.model).then(function () {
 				if (!res.result) {
-					$ngBootbox.alert(res.errorMsg);
+					$ngBootbox.alert(res.errorMsg.message);
 					return;
 				} else {
 					toaster.pop('success', 'Success', "Save success!");
@@ -120,7 +115,7 @@
 		$scope.$watchCollection("marker.coords", function (newVal, oldVal) {
 			$scope.map.center.latitude = $scope.marker.coords.latitude;
 			$scope.map.center.longitude = $scope.marker.coords.longitude;
-			if (_.isEqual(newVal, oldVal) || $scope.coordsUpdates === 0 || $scope.coordsUpdates === 1) {
+			if (_.isEqual(newVal, oldVal) || $scope.coordsUpdates === 0) {
 				$scope.coordsUpdates++;
 				return;
 			}
@@ -132,7 +127,7 @@
 					viTriRs.longitude = $scope.marker.coords.longitude;
 					bdsViTriService.update(viTriRs).then(function (updatedRes) {
 						if (!updatedRes.result) {
-							$ngBootbox.alert(res.errorMsg);
+							$ngBootbox.alert(res.errorMsg.message);
 							return;
 						} else {
 							toaster.pop('success', 'Success', "Save success!");

@@ -65,7 +65,7 @@
             req.then(function(res){
                 if(!res.result){
                     appUtils.hideLoading();
-                    $ngBootbox.alert(res.errorMsg);
+                    $ngBootbox.alert(res.errorMsg.message);
                     return;
                 }
                 appUtils.hideLoading();

@@ -4,7 +4,7 @@
 	angular.module("app.bds").factory("tacNghiepService", tacNghiepService);
 	/** @ngInject **/
 	function tacNghiepService($q, $filter, $firebaseObject, $firebaseArray, firebaseDataRef, appUtils) {
-		var rootPath = 'tac-nghiep', tacNghiepRef = firebaseDataRef.child(rootPath);
+		var rootPath = 'bds-tac-nghiep', tacNghiepRef = firebaseDataRef.child(rootPath);
 		var tacNghiepService = {
 			get: get,
 			getAll: getAll,

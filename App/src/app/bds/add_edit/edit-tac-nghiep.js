@@ -33,8 +33,8 @@
 				title: 'Tác Nghiệp',
 				url: './app/bds/add_edit/_tab-tac-nghiep.tpl.html'
 			},
-			desc: {
-				title: 'Descriptions',
+			viTri: {
+				title: 'Vị Trí'
 			},
 			info2: {
 				title: 'Info'
@@ -47,9 +47,9 @@
 		vm.cacLoaiTacNghiep = appSettings.cacLoaiTacNghiep;
 
 		//Functions
-		vm.loadTab = function (key) {
+		vm.loadTab = function(key){
 			vm.activeTab = key;
-			$state.go('bds.' + key, { id: vm.bdsId });
+            $state.go('bds.' + key, { bdsId: vm.bdsId });
 		};
 
 		//Load Data
@@ -104,8 +104,6 @@
 		vm.search = function (keyword) {
 			appUtils.showLoading();
 			tacNghiepService.search(vm.bdsId, keyword).then(function (result) {
-				console.log('---------search');
-				console.log(result);
 				appUtils.hideLoading();
 				vm.filteredItems = appUtils.sortArray(result, 'timestampCreated');
 				vm.paging.totalRecord = result.length;

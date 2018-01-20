@@ -154,7 +154,7 @@
         };
 
         vm.edit = function (id) {
-            $state.go('bds.thongTin', { id: id });
+            $state.go('bds.thongTin', { bdsId: id });
         };
 
         //Init

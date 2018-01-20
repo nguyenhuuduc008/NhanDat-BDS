@@ -1,0 +1,14 @@
+<div class="row">
+    <div class="position">
+        <label class="">Latitude:
+        </label>
+        <input type="number" ng-model="marker.coords.latitude" step="0.001" title="This is the “Y” of the coordinate" />
+        <label class="">Longitude:
+        </label>
+        <input type="number" ng-model="marker.coords.longitude" title="This is the “X” of the coordinate" step="0.001" />
+    </div>
+    <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" options="options">
+        <ui-gmap-marker coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id">
+        </ui-gmap-marker>
+    </ui-gmap-google-map>
+</div>

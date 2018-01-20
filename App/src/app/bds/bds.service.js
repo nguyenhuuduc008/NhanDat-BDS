@@ -10,6 +10,7 @@
 			getAll: getAll,
 			get: get,
 			create: create,
+			update: update,
 			deleteItem: deleteItem,
 			search: search,
 			searchAll: searchAll,
@@ -57,6 +58,16 @@
 				}).catch(function (error) {
 					return { result: false, errorMsg: error };
 				});
+			});
+		}
+		
+		function update(update) {
+			var ts = appUtils.getTimestamp();
+			update.timestampModified = ts;
+			return update.$save().then(function () {
+				return { result: true, errorMsg: "" };
+			}).catch(function (error) {
+				return { result: false, errorMsg: error };
 			});
 		}
 

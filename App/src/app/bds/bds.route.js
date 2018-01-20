@@ -79,7 +79,7 @@
 		};
 
 		states['bds.thongTin'] = {
-			url: '/detail/thongTin?id',
+			url: '/detail/thongTin?bdsId',
 			templateUrl: './app/bds/add_edit/edit-bds.tpl.html',
 			controller: 'editBdsCtrl as vm',
 			data: {
@@ -119,6 +119,30 @@
 						files: [
 							'./app/bds/add_edit/edit-tac-nghiep.js',
 							'./app/bds/tacNghiep.service.js'
+						]
+					});
+				}]
+			}
+		};
+		
+		states['bds.viTri'] = {
+			url: '/detail/vitri?bdsId',
+			templateUrl: './app/bds/add_edit/edit-vi-tri.tpl.html',
+			controller: 'editViTriCtrl as vm',
+			data: {
+				pageTitle: 'Chi Tiết BĐS',
+				module: 'bds',
+				parent: 'bds',
+				hide: true
+			},
+			resolve: {
+				deps: ['$ocLazyLoad', function($ocLazyLoad){
+					return $ocLazyLoad.load({
+						cache: true,
+						name: 'app.bds.viTri',
+						files: [
+							'./app/bds/add_edit/edit-vi-tri.js',
+							'./app/bds/viTri.service.js'
 						]
 					});
 				}]

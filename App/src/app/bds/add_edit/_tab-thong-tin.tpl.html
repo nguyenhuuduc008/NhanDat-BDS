@@ -1,5 +1,5 @@
 <div class="row">
-    <form role="form" id="createForm" name="createForm" novalidate ng-submit="vm.create(createForm)">
+    <form role="form" id="createForm" name="createForm" novalidate ng-submit="vm.save(createForm)">
         <div class="form-group col-md-3" ng-class="{'has-error': (vm.showInvalid && createForm.requirementType.$error.required)}">
             <label class="control-label">Danh mục
                 <span class="required-field">*</span>
@@ -299,7 +299,7 @@
         <div class=" col-md-12">
             <div class="margin-top-20 pull-right">
                 <button class="btn green grreen-haze" type="submit" ng-disabled="createForm.$invalid">
-                    Create
+                    Save
                 </button>
                 <button class="btn default" type="button" ng-click="vm.cancel()">
                     Cancel

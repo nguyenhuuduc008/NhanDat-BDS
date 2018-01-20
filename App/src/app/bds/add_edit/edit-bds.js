@@ -8,13 +8,10 @@
 		$rootScope.settings.layout.showSmartphone = false;
 		$rootScope.settings.layout.showPageHead = true;
 		$rootScope.settings.layout.guestPage = false;
-		// if ($rootScope.reProcessSideBar) {
-		// 	$rootScope.reProcessSideBar = false;
-		// }
 		var vm = this; // jshint ignore:line
 		vm.currentUser = $rootScope.storage.currentUser;
         var appSettings = $rootScope.storage.appSettings;
-		vm.bdsId = $stateParams.id;
+		vm.bdsId = $stateParams.bdsId;
 		vm.model = {};
 		vm.model.$id = vm.bdsId;
 		console.log('--------vm.model.$id');
@@ -31,16 +28,13 @@
 				url: './app/bds/add_edit/_tab-thong-tin.tpl.html'
 			},
 			tacNghiep: {
-				title: 'Tác Nghiệp',
-				// url: './app/bds/add_edit/_tab-tac-nghiep.tpl.html'
+				title: 'Tác Nghiệp'
 			},
-			desc: {
-				title: 'Descriptions',
-				// url: './app/bds/add_edit/_tab-thong-tin.tpl.html'
+			viTri: {
+				title: 'Vị Trí'
 			},
 			info2: {
-				title: 'Info',
-				// url: './app/bds/add_edit/_tab-thong-tin.tpl.html'
+				title: 'Info'
 			},			
 		};
 		
@@ -55,16 +49,28 @@
             $state.go('bds.' + key, { bdsId: vm.bdsId });
 		};
 
+		vm.save = function(){
+			appUtils.showLoading();
+			bdsService.update(vm.model).then(function(res){
+                if(!res.result){				
+                    $ngBootbox.alert(res.errorMsg);
+                    return;
+                }
+                appUtils.hideLoading();
+                toaster.pop('success','Success', "Save success!");
+            }, function(res){
+                $ngBootbox.alert(res.errorMsg);
+                appUtils.hideLoading();
+                return;
+            });
+		};
+
 		//Load Data
 		function loadBDSDetails() {
 			appUtils.showLoading();
 			bdsService.getLinkToCategory(vm.model.$id).$loaded().then(function (bdsCateResult) {
-				console.log('---------bdsCateResult');
-				console.log(bdsCateResult);
 				if (bdsCateResult && !bdsCateResult.isDeleted && bdsCateResult.danhMucId !== '-1') {
 					bdsService.get(bdsCateResult.danhMucId, vm.model.$id).$loaded().then(function (result) {
-						console.log('---------Edit result');
-						console.log(result);
 						if (result) {
 							vm.model = result;
 						}else{

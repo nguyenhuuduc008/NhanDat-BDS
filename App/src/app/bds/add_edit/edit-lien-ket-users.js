@@ -290,14 +290,14 @@
 			updateLinkedUsers(obj);
 		};
 
-		vm.addLinkedUser = function (userId) {
-			appUtils.showLoading();
-			vm.linkedUsers.push(userId);
-			var obj = {
-				users: vm.linkedUsers,
-			};
-			updateLinkedUsers(obj);
-		};
+		// vm.addLinkedUser = function (userId) {
+		// 	appUtils.showLoading();
+		// 	vm.linkedUsers.push(userId);
+		// 	var obj = {
+		// 		users: vm.linkedUsers,
+		// 	};
+		// 	updateLinkedUsers(obj);
+		// };
 
 		//Load Data
 		roleService.items().$loaded(function (data) {

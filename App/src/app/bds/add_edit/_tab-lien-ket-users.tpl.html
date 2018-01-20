@@ -89,9 +89,9 @@
                             <a href="javascript:;" ng-if="vm.getLinkedRs(item.$id)" ng-click="vm.removeLinkedUser(item.$id)">
                                 <i class="fa fa-check font-green-jungle"></i>
                             </a>
-                            <a href="javascript:;" ng-if="!vm.getLinkedRs(item.$id)" ng-click="vm.addLinkedUser(item.$id)">
-                                <i class="fa fa-ban font-red"></i>
-                            </a>
+                            <!-- <a href="javascript:;" ng-if="!vm.getLinkedRs(item.$id)"> -->
+                            <i class="fa fa-ban font-red"></i>
+                            <!-- </a> -->
                         </td>
                         <td class="hidden-sm" ng-bind-html="vm.deserializeRole(item.userRoles)"></td>
                         <td class="hidden-sm text-center" ng-if="item.isAuthorized">

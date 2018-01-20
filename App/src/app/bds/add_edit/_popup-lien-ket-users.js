@@ -9,6 +9,7 @@
         var currentUser = $rootScope.storage.currentUser;
         var appSettings = $rootScope.storage.appSettings;
         var vm = this; // jshint ignore:line
+        vm.model = {};
         vm.bdsId = bdsId;
         vm.lstUserIds = lstUserIds;
         vm.states = appUtils.getAllState();
@@ -39,6 +40,7 @@
         vm.saveLienKetUsers = function(){
             appUtils.showLoading();
             var obj = {
+                loaiLienKetUser: vm.model.loaiLienKetUser,
                 users: vm.lstUserIds,
             };
             lienKetUsersService.create(vm.bdsId, obj).then(function(res){

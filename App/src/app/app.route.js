@@ -14,7 +14,7 @@
 			template: '<div ui-view class=""></div>',
 			resolve:{
 				loadDyamicModules: ['$ocLazyLoad', '$rootScope', function($ocLazyLoad, $rootScope){
-					var modules = ['bds', 'home', 'register', 'transaction', 'transactionHistory', 'user'], 
+					var modules = ['bds', 'home', 'user'], 
 						moduleFiles = [],
 						routeFiles = [];
 

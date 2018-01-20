@@ -68,9 +68,7 @@
 			'app.settings',
             'app.search',
             'app.dRemote',
-            'app.transaction',
-            'app.register',
-            'app.transactionHistory'
+            'app.bds'
 		])
 		.config(config)
 		.run(run)

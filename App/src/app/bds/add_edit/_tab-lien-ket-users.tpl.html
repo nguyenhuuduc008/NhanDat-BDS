@@ -90,7 +90,7 @@
                                 <i class="fa fa-check font-green-jungle"></i>
                             </a>
                             <!-- <a href="javascript:;" ng-if="!vm.getLinkedRs(item.$id)"> -->
-                            <i class="fa fa-ban font-red"></i>
+                            <i class="fa fa-ban font-red" ng-if="!vm.getLinkedRs(item.$id)"></i>
                             <!-- </a> -->
                         </td>
                         <td class="hidden-sm" ng-bind-html="vm.deserializeRole(item.userRoles)"></td>

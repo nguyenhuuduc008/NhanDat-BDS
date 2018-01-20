@@ -13,7 +13,9 @@
 		var appSettings = $rootScope.storage.appSettings;
 		vm.model = {};
 		vm.bdsId = $stateParams.bdsId;
-		vm.model.$id = $stateParams.id;
+		if ($stateParams.id) {
+			vm.model.$id = $stateParams.id;
+		}
 		console.log('--------vm.bdsId');
 		console.log(vm.bdsId);
 		vm.nameRegx = /^(a-z|A-Z|0-9)*[^!#$%^&*()'"\/\\;:@=+,?\[\]\/]*$/;
@@ -25,8 +27,7 @@
 		vm.activeTab = 'tacNghiep';
 		vm.tabs = {
 			thongTin: {
-				title: 'Thông Tin',
-				// url: './app/bds/add_edit/_tab-thong-tin.tpl.html'
+				title: 'Thông Tin'
 			},
 			tacNghiep: {
 				title: 'Tác Nghiệp',
@@ -34,11 +35,9 @@
 			},
 			desc: {
 				title: 'Descriptions',
-				// url: './app/bds/add_edit/_tab-thong-tin.tpl.html'
 			},
 			info2: {
-				title: 'Info',
-				// url: './app/bds/add_edit/_tab-thong-tin.tpl.html'
+				title: 'Info'
 			},
 		};
 
@@ -119,7 +118,7 @@
 		vm.delete = function () {
 			$ngBootbox.confirm('Are you sure want to delete ' + vm.model.name + '?')
 				.then(function () {
-					tacNghiepService.remove(vm.bdsId, vm.model.$id).then(function (rs) {
+					tacNghiepService.deleteItem(vm.model.$id).then(function (rs) {
 						if (rs.result) {
 							toaster.success("Delete success!");
 						} else {
@@ -161,7 +160,7 @@
 					var removeRs = [];
 					if (removeIndex > -1) {
 						_.forEach(lstIds, function (id) {
-							removeRs.push(tacNghiepService.remove(vm.bdsId, id));
+							removeRs.push(tacNghiepService.deleteItem(id));
 						});
 
 						$q.all(removeRs).then(function (rs) {
@@ -194,37 +193,9 @@
 			appUtils.showLoading();
 			var self = this;
 			var update = null;
-			// var existedName;
-			// var existedNumber;
 			if (vm.model.$id) {
 				tacNghiepService.get(vm.bdsId, vm.model.$id).$loaded().then(function (data) {
 					update = data;
-					// existedName = _.filter(vm.items, function(t) { 
-					//     if(t.name){
-					//         if(t.name.toLowerCase() === vm.model.name.toLowerCase())
-					//         {
-					//             return update.name.toLowerCase() !== vm.model.name.toLowerCase();
-					//         }
-					//     }
-					// });
-					// if(existedName.length > 0){
-					//     appUtils.hideLoading();
-					//     toaster.warning('The name is ' + vm.model.name + " has existed, please try another!");
-					//     return;
-					// }
-					// existedNumber = _.filter(vm.items, function(t) { 
-					//         if(t.number){
-					//             if(t.number === vm.model.number)
-					//             {
-					//                 return update.number !== vm.model.number;
-					//             }
-					//         }
-					//     });
-					// if(existedNumber.length > 0){
-					//     appUtils.hideLoading();
-					//     toaster.warning('The number is ' + vm.model.number + " has existed, please try another!");
-					//     return;
-					// }
 
 					update.ten = vm.model.ten;
 					update.loaiTacNghiep = vm.model.loaiTacNghiep;
@@ -242,27 +213,6 @@
 					});
 				});
 			} else {
-				// existedName = _.filter(vm.items, function(t) { 
-				//     if(t.name){
-				//         return t.name.toLowerCase() == vm.model.name.toLowerCase();
-				//     }
-				// });
-				// if(existedName.length > 0){
-				//     appUtils.hideLoading();
-				//     toaster.warning('The name is ' + vm.model.name + " has existed, please try another!");
-				//     return;
-				// }
-				// existedNumber = _.filter(vm.items, function(t) { 
-				//         if(t.number){
-				//             return t.number == vm.model.number;
-				//         }
-				//     });
-				// if(existedNumber.length > 0){
-				//     appUtils.hideLoading();
-				//     toaster.warning('The number is ' + vm.model.number + " has existed, please try another!");
-				//     return;
-				// }
-
 				tacNghiepService.create(vm.bdsId, vm.model).then(function (rs) {
 					appUtils.hideLoading();
 					if (rs.result) {
@@ -286,7 +236,6 @@
 			return 'Unknown';
 		};
 
-		// loadBDSDetails();
 		vm.search('');
 		loadBDSTacNghiep();
 	}

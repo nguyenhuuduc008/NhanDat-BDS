@@ -18,6 +18,7 @@
 
 		var bdsRef = firebaseDataRef.child('bds');
 		var bdsCategoryRef = firebaseDataRef.child('bds-danh-muc');
+		var tacNghiepRef = firebaseDataRef.child('tac-nghiep');
 
 		return service;
 
@@ -46,12 +47,16 @@
 			});
 		}
 
-		function deleteItem(userKey, transKey) {
-			var ts = appUtils.getTimestamp();
-			return bdsRef.child(userKey).child(transKey).update({ isDeleted: true, timestampModified: ts }).then(function (res) {
-				return { result: true };
-			}).catch(function (error) {
-				return { result: false, errorMsg: error };
+		function deleteItem(bdsId) {
+			return getLinkToCategory(bdsId).$loaded().then(function(bdsDanhMucRs){
+				var ts = appUtils.getTimestamp();
+				return bdsRef.child(bdsDanhMucRs.danhMucId).child(bdsId).update({ isDeleted: true, timestampModified: ts }).then(function (res) {
+					deleteLinkToCategory(bdsId);
+					deleteBdsTacNghiep(bdsId);
+					return { result: true };
+				}).catch(function (error) {
+					return { result: false, errorMsg: error };
+				});
 			});
 		}
 
@@ -77,6 +82,14 @@
 			});
 		}
 
+		function deleteBdsTacNghiep(bdsId) {
+			var ts = appUtils.getTimestamp();
+			return tacNghiepRef.child(bdsId).update({ isDeleted: true, timestampModified: ts }).then(function (res) {
+				return { result: true };
+			}).catch(function (error) {
+				return { result: false, errorMsg: error };
+			});
+		}
 
 		function search(danhMucId, keyword) {
 			var cateRef = firebaseDataRef.child('bds/' + danhMucId);

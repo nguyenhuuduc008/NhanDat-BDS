@@ -63,9 +63,12 @@
 				console.log(bdsCateResult);
 				if (bdsCateResult && !bdsCateResult.isDeleted && bdsCateResult.danhMucId !== '-1') {
 					bdsService.get(bdsCateResult.danhMucId, vm.model.$id).$loaded().then(function (result) {
-						console.log('---------result');
+						console.log('---------Edit result');
 						console.log(result);
 						if (result) {
+							vm.model = result;
+						}else{
+                            toaster.pop('error', 'Error', "Cann't load data!");
 						}
 						appUtils.hideLoading();
 					});

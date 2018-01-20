@@ -19,7 +19,6 @@
         console.log('---------appSettings');
         console.log(appSettings);
 
-        var userKey = '';
         var vm = this; // jshint ignore:line
         vm.keyword = '';
         vm.bdsCate = '-1';
@@ -126,7 +125,9 @@
                 var reqs = [];
                 if (action === 'delete') {
                     _.forEach(lstItemIds, function (obj, key) {
-                        reqs.push(bdsService.deleteItem(userKey, obj));
+                        console.log('---------lstItemIds');
+                        console.log(obj);
+                        reqs.push(bdsService.deleteItem(obj));
                     });
                     $q.all(reqs).then(function (res) {
                         appUtils.hideLoading();
@@ -139,7 +140,7 @@
                         } else {
                             toaster.pop('error', 'Error', "Delete Error!");
                         }
-                        vm.executeSearchItems();
+                        vm.executeSearchItems('');
                     });
                 } else {
                     appUtils.hideLoading();

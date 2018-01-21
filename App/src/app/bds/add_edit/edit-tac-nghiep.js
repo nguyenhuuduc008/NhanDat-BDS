@@ -37,6 +37,12 @@
 			lienKetUsers: {
 				title: 'Liên Kết Users'
 			},
+			giamGia: {
+				title: 'Giảm Giá'
+			},
+			yeuToTangGiamGia: {
+				title: 'Yếu Tố Tăng Giảm Giá'
+			},
 		};
 
 		//Functions

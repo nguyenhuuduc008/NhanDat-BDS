@@ -1,0 +1,161 @@
+<div class="row">
+    <div class="portlet light bordered tasks-widget">
+        <div class="portlet-title">
+            <div class="caption width70 row">
+                <div class="col-md-12">
+                    <h5>Yếu Tố Tăng Giá</h5>
+                </div>
+            </div>
+        </div>
+        <div class="portlet-body row">
+            <form role="form" id="createForm" name="createForm" novalidate>
+                <div class="form-group col-md-3">
+                    <label class="mt-checkbox mt-checkbox-outline">
+                        <input id="noHau" type="checkbox" name="noHau" ng-model="vm.model.noHau" />
+                        <span></span>
+                    </label>
+                    <label for="noHau">Nở Hậu</label>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="mt-checkbox mt-checkbox-outline">
+                        <input id="khuCompound" type="checkbox" name="khuCompound" ng-model="vm.model.khuCompound" />
+                        <span></span>
+                    </label>
+                    <label for="khuCompound">Khu Compound</label>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="mt-checkbox mt-checkbox-outline">
+                        <input id="canGoc" type="checkbox" name="canGoc" ng-model="vm.model.canGoc" />
+                        <span></span>
+                    </label>
+                    <label for="canGoc">Căn Góc</label>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="mt-checkbox mt-checkbox-outline">
+                        <input id="ganCho" type="checkbox" name="khuCompound" ng-model="vm.model.ganCho" />
+                        <span></span>
+                    </label>
+                    <label for="ganCho">Gần Chợ</label>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="mt-checkbox mt-checkbox-outline">
+                        <input id="sieuThi" type="checkbox" name="sieuThi" ng-model="vm.model.sieuThi" />
+                        <span></span>
+                    </label>
+                    <label for="sieuThi">Siêu Thị</label>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="mt-checkbox mt-checkbox-outline">
+                        <input id="truongHoc" type="checkbox" name="truongHoc" ng-model="vm.model.truongHoc" />
+                        <span></span>
+                    </label>
+                    <label for="truongHoc">Trường Học</label>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="mt-checkbox mt-checkbox-outline">
+                        <input id="benhVien" type="checkbox" name="benhVien" ng-model="vm.model.benhVien" />
+                        <span></span>
+                    </label>
+                    <label for="benhVien">Bệnh Viện</label>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="mt-checkbox mt-checkbox-outline">
+                        <input id="congVien" type="checkbox" name="congVien" ng-model="vm.model.congVien" />
+                        <span></span>
+                    </label>
+                    <label for="congVien">Công Viên</label>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="mt-checkbox mt-checkbox-outline">
+                        <input id="coQuanHanhChinh" type="checkbox" name="coQuanHanhChinh" ng-model="vm.model.coQuanHanhChinh" />
+                        <span></span>
+                    </label>
+                    <label for="coQuanHanhChinh">Cơ Quan Hành Chính</label>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="portlet light bordered tasks-widget" style="margin-bottom: 0;">
+        <div class="portlet-title">
+            <div class="caption width70 row">
+                <div class="col-md-12">
+                    <h5>Yếu Tố Giảm Giá</h5>
+                </div>
+            </div>
+        </div>
+        <div class="portlet-body row">
+            <form role="form" id="createForm" name="createForm" novalidate>
+                <div class="form-group col-md-3">
+                    <label class="mt-checkbox mt-checkbox-outline">
+                        <input id="topHau" type="checkbox" name="topHau" ng-model="vm.model.topHau" />
+                        <span></span>
+                    </label>
+                    <label for="topHau">Tóp Hậu</label>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="mt-checkbox mt-checkbox-outline">
+                        <input id="cotDien" type="checkbox" name="cotDien" ng-model="vm.model.cotDien" />
+                        <span></span>
+                    </label>
+                    <label for="cotDien">Cột Điện</label>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="mt-checkbox mt-checkbox-outline">
+                        <input id="cayXanh" type="checkbox" name="cayXanh" ng-model="vm.model.cayXanh" />
+                        <span></span>
+                    </label>
+                    <label for="cayXanh">Cây Xanh</label>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="mt-checkbox mt-checkbox-outline">
+                        <input id="congTruocNha" type="checkbox" name="congTruocNha" ng-model="vm.model.congTruocNha" />
+                        <span></span>
+                    </label>
+                    <label for="congTruocNha">Cống Trước Nhà</label>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="mt-checkbox mt-checkbox-outline">
+                        <input id="damDuong" type="checkbox" name="damDuong" ng-model="vm.model.damDuong" />
+                        <span></span>
+                    </label>
+                    <label for="damDuong">Đâm Đường</label>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="mt-checkbox mt-checkbox-outline">
+                        <input id="ganCoSoTonGIao" type="checkbox" name="ganCoSoTonGIao" ng-model="vm.model.ganCoSoTonGIao" />
+                        <span></span>
+                    </label>
+                    <label for="ganCoSoTonGIao">Gần Cơ Sở Tôn Giáo</label>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="mt-checkbox mt-checkbox-outline">
+                        <input id="nhaTangLe" type="checkbox" name="nhaTangLe" ng-model="vm.model.nhaTangLe" />
+                        <span></span>
+                    </label>
+                    <label for="nhaTangLe">Nhà Tang Lễ</label>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="mt-checkbox mt-checkbox-outline">
+                        <input id="tuongChung" type="checkbox" name="tuongChung" ng-model="vm.model.tuongChung" />
+                        <span></span>
+                    </label>
+                    <label for="tuongChung">Tường Chung</label>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="portlet light tasks-widget" style="margin-bottom: 0;">
+        <div class="portlet-body row">
+            <div class=" col-md-12">
+                <div class="margin-top-20 pull-right">
+                    <button class="btn green grreen-haze" type="submit" ng-click="vm.save()">
+                        Save
+                    </button>
+                    <button class="btn default" type="button" ng-click="vm.cancel()">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -34,6 +34,12 @@
 				title: 'Liên Kết Users',
 				url: './app/bds/add_edit/_tab-lien-ket-users.tpl.html'
 			},
+			giamGia: {
+				title: 'Giảm Giá'
+			},
+			yeuToTangGiamGia: {
+				title: 'Yếu Tố Tăng Giảm Giá'
+			},
 		};
 
 		vm.keyword = '';
@@ -135,8 +141,8 @@
 					if (rs) {
 						for (var i = 0; i < vm.groupLinkedUsers.length; i++) {
 							if (vm.groupLinkedUsers[i].userIds) {
-								var linkedUserRs = _.find(vm.groupLinkedUsers[i].userIds, function (userId) {
-									return userItem.$id === userId;
+								var linkedUserRs = _.find(vm.groupLinkedUsers[i].userIds, function (linkedUserId) {// jshint ignore:line
+									return userItem.$id === linkedUserId;
 								});
 								if (linkedUserRs) {
 									userItem.loaiLienKetUser = vm.groupLinkedUsers[i].loaiLienKetUser;

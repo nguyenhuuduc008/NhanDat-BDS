@@ -1,0 +1,30 @@
+<div class="row">
+    <form role="form" id="createForm" name="createForm" novalidate ng-submit="vm.save(createForm)">
+        <div class="form-group col-md-3" ng-class="{'has-error': (vm.showInvalid && createForm.loaiGiamGia.$error.required)}">
+            <label class="control-label">Loại giảm giá
+                <span class="required-field">*</span>
+            </label>
+            <select name="loaiGiamGia" ng-model="vm.model.loaiGiamGia" class="form-control" required>
+                <option value="" disabled>Chọn Loại Giảm Giá</option>
+                <option ng-repeat="item in vm.cacLoaiGiamGia" value="{{item.value}}" ng-selected="item.value == vm.model.loaiGiamGia">{{item.text}}</option>
+            </select>
+        </div>
+        <div class="form-group col-md-3" ng-class="{'has-error': (vm.showInvalid && createForm.amount.$error.required) || createForm.amount.$error.pattern}" }>
+            <label class="control-label">Số lượng
+                <span class="required-field">*</span>
+            </label>
+            <input type="text" name="amount" placeholder="Số lượng" class="form-control" required ng-model="vm.model.amount" ng-pattern="numberRegx" />
+            <label class="control-label" ng-show="createForm.amount.$error.pattern">* This field only numeric</label>
+        </div>
+        <div class=" col-md-12">
+            <div class="margin-top-20 pull-right">
+                <button class="btn green grreen-haze" type="submit" ng-disabled="createForm.$invalid">
+                    Save
+                </button>
+                <button class="btn default" type="button" ng-click="vm.cancel()">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

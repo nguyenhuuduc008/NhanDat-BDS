@@ -33,7 +33,13 @@
 			},
 			lienKetUsers: {
 				title: 'Liên Kết Users'
-			},			
+			},
+			giamGia: {
+				title: 'Giảm Giá'
+			},
+			yeuToTangGiamGia: {
+				title: 'Yếu Tố Tăng Giảm Giá'
+			},
 		};
 		
 		vm.cacDanhMucBDS = appSettings.cacDanhMucBDS;

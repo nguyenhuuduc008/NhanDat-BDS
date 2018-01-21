@@ -175,6 +175,52 @@
 			}
 		};
 
+		states['bds.giamGia'] = {
+			url: '/detail/giam-gia?bdsId',
+			templateUrl: './app/bds/add_edit/edit-giam-gia.tpl.html',
+			controller: 'editGiamGiaCtrl as vm',
+			data: {
+				pageTitle: 'Chi Tiết BĐS',
+				module: 'bds',
+				parent: 'bds',
+				hide: true
+			},
+			resolve: {
+				deps: ['$ocLazyLoad', function($ocLazyLoad){
+					return $ocLazyLoad.load({
+						cache: true,
+						name: 'app.bds.giaGia',
+						files: [
+							'./app/bds/add_edit/edit-giam-gia.js',
+						]
+					});
+				}]
+			}
+		};
+		
+		states['bds.yeuToTangGiamGia'] = {
+			url: '/detail/yeu-to-tang-giam-gia?bdsId',
+			templateUrl: './app/bds/add_edit/edit-yeu-to-tang-giam-gia.tpl.html',
+			controller: 'editYeuToTangGiamGiaCtrl as vm',
+			data: {
+				pageTitle: 'Chi Tiết BĐS',
+				module: 'bds',
+				parent: 'bds',
+				hide: true
+			},
+			resolve: {
+				deps: ['$ocLazyLoad', function($ocLazyLoad){
+					return $ocLazyLoad.load({
+						cache: true,
+						name: 'app.bds.yeuToTangGiamGia',
+						files: [
+							'./app/bds/add_edit/edit-yeu-to-tang-giam-gia.js',
+						]
+					});
+				}]
+			}
+		};
+
 		for(var state in states){
 			$stateProvider.state(state, states[state]);
 		}

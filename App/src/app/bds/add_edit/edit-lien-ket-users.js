@@ -11,9 +11,13 @@
 		var vm = this; // jshint ignore:line
 		vm.currentUser = $rootScope.storage.currentUser;
 		var appSettings = $rootScope.storage.appSettings;
+		vm.cacLoaiLienKetUser = appSettings.cacLoaiLienKetUser;
 
 		vm.bdsId = $stateParams.bdsId;
 		vm.model = {};
+
+		vm.allLinkedUserIds = [];
+		vm.allLinkedUser = [];
 
 		vm.activeTab = 'lienKetUsers';
 		vm.tabs = {
@@ -44,7 +48,7 @@
 			totalRecord: 0
 		};
 
-		vm.linkedUsers = [];
+		vm.groupLinkedUsers = [];
 
 		//Functions
 		vm.loadTab = function (key) {
@@ -55,9 +59,38 @@
 
 		/*=============================================================*/
 		function initPage() {
-			lienKetUsersService.get(vm.bdsId).$loaded().then(function (linkedRs) {
+			// lienKetUsersService.get(vm.bdsId).$loaded().then(function (linkedRs) {
+			// 	if (linkedRs) {
+			// 		vm.linkedUsers = linkedRs.users;
+			// 	}
+			// });
+			lienKetUsersService.getLinkedUsers(vm.bdsId).$loaded().then(function (linkedRs) {
+				console.log('------');
+				console.log(linkedRs);
 				if (linkedRs) {
-					vm.linkedUsers = linkedRs.users;
+					var groupRs = _.filter(linkedRs, function (groupLinked, key) {
+						var loaiRs = _.find(vm.cacLoaiLienKetUser, function (o) {
+							if (key.indexOf('loai-' + o.value) !== -1) {
+								return true;
+							}
+						});
+						if (loaiRs) {
+							return true;
+						}
+					});
+					console.log('------groupRs');
+					console.log(groupRs);
+					vm.groupLinkedUsers = groupRs;
+
+					for (var i = 0; i < groupRs.length; i++) {
+						if (groupRs[i].userIds) {
+							for (var j = 0; j < groupRs[i].userIds.length; j++) {
+								vm.allLinkedUserIds.push(groupRs[i].userIds[j]);
+							}
+						}
+					}
+					console.log('------vm.allLinkedUserIds');
+					console.log(vm.allLinkedUserIds);
 				}
 			});
 
@@ -75,20 +108,20 @@
 			userService.insertState();
 		}
 
-		function updateLinkedUsers(obj){
-			lienKetUsersService.create(vm.bdsId, obj).then(function (res) {
-				if (!res.result) {
-					$ngBootbox.alert(res.errorMsg.message);
-					return;
-				}
-				appUtils.hideLoading();
-				toaster.pop('success', 'Success', "Unlinks success!");
-			}, function (res) {
-				$ngBootbox.alert(res.errorMsg.message);
-				appUtils.hideLoading();
-				return;
-			});
-		}
+		// function updateLinkedUsers(obj) {
+		// 	lienKetUsersService.create(vm.bdsId, obj).then(function (res) {
+		// 		if (!res.result) {
+		// 			$ngBootbox.alert(res.errorMsg.message);
+		// 			return;
+		// 		}
+		// 		appUtils.hideLoading();
+		// 		toaster.pop('success', 'Success', "Unlinks success!");
+		// 	}, function (res) {
+		// 		$ngBootbox.alert(res.errorMsg.message);
+		// 		appUtils.hideLoading();
+		// 		return;
+		// 	});
+		// }
 
 		//Functions
 		vm.groupToPages = function () {
@@ -112,6 +145,27 @@
 		vm.searchUser = function (keyword) {
 			appUtils.showLoading();
 			userService.search(keyword, vm.isAdmin).then(function (result) {
+				vm.allLinkedUser = _.filter(result, function (userItem) {
+					var rs = _.find(vm.allLinkedUserIds, function (userId) { return userItem.$id === userId; });
+					if (rs) {
+						for (var i = 0; i < vm.groupLinkedUsers.length; i++) {
+							if (vm.groupLinkedUsers[i].userIds) {
+								var linkedUserRs = _.find(vm.groupLinkedUsers[i].userIds, function (userId) {
+									return userItem.$id === userId;
+								});
+								if (linkedUserRs) {
+									userItem.loaiLienKetUser = vm.groupLinkedUsers[i].loaiLienKetUser;
+									userItem.loaiLienKetId = vm.groupLinkedUsers[i].id;
+								}
+							}
+						}
+						return true;
+					}
+				});
+				console.log('----allLinkedUser');
+				console.log(vm.allLinkedUser);
+
+
 				appUtils.hideLoading();
 				if (vm.isAdmin) {
 					result = _.filter(result, function (item) {
@@ -273,21 +327,38 @@
 			$state.go('user.add');
 		};
 
-		vm.getLinkedRs = function (userId) {
-			var rs = _.find(vm.linkedUsers, function (o) { return o === userId; });
-			if (rs) {
-				return true;
-			}
-			return false;
-		};
+		// vm.getLinkedRs = function (userId) {
+		// 	// var rs = _.find(vm.linkedUsers, function (o) { return o === userId; });
+		// 	// if (rs) {
+		// 	// 	return true;
+		// 	// }
+		// 	// return false;
+		// };
 
-		vm.removeLinkedUser = function (userId) {
+		vm.removeLinkedUser = function (loaiLienKetId, userId) {
 			appUtils.showLoading();
-			vm.linkedUsers = _.filter(vm.linkedUsers, function (o) { return o !== userId; });
-			var obj = {
-				users: vm.linkedUsers,
-			};
-			updateLinkedUsers(obj);
+			lienKetUsersService.getLinkedUserIds(vm.bdsId, loaiLienKetId).then(function (res) {
+				if (!res.result) {
+					$ngBootbox.alert(res.errorMsg.message);
+					return;
+				}
+
+				//Reload all linked users
+
+				$scope.$apply(function () {
+					vm.allLinkedUser = _.filter(vm.allLinkedUser, function (item) {
+						return item.$id !== userId;
+					});
+				});
+				console.log('-----removeLinkedUser--');
+				console.log(vm.allLinkedUser);
+				appUtils.hideLoading();
+				toaster.pop('success', 'Success', "Unlinks success!");
+			}, function (res) {
+				$ngBootbox.alert(res.errorMsg.message);
+				appUtils.hideLoading();
+				return;
+			});
 		};
 
 		// vm.addLinkedUser = function (userId) {
@@ -298,6 +369,14 @@
 		// 	};
 		// 	updateLinkedUsers(obj);
 		// };
+
+		vm.displayLoaiLienKetUser = function (loaiId) {
+			var rs = _.find(vm.cacLoaiLienKetUser, function (o) { return o.value.toString() === loaiId.toString(); });
+			if (rs) {
+				return rs.text;
+			}
+			return '';
+		};
 
 		//Load Data
 		roleService.items().$loaded(function (data) {

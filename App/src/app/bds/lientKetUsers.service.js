@@ -10,7 +10,9 @@
 			items: getAll,
 			create: create,
 			update: update,
-			remove: remove
+			remove: remove,
+			getLinkedUsers: getLinkedUsers,
+			getLinkedUserIds: getLinkedUserIds
 		};
 
 		return lienKetUsersService;
@@ -21,6 +23,11 @@
 
 		function get(bdsId) {
 			var ref = items.child(bdsId);
+			return $firebaseObject(ref);
+		}
+		
+		function getLinkedUsers(bdsId) {
+			var ref = items.child(bdsId).child('users');
 			return $firebaseObject(ref);
 		}
 
@@ -47,6 +54,14 @@
 
 		function remove(id) {
 			return items.child(id).remove().then(function () {
+				return { result: true, errorMsg: "" };
+			}).catch(function (error) {
+				return { result: false, errorMsg: error };
+			});
+		}
+
+		function getLinkedUserIds(bdsId, loaiLienKetId) {
+			return items.child(bdsId).child('users').child(loaiLienKetId).child('userIds').remove().then(function () {
 				return { result: true, errorMsg: "" };
 			}).catch(function (error) {
 				return { result: false, errorMsg: error };

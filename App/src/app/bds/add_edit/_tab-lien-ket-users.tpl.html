@@ -1,8 +1,71 @@
 <div class="row">
+
+    <div class="portlet light bordered tasks-widget" id="users">
+        <div class="portlet-title">
+            <div class="caption width70 row">
+                <div class="col-md-12">
+                    <h5>Users Đã Liên Kết</h5>
+                </div>
+            </div>
+        </div>
+        <div class="table-scrollable table-scrollable-borderless">
+            <table class="table table-hover table-light">
+                <thead class="flip-content">
+                    <tr class="uppercase">
+                        <th class="width5"> Image </th>
+                        <th class="width25"> Email </th>
+                        <th class="width25"> Full Name </th>
+                        <th class="hidden-sm text-center width15"> Phone </th>
+                        <th class="text-center width25"> Linked </th>
+                        <th class="text-center width25"> Type </th>
+                        <th class="hidden-sm width25"> Role </th>
+                        <th class="hidden-sm text-center width5"> Status </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in vm.allLinkedUser">
+                        <td class="fit">
+                            <p ng-if="item.photoURL ===''" class="img-responsive user-pic" data-letters="{{vm.dataLetterPic(item)}}"></p>
+                            <img ng-if="item.photoURL !==''" ng-src="{{item.photoURL}}" class="user-pic" class="" alt="profile-image">
+                        </td>
+                        <td>
+                            <a class="primary-link" href="#" ng-click="vm.edit(item.$id)" style="word-break: break-all;">{{item.email}}</a>
+                        </td>
+                        <td>
+                            <a class="primary-link" href="#">{{item.firstName + ' ' + item.lastName}}</a>
+                        </td>
+                        <td class="hidden-sm text-center">{{item.phoneNumber | tel}}</td>
+                        <td class="text-center">
+                            <a href="javascript:;" ng-click="vm.removeLinkedUser(item.loaiLienKetId, item.$id)">
+                                <i class="fa fa-check font-green-jungle"></i>
+                            </a>
+                            <!-- <a href="javascript:;" ng-if="!vm.getLinkedRs(item.$id)"> -->
+                            <!-- <i class="fa fa-ban font-red" ng-if="!vm.getLinkedRs(item.$id)"></i> -->
+                            <!-- </a> -->
+                        </td>
+                        <td class="text-center">
+                            <p>
+                                {{vm.displayLoaiLienKetUser(item.loaiLienKetUser)}}
+                            </p>
+                        </td>
+                        <td class="hidden-sm" ng-bind-html="vm.deserializeRole(item.userRoles)"></td>
+                        <td class="hidden-sm text-center" ng-if="item.isAuthorized">
+                            <i class="fa fa-check font-green-jungle"></i>
+                        </td>
+                        <td class="hidden-sm text-center" ng-if="!item.isAuthorized">
+                            <i class="fa fa-ban font-red"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <div class="portlet light bordered tasks-widget" id="users">
         <div class="portlet-title">
             <div class="caption caption-md">
-                <i class="icon-bar-chart theme-font hide"></i>
+                <h5>Tất Cả Users</h5>
+                <!-- <i class="icon-bar-chart theme-font hide"></i>
                 <span class="caption-subject font-blue-madison">
                     <a href="javascript:;" ng-click="vm.getAllUsers()">All</a>
                 </span>
@@ -11,7 +74,7 @@
                 <span class="caption-subject font-blue-madison">
                     <a href="javascript:;" ng-click="vm.getAddminUsers()">Administrator</a>
                 </span>
-                <span class="caption-helper">{{vm.adminUser}}</span>
+                <span class="caption-helper">{{vm.adminUser}}</span> -->
             </div>
             <div class="inputs">
                 <div class="portlet-input input-inline">
@@ -61,7 +124,6 @@
                         <th class="width25"> Email </th>
                         <th class="width25"> Full Name </th>
                         <th class="hidden-sm text-center width15"> Phone </th>
-                        <th class="text-center width25"> Linked </th>
                         <th class="hidden-sm width25"> Role </th>
                         <th class="hidden-sm text-center width5"> Status </th>
                     </tr>
@@ -85,14 +147,6 @@
                             <a class="primary-link" href="#">{{item.firstName + ' ' + item.lastName}}</a>
                         </td>
                         <td class="hidden-sm text-center">{{item.phoneNumber | tel}}</td>
-                        <td class="text-center">
-                            <a href="javascript:;" ng-if="vm.getLinkedRs(item.$id)" ng-click="vm.removeLinkedUser(item.$id)">
-                                <i class="fa fa-check font-green-jungle"></i>
-                            </a>
-                            <!-- <a href="javascript:;" ng-if="!vm.getLinkedRs(item.$id)"> -->
-                            <i class="fa fa-ban font-red" ng-if="!vm.getLinkedRs(item.$id)"></i>
-                            <!-- </a> -->
-                        </td>
                         <td class="hidden-sm" ng-bind-html="vm.deserializeRole(item.userRoles)"></td>
                         <td class="hidden-sm text-center" ng-if="item.isAuthorized">
                             <i class="fa fa-check font-green-jungle"></i>

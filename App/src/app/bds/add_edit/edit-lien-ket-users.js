@@ -108,21 +108,6 @@
 			userService.insertState();
 		}
 
-		// function updateLinkedUsers(obj) {
-		// 	lienKetUsersService.create(vm.bdsId, obj).then(function (res) {
-		// 		if (!res.result) {
-		// 			$ngBootbox.alert(res.errorMsg.message);
-		// 			return;
-		// 		}
-		// 		appUtils.hideLoading();
-		// 		toaster.pop('success', 'Success', "Unlinks success!");
-		// 	}, function (res) {
-		// 		$ngBootbox.alert(res.errorMsg.message);
-		// 		appUtils.hideLoading();
-		// 		return;
-		// 	});
-		// }
-
 		//Functions
 		vm.groupToPages = function () {
 			vm.pagedItems = [];
@@ -327,48 +312,33 @@
 			$state.go('user.add');
 		};
 
-		// vm.getLinkedRs = function (userId) {
-		// 	// var rs = _.find(vm.linkedUsers, function (o) { return o === userId; });
-		// 	// if (rs) {
-		// 	// 	return true;
-		// 	// }
-		// 	// return false;
-		// };
-
 		vm.removeLinkedUser = function (loaiLienKetId, userId) {
-			appUtils.showLoading();
-			lienKetUsersService.getLinkedUserIds(vm.bdsId, loaiLienKetId).then(function (res) {
-				if (!res.result) {
-					$ngBootbox.alert(res.errorMsg.message);
-					return;
-				}
+			$ngBootbox.confirm('Are you sure want to unlink this user?').then(function () {
+				appUtils.showLoading();
+				lienKetUsersService.getLinkedUserIds(vm.bdsId, loaiLienKetId).then(function (res) {
+					if (!res.result) {
+						$ngBootbox.alert(res.errorMsg.message);
+						return;
+					}
 
-				//Reload all linked users
+					//Reload all linked users
 
-				$scope.$apply(function () {
-					vm.allLinkedUser = _.filter(vm.allLinkedUser, function (item) {
-						return item.$id !== userId;
+					$scope.$apply(function () {
+						vm.allLinkedUser = _.filter(vm.allLinkedUser, function (item) {
+							return item.$id !== userId;
+						});
 					});
+					console.log('-----removeLinkedUser--');
+					console.log(vm.allLinkedUser);
+					appUtils.hideLoading();
+					toaster.pop('success', 'Success', "Unlinks success!");
+				}, function (res) {
+					$ngBootbox.alert(res.errorMsg.message);
+					appUtils.hideLoading();
+					return;
 				});
-				console.log('-----removeLinkedUser--');
-				console.log(vm.allLinkedUser);
-				appUtils.hideLoading();
-				toaster.pop('success', 'Success', "Unlinks success!");
-			}, function (res) {
-				$ngBootbox.alert(res.errorMsg.message);
-				appUtils.hideLoading();
-				return;
 			});
 		};
-
-		// vm.addLinkedUser = function (userId) {
-		// 	appUtils.showLoading();
-		// 	vm.linkedUsers.push(userId);
-		// 	var obj = {
-		// 		users: vm.linkedUsers,
-		// 	};
-		// 	updateLinkedUsers(obj);
-		// };
 
 		vm.displayLoaiLienKetUser = function (loaiId) {
 			var rs = _.find(vm.cacLoaiLienKetUser, function (o) { return o.value.toString() === loaiId.toString(); });

@@ -20,7 +20,9 @@
             addUserToRole: addUserToRole,
             search: search,
             checkUserIsDeleted: checkUserIsDeleted,
-			insertState : insertState
+			insertState : insertState,
+			uploadAvatar: uploadAvatar,
+			saveChangeAvatar: saveChangeAvatar
 		};
 
 		var userRef = firebaseDataRef.child('users');
@@ -186,6 +188,22 @@
 				return null;
 			});			
 		 }
+
+		function uploadAvatar(folderPath, file, metadata){
+            return storageRef.child(folderPath + file.name).put(file, metadata);
+		}
+
+		function saveChangeAvatar(id, avartaUrl){
+			var ts = appUtils.getTimestamp();
+            return userRef.child(id).update({
+				photoURL: avartaUrl,
+				timestampModified: ts}).then(function(res){
+				return {result: true , data: key};
+            }).catch(function(error) {
+				console.log(error);
+		        return {result: false , errorMsg: error};
+		    });
+		}
 
 		 function insertState(){
 			 var lst = appUtils.getAllState();

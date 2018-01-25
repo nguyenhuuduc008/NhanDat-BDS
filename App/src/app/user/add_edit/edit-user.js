@@ -46,9 +46,7 @@
 			userDetailVm.dataLetterPic =  userDetailVm.user.firstName.charAt(0).toUpperCase() + userDetailVm.user.lastName.charAt(0).toUpperCase(); //userDetailVm.user.email.charAt(0).toUpperCase();// Handle avatar    
 			userPhone =  userDetailVm.user.phoneNumber;
 			userDetailVm.Phone = userDetailVm.user.phoneNumber;
-			appUtils.getImageFBUrl(userDetailVm.user.photoURL).then(function(data){
-				userDetailVm.profileImage = data.imgUrl;
-			});
+
 			//Get UserRole Info
 			loadRoles();
 		}
@@ -149,6 +147,51 @@
 			userDetailVm.e_msges['phonenumber'] = "";
 			/* jshint ignore:end */
 		};
+
+		angular.element(document).ready(function() {
+            $("#avatar-file").change(function(){
+                appUtils.showLoading();
+				var file = $(this)[0].files[0];
+                if(file){
+                    var metadata = {
+                        contentType: file.type
+					};
+					
+					// Generate lowres and hires
+					var _URL = window.URL || window.webkitURL;
+					var img = new Image();
+					img.src = _URL.createObjectURL(file);
+					img.onload = function () {
+						// Generate avatar img
+						var maxWidth = 150;
+						var quality = 1;
+						var avatar = appUtils.getAvatar(img, maxWidth, quality, file.type);
+						avatar.name = file.name;
+						var path = 'Users/Avatar/' + userDetailVm.user.email;
+						var uploadTask = userService.uploadAvatar(path, avatar.data , metadata);
+						uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, function(snapshot) {
+							// Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+							var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+							console.log('progress');
+							console.log(progress);
+						}, function(error) {
+							console.log(error.code);
+						}, function(data) {
+							appUtils.hideLoading();
+							// Upload completed successfully, now we can get the download URL
+							var downloadURL = uploadTask.snapshot.downloadURL;
+							userDetailVm.user.photoURL = downloadURL;
+							userService.saveChangeAvatar(userDetailVm.user.$id, downloadURL);
+							$('#avatar-file').val('');
+							$('.fileinput').removeClass('fileinput-exists');
+							$('.fileinput').addClass('fileinput-new');
+							$timeout(angular.noop);
+							//updateGeneralSetting();
+						});
+					};
+                }
+            });
+        });
 
 		// userDetailVm.changeAvatar = function(form){
 		// 	appUtils.showLoading();

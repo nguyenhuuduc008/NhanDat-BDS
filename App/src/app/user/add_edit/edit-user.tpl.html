@@ -5,10 +5,20 @@
             <!-- PORTLET MAIN -->
             <div class="portlet light profile-sidebar-portlet bordered">
                 <!-- SIDEBAR USERPIC -->
-                <div class="profile-userpic text-center">
-                    <p ng-if="userDetailVm.profileImage ===''" class="img-responsive" data-letters="{{userDetailVm.dataLetterPic}}" ></p>
-                    <img ng-if="userDetailVm.profileImage !==''" src="{{userDetailVm.profileImage}}" id="imgProfile" class="img-responsive" alt="profile-image">       
+                <div class="fileinput fileinput-new" data-provides="fileinput" style="width:100%;">
+                    <!-- <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px; line-height: 151px;"></div> -->
+                    <div class="profile-userpic text-center padding-10">
+                        <p ng-if="userDetailVm.user.photoURL ===''" class="img-responsive" data-letters="{{userDetailVm.dataLetterPic}}" ></p>
+                        <img ng-if="userDetailVm.user.photoURL !==''" src="{{ userDetailVm.user.photoURL}}" id="imgProfile" class="img-responsive" alt="profile-image">       
+                    </div>
+                    <div class="text-center">
+                        <span class="btn-file" style="cursor: pointer; color:blue;">
+                            <span class="fileinput-new"> Change </span>
+                            <input type="file" id="avatar-file" name=""> 
+                        </span>
+                    </div>
                 </div>
+                
                 <!-- END SIDEBAR USERPIC -->
                 <!-- SIDEBAR USER TITLE -->
                 <div class="profile-usertitle">

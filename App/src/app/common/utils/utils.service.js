@@ -319,7 +319,8 @@
 			imgFileIcons: imgFileIcons,
 			videoFileIcons: videoFileIcons,
 			mediaImgSrc: mediaImgSrc,
-			transactonRequirements: transactonRequirements
+			transactonRequirements: transactonRequirements,
+			getAvatar: getAvatar
 		};
 		
         function mediaImgSrc(item, imgMaxWidth){
@@ -734,9 +735,10 @@
 			};
 		}
 
+		
 		function getLowRes(img, maxWidth, quality, mimeType) {
 			if (!mimeType) mimeType = 'image/jpeg';
-
+			
 			var canvas = document.createElement('canvas');
 
 			canvas.width = img.width;
@@ -744,12 +746,29 @@
 			
 			canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
 
-			canvas = scaleCanvasWithAlgorithm(canvas, maxWidth);			
-			
+			canvas = scaleCanvasWithAlgorithm(canvas, maxWidth);	
 			return {
 				width: canvas.width,
 				height: canvas.height,
-				data: dataURItoBlob(canvas.toDataURL(mimeType, quality))
+				data: dataURItoBlob(canvas.toDataURL(mimeType, imageHandlerConfig.quality))
+			};
+		}
+
+		function getAvatar(img, maxWidth, quality, mimeType) {
+			if (!mimeType) mimeType = 'image/jpeg';
+			
+			var canvas = document.createElement('canvas');
+
+			canvas.width = img.width;
+			canvas.height = img.width;
+			
+			canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+
+			canvas = scaleCanvasWithAlgorithm(canvas, maxWidth);	
+			return {
+				width: canvas.width,
+				height: canvas.height,
+				data: dataURItoBlob(canvas.toDataURL(mimeType, imageHandlerConfig.quality))
 			};
 		}
 

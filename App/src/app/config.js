@@ -16,7 +16,7 @@
 		// elasticHost: 'http://eeb088900fa98346c39c3930c7990a3c.us-east-1.aws.found.io:9200/',
 		// elasticusAuth: 'elastic:cQnLKBIFxNkBClPVH6LcX9BN',
 		// geocodeMapUrl: 'https://maps.googleapis.com/maps/api/geocode/',
-		buildVersion: 1001
+		buildVersion: 1002
 	};
 
 	var env = {};

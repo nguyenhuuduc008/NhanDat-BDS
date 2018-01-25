@@ -8,6 +8,7 @@
 		$rootScope.settings.layout.showSmartphone = false;
 		$rootScope.settings.layout.showPageHead = true;
 		$rootScope.settings.layout.guestPage = false;
+		var appSettings = $rootScope.storage.appSettings;
 		$scope.numberRegx = /^\d+$/;
 		var vm = this; // jshint ignore:line
 		vm.currentUser = $rootScope.storage.currentUser;
@@ -33,16 +34,7 @@
 			tuongChung: false
 		};
 		vm.showInvalid = true;
-		vm.cacLoaiGiamGia = [
-			{
-				text: 'Phần Trăm (%)',
-				value: 0
-			},
-			{
-				text: 'Số Tiền',
-				value: 1
-			}
-		];
+		vm.cacLoaiGiamGia = appSettings.cacLoaiGiamGia;
 
 		vm.activeTab = 'yeuToTangGiamGia';
 		vm.tabs = {
@@ -64,6 +56,12 @@
 			yeuToTangGiamGia: {
 				title: 'Yếu Tố Tăng Giảm Giá',
 				url: './app/bds/add_edit/_tab-yeu-to-tang-giam-gia.tpl.html'
+			},
+			thuocQuyHoach: {
+				title: 'Thuộc Quy Hoạch'
+			},
+			lichSuChuyenQuyen: {
+				title: 'Lịch Sử Chuyển Quyền'
 			},
 		};
 

@@ -221,6 +221,53 @@
 			}
 		};
 
+		states['bds.thuocQuyHoach'] = {
+			url: '/detail/thuoc-quy-hoach?bdsId',
+			templateUrl: './app/bds/add_edit/edit-thuoc-quy-hoach.tpl.html',
+			controller: 'editthuocQuyHoachCtrl as vm',
+			data: {
+				pageTitle: 'Chi Tiết BĐS',
+				module: 'bds',
+				parent: 'bds',
+				hide: true
+			},
+			resolve: {
+				deps: ['$ocLazyLoad', function($ocLazyLoad){
+					return $ocLazyLoad.load({
+						cache: true,
+						name: 'app.bds.thuocQuyHoach',
+						files: [
+							'./app/bds/add_edit/edit-thuoc-quy-hoach.js',
+						]
+					});
+				}]
+			}
+		};
+
+		states['bds.lichSuChuyenQuyen'] = {
+			url: '/detail/lich-su-chuyen-quyen?bdsId&id',
+			templateUrl: './app/bds/add_edit/edit-ls-chuyen-quyen.tpl.html',
+			controller: 'editLSChuyenQuyenCtrl as vm',
+			data: {
+				pageTitle: 'Chi Tiết BĐS',
+				module: 'bds',
+				parent: 'bds',
+				hide: true
+			},
+			resolve: {
+				deps: ['$ocLazyLoad', function($ocLazyLoad){
+					return $ocLazyLoad.load({
+						cache: true,
+						name: 'app.bds.lichSuChuyenQuyen',
+						files: [
+							'./app/bds/add_edit/edit-ls-chuyen-quyen.js',
+							'./app/bds/lichSuChuyenQuyen.service.js'
+						]
+					});
+				}]
+			}
+		};
+
 		for(var state in states){
 			$stateProvider.state(state, states[state]);
 		}

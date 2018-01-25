@@ -40,6 +40,12 @@
 			yeuToTangGiamGia: {
 				title: 'Yếu Tố Tăng Giảm Giá'
 			},
+			thuocQuyHoach: {
+				title: 'Thuộc Quy Hoạch'
+			},
+			lichSuChuyenQuyen: {
+				title: 'Lịch Sử Chuyển Quyền'
+			},
 		};
 		
 		vm.cacDanhMucBDS = appSettings.cacDanhMucBDS;

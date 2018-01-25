@@ -18,14 +18,17 @@
 			updateGiamGia: updateGiamGia,
 			getGiamGia: getGiamGia,
 			getYeuToTangGiamGia: getYeuToTangGiamGia,
-			updateYeuToTangGiamGia: updateYeuToTangGiamGia
+			updateYeuToTangGiamGia: updateYeuToTangGiamGia,
+			updateThuocQuyHoach: updateThuocQuyHoach,
+			getThuocQuyHoach: getThuocQuyHoach
 		};
 
 		var bdsRef = firebaseDataRef.child('bds');
 		var bdsCategoryRef = firebaseDataRef.child('bds-danh-muc');
-		var tacNghiepRef = firebaseDataRef.child('tac-nghiep');
-		var giamGiaRef = firebaseDataRef.child('giam-gia');
-		var yeuToTangGiamGiaRef = firebaseDataRef.child('yeu-to-tang-giam-gia');
+		var tacNghiepRef = firebaseDataRef.child('bds-tac-nghiep');
+		var giamGiaRef = firebaseDataRef.child('bds-giam-gia');
+		var yeuToTangGiamGiaRef = firebaseDataRef.child('bds-yeu-to-tang-giam-gia');
+		var thuocQuyHoachRef = firebaseDataRef.child('bds-thuoc-quy-hoach');
 
 		return service;
 
@@ -193,6 +196,23 @@
 
 		function getYeuToTangGiamGia(bdsId) {
 			var ref = yeuToTangGiamGiaRef.child(bdsId);
+			return $firebaseObject(ref);
+		}
+		
+		function updateThuocQuyHoach(bdsId, obj) {
+			var key = thuocQuyHoachRef.push().key;
+			var ts = appUtils.getTimestamp();
+			obj.timestampModified = ts;
+			obj.timestampCreated = ts;
+			return thuocQuyHoachRef.child(bdsId).update(obj).then(function (res) {
+				return { result: true, key: key };
+			}).catch(function (error) {
+				return { result: false, errorMsg: error };
+			});
+		}
+
+		function getThuocQuyHoach(bdsId) {
+			var ref = thuocQuyHoachRef.child(bdsId);
 			return $firebaseObject(ref);
 		}
 

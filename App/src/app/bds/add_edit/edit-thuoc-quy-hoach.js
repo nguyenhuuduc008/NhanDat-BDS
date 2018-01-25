@@ -2,30 +2,24 @@
 	'use strict';
 
 	angular.module("app.bds")
-		.controller("editGiamGiaCtrl", editGiamGiaCtrl);
+		.controller("editthuocQuyHoachCtrl", editthuocQuyHoachCtrl);
 	/** @ngInject */
-	function editGiamGiaCtrl($q, $rootScope, $timeout, $scope, $state, $stateParams, $ngBootbox, toaster, appUtils, bdsService) {
+	function editthuocQuyHoachCtrl($q, $rootScope, $timeout, $scope, $state, $stateParams, $ngBootbox, toaster, appUtils, bdsService) {
 		$rootScope.settings.layout.showSmartphone = false;
 		$rootScope.settings.layout.showPageHead = true;
 		$rootScope.settings.layout.guestPage = false;
+		var appSettings = $rootScope.storage.appSettings;
 		$scope.numberRegx = /^\d+$/;
 		var vm = this; // jshint ignore:line
 		vm.currentUser = $rootScope.storage.currentUser;
 		vm.bdsId = $stateParams.bdsId;
-		vm.model = {};
-		vm.showInvalid = true;
-		vm.cacLoaiGiamGia = [
-			{
-				text: 'Phần Trăm (%)',
-				value: 0
-			},
-			{
-				text: 'Số Tiền',
-				value: 1
-			}
-		];
+		vm.model = {
+		};
 
-		vm.activeTab = 'giamGia';
+		vm.cacLoaiQuyHoach = appSettings.cacLoaiQuyHoach;
+		vm.showInvalid = true;
+
+		vm.activeTab = 'thuocQuyHoach';
 		vm.tabs = {
 			thongTin: {
 				title: 'Thông Tin'
@@ -40,14 +34,14 @@
 				title: 'Liên Kết Users'
 			},
 			giamGia: {
-				title: 'Giảm Giá',
-				url: './app/bds/add_edit/_tab-giam-gia.tpl.html'
+				title: 'Giảm Giá'
 			},
 			yeuToTangGiamGia: {
 				title: 'Yếu Tố Tăng Giảm Giá'
 			},
 			thuocQuyHoach: {
-				title: 'Thuộc Quy Hoạch'
+				title: 'Thuộc Quy Hoạch',
+				url: './app/bds/add_edit/_tab-thuoc-quy-hoach.tpl.html'
 			},
 			lichSuChuyenQuyen: {
 				title: 'Lịch Sử Chuyển Quyền'
@@ -63,10 +57,9 @@
 		vm.save = function () {
 			appUtils.showLoading();
 			var obj = {
-				loaiGiamGia: vm.model.loaiGiamGia,
-				amount: vm.model.amount,
+				thuocQuyHoach: vm.model.thuocQuyHoach
 			};
-			bdsService.updateGiamGia(vm.bdsId, obj).then(function (res) {
+			bdsService.updateThuocQuyHoach(vm.bdsId, obj).then(function (res) {
 				if (!res.result) {
 					$ngBootbox.alert(res.errorMsg.message);
 					return;
@@ -85,8 +78,8 @@
 		//Load Data
 		function loadBDSDetails() {
 			appUtils.showLoading();
-			bdsService.getGiamGia(vm.bdsId).$loaded().then(function(rs){
-				if(rs){
+			bdsService.getThuocQuyHoach(vm.bdsId).$loaded().then(function(rs){
+				if(rs && rs.timestampCreated){
 					vm.model = rs;
 				}
 				appUtils.hideLoading();

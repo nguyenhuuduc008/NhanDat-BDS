@@ -71,11 +71,6 @@
 
 		/*=============================================================*/
 		function initPage() {
-			// lienKetUsersService.get(vm.bdsId).$loaded().then(function (linkedRs) {
-			// 	if (linkedRs) {
-			// 		vm.linkedUsers = linkedRs.users;
-			// 	}
-			// });
 			lienKetUsersService.getLinkedUsers(vm.bdsId).$loaded().then(function (linkedRs) {
 				console.log('------');
 				console.log(linkedRs);

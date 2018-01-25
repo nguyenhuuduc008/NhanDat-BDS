@@ -22,6 +22,7 @@
 		vm.formTitle = 'Tạo Mới';
 		vm.selectAction = 'Bulk Actions';
 
+		vm.cacLoaiTacNghiep = appSettings.cacLoaiTacNghiep;
 		vm.activeTab = 'tacNghiep';
 		vm.tabs = {
 			thongTin: {
@@ -189,7 +190,11 @@
 		};
 
 		vm.cancel = function () {
-			$state.go('bds.thongTin', { id: vm.bdsId });
+			// $state.go('bds.tacNghiep', { bdsId: vm.bdsId });
+			vm.showAddNew = true;
+			vm.showInvalid = false;
+			vm.formTitle = 'Tạo Mới';
+			vm.model = {};
 		};
 
 		vm.save = function () {

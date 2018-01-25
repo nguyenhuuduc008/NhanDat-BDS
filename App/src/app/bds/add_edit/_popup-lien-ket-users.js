@@ -44,6 +44,9 @@
                 console.log(linkedRs);
                 if (linkedRs) {
                     var users = linkedRs.users;
+                    if(!users){
+                        users = {};
+                    }
                     var ts = appUtils.getTimestamp();
                     var loaiId = 'loai-' + vm.model.loaiLienKetUser + '-' + ts;
                     users[loaiId] = {

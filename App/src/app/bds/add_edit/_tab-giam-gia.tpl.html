@@ -1,6 +1,6 @@
 <div class="row">
     <form role="form" id="createForm" name="createForm" novalidate ng-submit="vm.save(createForm)">
-        <div class="form-group col-md-3" ng-class="{'has-error': (vm.showInvalid && createForm.loaiGiamGia.$error.required)}">
+        <div class="form-group col-md-6" ng-class="{'has-error': (vm.showInvalid && createForm.loaiGiamGia.$error.required)}">
             <label class="control-label">Loại giảm giá
                 <span class="required-field">*</span>
             </label>
@@ -9,7 +9,7 @@
                 <option ng-repeat="item in vm.cacLoaiGiamGia" value="{{item.value}}" ng-selected="item.value == vm.model.loaiGiamGia">{{item.text}}</option>
             </select>
         </div>
-        <div class="form-group col-md-3" ng-class="{'has-error': (vm.showInvalid && createForm.amount.$error.required) || createForm.amount.$error.pattern}" }>
+        <div class="form-group col-md-6" ng-class="{'has-error': (vm.showInvalid && createForm.amount.$error.required) || createForm.amount.$error.pattern}" }>
             <label class="control-label">Số lượng
                 <span class="required-field">*</span>
             </label>

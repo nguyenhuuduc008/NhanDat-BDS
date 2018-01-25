@@ -189,7 +189,11 @@
 		};
 
 		vm.cancel = function () {
-			$state.go('bds.thongTin', { id: vm.bdsId });
+			// $state.go('bds.lichSuChuyenQuyen', { bdsId: vm.bdsId });
+			vm.showAddNew = true;
+			vm.showInvalid = false;
+			vm.formTitle = 'Tạo Mới';
+			vm.model = {};
 		};
 
 		vm.save = function () {

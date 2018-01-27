@@ -339,6 +339,30 @@
 			}
 		};
 
+		states['bds.media'] = {
+			url: '/detail/media?bdsId&id',
+			templateUrl: './app/bds/add_edit/edit-media.tpl.html',
+			controller: 'MediaCtrl as vm',
+			data: {
+				pageTitle: 'Chi Tiết BĐS',
+				module: 'bds',
+				parent: 'bds',
+				hide: true
+			},
+			resolve: {
+				deps: ['$ocLazyLoad', function($ocLazyLoad){
+					return $ocLazyLoad.load({
+						cache: true,
+						name: 'app.bds.media',
+						files: [
+							'./app/bds/add_edit/edit-media.js',
+							'./app/bds/media.service.js'
+						]
+					});
+				}]
+			}
+		};
+
 		for(var state in states){
 			$stateProvider.state(state, states[state]);
 		}

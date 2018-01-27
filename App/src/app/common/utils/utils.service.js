@@ -327,17 +327,23 @@
 			if(!imgMaxWidth){
 				imgMaxWidth = '100px';
 			}
-            var imgRs = _.find(imgFileIcons, function(o) { return o.type === item.fileType; });
+			var imgRs = _.find(imgFileIcons, function(o) { return o.type === item.fileType; });
+			console.log('imgRs');
+			console.log(imgRs);
             if(imgRs){
                 var imgSrc = !item.thumbnail ? item.downloadUrl : item.thumbnail.downloadUrl;
                 return '<img style="max-width: ' + imgMaxWidth + '" src="' + item.downloadUrl + '" title="' + item.fileName + '" alt="' + item.alternativeText + '"/>';
             }
             
-            var videoRs = _.find(videoFileIcons, function(o) { return o.type === item.fileType; });
+			var videoRs = _.find(videoFileIcons, function(o) { return o.type === item.fileType; });
+			console.log('videoRs');
+			console.log(videoRs);
             if(videoRs){
                 return '<img style="max-width: ' + imgMaxWidth + '" src="' + videoRs.value + '" title="' + item.fileName + '" alt="' + item.alternativeText + '"/>';
             }
-            var rs = _.find(mediaIcons, function(o) { return o.type === item.fileType; });
+			var rs = _.find(mediaIcons, function(o) { return o.type === item.fileType; });
+			console.log('rs');
+			console.log(rs);
             if(rs){
                 return '<img style="max-width: ' + imgMaxWidth + '" src="' + rs.value + '" title="' + item.fileName + '" alt="' + item.alternativeText + '"/>';
             }

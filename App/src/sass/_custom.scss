@@ -308,3 +308,34 @@ body{
 .page-header-fixed .page-container{
     margin-top: 60px;
 }
+
+#media{
+	button.btn{
+        margin-left: -1px;
+        padding-bottom: 7px!important;
+    }
+    .table.table-light > tbody > tr > td .user-pic{
+            height: 60px!important;
+            width: auto;
+    }
+    .table.table-light > tbody > tr > td {
+        vertical-align: middle;
+    }
+    .media-img{
+        width:70px!important
+    }
+    .lib-media-icon{
+        i.fa{
+            font-size: 55px;
+            padding-top: 20px;
+        }
+    }
+    .badge {
+        display: inline-block;
+        font-family: "Open Sans",sans-serif;
+        font-weight: 600;
+        height: 25px;
+        margin: 0px 5px;
+        padding: 6px 9px;
+    }
+}

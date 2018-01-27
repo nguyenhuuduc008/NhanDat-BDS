@@ -55,6 +55,9 @@
 			lichSuGia: {
 				title: 'Lịch Sử Giá'
 			},
+			media: {
+				title: 'Media'
+			}
 		};
 
 		//Functions

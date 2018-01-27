@@ -59,6 +59,10 @@
 				title: 'Lịch Sử Giá',
 				url: './app/bds/add_edit/_tab-ls-gia.tpl.html'
 			},
+			media: {
+                title: 'Media'
+            }
+
 		};
 
 		//Functions

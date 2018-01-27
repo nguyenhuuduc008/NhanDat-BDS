@@ -1,0 +1,97 @@
+<div class="row">
+    <div class="col-md-12  margin-top-10">
+        <ng-dropzone class="dropzone" options="vm.dzOptions" callbacks="vm.dzCallbacks" methods="vm.dzMethods"></ng-dropzone>
+    </div>
+</div>
+<div class="row" id="media">
+    <div class="col-md-12">
+        <!-- BEGIN BORDERED TABLE PORTLET-->
+        <div class="portlet light portlet-fit bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                        <div class="col-md-6">
+                            <div class="input-group input-medium">
+                                <select class="bs-select form-control" ng-model="vm.filter">
+                                    <option value="All">All media items</option>
+                                    <option value="image">Images</option>
+                                    <option value="video">Videos</option>
+                                    <option value="file">Files</option>
+                                </select>  
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn greent" ng-click="vm.filterItems()">Filter</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="inputs">
+                                <div class="portlet-input input-large input-inline">
+                                    <div class="input-icon right">
+                                        <i class="icon-magnifier"></i>
+                                        <input type="text" class="form-control form-control-solid" placeholder="search..."  ng-model="vm.keyword" placeholder="search..." ng-change="vm.search(vm.keyword)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Paging-->
+                    <div class="actions padding-top-10">
+                        <list-paging ng-model="vm.paging" change-page="changePage"></list-paging>
+                    </div>
+            </div>
+            <div class="portlet-body">
+                <div class="table-scrollable table-scrollable-borderless">
+                    <table class="table table-hover table-light">
+                        <thead>
+                            <tr class="uppercase">
+                                <th></th>
+                                <th class="width35 text-left"> File </th>
+                                <th class="width10 text-center"> Type </th>
+                                <!-- <th> Author </th> -->
+                                <th class="width40 text-left">
+                                    Description
+                                </th>
+                                <!-- <th> 
+                                    <a href="#" ng-if="vm.orderByDesc" ng-click="vm.sortBy('asc')"> Date <i class="glyphicon glyphicon-chevron-down"></i></a>
+                                    <a href="#" ng-if="!vm.orderByDesc" ng-click="vm.sortBy('desc')"> Date <i class="glyphicon glyphicon-chevron-up"></i></a>
+                                </th> -->
+                                <th class="width20 text-center"> Actions </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in vm.pagedItems[vm.paging.currentPage]">
+                                <td style="vertical-align: middle; text-align: center;">
+			                        <div class="lib-media-icon" dynamic-html="vm.fileSrc(item)"></div>
+                                </td>
+                                <td class="show-function width30">
+                                    {{vm.cutString(item.displayName)}}
+                                </td>
+                                <td>
+                                    {{vm.cutTypeString(item.fileType)}}
+                                </td>
+                                <!-- <td> 
+                                    {{item.author}}
+                                </td> -->
+                                <td>                            
+                                    <textarea rows="5" name="desc" placeholder="Description" ng-model="item.description" class="form-control"></textarea>
+                                    <a href="#" title="Save" ng-click="vm.save(item)" class="padding-5 badge badge-success margin-top-5" style="float: right;">
+                                        Save
+                                    </a>
+                                </td>
+                                <!-- <td>{{item.timestampCreated | date: 'MM/dd/yyyy'}}</td> -->
+                                <td align="center">
+                                    <button class="btn padding-5 badge badge-warning" title="Copy Hes Link" ngclipboard data-clipboard-text="{{item.downloadUrl}}">
+                                        <i class="fa fa-link "></i>
+                                    </button>
+                                    <a href="#" title="Delete" ng-click="vm.delete(item)" class="padding-5 badge badge-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- END BORDERED TABLE PORTLET-->
+    </div>
+</div>

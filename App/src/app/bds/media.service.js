@@ -57,30 +57,27 @@
         function removeMedia (bdsId, id) {
             var ref = firebaseDataRef.child(rootPath + '/' + bdsId + '/' + id);
             var mediaData;
-            if(ref){
-                $firebaseObject(ref).$loaded().then(function(data){
-                    mediaData = data;
-                    var file = storageRef.child(mediaData.fullPath);
-                    if ( file ) file.delete();
+            return $firebaseObject(ref).$loaded().then(function(data){
+                mediaData = data;
+                var file = storageRef.child(mediaData.fullPath);
+                if ( file ) file.delete();
 
-                    if(mediaData.lowRes && mediaData.lowRes.fileName){
-                        var lowRes = storageRef.child(mediaData.lowRes.fullPath);
-                        if ( lowRes ) lowRes.delete();
-                    }
+                if(mediaData.lowRes && mediaData.lowRes.fileName){
+                    var lowRes = storageRef.child(mediaData.lowRes.fullPath);
+                    if ( lowRes ) lowRes.delete();
+                }
 
-                    if(mediaData.thumbnail && mediaData.thumbnail.fileNam){
-                        var thumbnail = storageRef.child(mediaData.thumbnail.fullPath);
-                        if (thumbnail) thumbnail.delete();
-                    }
+                if(mediaData.thumbnail && mediaData.thumbnail.fileNam){
+                    var thumbnail = storageRef.child(mediaData.thumbnail.fullPath);
+                    if (thumbnail) thumbnail.delete();
+                }
 
-                    ref.remove().then(function(){
-                        return {result: true , errorMsg: ""};
-                    }).catch(function(error) {
-                        return {result: false , errorMsg: error};
-                    });
+                return ref.remove().then(function(){
+                    return {result: true , errorMsg: ""};
+                }).catch(function(error) {
+                    return {result: false , errorMsg: error};
                 });
-               
-            }
+            });
         }
 
         function filterItems(items, timestamp, type){

@@ -124,6 +124,7 @@
                     toaster.error(res.errorMsg);
                     return;
                 }
+                vm.search('');
             });
             },
             'error': function(file, err){

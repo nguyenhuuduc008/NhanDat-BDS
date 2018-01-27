@@ -19,13 +19,13 @@
     /*-------------- END APP CONSTANTS ---------------------- */
 
     var app = angular
-		.module('app', [
+        .module('app', [
 			/*
 		 	* Angular modules
 		 	*/
-		 	'app.config',
+            'app.config',
             'ngMaterial',
-			'ngAnimate',
+            'ngAnimate',
             'ngRoute',
             'ngSanitize',
             'toaster',
@@ -44,7 +44,7 @@
 			/*
 			*	3rd modules
 			*/
-			'ui.router',
+            'ui.router',
             'ui.router.history',
             'ui.mask',
             'ui.bootstrap',
@@ -58,20 +58,20 @@
             'benharold.haversine',
             'app.options',
             'app.utils',
-			'app.auth',
-			'app.core',
-			'app.layout',
+            'app.auth',
+            'app.core',
+            'app.layout',
             'app.menus',
-			'app.permission',
-			'app.role',
-			'app.settings',
+            'app.permission',
+            'app.role',
+            'app.settings',
             'app.search',
             'app.dRemote',
             'app.bds'
-		])
-		.config(config)
-		.run(run)
-	    .controller('AppCtrl', AppCtrl);
+        ])
+        .config(config)
+        .run(run)
+        .controller('AppCtrl', AppCtrl);
 
     $(document).ready(function () {
         // setTimeout(function(){
@@ -86,21 +86,26 @@
         $locationProvider.hashPrefix('');
         firebase.initializeApp(APP_CONFIG.fbConnection);
         $mdThemingProvider.theme('default')
-        .primaryPalette('deep-orange')
-        .accentPalette('brown'); 
+            .primaryPalette('deep-orange')
+            .accentPalette('brown');
 
         // handle dRemote
-        $urlRouterProvider.otherwise(function($injector, $location){
+        $urlRouterProvider.otherwise(function ($injector, $location) {
             var path = $location.url();
             var appUtils = $injector.get('appUtils'),
-                loaded= appUtils.DRemoteLoaded;
-            if(!loaded){
-                return '/dremote/dremoteholder?link='+encodeURIComponent(path);
-            }
+                loaded = appUtils.DRemoteLoaded;
+            console.log('-----path');
+            console.log(path);
+            if (path === '' || !path) {
+                return '/bds/list';
+            } else
+                if (!loaded) {
+                    return '/dremote/dremoteholder?link=' + encodeURIComponent(path);
+                }
             // return '/bds/list';
         });
 
-        $provide.decorator('taOptions', ['taRegisterTool', '$delegate', 'appUtils', function(taRegisterTool, taOptions, appUtils){
+        $provide.decorator('taOptions', ['taRegisterTool', '$delegate', 'appUtils', function (taRegisterTool, taOptions, appUtils) {
             taRegisterTool('insertMedia', {
                 iconclass: 'fa fa-file',
                 tooltiptext: "Add Media",
@@ -108,35 +113,35 @@
                     var textAngular = this;
 
                     appUtils.popupMediaMulti().then(function (selectedItems) {
-                        _.forEach(selectedItems, function(item) {
-                            if(!item.type) item.type = '';
+                        _.forEach(selectedItems, function (item) {
+                            if (!item.type) item.type = '';
 
-                            if(item.type.toLowerCase().indexOf('image') > -1){
+                            if (item.type.toLowerCase().indexOf('image') > -1) {
                                 textAngular.$editor().wrapSelection('insertImage', item.downloadUrl, true);
-                            }else if(item.type.toLowerCase().indexOf('application') > -1){
+                            } else if (item.type.toLowerCase().indexOf('application') > -1) {
                                 textAngular.$editor().wrapSelection("createLink", {
-                                    'href' : item.downloadUrl,
-                                    'target' : '_blank',
-                                    'rel' : 'nofollow',
+                                    'href': item.downloadUrl,
+                                    'target': '_blank',
+                                    'rel': 'nofollow',
                                     'text': item.displayName
                                 });
                             }
                         });//End foreach
                     });
                 },
-                activestate: function() {
+                activestate: function () {
                     //   return this.$editor().queryCommandState('insertMedia');
                 }
             });
-  
+
             taOptions.toolbar[1].push('insertMedia');
-        
+
             return taOptions;
         }]);
     }
 
     /** @ngInject */
-    function run($rootScope, $state, $timeout, authService, $localStorage,appUtils) {  
+    function run($rootScope, $state, $timeout, authService, $localStorage, appUtils) {
         $rootScope.settings = settings;
         $rootScope.storage = $localStorage;
         $rootScope.goTo = function (state) {
@@ -151,27 +156,27 @@
             console.log(error);
         });
 
-         $rootScope.$on('$stateChangeStart', function (event,toState, next, current) {
-             var eCommerce = $rootScope.storage.appSettings && $rootScope.storage.appSettings.enableEcommerce ? $rootScope.storage.appSettings.enableEcommerce : false;
-            if(toState && toState.data && toState.data.parent && toState.data.parent === 'eCommerce' && !eCommerce){
+        $rootScope.$on('$stateChangeStart', function (event, toState, next, current) {
+            var eCommerce = $rootScope.storage.appSettings && $rootScope.storage.appSettings.enableEcommerce ? $rootScope.storage.appSettings.enableEcommerce : false;
+            if (toState && toState.data && toState.data.parent && toState.data.parent === 'eCommerce' && !eCommerce) {
                 event.preventDefault();
                 appUtils.hideLoading();
                 $state.go('index');
             }
         });
-      
+
     }
 
     /** @ngInject */
     function bootstrapApplication() {
         angular.bootstrap(document, ['app']);
     }
-    
+
     /** @ngInject */
-    function AppCtrl($rootScope, $state, $http, toaster,appUtils, authService, appSettingService){
-        if(!$rootScope.storage.currentUser){
+    function AppCtrl($rootScope, $state, $http, toaster, appUtils, authService, appSettingService) {
+        if (!$rootScope.storage.currentUser) {
             $state.go('login');
-            
+
             //Delete cache of current user
             // delete $rootScope.storage.currentUser;
             // var loginVm = {
@@ -199,13 +204,13 @@
 
         }
         var clipboard = new Clipboard('.btn');
-        clipboard.on('success', function(e) {
+        clipboard.on('success', function (e) {
             console.info('Action:', e.action);
             console.info('Text:', e.text);
             console.info('Trigger:', e.trigger);
         });
 
-        clipboard.on('error', function(e) {
+        clipboard.on('error', function (e) {
             console.error('Action:', e.action);
             console.error('Trigger:', e.trigger);
         });
@@ -219,27 +224,27 @@
                 click: function () {
                     // invoke insertText method with 'hello' on editor module.
                     appUtils.popupMediaMulti().then(function (selectedItems) {
-                        _.forEach(selectedItems, function(item) {
-                            if(!item.type) item.type = '';
-                            if(item.type.toLowerCase().indexOf('image') > -1){
+                        _.forEach(selectedItems, function (item) {
+                            if (!item.type) item.type = '';
+                            if (item.type.toLowerCase().indexOf('image') > -1) {
                                 context.invoke('editor.insertImage', item.downloadUrl, item.displayName);
-                            }else if(item.type.toLowerCase().indexOf('application') > -1){
-                                context.invoke('editor.createLink',{
-                                     text: item.displayName,
-                                     url: item.downloadUrl,
-                                     isNewWindow: true
+                            } else if (item.type.toLowerCase().indexOf('application') > -1) {
+                                context.invoke('editor.createLink', {
+                                    text: item.displayName,
+                                    url: item.downloadUrl,
+                                    isNewWindow: true
                                 });
                             }
                         });//End foreach
                     });
-                    
+
                 }
             });
 
             return button.render();   // return button as jquery object
         };
 
-        $rootScope.downloadImage = function(url){
+        $rootScope.downloadImage = function (url) {
             var a = document.createElement('a');
             a.href = url;
             a.download = "output.jpg";
@@ -248,22 +253,22 @@
             document.body.removeChild(a);
         };
 
-        $rootScope.downloadImageWithCustomName = function(url, fileName){
-            var nameArr = fileName.split('.'), 
-            fullName = nameArr[0], i;
-            for(i = 1 ; i < nameArr.length - 1; i++){
+        $rootScope.downloadImageWithCustomName = function (url, fileName) {
+            var nameArr = fileName.split('.'),
+                fullName = nameArr[0], i;
+            for (i = 1; i < nameArr.length - 1; i++) {
                 fullName += '.' + nameArr[i];
             }
-            var type = nameArr[nameArr.length -1];
+            var type = nameArr[nameArr.length - 1];
             var arr = fullName.split('_');
-            if(arr && arr.length >= 2){
+            if (arr && arr.length >= 2) {
                 var downloadName = arr[0];
-                for(i = 1 ; i < arr.length - 1; i++){
+                for (i = 1; i < arr.length - 1; i++) {
                     downloadName += '_' + arr[i];
                 }
 
-                downloadName = downloadName + '.' + type; 
-                $http.get(url, {responseType: "blob"}).then(function(res){
+                downloadName = downloadName + '.' + type;
+                $http.get(url, { responseType: "blob" }).then(function (res) {
                     var file = new File([res.data], downloadName);
                     var a = document.createElement('a');
                     a.href = window.URL.createObjectURL(file);
@@ -271,14 +276,14 @@
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
-                },function(error, status) {
+                }, function (error, status) {
                     console.log(error);
                     console.log(status);
                 });
-            } 
+            }
         };
 
-        $rootScope.historyBack = function(){
+        $rootScope.historyBack = function () {
             window.history.back();
         };
     }

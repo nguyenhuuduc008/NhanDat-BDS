@@ -60,7 +60,6 @@
             'app.utils',
 			'app.auth',
 			'app.core',
-			'app.home',
 			'app.layout',
             'app.menus',
 			'app.permission',
@@ -95,10 +94,10 @@
             var path = $location.url();
             var appUtils = $injector.get('appUtils'),
                 loaded= appUtils.DRemoteLoaded;
-            // if(!loaded){
-            //     return '/dremote/dremoteholder?link='+encodeURIComponent(path);
-            // }
-            return '/home';
+            if(!loaded){
+                return '/dremote/dremoteholder?link='+encodeURIComponent(path);
+            }
+            // return '/bds/list';
         });
 
         $provide.decorator('taOptions', ['taRegisterTool', '$delegate', 'appUtils', function(taRegisterTool, taOptions, appUtils){

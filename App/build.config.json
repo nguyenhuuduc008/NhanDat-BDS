@@ -292,7 +292,6 @@
         "src/app/pixieEditor/objects/ObjectsPanelController.js",
         "src/app/layout/**/*.js",
         "src/app/menus/**/*.js",
-        "src/app/home/**/*.js",
         "src/app/permission/**/*.js",
         "src/app/role/**/*.js",
         "src/app/search/**/*.js",

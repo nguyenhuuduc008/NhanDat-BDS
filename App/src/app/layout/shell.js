@@ -35,9 +35,9 @@
     /** @ngInject */
     function HeaderController($rootScope, $scope, $state, authService, $location,$timeout,firebaseDataRef, $firebaseObject, $firebaseArray) {
 
-        $scope.homeUrl = '/#/home';
+        $scope.homeUrl = '/#/bds/list';
         if(window.location.href.indexOf('admin') !== -1){
-            $scope.homeUrl = '/admin/#/home';
+            $scope.homeUrl = '/admin/#/bds/list';
         }
 
         $scope.userInfo = {};

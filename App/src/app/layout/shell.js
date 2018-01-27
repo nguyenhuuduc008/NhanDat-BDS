@@ -35,9 +35,9 @@
     /** @ngInject */
     function HeaderController($rootScope, $scope, $state, authService, $location,$timeout,firebaseDataRef, $firebaseObject, $firebaseArray) {
 
-        $scope.homeUrl = '/#/bds/list';
+        $scope.homeUrl = '/#/home';
         if(window.location.href.indexOf('admin') !== -1){
-            $scope.homeUrl = '/admin/#/bds/list';
+            $scope.homeUrl = '/admin/#/home';
         }
 
         $scope.userInfo = {};
@@ -235,7 +235,7 @@
                     $q.all([DataUtils.firebaseLoadOnce(roleRef), DataUtils.firebaseLoadOnce(permissionRef)]).then(function(rs){
                         $rootScope.storage.roles = DataUtils.toAFArray(rs[0]);
                         $rootScope.storage.permissions = DataUtils.toAFArray(rs[1]);
-                        if(storageCurrentUser.userRoles){
+                        if(storageCurrentUser && storageCurrentUser.userRoles){
                             setSidebarMenus(allState, storageCurrentUser.userRoles, currentState);
                         }
                     });

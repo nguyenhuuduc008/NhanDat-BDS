@@ -62,6 +62,7 @@
             'app.core',
             'app.layout',
             'app.menus',
+            'app.home',
             'app.permission',
             'app.role',
             'app.settings',
@@ -96,13 +97,13 @@
                 loaded = appUtils.DRemoteLoaded;
             console.log('-----path');
             console.log(path);
-            if (path === '' || !path) {
-                return '/bds/list';
-            } else
+            // if (path === '' || !path) {
+            //     return '/bds/list';
+            // } else
                 if (!loaded) {
                     return '/dremote/dremoteholder?link=' + encodeURIComponent(path);
-                }
-            // return '/bds/list';
+                }else
+                    return '/home';
         });
 
         $provide.decorator('taOptions', ['taRegisterTool', '$delegate', 'appUtils', function (taRegisterTool, taOptions, appUtils) {

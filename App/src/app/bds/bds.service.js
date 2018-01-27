@@ -20,7 +20,9 @@
 			getYeuToTangGiamGia: getYeuToTangGiamGia,
 			updateYeuToTangGiamGia: updateYeuToTangGiamGia,
 			updateThuocQuyHoach: updateThuocQuyHoach,
-			getThuocQuyHoach: getThuocQuyHoach
+			getThuocQuyHoach: getThuocQuyHoach,
+			updateCapDo: updateCapDo,
+			getCapDo: getCapDo
 		};
 
 		var bdsRef = firebaseDataRef.child('bds');
@@ -29,6 +31,7 @@
 		var giamGiaRef = firebaseDataRef.child('bds-giam-gia');
 		var yeuToTangGiamGiaRef = firebaseDataRef.child('bds-yeu-to-tang-giam-gia');
 		var thuocQuyHoachRef = firebaseDataRef.child('bds-thuoc-quy-hoach');
+		var capDoRef = firebaseDataRef.child('bds-cap-do');
 
 		return service;
 
@@ -213,6 +216,23 @@
 
 		function getThuocQuyHoach(bdsId) {
 			var ref = thuocQuyHoachRef.child(bdsId);
+			return $firebaseObject(ref);
+		}
+		
+		function updateCapDo(bdsId, obj) {
+			var key = capDoRef.push().key;
+			var ts = appUtils.getTimestamp();
+			obj.timestampModified = ts;
+			obj.timestampCreated = ts;
+			return capDoRef.child(bdsId).update(obj).then(function (res) {
+				return { result: true, key: key };
+			}).catch(function (error) {
+				return { result: false, errorMsg: error };
+			});
+		}
+
+		function getCapDo(bdsId) {
+			var ref = capDoRef.child(bdsId);
 			return $firebaseObject(ref);
 		}
 

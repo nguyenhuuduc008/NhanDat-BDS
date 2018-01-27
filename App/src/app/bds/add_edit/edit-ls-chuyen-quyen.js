@@ -49,6 +49,12 @@
 				title: 'Lịch Sử Chuyển Quyền',
 				url: './app/bds/add_edit/_tab-ls-chuyen-quyen.tpl.html'
 			},
+			lichSuGiaoDich: {
+				title: 'Lịch Sử Giao Dịch'
+			},
+			capDo: {
+				title: 'Cấp Độ'
+			},
 		};
 
 		//Functions

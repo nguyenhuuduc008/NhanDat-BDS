@@ -8,22 +8,14 @@
 		$rootScope.settings.layout.showSmartphone = false;
 		$rootScope.settings.layout.showPageHead = true;
 		$rootScope.settings.layout.guestPage = false;
-		$scope.numberRegx = /^\d+$/;
+        var appSettings = $rootScope.storage.appSettings;
+        $scope.currencyRegx = /^\$\d/;
 		var vm = this; // jshint ignore:line
 		vm.currentUser = $rootScope.storage.currentUser;
 		vm.bdsId = $stateParams.bdsId;
 		vm.model = {};
 		vm.showInvalid = true;
-		vm.cacLoaiGiamGia = [
-			{
-				text: 'Phần Trăm (%)',
-				value: 0
-			},
-			{
-				text: 'Số Tiền',
-				value: 1
-			}
-		];
+		vm.cacLoaiGiamGia = appSettings.cacLoaiGiamGia;
 
 		vm.activeTab = 'giamGia';
 		vm.tabs = {
@@ -51,6 +43,12 @@
 			},
 			lichSuChuyenQuyen: {
 				title: 'Lịch Sử Chuyển Quyền'
+			},
+			lichSuGiaoDich: {
+				title: 'Lịch Sử Giao Dịch'
+			},
+			capDo: {
+				title: 'Cấp Độ'
 			},
 		};
 

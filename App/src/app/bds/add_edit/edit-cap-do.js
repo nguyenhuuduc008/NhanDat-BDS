@@ -2,9 +2,9 @@
 	'use strict';
 
 	angular.module("app.bds")
-		.controller("editthuocQuyHoachCtrl", editthuocQuyHoachCtrl);
+		.controller("editCapDoCtrl", editCapDoCtrl);
 	/** @ngInject */
-	function editthuocQuyHoachCtrl($q, $rootScope, $timeout, $scope, $state, $stateParams, $ngBootbox, toaster, appUtils, bdsService) {
+	function editCapDoCtrl($q, $rootScope, $timeout, $scope, $state, $stateParams, $ngBootbox, toaster, appUtils, bdsService) {
 		$rootScope.settings.layout.showSmartphone = false;
 		$rootScope.settings.layout.showPageHead = true;
 		$rootScope.settings.layout.guestPage = false;
@@ -16,10 +16,10 @@
 		vm.model = {
 		};
 
-		vm.cacLoaiQuyHoach = appSettings.cacLoaiQuyHoach;
+		vm.cacLoaiCapDo = appSettings.cacLoaiCapDo;
 		vm.showInvalid = true;
 
-		vm.activeTab = 'thuocQuyHoach';
+		vm.activeTab = 'capDo';
 		vm.tabs = {
 			thongTin: {
 				title: 'Thông Tin'
@@ -40,8 +40,7 @@
 				title: 'Yếu Tố Tăng Giảm Giá'
 			},
 			thuocQuyHoach: {
-				title: 'Thuộc Quy Hoạch',
-				url: './app/bds/add_edit/_tab-thuoc-quy-hoach.tpl.html'
+				title: 'Thuộc Quy Hoạch'
 			},
 			lichSuChuyenQuyen: {
 				title: 'Lịch Sử Chuyển Quyền'
@@ -50,7 +49,8 @@
 				title: 'Lịch Sử Giao Dịch'
 			},
 			capDo: {
-				title: 'Cấp Độ'
+				title: 'Cấp Độ',
+				url: './app/bds/add_edit/_tab-cap-do.tpl.html'
 			},
 		};
 
@@ -63,9 +63,9 @@
 		vm.save = function () {
 			appUtils.showLoading();
 			var obj = {
-				thuocQuyHoach: vm.model.thuocQuyHoach
+				capDo: vm.model.capDo
 			};
-			bdsService.updateThuocQuyHoach(vm.bdsId, obj).then(function (res) {
+			bdsService.updateCapDo(vm.bdsId, obj).then(function (res) {
 				if (!res.result) {
 					$ngBootbox.alert(res.errorMsg.message);
 					return;
@@ -84,7 +84,7 @@
 		//Load Data
 		function loadBDSDetails() {
 			appUtils.showLoading();
-			bdsService.getThuocQuyHoach(vm.bdsId).$loaded().then(function(rs){
+			bdsService.getCapDo(vm.bdsId).$loaded().then(function(rs){
 				if(rs && rs.timestampCreated){
 					vm.model = rs;
 				}

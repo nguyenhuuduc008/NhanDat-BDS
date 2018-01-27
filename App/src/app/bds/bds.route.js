@@ -268,6 +268,53 @@
 			}
 		};
 
+		states['bds.lichSuGiaoDich'] = {
+			url: '/detail/lich-su-giao-dich?bdsId&id',
+			templateUrl: './app/bds/add_edit/edit-ls-giao-dich.tpl.html',
+			controller: 'editLSGiaoDichCtrl as vm',
+			data: {
+				pageTitle: 'Chi Tiết BĐS',
+				module: 'bds',
+				parent: 'bds',
+				hide: true
+			},
+			resolve: {
+				deps: ['$ocLazyLoad', function($ocLazyLoad){
+					return $ocLazyLoad.load({
+						cache: true,
+						name: 'app.bds.lichSuGiaoDich',
+						files: [
+							'./app/bds/add_edit/edit-ls-giao-dich.js',
+							'./app/bds/lichSuGiaoDich.service.js'
+						]
+					});
+				}]
+			}
+		};
+		
+		states['bds.capDo'] = {
+			url: '/detail/cap-do?bdsId',
+			templateUrl: './app/bds/add_edit/edit-ls-giao-dich.tpl.html',
+			controller: 'editCapDoCtrl as vm',
+			data: {
+				pageTitle: 'Chi Tiết BĐS',
+				module: 'bds',
+				parent: 'bds',
+				hide: true
+			},
+			resolve: {
+				deps: ['$ocLazyLoad', function($ocLazyLoad){
+					return $ocLazyLoad.load({
+						cache: true,
+						name: 'app.bds.capDo',
+						files: [
+							'./app/bds/add_edit/edit-cap-do.js',
+						]
+					});
+				}]
+			}
+		};
+
 		for(var state in states){
 			$stateProvider.state(state, states[state]);
 		}

@@ -2,12 +2,13 @@
 	'use strict';
 
 	angular.module("app.bds")
-		.controller("editTacNghiepCtrl", editTacNghiepCtrl);
+		.controller("editLSGiaoDichCtrl", editLSGiaoDichCtrl);
 	/** @ngInject */
-	function editTacNghiepCtrl($q, $rootScope, $timeout, $scope, $state, $stateParams, $ngBootbox, $uibModal, appUtils, bdsService, tacNghiepService, authService, toaster) {
+	function editLSGiaoDichCtrl($q, $rootScope, $timeout, $scope, $state, $stateParams, $ngBootbox, $uibModal, appUtils, bdsService, lichSuGiaoDichService, authService, toaster) {
 		$rootScope.settings.layout.showSmartphone = false;
 		$rootScope.settings.layout.showPageHead = true;
 		$rootScope.settings.layout.guestPage = false;
+        $scope.currencyRegx = /^\$\d/;
 		var vm = this; // jshint ignore:line
 		vm.currentUser = $rootScope.storage.currentUser;
 		var appSettings = $rootScope.storage.appSettings;
@@ -16,21 +17,18 @@
 		if ($stateParams.id) {
 			vm.model.$id = $stateParams.id;
 		}
-		vm.nameRegx = /^(a-z|A-Z|0-9)*[^!#$%^&*()'"\/\\;:@=+,?\[\]\/]*$/;
 		vm.showInvalid = false;
 		vm.showAddNew = true;
 		vm.formTitle = 'Tạo Mới';
 		vm.selectAction = 'Bulk Actions';
 
-		vm.cacLoaiTacNghiep = appSettings.cacLoaiTacNghiep;
-		vm.activeTab = 'tacNghiep';
+		vm.activeTab = 'lichSuGiaoDich';
 		vm.tabs = {
 			thongTin: {
 				title: 'Thông Tin'
 			},
 			tacNghiep: {
-				title: 'Tác Nghiệp',
-				url: './app/bds/add_edit/_tab-tac-nghiep.tpl.html'
+				title: 'Tác Nghiệp'
 			},
 			viTri: {
 				title: 'Vị Trí'
@@ -51,7 +49,8 @@
 				title: 'Lịch Sử Chuyển Quyền'
 			},
 			lichSuGiaoDich: {
-				title: 'Lịch Sử Giao Dịch'
+				title: 'Lịch Sử Giao Dịch',
+				url: './app/bds/add_edit/_tab-ls-giao-dich.tpl.html'
 			},
 			capDo: {
 				title: 'Cấp Độ'
@@ -68,7 +67,7 @@
 		function loadBDSTacNghiep() {
 			if (vm.bdsId && vm.bdsId !== '' && vm.model.$id) {
 				appUtils.showLoading();
-				tacNghiepService.get(vm.bdsId, vm.model.$id).$loaded().then(function (item) {
+				lichSuGiaoDichService.get(vm.bdsId, vm.model.$id).$loaded().then(function (item) {
 					if (item) {
 						vm.edit(item);
 					}
@@ -115,7 +114,7 @@
 
 		vm.search = function (keyword) {
 			appUtils.showLoading();
-			tacNghiepService.search(vm.bdsId, keyword).then(function (result) {
+			lichSuGiaoDichService.search(vm.bdsId, keyword).then(function (result) {
 				appUtils.hideLoading();
 				vm.filteredItems = appUtils.sortArray(result, 'timestampCreated');
 				vm.paging.totalRecord = result.length;
@@ -128,7 +127,7 @@
 		vm.delete = function () {
 			$ngBootbox.confirm('Are you sure want to delete ' + vm.model.name + '?')
 				.then(function () {
-					tacNghiepService.deleteItem(vm.model.$id).then(function (rs) {
+					lichSuGiaoDichService.deleteItem(vm.model.$id).then(function (rs) {
 						if (rs.result) {
 							toaster.success("Delete success!");
 						} else {
@@ -170,7 +169,7 @@
 					var removeRs = [];
 					if (removeIndex > -1) {
 						_.forEach(lstIds, function (id) {
-							removeRs.push(tacNghiepService.deleteItem(id));
+							removeRs.push(lichSuGiaoDichService.deleteItem(id));
 						});
 
 						$q.all(removeRs).then(function (rs) {
@@ -190,13 +189,13 @@
 			vm.formTitle = 'Thay Đổi';
 			vm.showAddNew = false;
 			vm.model.$id = item.$id;
-			vm.model.ten = item.ten;
-			vm.model.loaiTacNghiep = item.loaiTacNghiep;
-			vm.model.ngayTacNghiep = item.ngayTacNghiep;
+			vm.model.amount = item.amount;
+			vm.model.ngayGiaoDich = item.ngayGiaoDich;
+			vm.model.ghiChu = item.ghiChu;
 		};
 
 		vm.cancel = function () {
-			// $state.go('bds.tacNghiep', { bdsId: vm.bdsId });
+			// $state.go('bds.lichSuChuyenQuyen', { bdsId: vm.bdsId });
 			vm.showAddNew = true;
 			vm.showInvalid = false;
 			vm.formTitle = 'Tạo Mới';
@@ -208,15 +207,14 @@
 			var self = this;
 			var update = null;
 			if (vm.model.$id) {
-				tacNghiepService.get(vm.bdsId, vm.model.$id).$loaded().then(function (data) {
+				lichSuGiaoDichService.get(vm.bdsId, vm.model.$id).$loaded().then(function (data) {
 					update = data;
-
-					update.ten = vm.model.ten;
-					update.loaiTacNghiep = vm.model.loaiTacNghiep;
-					update.ngayTacNghiep = vm.model.ngayTacNghiep;
+					update.amount = vm.model.amount;
+					update.ngayGiaoDich = vm.model.ngayGiaoDich;
+					update.ghiChu = vm.model.ghiChu;
 					update.uid = vm.currentUser.$id;
 					update.timestampModified = appUtils.getTimestamp();
-					tacNghiepService.update(update).then(function (rs) {
+					lichSuGiaoDichService.update(update).then(function (rs) {
 						appUtils.hideLoading();
 						if (rs.result) {
 							toaster.success("Save success!");
@@ -227,7 +225,7 @@
 					});
 				});
 			} else {
-				tacNghiepService.create(vm.bdsId, vm.model).then(function (rs) {
+				lichSuGiaoDichService.create(vm.bdsId, vm.model).then(function (rs) {
 					appUtils.hideLoading();
 					if (rs.result) {
 						self.search('');
@@ -238,16 +236,6 @@
 					}
 				});
 			}
-		};
-
-		vm.textLoaiTacNghiep = function (value) {
-			var rs = _.find(vm.cacLoaiTacNghiep, function (o) {
-				return o.value + '' === value + '';
-			});
-			if (rs) {
-				return rs.text;
-			}
-			return 'Unknown';
 		};
 
 		vm.search('');

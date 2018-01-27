@@ -13,8 +13,23 @@
             <label class="control-label">Số lượng
                 <span class="required-field">*</span>
             </label>
-            <input type="text" name="amount" placeholder="Số lượng" class="form-control" required ng-model="vm.model.amount" ng-pattern="numberRegx" />
-            <label class="control-label" ng-show="createForm.amount.$error.pattern">* This field only numeric</label>
+            <div class="input-inline" ng-if="vm.model.loaiGiamGia === '0'">
+                <div class="input-group">
+                    <input class="form-control" name="amount" placeholder="" required ng-min="0" ng-max="100" type="number" ng-model="vm.model.amount">
+                    <span class="input-group-addon coupon-group-addon">
+                        %
+                    </span>
+                </div>
+            </div>
+            <div class="input-inline" ng-if="vm.model.loaiGiamGia === '1'">
+                <div class="input-group">
+                    <span class="input-group-addon coupon-group-addon">
+                        $
+                    </span> 
+                    <input class="form-control" name="amount" required format-as-currency placeholder="" ng-pattern="currencyRegx" type="text" ng-model="vm.model.amount">
+                    <label class="control-label" ng-show="createForm.amount.$error.pattern">* This field just is a currency</label>
+                </div>
+            </div>
         </div>
         <div class=" col-md-12">
             <div class="margin-top-20 pull-right">

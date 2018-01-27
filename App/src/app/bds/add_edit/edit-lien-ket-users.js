@@ -46,6 +46,12 @@
 			lichSuChuyenQuyen: {
 				title: 'Lịch Sử Chuyển Quyền'
 			},
+			lichSuGiaoDich: {
+				title: 'Lịch Sử Giao Dịch'
+			},
+			capDo: {
+				title: 'Cấp Độ'
+			},
 		};
 
 		vm.keyword = '';

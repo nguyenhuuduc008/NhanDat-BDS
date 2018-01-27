@@ -9,6 +9,7 @@
 		$rootScope.settings.layout.showPageHead = true;
 		$rootScope.settings.layout.guestPage = false;
         $scope.currencyRegx = /^\$\d/;
+		$scope.emailRegx = /^[^!'"\/ ]+$/;
 		var vm = this; // jshint ignore:line
 		vm.currentUser = $rootScope.storage.currentUser;
 		var appSettings = $rootScope.storage.appSettings;
@@ -194,6 +195,7 @@
 			vm.model.$id = item.$id;
 			vm.model.amount = item.amount;
 			vm.model.ngayGiaoDich = item.ngayGiaoDich;
+			vm.model.email = item.email;
 			vm.model.ghiChu = item.ghiChu;
 		};
 
@@ -214,6 +216,7 @@
 					update = data;
 					update.amount = vm.model.amount;
 					update.ngayGiaoDich = vm.model.ngayGiaoDich;
+					update.email = vm.model.email;
 					update.ghiChu = vm.model.ghiChu;
 					update.uid = vm.currentUser.$id;
 					update.timestampModified = appUtils.getTimestamp();

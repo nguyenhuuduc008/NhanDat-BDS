@@ -315,6 +315,30 @@
 			}
 		};
 
+		states['bds.lichSuGia'] = {
+			url: '/detail/lich-su-gia?bdsId&id',
+			templateUrl: './app/bds/add_edit/edit-ls-gia.tpl.html',
+			controller: 'editLSGiaCtrl as vm',
+			data: {
+				pageTitle: 'Chi Tiết BĐS',
+				module: 'bds',
+				parent: 'bds',
+				hide: true
+			},
+			resolve: {
+				deps: ['$ocLazyLoad', function($ocLazyLoad){
+					return $ocLazyLoad.load({
+						cache: true,
+						name: 'app.bds.lichSuGia',
+						files: [
+							'./app/bds/add_edit/edit-ls-gia.js',
+							'./app/bds/lichSuGia.service.js'
+						]
+					});
+				}]
+			}
+		};
+
 		for(var state in states){
 			$stateProvider.state(state, states[state]);
 		}

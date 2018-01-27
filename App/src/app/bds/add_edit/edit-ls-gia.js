@@ -2,9 +2,9 @@
 	'use strict';
 
 	angular.module("app.bds")
-		.controller("editLSGiaoDichCtrl", editLSGiaoDichCtrl);
+		.controller("editLSGiaCtrl", editLSGiaCtrl);
 	/** @ngInject */
-	function editLSGiaoDichCtrl($q, $rootScope, $timeout, $scope, $state, $stateParams, $ngBootbox, $uibModal, appUtils, bdsService, lichSuGiaoDichService, authService, toaster) {
+	function editLSGiaCtrl($q, $rootScope, $timeout, $scope, $state, $stateParams, $ngBootbox, $uibModal, appUtils, bdsService, lichSuGia, authService, toaster) {
 		$rootScope.settings.layout.showSmartphone = false;
 		$rootScope.settings.layout.showPageHead = true;
 		$rootScope.settings.layout.guestPage = false;
@@ -22,7 +22,7 @@
 		vm.formTitle = 'Tạo Mới';
 		vm.selectAction = 'Bulk Actions';
 
-		vm.activeTab = 'lichSuGiaoDich';
+		vm.activeTab = 'lichSuGia';
 		vm.tabs = {
 			thongTin: {
 				title: 'Thông Tin'
@@ -49,14 +49,14 @@
 				title: 'Lịch Sử Chuyển Quyền'
 			},
 			lichSuGiaoDich: {
-				title: 'Lịch Sử Giao Dịch',
-				url: './app/bds/add_edit/_tab-ls-giao-dich.tpl.html'
+				title: 'Lịch Sử Giao Dịch'
 			},
 			capDo: {
 				title: 'Cấp Độ'
 			},
 			lichSuGia: {
-				title: 'Lịch Sử Giá'
+				title: 'Lịch Sử Giá',
+				url: './app/bds/add_edit/_tab-ls-gia.tpl.html'
 			},
 		};
 
@@ -70,7 +70,7 @@
 		function loadBDSTacNghiep() {
 			if (vm.bdsId && vm.bdsId !== '' && vm.model.$id) {
 				appUtils.showLoading();
-				lichSuGiaoDichService.get(vm.bdsId, vm.model.$id).$loaded().then(function (item) {
+				lichSuGia.get(vm.bdsId, vm.model.$id).$loaded().then(function (item) {
 					if (item) {
 						vm.edit(item);
 					}
@@ -117,7 +117,7 @@
 
 		vm.search = function (keyword) {
 			appUtils.showLoading();
-			lichSuGiaoDichService.search(vm.bdsId, keyword).then(function (result) {
+			lichSuGia.search(vm.bdsId, keyword).then(function (result) {
 				appUtils.hideLoading();
 				vm.filteredItems = appUtils.sortArray(result, 'timestampCreated');
 				vm.paging.totalRecord = result.length;
@@ -130,7 +130,7 @@
 		vm.delete = function () {
 			$ngBootbox.confirm('Are you sure want to delete ' + vm.model.name + '?')
 				.then(function () {
-					lichSuGiaoDichService.deleteItem(vm.model.$id).then(function (rs) {
+					lichSuGia.deleteItem(vm.model.$id).then(function (rs) {
 						if (rs.result) {
 							toaster.success("Delete success!");
 						} else {
@@ -172,7 +172,7 @@
 					var removeRs = [];
 					if (removeIndex > -1) {
 						_.forEach(lstIds, function (id) {
-							removeRs.push(lichSuGiaoDichService.deleteItem(id));
+							removeRs.push(lichSuGia.deleteItem(id));
 						});
 
 						$q.all(removeRs).then(function (rs) {
@@ -210,14 +210,14 @@
 			var self = this;
 			var update = null;
 			if (vm.model.$id) {
-				lichSuGiaoDichService.get(vm.bdsId, vm.model.$id).$loaded().then(function (data) {
+				lichSuGia.get(vm.bdsId, vm.model.$id).$loaded().then(function (data) {
 					update = data;
 					update.amount = vm.model.amount;
 					update.ngayGiaoDich = vm.model.ngayGiaoDich;
 					update.ghiChu = vm.model.ghiChu;
 					update.uid = vm.currentUser.$id;
 					update.timestampModified = appUtils.getTimestamp();
-					lichSuGiaoDichService.update(update).then(function (rs) {
+					lichSuGia.update(update).then(function (rs) {
 						appUtils.hideLoading();
 						if (rs.result) {
 							toaster.success("Save success!");
@@ -228,7 +228,7 @@
 					});
 				});
 			} else {
-				lichSuGiaoDichService.create(vm.bdsId, vm.model).then(function (rs) {
+				lichSuGia.create(vm.bdsId, vm.model).then(function (rs) {
 					appUtils.hideLoading();
 					if (rs.result) {
 						self.search('');

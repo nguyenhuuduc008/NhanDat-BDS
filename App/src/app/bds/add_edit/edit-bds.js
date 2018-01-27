@@ -52,6 +52,9 @@
 			capDo: {
 				title: 'Cấp Độ'
 			},
+			lichSuGia: {
+				title: 'Lịch Sử Giá'
+			},
 		};
 		
 		vm.cacDanhMucBDS = appSettings.cacDanhMucBDS;

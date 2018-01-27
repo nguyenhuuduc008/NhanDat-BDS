@@ -52,6 +52,9 @@
 				title: 'Cấp Độ',
 				url: './app/bds/add_edit/_tab-cap-do.tpl.html'
 			},
+			lichSuGia: {
+				title: 'Lịch Sử Giá'
+			},
 		};
 
 		//Functions

@@ -50,6 +50,9 @@
 			capDo: {
 				title: 'Cấp Độ'
 			},
+			lichSuGia: {
+				title: 'Lịch Sử Giá'
+			},
 		};
 
 		//Functions

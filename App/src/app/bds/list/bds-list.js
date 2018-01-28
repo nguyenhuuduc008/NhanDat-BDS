@@ -16,8 +16,6 @@
         // }
 
         var appSettings = $rootScope.storage.appSettings;
-        console.log('---------appSettings');
-        console.log(appSettings);
 
         var vm = this; // jshint ignore:line
         vm.keyword = '';
@@ -85,8 +83,6 @@
             bdsService.searchAll(vm.cacDanhMucBDS, keyword).then(function (rs) {
                 appUtils.hideLoading();
                 var result = rs.data;
-                console.log('------result');
-                console.log(result);
                 vm.filteredItems = appUtils.sortArray(result, 'timestampCreated');
                 vm.paging.totalRecord = result.length;
                 vm.paging.currentPage = 0;
@@ -125,8 +121,6 @@
                 var reqs = [];
                 if (action === 'delete') {
                     _.forEach(lstItemIds, function (obj, key) {
-                        console.log('---------lstItemIds');
-                        console.log(obj);
                         reqs.push(bdsService.deleteItem(obj));
                     });
                     $q.all(reqs).then(function (res) {

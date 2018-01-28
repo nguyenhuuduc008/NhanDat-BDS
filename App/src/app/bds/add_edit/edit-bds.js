@@ -116,9 +116,6 @@
 					bdsService.get(bdsCateResult.danhMucId, vm.model.$id).$loaded().then(function (result) {
 						if (result) {
 							vm.model = result;
-							console.log('------vm.model');
-							console.log(vm.model);
-							
 							var districts = appSettings.quanHuyen[vm.model.thanhPho];
 							vm.districts = districts;
 							var wards = appSettings.phuongXa[vm.model.quanHuyen];
@@ -130,6 +127,7 @@
 					});
 				} else {
 					appUtils.hideLoading();
+					$state.go('bds.list');
 				}
 			});
 		}

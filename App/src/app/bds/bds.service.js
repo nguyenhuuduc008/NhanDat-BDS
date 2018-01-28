@@ -86,7 +86,8 @@
 				var ts = appUtils.getTimestamp();
 				return bdsRef.child(bdsDanhMucRs.danhMucId).child(bdsId).update({ isDeleted: true, timestampModified: ts }).then(function (res) {
 					deleteLinkToCategory(bdsId);
-					deleteBdsTacNghiep(bdsId);
+					// deleteBdsTacNghiep(bdsId);
+					existedAddressRef.child(bdsId).update({isDeleted: true, timestampModified: ts}).then(function(res){});
 					return { result: true };
 				}).catch(function (error) {
 					return { result: false, errorMsg: error };

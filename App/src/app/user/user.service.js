@@ -93,6 +93,10 @@
         function deleteUser(uid){
 			var ts = appUtils.getTimestamp();
             return userRef.child(uid).update({isDeleted: true, timestampModified: ts}).then(function(res){
+				var existedUser = {
+					email: user.email
+				};
+				exitedUserRef.child(uid).update({isDeleted: true, timestampModified: ts}).then(function(res){});
                 return {result: true};
             }).catch(function(error) {
 		        return {result: false , errorMsg: error};

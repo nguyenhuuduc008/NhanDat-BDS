@@ -8,11 +8,14 @@
 		$rootScope.settings.layout.showSmartphone = false;
 		$rootScope.settings.layout.showPageHead = true;
         $rootScope.settings.layout.guestPage = false;
+        var appSettings = $rootScope.storage.appSettings;
 		if($rootScope.reProcessSideBar){
             $rootScope.reProcessSideBar = false;
         }
 		var userDetailVm = this ; // jshint ignore:line
 		userDetailVm.currentUser = $rootScope.storage.currentUser;
+		
+		userDetailVm.cities = appSettings.thanhPho;
 
 		userDetailVm.adminRole = true;
 		// var adminRole = _.find(userDetailVm.currentUser.userRoles, function(o) { return o === "-KTlccaZaxPCGDaFPSc5"; });
@@ -152,6 +155,11 @@
 			form.phonenumber.$setValidity('server', true);
 			userDetailVm.e_msges['phonenumber'] = "";
 			/* jshint ignore:end */
+		};
+		
+		userDetailVm.changeDistrict = function(){
+			var districts = appSettings.quanHuyen[userDetailVm.user.city];
+			userDetailVm.districts = districts;
 		};
 
 		angular.element(document).ready(function() {

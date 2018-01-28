@@ -156,25 +156,28 @@
                                             <!--<label class="control-label" ng-show="userDetailVm.showInvalid && editUserForm.address.$error.required">* This field is required</label>-->
                                             <label class="control-label" ng-show="editUserForm.address.$error.pattern">* This field does not allow special characters</label>
                                         </div>
-                                        <div class="form-group col-md-6" ng-class="{'has-error': (userDetailVm.showInvalid && editUserForm.city.$error.required)}">
-                                            <label class="control-label" >City </label>   
-                                            <input name="city" type="text" placeholder="City" ng-model="userDetailVm.user.city" class="form-control" />
+                                        <div class="form-group col-md-6" ng-class="{'has-error': (userDetailVm.showInvalid && editUserForm.ward.$error.required)}">
+                                            <label class="control-label" >Ward </label>   
+                                            <input name="city" type="text" placeholder="Ward" ng-model="userDetailVm.user.ward" class="form-control" />
                                             <!--<label class="control-label" ng-show="userDetailVm.showInvalid && editUserForm.city.$error.required">* This field is required</label>-->
                                             <!--<label class="control-label" ng-show="editUserForm.city.$error.pattern">* This field does not allow special characters</label>-->
                                         </div>
-                                         <div class="form-group col-md-6" ng-class="{'has-error': userDetailVm.showInvalid && editUserForm.state.$error.required}">
-                                            <label class="control-label" >State </label>
-                                            <select name="state" ng-model="userDetailVm.user.state" class="form-control" >
-                                                <option value="" disabled >Please Choose State</option>
-                                                <option ng-repeat="state in userDetailVm.states" value="{{state.value}}" ng-selected="state.value == userDetailVm.user.state">{{state.text}}</option>
+                                         <div class="form-group col-md-6" ng-class="{'has-error': userDetailVm.showInvalid && editUserForm.city.$error.required}">
+                                            <label class="control-label" >City </label>
+                                            <select name="city" ng-model="userDetailVm.user.city" class="form-control" ng-change="userDetailVm.changeDistrict()">
+                                                <option value="" disabled >Please Choose City</option>
+                                                <option ng-repeat="item in userDetailVm.cities" value="{{item.value}}" ng-selected="item.value == userDetailVm.user.city">{{item.text}}</option>
                                             </select>
                                             <!--<label class="control-label" ng-show="userDetailVm.showInvalid && editUserForm.state.$error.required">* This field is required</label>-->
                                         </div>
-                                        <div class="form-group col-md-6" ng-class="{'has-error': (userDetailVm.showInvalid && editUserForm.zipCode.$error.required) || editUserForm.zipCode.$error.pattern}">
-                                            <label class="control-label" >Zip</label>
-                                            <input name="zipCode" type="text" placeholder="Zip Code" ng-model="userDetailVm.user.zipCode" maxlength="5" ng-pattern="zipcodeRegx"  ng-maxlength="5"  class="form-control" />
-                                            <!--<label class="control-label" ng-show="customerDetailVm.showInvalid && customerForm.zip.$error.required">* This field is required</label>-->
-                                        </div>
+                                        <div class="form-group col-md-6" ng-class="{'has-error': userDetailVm.showInvalid && editUserForm.district.$error.required}">
+                                           <label class="control-label" >District </label>
+                                           <select name="district" ng-model="userDetailVm.user.district" class="form-control" >
+                                               <option value="" disabled >Please Choose District</option>
+                                               <option ng-repeat="item in userDetailVm.districts" value="{{item.value}}" ng-selected="item.value == userDetailVm.user.district">{{item.text}}</option>
+                                           </select>
+                                           <!--<label class="control-label" ng-show="userDetailVm.showInvalid && editUserForm.state.$error.required">* This field is required</label>-->
+                                       </div>
                                         <div class="form-group col-md-6">
                                             <label class="mt-checkbox mt-checkbox-outline" >
                                                 <input id="isAuthorized" type="checkbox" name="isauthorized" ng-model="userDetailVm.user.isAuthorized"/>

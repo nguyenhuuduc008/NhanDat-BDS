@@ -8,11 +8,14 @@
 		$rootScope.settings.layout.showSmartphone = false;
 		$rootScope.settings.layout.showPageHead = true;
         $rootScope.settings.layout.guestPage = false;
+        var appSettings = $rootScope.storage.appSettings;
         if($rootScope.reProcessSideBar){
             $rootScope.reProcessSideBar = false;
         }
 
 		var userAddVm = this; // jshint ignore:line
+		userAddVm.cities = appSettings.thanhPho;
+
 		userAddVm.showInvalid = false;
 		$scope.emailRegx = /^[^!'"\/ ]+$/;
 		$scope.passwordRegx =/^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,12}$/;
@@ -127,6 +130,11 @@
 
 		userAddVm.cancel = function(form){
 			$state.go('user.list');
+		};
+		
+		userAddVm.changeDistrict = function(){
+			var districts = appSettings.quanHuyen[userAddVm.user.city];
+			userAddVm.districts = districts;
 		};
 	}
 })();

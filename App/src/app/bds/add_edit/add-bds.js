@@ -1,105 +1,150 @@
-(function(){
+(function () {
 	'use strict';
 
 	angular.module("app.bds")
-	.controller("addBdsCtrl" , addBdsCtrl);
+		.controller("addBdsCtrl", addBdsCtrl);
 	/** @ngInject **/
-	function addBdsCtrl($rootScope, $scope, $state,$ngBootbox, bdsService, authService, currentAuth,appUtils, toaster){
+	function addBdsCtrl($rootScope, $scope, $state, $ngBootbox, bdsService, authService, currentAuth, appUtils, toaster) {
 		$rootScope.settings.layout.showSmartphone = false;
 		$rootScope.settings.layout.showPageHead = true;
-        $rootScope.settings.layout.guestPage = false;
-        if($rootScope.reProcessSideBar){
-            $rootScope.reProcessSideBar = false;
-        }
+		$rootScope.settings.layout.guestPage = false;
+		if ($rootScope.reProcessSideBar) {
+			$rootScope.reProcessSideBar = false;
+		}
 		var currentUser = $rootScope.storage.currentUser;
-        var appSettings = $rootScope.storage.appSettings;
-
 		var vm = this; // jshint ignore:line
-		vm.showInvalid = false;
-		vm.numberRegx = /^\d+$/;
-		
+		var appSettings = $rootScope.storage.appSettings;
+		vm.cities = appSettings.thanhPho;
+		vm.cacLoaiDuong = appSettings.cacLoaiDuong;
+		vm.cacLoaiViTri = appSettings.cacLoaiViTri;
+		vm.cacLoaiHuong = appSettings.cacLoaiHuong;
+		vm.cacNguonBDS = appSettings.cacNguonBDS;
+		vm.cacDuAn = appSettings.cacDuAn;
+
 		vm.cacDanhMucBDS = appSettings.cacDanhMucBDS;
 		vm.cacLoaiHau = appSettings.cacLoaiHau;
 		vm.cacLoaiBDS = appSettings.cacLoaiBDS;
-        
-        vm.model = {
-            danhMuc: 'bds-khosocap',
-            soNha: '123',
-            tenDuong: 'Le Loi',
-            xaPhuong: '4',
-			quanHuyen: 'Go Vap',
-			thanhPho: 'Ho Chi Minh',
-			loaiDuong: 'Duong Nhua',
-			loaiViTri: 'Trung tam Tp',
-			ngang: '5',
-			dai: '12',
-			hau: '0',
-			dienTichKhuonVien: '20 m',
-			dienTichSuDung: '60 m',
-			dienTichXayDung: '60 m',
-			tongGia: '2.000.000.000',
-			huong: 'Dong Nam',
-			donGia: '1.600.000.000',
-			phongKhach: '1',
-			phongNgu: '2',
-			phongAn: '1',
-			nhaBep: '1',
-			wc: '2',
-			sanTruoc: 'Co',
-			sanSau: 'Co',
-			sanThuong: 'Co',
-			giengTroi: 'Co',
-			tangLung: 'Co',
-			ham: '1',
-			hoBoi: '1',
-			gym: '1',
-			ttThuongMai: '1',
-			tang: '2',
-			cvMoiGioi: 'cvMoiGioi',
-			dienThoai: '01234314008',
-			email: 'bds@gmail.com',
-			diaChiKhac: '123 dia chi khac',
-			nguon: 'Internet',
-			soDangKy: 'soDangKy001',
-			loaiBDS: '0',
-			tyLeMG: '12',
-			phiMG: '10.000.000',
-			dienGiai: 'Dien giai',
-			phapLy: 'Phap ly',
-			namXayDung: '2015',
-			duAn: 'duAnABC01'
-        };
+		vm.cacLoaiTacNghiep = appSettings.cacLoaiTacNghiep;
+
+		vm.showInvalid = false;
+		$scope.zipcodeRegx = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
+		$scope.nameRegx = /^(a-z|A-Z|0-9)*[^!#$%^&*()'"\/\\;:@=+,?\[\]\/]*$/;
+		$scope.addressRegx = /^(a-z|A-Z|0-9)*[^!$%^&*()'"\/\\;:@=+,?\[\]]*$/;
+		$scope.numberRegx = /^\d+$/;
+		$scope.currencyRegx = /^\$\d/;
+		$scope.emailRegx = /^[^!'"\/ ]+$/;
+
+		vm.activeTab = 'thongTin';
+		vm.tabs = {
+			thongTin: {
+				title: 'Thông Tin',
+				url: './app/bds/add_edit/_tab-thong-tin.tpl.html'
+			}
+		};
+
+		vm.model = {
+			// danhMuc: '',
+			// soNha: '',
+			// tenDuong: '',
+			// xaPhuong: '',
+			// quanHuyen: '',
+			// thanhPho: '',
+			// loaiDuong: '',
+			// loaiViTri: '',
+			// ngang: 0,
+			// dai: 0,
+			// hau: '',
+			// dienTichKhuonVien: 0,
+			// dienTichSuDung: 0,
+			// dienTichXayDung: 0,
+			// tongGia: '',
+			// huong: '',
+			// donGia: '',
+			// phongKhach: '',
+			// phongNgu: '',
+			// phongAn: '',
+			// nhaBep: '1',
+			// wc: '',
+			// sanTruoc: '',
+			// sanSau: '',
+			// sanThuong: '',
+			// giengTroi: '',
+			// tangLung: '',
+			// ham: '',
+			// hoBoi: '',
+			// gym: '',
+			// ttThuongMai: '',
+			// tang: '',
+			// cvMoiGioi: '',
+			// dienThoai: '',
+			// email: '',
+			// diaChiKhac: '',
+			// nguon: '',
+			// soDangKy: '',
+			// loaiBDS: '',
+			// tyLeMG: '',
+			// phiMG: '',
+			// dienGiai: '',
+			// phapLy: '',
+			// namXayDung: '',
+			// duAn: ''
+		};
 
 		//Functions
-		vm.create = function(form){
+		vm.save = function (form) {
 			appUtils.showLoading();
 			// vm.showInvalid = true;
-			if(form.$invalid){
+			if (form.$invalid) {
 				return;
 			}
+			var onFail = function (res) {
+				$ngBootbox.alert(res.errorMsg.message);
+				appUtils.hideLoading();
+				return;
+			};
+			vm.model.soNha = vm.model.soNha.trim();
+			vm.model.tenDuong = vm.model.tenDuong.trim();
+			var fullAddress = vm.model.soNha + ' ' + vm.model.tenDuong + ' ' + vm.model.thanhPho + ' ' + vm.model.quanHuyen + ' ' + vm.model.xaPhuong;
+			bdsService.checkAddressExist(fullAddress).then(function (res) {
+				if (res.data !== null && res.data.length >= 1) {
+					appUtils.hideLoading();
+					$ngBootbox.alert("This address already exists. Please enter another.");
+					return false;
+				}//Address exists.
+				else {
+					vm.model.createdBy = currentUser.email.trim();
+					vm.model.uid = currentUser.$id;
+					bdsService.create(vm.model.danhMuc.trim(), vm.model).then(function (res) {
+						if (!res.result) {
+							$ngBootbox.alert(res.errorMsg.message);
+							return;
+						}
 
-			vm.model.createdBy = currentUser.email.trim();
-			vm.model.uid = currentUser.$id;
-            bdsService.create(vm.model.danhMuc.trim(), vm.model).then(function(res){
-                if(!res.result){				
-                    $ngBootbox.alert(res.errorMsg.message);
-                    return;
-                }
-				
-                appUtils.hideLoading();
-                toaster.pop('success','Success', "Created success!");
-                vm.model = {};
-				$state.go('bds.thongTin', { bdsId: res.key });
-            }, function(res){
-                $ngBootbox.alert(res.errorMsg.message);
-                appUtils.hideLoading();
-                return;
-            });
-			
-        };
+						appUtils.hideLoading();
+						toaster.pop('success', 'Success', "Created success!");
+						vm.model = {};
+						$state.go('bds.thongTin', { bdsId: res.key });
+					}, function (res) {
+						$ngBootbox.alert(res.errorMsg.message);
+						appUtils.hideLoading();
+						return;
+					});
+				}
+			}, onFail);
+		};
 
-		vm.cancel = function(form){
+		vm.cancel = function (form) {
 			$state.go('abs.list');
+		};
+
+		vm.changeCity = function () {
+			var districts = appSettings.quanHuyen[vm.model.thanhPho];
+			vm.districts = districts;
+		};
+
+		vm.changeDistrict = function () {
+			var wards = appSettings.phuongXa[vm.model.quanHuyen];
+			vm.wards = wards;
 		};
 	}
 })();

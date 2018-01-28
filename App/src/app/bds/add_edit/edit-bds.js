@@ -8,15 +8,31 @@
 		$rootScope.settings.layout.showSmartphone = false;
 		$rootScope.settings.layout.showPageHead = true;
 		$rootScope.settings.layout.guestPage = false;
+		$rootScope.settings.layout.pageSidebarClosed = true;
 		var vm = this; // jshint ignore:line
 		vm.currentUser = $rootScope.storage.currentUser;
         var appSettings = $rootScope.storage.appSettings;
+		vm.cities = appSettings.thanhPho;
+		vm.cacLoaiDuong = appSettings.cacLoaiDuong;
+		vm.cacLoaiViTri = appSettings.cacLoaiViTri;
+		vm.cacLoaiHuong = appSettings.cacLoaiHuong;
+		vm.cacNguonBDS = appSettings.cacNguonBDS;
+		vm.cacDuAn = appSettings.cacDuAn;
+		
+		vm.cacDanhMucBDS = appSettings.cacDanhMucBDS;
+		vm.cacLoaiHau = appSettings.cacLoaiHau;
+		vm.cacLoaiBDS = appSettings.cacLoaiBDS;
+		vm.cacLoaiTacNghiep = appSettings.cacLoaiTacNghiep;
+
 		vm.bdsId = $stateParams.bdsId;
 		vm.model = {};
 		vm.model.$id = vm.bdsId;
 		$scope.zipcodeRegx = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
 		$scope.nameRegx = /^(a-z|A-Z|0-9)*[^!#$%^&*()'"\/\\;:@=+,?\[\]\/]*$/;
 		$scope.addressRegx = /^(a-z|A-Z|0-9)*[^!$%^&*()'"\/\\;:@=+,?\[\]]*$/;
+		$scope.numberRegx = /^\d+$/;
+        $scope.currencyRegx = /^\$\d/;
+		$scope.emailRegx = /^[^!'"\/ ]+$/;
 		vm.showInvalid = true;
 		
 		vm.activeTab='thongTin';
@@ -59,11 +75,6 @@
 				title: 'Media'
 			},
 		};
-		
-		vm.cacDanhMucBDS = appSettings.cacDanhMucBDS;
-		vm.cacLoaiHau = appSettings.cacLoaiHau;
-		vm.cacLoaiBDS = appSettings.cacLoaiBDS;
-		vm.cacLoaiTacNghiep = appSettings.cacLoaiTacNghiep;
 
 		//Functions
 		vm.loadTab = function(key){
@@ -87,6 +98,16 @@
             });
 		};
 
+		vm.changeCity = function(){
+			var districts = appSettings.quanHuyen[vm.model.thanhPho];
+			vm.districts = districts;
+		};
+		
+		vm.changeDistrict = function () {
+			var wards = appSettings.phuongXa[vm.model.quanHuyen];
+			vm.wards = wards;
+		};
+
 		//Load Data
 		function loadBDSDetails() {
 			appUtils.showLoading();
@@ -95,6 +116,13 @@
 					bdsService.get(bdsCateResult.danhMucId, vm.model.$id).$loaded().then(function (result) {
 						if (result) {
 							vm.model = result;
+							console.log('------vm.model');
+							console.log(vm.model);
+							
+							var districts = appSettings.quanHuyen[vm.model.thanhPho];
+							vm.districts = districts;
+							var wards = appSettings.phuongXa[vm.model.quanHuyen];
+							vm.wards = wards;
 						}else{
                             toaster.pop('error', 'Error', "Cann't load data!");
 						}

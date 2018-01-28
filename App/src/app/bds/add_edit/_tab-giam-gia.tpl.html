@@ -9,7 +9,7 @@
                 <option ng-repeat="item in vm.cacLoaiGiamGia" value="{{item.value}}" ng-selected="item.value == vm.model.loaiGiamGia">{{item.text}}</option>
             </select>
         </div>
-        <div class="form-group col-md-6" ng-class="{'has-error': (vm.showInvalid && createForm.amount.$error.required) || createForm.amount.$error.pattern}" }>
+        <div class="form-group col-md-6" ng-class="{'has-error': (vm.showInvalid && createForm.amount.$error.required) || createForm.amount.$error.pattern}">
             <label class="control-label">Số lượng
                 <span class="required-field">*</span>
             </label>

@@ -95,8 +95,6 @@
             var path = $location.url();
             var appUtils = $injector.get('appUtils'),
                 loaded = appUtils.DRemoteLoaded;
-            console.log('-----path');
-            console.log(path);
             // if (path === '' || !path) {
             //     return '/bds/list';
             // } else

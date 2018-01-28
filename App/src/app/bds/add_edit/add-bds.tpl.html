@@ -24,7 +24,10 @@
                         <div class="portlet-body">
                             <div class="tab-content">
                                 <!-- PERSONAL INFO TAB -->
-                                <div class="tab-pane active row" id="tab_1_1">     
+                                <div class="tab-pane fade" id="tab_{{key}}" ng-class="{'active in': key == vm.activeTab}" ng-repeat="(key,tab) in vm.tabs">
+                                    <div ng-include="tab.url"></div>
+                                </div>
+                                <!-- <div class="tab-pane active row" id="tab_1_1">     
                                     <form role="form" id="createForm" name="createForm" novalidate ng-submit="vm.create(createForm)" >
                                             <div class="form-group col-md-3" ng-class="{'has-error': (vm.showInvalid && createForm.requirementType.$error.required)}">
                                                 <label class="control-label">Danh mục <span class="required-field">*</span></label>
@@ -226,7 +229,7 @@
                                                 </div>
                                             </div>
                                         </form>
-                                </div>
+                                </div> -->
                                 <!-- END PERSONAL INFO TAB -->
                             </div>
                         </div>

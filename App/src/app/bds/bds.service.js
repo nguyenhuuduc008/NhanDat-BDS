@@ -22,7 +22,8 @@
 			updateThuocQuyHoach: updateThuocQuyHoach,
 			getThuocQuyHoach: getThuocQuyHoach,
 			updateCapDo: updateCapDo,
-			getCapDo: getCapDo
+			getCapDo: getCapDo,
+			checkAddressExist: checkAddressExist
 		};
 
 		var bdsRef = firebaseDataRef.child('bds');
@@ -32,6 +33,7 @@
 		var yeuToTangGiamGiaRef = firebaseDataRef.child('bds-yeu-to-tang-giam-gia');
 		var thuocQuyHoachRef = firebaseDataRef.child('bds-thuoc-quy-hoach');
 		var capDoRef = firebaseDataRef.child('bds-cap-do');
+		var existedAddressRef = firebaseDataRef.child('bds-existed-address');
 
 		return service;
 
@@ -56,10 +58,27 @@
 					uid: obj.uid,
 					createdBy: obj.createdBy
 				});
+				var existedAddress = {
+					fullAddress: obj.soNha + ' ' + obj.tenDuong + ' ' + obj.thanhPho + ' ' + obj.quanHuyen + ' ' + obj.xaPhuong
+				};
+				existedAddressRef.child(key).set(existedAddress).then(function(res){});
 				return { result: true, key: key };
 			}).catch(function (error) {
 				return { result: false, errorMsg: error };
 			});
+		}
+		
+        function checkAddressExist(fullAddress){
+			if($.trim(fullAddress) ===''){
+				return $q.when({data: []});
+			}
+            return $firebaseArray(existedAddressRef).$loaded().then(function(data){
+				existedAddressRef.onDisconnect();
+                var address = _.filter(data, function(item) { 
+                    return item.fullAddress.toString() === fullAddress.toString() && (item.isDeleted === false || item.isDeleted === '' || item.isDeleted === undefined);
+                });
+			    return {data: address};
+            });
 		}
 
 		function deleteItem(bdsId) {

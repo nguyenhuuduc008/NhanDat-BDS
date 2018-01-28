@@ -332,7 +332,8 @@
 						name: 'app.bds.lichSuGia',
 						files: [
 							'./app/bds/add_edit/edit-ls-gia.js',
-							'./app/bds/lichSuGia.service.js'
+							'./app/bds/lichSuGia.service.js',
+							'./app/user/user.service.js'
 						]
 					});
 				}]

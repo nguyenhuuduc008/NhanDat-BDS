@@ -22,10 +22,12 @@
             checkUserIsDeleted: checkUserIsDeleted,
 			insertState : insertState,
 			uploadAvatar: uploadAvatar,
-			saveChangeAvatar: saveChangeAvatar
+			saveChangeAvatar: saveChangeAvatar,
+			checkEmailExist: checkEmailExist
 		};
 
 		var userRef = firebaseDataRef.child('users');
+		var exitedUserRef = firebaseDataRef.child('existed-users');
 
 		return service;
 
@@ -55,6 +57,10 @@
 			user.timestampModified = ts;
 			user.timestampCreated = ts;
             return userRef.child(uid).set(user).then(function(res){
+				var existedUser = {
+					email: user.email
+				};
+				exitedUserRef.child(uid).set(existedUser).then(function(res){});
 				return {result: true , data: uid};
             }).catch(function(error) {
 		        return {result: false , errorMsg: error};
@@ -109,6 +115,19 @@
                 userRef.onDisconnect();
                 var user = _.filter(data, function(item) { 
                     return item.phoneNumber === phone && (item.isDeleted === false || item.isDeleted === '' || item.isDeleted === undefined);
+                });
+			    return {data: user};
+            });
+		}
+		
+        function checkEmailExist(email){
+			if($.trim(email) ===''){
+				return $q.when({data: []});
+			}
+            return $firebaseArray(exitedUserRef).$loaded().then(function(data){
+                userRef.onDisconnect();
+                var user = _.filter(data, function(item) { 
+                    return item.email === email && (item.isDeleted === false || item.isDeleted === '' || item.isDeleted === undefined);
                 });
 			    return {data: user};
             });

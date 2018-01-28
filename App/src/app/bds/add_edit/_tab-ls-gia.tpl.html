@@ -97,6 +97,7 @@
                                 </th>
                                 <th> Giá (VNĐ) </th>
                                 <th> Ngày Giờ </th>
+                                <th> Email </th>
                                 <th> Ghi Chú </th>
                             </tr>
                         </thead>
@@ -109,10 +110,13 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <a class="primary-link" href="#/bds/detail/lich-su-giao-dich?bdsId={{vm.bdsId}}&id=/{{item.$id}}">{{item.amount}}</a>
+                                    <a class="primary-link" href="#/bds/detail/lich-su-gia?bdsId={{vm.bdsId}}&id=/{{item.$id}}">{{item.amount}}</a>
                                 </td>
                                 <td>
                                     {{item.ngayGiaoDich | date : "MM/dd/yyyy HH:mm:ss"}}
+                                </td>
+                                <td style="word-break: break-all;">
+                                    {{item.email}}
                                 </td>
                                 <td style="word-break: break-all;">
                                     {{item.ghiChu}}

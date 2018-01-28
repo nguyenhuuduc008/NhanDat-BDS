@@ -4,11 +4,11 @@
 	angular.module("app.bds")
 		.controller("editLSGiaCtrl", editLSGiaCtrl);
 	/** @ngInject */
-	function editLSGiaCtrl($q, $rootScope, $timeout, $scope, $state, $stateParams, $ngBootbox, $uibModal, appUtils, bdsService, lichSuGia, authService, toaster) {
+	function editLSGiaCtrl($q, $rootScope, $timeout, $scope, $state, $stateParams, $ngBootbox, $uibModal, appUtils, userService, bdsService, lichSuGia, authService, toaster) {
 		$rootScope.settings.layout.showSmartphone = false;
 		$rootScope.settings.layout.showPageHead = true;
 		$rootScope.settings.layout.guestPage = false;
-        $scope.currencyRegx = /^\$\d/;
+		$scope.currencyRegx = /^\$\d/;
 		$scope.emailRegx = /^[^!'"\/ ]+$/;
 		var vm = this; // jshint ignore:line
 		vm.currentUser = $rootScope.storage.currentUser;
@@ -60,15 +60,15 @@
 				url: './app/bds/add_edit/_tab-ls-gia.tpl.html'
 			},
 			media: {
-                title: 'Media'
-            }
+				title: 'Media'
+			}
 
 		};
 
 		//Functions
-		vm.loadTab = function(key){
+		vm.loadTab = function (key) {
 			vm.activeTab = key;
-            $state.go('bds.' + key, { bdsId: vm.bdsId });
+			$state.go('bds.' + key, { bdsId: vm.bdsId });
 		};
 
 		//Load Data
@@ -215,37 +215,55 @@
 			appUtils.showLoading();
 			var self = this;
 			var update = null;
-			if (vm.model.$id) {
-				lichSuGia.get(vm.bdsId, vm.model.$id).$loaded().then(function (data) {
-					update = data;
-					update.amount = vm.model.amount;
-					update.ngayGiaoDich = vm.model.ngayGiaoDich;
-					update.email = vm.model.email;
-					update.ghiChu = vm.model.ghiChu;
-					update.uid = vm.currentUser.$id;
-					update.timestampModified = appUtils.getTimestamp();
-					lichSuGia.update(update).then(function (rs) {
-						appUtils.hideLoading();
-						if (rs.result) {
-							toaster.success("Save success!");
-							self.search('');
-						} else {
-							toaster.error(rs.errorMsg);
-						}
-					});
-				});
-			} else {
-				lichSuGia.create(vm.bdsId, vm.model).then(function (rs) {
-					appUtils.hideLoading();
-					if (rs.result) {
-						self.search('');
-						toaster.success("Save success!");
-						vm.model = {};
+			var onFail = function (res) {
+				$ngBootbox.alert(res.errorMsg.message);
+				appUtils.hideLoading();
+				return;
+			};
+			userService.checkEmailExist(vm.model.email).then(function (res) {
+				if (res.data !== null && res.data.length >= 1) {
+					// $ngBootbox.alert("Email already exists. Please enter another.");
+					if (vm.model.$id) {
+						lichSuGia.get(vm.bdsId, vm.model.$id).$loaded().then(function (data) {
+							update = data;
+							update.amount = vm.model.amount;
+							update.ngayGiaoDich = vm.model.ngayGiaoDich;
+							update.email = vm.model.email;
+							update.ghiChu = vm.model.ghiChu;
+							update.uid = vm.currentUser.$id;
+							update.timestampModified = appUtils.getTimestamp();
+							lichSuGia.update(update).then(function (rs) {
+								appUtils.hideLoading();
+								if (rs.result) {
+									toaster.success("Save success!");
+									self.search('');
+								} else {
+									toaster.error(rs.errorMsg);
+								}
+							});
+						});
 					} else {
-						toaster.error(rs.errorMsg);
+						lichSuGia.create(vm.bdsId, vm.model).then(function (rs) {
+							appUtils.hideLoading();
+							if (rs.result) {
+								self.search('');
+								toaster.success("Save success!");
+								vm.model = {};
+							} else {
+								toaster.error(rs.errorMsg);
+							}
+						});
 					}
-				});
-			}
+					// appUtils.hideLoading();
+					return true;
+				}//Email exists.
+				else {
+					appUtils.hideLoading();
+					$ngBootbox.alert("Email doesn't already exists. Please enter another.");
+					return false;
+				}
+			}, onFail);
+
 		};
 
 		vm.search('');

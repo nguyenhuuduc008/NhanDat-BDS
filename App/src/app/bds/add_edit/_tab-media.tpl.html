@@ -9,34 +9,35 @@
         <div class="portlet light portlet-fit bordered">
             <div class="portlet-title">
                 <div class="caption">
-                        <div class="col-md-6">
-                            <div class="input-group input-medium">
-                                <select class="bs-select form-control" ng-model="vm.filter">
-                                    <option value="All">All media items</option>
-                                    <option value="image">Images</option>
-                                    <option value="video">Videos</option>
-                                    <option value="file">Files</option>
-                                </select>  
-                                <div class="input-group-btn">
-                                    <button type="button" class="btn greent" ng-click="vm.filterItems()">Filter</button>
-                                </div>
+                    <div class="col-md-6">
+                        <div class="input-group input-medium">
+                            <select class="bs-select form-control" ng-model="vm.filter">
+                                <option value="All">All media items</option>
+                                <option value="image">Images</option>
+                                <option value="video">Videos</option>
+                                <option value="file">Files</option>
+                            </select>
+                            <div class="input-group-btn">
+                                <button type="button" class="btn greent" ng-click="vm.filterItems()">Filter</button>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="inputs">
-                                <div class="portlet-input input-large input-inline">
-                                    <div class="input-icon right">
-                                        <i class="icon-magnifier"></i>
-                                        <input type="text" class="form-control form-control-solid" placeholder="search..."  ng-model="vm.keyword" placeholder="search..." ng-change="vm.search(vm.keyword)">
-                                    </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="inputs">
+                            <div class="portlet-input input-large input-inline">
+                                <div class="input-icon right">
+                                    <i class="icon-magnifier"></i>
+                                    <input type="text" class="form-control form-control-solid" placeholder="search..." ng-model="vm.keyword" placeholder="search..."
+                                        ng-change="vm.search(vm.keyword)">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!--Paging-->
-                    <div class="actions padding-top-10">
-                        <list-paging ng-model="vm.paging" change-page="changePage"></list-paging>
-                    </div>
+                </div>
+                <!--Paging-->
+                <div class="actions padding-top-10">
+                    <list-paging ng-model="vm.paging" change-page="changePage"></list-paging>
+                </div>
             </div>
             <div class="portlet-body">
                 <div class="table-scrollable table-scrollable-borderless">
@@ -60,7 +61,7 @@
                         <tbody>
                             <tr ng-repeat="item in vm.pagedItems[vm.paging.currentPage]">
                                 <td style="vertical-align: middle; text-align: center;">
-			                        <div class="lib-media-icon" dynamic-html="vm.fileSrc(item)"></div>
+                                    <div class="lib-media-icon" dynamic-html="vm.fileSrc(item)"></div>
                                 </td>
                                 <td class="show-function width30">
                                     {{vm.cutString(item.displayName)}}
@@ -71,7 +72,7 @@
                                 <!-- <td> 
                                     {{item.author}}
                                 </td> -->
-                                <td>                            
+                                <td>
                                     <textarea rows="5" name="desc" placeholder="Description" ng-model="item.description" class="form-control"></textarea>
                                     <a href="#" title="Save" ng-click="vm.save(item)" class="padding-5 badge badge-success margin-top-5" style="float: right;">
                                         Save

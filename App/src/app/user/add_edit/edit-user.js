@@ -58,6 +58,8 @@
 
 			var districts = appSettings.quanHuyen[userDetailVm.user.city];
 			userDetailVm.districts = districts;
+			var wards = appSettings.phuongXa[userDetailVm.user.district];
+			userDetailVm.wards = wards;
 
 			//Get UserRole Info
 			loadRoles();
@@ -128,7 +130,9 @@
 				//Delete users List storage
 				delete $rootScope.storage.usersList;
 				appUtils.hideLoading();
-				toaster.pop('success', 'Success', "Account Updated.");
+				$scope.$apply(function () {
+					toaster.pop('success', 'Success', "Account Updated.");
+				});
 				userPhone = userDetailVm.user.phoneNumber;
 				//Set new value for current user of local storage
 				if (userDetailVm.currentUser.$id == userDetailVm.user.$id) {
@@ -160,9 +164,14 @@
 			/* jshint ignore:end */
 		};
 
-		userDetailVm.changeDistrict = function () {
+		userDetailVm.changeCity = function () {
 			var districts = appSettings.quanHuyen[userDetailVm.user.city];
 			userDetailVm.districts = districts;
+		};
+
+		userDetailVm.changeDistrict = function () {
+			var wards = appSettings.phuongXa[userDetailVm.user.district];
+			userDetailVm.wards = wards;
 		};
 
 		angular.element(document).ready(function () {
@@ -314,7 +323,9 @@
 				}
 
 				appUtils.hideLoading();
-				toaster.pop('success', 'Success', "Change User Roles Successfully!");
+				$scope.$apply(function () {
+					toaster.pop('success', 'Success', "Change User Roles Successfully!");
+				});
 				$timeout(function () {
 					loadUserDetails();
 				}, 0);
@@ -329,10 +340,14 @@
 			$ngBootbox.confirm('Are you sure want to reset password?').then(function () {
 				appUtils.showLoading();
 				authService.resetPasswordAuth(userDetailVm.user.email).then(function () {
-					toaster.pop('success', 'Success', "Your request reset password has been sent to " + userDetailVm.user.email + "!");
+					$scope.$apply(function () {
+						toaster.pop('success', 'Success', "Your request reset password has been sent to " + userDetailVm.user.email + "!");
+					});
 					appUtils.hideLoading();
 				}).catch(function (error) {
-					toaster.pop('error', 'Error', error);
+					$scope.$apply(function () {
+						toaster.pop('error', 'Error', error);
+					});
 					appUtils.hideLoading();
 				});
 			});

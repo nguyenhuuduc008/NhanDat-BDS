@@ -132,9 +132,14 @@
 			$state.go('user.list');
 		};
 		
-		userAddVm.changeDistrict = function(){
+		userAddVm.changeCity = function(){
 			var districts = appSettings.quanHuyen[userAddVm.user.city];
 			userAddVm.districts = districts;
+		};
+		
+		userAddVm.changeDistrict = function () {
+			var wards = appSettings.phuongXa[userAddVm.user.district];
+			userAddVm.wards = wards;
 		};
 	}
 })();

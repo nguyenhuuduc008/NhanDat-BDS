@@ -116,7 +116,7 @@
                                 <!--<li>
                                     <a href="#tab_1_3" data-toggle="tab" ng-click="loadData()">Change Password</a>
                                 </li>-->
-                                <li>
+                                <li ng-if="userDetailVm.adminRole">
                                     <a href="#tab_1_4" data-toggle="tab" ng-click="userDetailVm.loadData()">User Roles</a>
                                 </li>
                             </ul>

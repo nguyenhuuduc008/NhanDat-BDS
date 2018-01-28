@@ -119,7 +119,8 @@
                 $scope.loading = false;
                 appUtils.hideLoading();
                 $scope.showError = true;
-                $scope.errMessage = error.message;
+                // $scope.errMessage = error.message;
+                $scope.errMessage = "The password that you've entered is incorrect.";
             });
         }
 

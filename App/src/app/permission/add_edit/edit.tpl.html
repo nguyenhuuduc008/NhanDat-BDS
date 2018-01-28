@@ -29,27 +29,34 @@
             </div>
             <div class="portlet-body form">
                 <!-- BEGIN FORM-->
-                <form ng-submit="permissionVm.update(editPermissionForm)" class="form-horizontal form-bordered" role="form" name="editPermissionForm" novalidate>
+                <form ng-submit="permissionVm.update(editPermissionForm)" class="form-horizontal form-bordered" role="form" name="editPermissionForm"
+                    novalidate>
                     <div class="form-body">
                         <table class="table table-hover table-light text-center">
                             <thead>
                                 <tr class="uppercase">
-                                    <th class="th-title width30"> Permissions </th>
-                                    <th class="th-title width10"> Index </th>
+                                    <th class="th-title width30"> Permissions
+                                        <span class="required-field">*</span>
+                                    </th>
+                                    <th class="th-title width10"> Index
+                                        <span class="required-field">*</span>
+                                    </th>
                                     <th ng-repeat="role in permissionVm.roles"> {{role.name}} </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="th-title" ng-show="permissionVm.roles.length > 0" ng-class="{'has-error': (permissionVm.showInvalid && editPermissionForm.permissionName.$error.required) || editPermissionForm.permissionName.$error.pattern}" >
-                                        <input type="text" ng-model="permissionVm.name" placeholder="Permission Name" class="col-md-10 form-control" name="permissionName" required ng-pattern="permissionVm.nameRegx" maxlength="50"/>
-                                         <label class="control-label" ng-show="permissionVm.showInvalid && editPermissionForm.permissionName.$error.required">* This field is required</label>
-                                            <label class="control-label" ng-show="editPermissionForm.permissionName.$error.pattern">* This field is not valid</label>
+                                    <td class="th-title" ng-show="permissionVm.roles.length > 0" ng-class="{'has-error': (permissionVm.showInvalid && editPermissionForm.permissionName.$error.required) || editPermissionForm.permissionName.$error.pattern}">
+                                        <input type="text" ng-model="permissionVm.name" placeholder="Permission Name" class="col-md-10 form-control" name="permissionName"
+                                            required ng-pattern="permissionVm.nameRegx" maxlength="50" />
+                                        <!-- <label class="control-label" ng-show="permissionVm.showInvalid && editPermissionForm.permissionName.$error.required">* This field is required</label> -->
+                                        <label class="control-label" ng-show="editPermissionForm.permissionName.$error.pattern">* This field is not valid</label>
                                     </td>
-                                    <td class="th-title" ng-show="permissionVm.roles.length > 0" ng-class="{'has-error': (permissionVm.showInvalid && editPermissionForm.permissionIndex.$error.pattern)}" >
-                                        <input type="text" ng-model="permissionVm.index" placeholder="Index Number" class="col-md-10 form-control" name="permissionIndex" required ng-pattern="permissionVm.numberRegx" maxlength="50"/>
-                                         <!--<label class="control-label" ng-show="permissionVm.showInvalid && editPermissionForm.permissionIndex.$error.required">* This field is required</label>-->
-                                         <!--<label class="control-label" ng-show="editPermissionForm.permissionIndex.$error.pattern">* This field is not valid</label>-->
+                                    <td class="th-title" ng-show="permissionVm.roles.length > 0" ng-class="{'has-error': (permissionVm.showInvalid && editPermissionForm.permissionIndex.$error.required) || editPermissionForm.permissionIndex.$error.pattern}">
+                                        <input type="text" ng-model="permissionVm.index" placeholder="Number" class="col-md-10 form-control" name="permissionIndex" required
+                                            ng-pattern="permissionVm.numberRegx" maxlength="50" />
+                                        <!--<label class="control-label" ng-show="permissionVm.showInvalid && editPermissionForm.permissionIndex.$error.required">* This field is required</label>-->
+                                        <!-- <label class="control-label" ng-show="editPermissionForm.permissionIndex.$error.pattern">* This field is not valid</label> -->
                                     </td>
                                     <td ng-repeat="role in permissionVm.roles">
                                         <label class="mt-checkbox mt-checkbox-outline">

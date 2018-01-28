@@ -13,6 +13,12 @@
         }
 		var userDetailVm = this ; // jshint ignore:line
 		userDetailVm.currentUser = $rootScope.storage.currentUser;
+
+		userDetailVm.adminRole = true;
+		// var adminRole = _.find(userDetailVm.currentUser.userRoles, function(o) { return o === "-KTlccaZaxPCGDaFPSc5"; });
+		// userDetailVm.adminRole = adminRole;
+		// console.log(adminRole);
+
 		userDetailVm.user = {};
 		userDetailVm.user.$id = $stateParams.id;
 		$scope.zipcodeRegx = /(^\d{5}$)|(^\d{5}-\d{4}$)/;

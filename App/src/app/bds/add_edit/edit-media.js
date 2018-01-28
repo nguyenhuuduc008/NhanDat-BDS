@@ -219,7 +219,7 @@
                     toaster.pop('error','Error', "Change Error! " + res.errorMsg);       
                 }
             }); 
-        }
+        };
         vm.fileSrc = function(item){
             return appUtils.mediaImgSrc(item, '100px');
         };

@@ -1,20 +1,20 @@
-(function(){
+(function () {
 	'use strict';
 
 	angular.module("app.user")
-	.controller("editUserCtrl" , editUserCtrl);
+		.controller("editUserCtrl", editUserCtrl);
 	/** @ngInject */
-	function editUserCtrl($q,$rootScope,$timeout, $scope, $state,$stateParams,$ngBootbox,$uibModal,appUtils,userService,roleService,permissionService, authService,toaster){
+	function editUserCtrl($q, $rootScope, $timeout, $scope, $state, $stateParams, $ngBootbox, $uibModal, appUtils, userService, roleService, permissionService, authService, toaster) {
 		$rootScope.settings.layout.showSmartphone = false;
 		$rootScope.settings.layout.showPageHead = true;
-        $rootScope.settings.layout.guestPage = false;
-        var appSettings = $rootScope.storage.appSettings;
-		if($rootScope.reProcessSideBar){
-            $rootScope.reProcessSideBar = false;
-        }
-		var userDetailVm = this ; // jshint ignore:line
+		$rootScope.settings.layout.guestPage = false;
+		var appSettings = $rootScope.storage.appSettings;
+		if ($rootScope.reProcessSideBar) {
+			$rootScope.reProcessSideBar = false;
+		}
+		var userDetailVm = this; // jshint ignore:line
 		userDetailVm.currentUser = $rootScope.storage.currentUser;
-		
+
 		userDetailVm.cities = appSettings.thanhPho;
 
 		userDetailVm.adminRole = true;
@@ -31,93 +31,96 @@
 		var userPhone = '';
 		userDetailVm.e_msges = {};
 		userDetailVm.userRoles = [];
-		userDetailVm.states = appUtils.getAllState();
+		// userDetailVm.states = appUtils.getAllState();
 		var roles = [];
 
-		roleService.items().$loaded().then(function(data){
+		roleService.items().$loaded().then(function (data) {
 			roles = data;
 		});
-		
+
 		//Load Data
-		function loadUserDetails(){
+		function loadUserDetails() {
 			appUtils.showLoading();
-			userService.get(userDetailVm.user.$id).$loaded().then(function(result){
-				if(result){
+			userService.get(userDetailVm.user.$id).$loaded().then(function (result) {
+				if (result) {
 					appUtils.hideLoading();
 					setUser(result);
 					return;
-				}	
-			});	
+				}
+			});
 		}
 
-		function setUser(result){
+		function setUser(result) {
 			userDetailVm.user = result;
-			userDetailVm.dataLetterPic =  userDetailVm.user.firstName.charAt(0).toUpperCase() + userDetailVm.user.lastName.charAt(0).toUpperCase(); //userDetailVm.user.email.charAt(0).toUpperCase();// Handle avatar    
-			userPhone =  userDetailVm.user.phoneNumber;
+			userDetailVm.dataLetterPic = userDetailVm.user.firstName.charAt(0).toUpperCase() + userDetailVm.user.lastName.charAt(0).toUpperCase(); //userDetailVm.user.email.charAt(0).toUpperCase();// Handle avatar    
+			userPhone = userDetailVm.user.phoneNumber;
 			userDetailVm.Phone = userDetailVm.user.phoneNumber;
+
+			var districts = appSettings.quanHuyen[userDetailVm.user.city];
+			userDetailVm.districts = districts;
 
 			//Get UserRole Info
 			loadRoles();
 		}
-		
-		function loadRoles(){
+
+		function loadRoles() {
 			//Get UserRole Info
 			userDetailVm.userRoles = [];
 			var userRoles = userDetailVm.user.userRoles;
-			if(userRoles !== null && userRoles !== undefined && userRoles.length > 0){
-				_.forEach(userRoles, function(roleId, key) {
-					var role = _.find(roles, {$id: roleId});
-					if(role){
+			if (userRoles !== null && userRoles !== undefined && userRoles.length > 0) {
+				_.forEach(userRoles, function (roleId, key) {
+					var role = _.find(roles, { $id: roleId });
+					if (role) {
 						var item = role;
 						item.permissionstxt = '';
-						permissionService.getPermissionByRole(item.$id).then(function(res){
-	                    var permissions = [];
-		                    if(res.length > 0){
-		                        _.forEach(res, function(val, key) {
-		                            permissions.push(val.name);                 
-		                        });
-		                        item.permissionstxt = angular.fromJson(permissions).join(', ');
-		                    }
-	                	});
+						permissionService.getPermissionByRole(item.$id).then(function (res) {
+							var permissions = [];
+							if (res.length > 0) {
+								_.forEach(res, function (val, key) {
+									permissions.push(val.name);
+								});
+								item.permissionstxt = angular.fromJson(permissions).join(', ');
+							}
+						});
 
-	                	userDetailVm.userRoles.push(item);
-					}	                 
-	            });
+						userDetailVm.userRoles.push(item);
+					}
+				});
 			}
 		}
 
 		//Private Functions
-		function checkPhoneExists(form){
+		function checkPhoneExists(form) {
 			/* jshint ignore:start */
 			var deferred = $q.defer();
 			var req = userService.checkPhoneExist(userDetailVm.Phone);
-			req.then(function(res){
+			req.then(function (res) {
 				appUtils.hideLoading();
-				if(res.data !== null && res.data.length >= 1) { 
-					if(userPhone != userDetailVm.Phone){
-						form.phonenumber.$setValidity('server',false);
+				if (res.data !== null && res.data.length >= 1) {
+					if (userPhone != userDetailVm.Phone) {
+						form.phonenumber.$setValidity('server', false);
 						userDetailVm.e_msges['phonenumber'] = "Phone number already exists. Please enter another.";
-						deferred.resolve({result: true});
+						deferred.resolve({ result: true });
 						return deferred.promise;
 					}
-				 }//Phone exists.
-				deferred.resolve({result: false});
+				}//Phone exists.
+				deferred.resolve({ result: false });
 				return deferred.promise;
-			}, function(res){
+			}, function (res) {
 				// show not found error
-				form.phonenumber.$setValidity('server',false);
+				form.phonenumber.$setValidity('server', false);
 				userDetailVm.e_msges['phonenumber'] = "Phone number already exists. Please enter another.";
-				deferred.resolve({result: true});
+				deferred.resolve({ result: true });
 			});
 			/* jshint ignore:end */
 			return deferred.promise;
 		}
-		
-		function updateUser(){
+
+		function updateUser() {
 			appUtils.showLoading();
 			var req = userService.updateUser(userDetailVm.user);
-			req.then(function(res){
-				if(!res.result){
+			req.then(function (res) {
+				if (!res.result) {
 					appUtils.hideLoading();
 					$ngBootbox.alert(res.errorMsg.message);
 					return;
@@ -125,52 +128,52 @@
 				//Delete users List storage
 				delete $rootScope.storage.usersList;
 				appUtils.hideLoading();
-				toaster.pop('success','Success', "Account Updated.");
+				toaster.pop('success', 'Success', "Account Updated.");
 				userPhone = userDetailVm.user.phoneNumber;
 				//Set new value for current user of local storage
-				if(userDetailVm.currentUser.$id == userDetailVm.user.$id){
+				if (userDetailVm.currentUser.$id == userDetailVm.user.$id) {
 					appUtils.transformObject(userDetailVm.currentUser, userDetailVm.user);
 				}
 			});
 		}
-		
+
 		//Functions
-		userDetailVm.saveEdit = function(form){
+		userDetailVm.saveEdit = function (form) {
 			appUtils.showLoading();
 			userDetailVm.showInvalid = true;
-			if(form.$invalid){
+			if (form.$invalid) {
 				return;
 			}
 
 			// checkPhoneExists(form).then(function(checkPhoneExistsRs){
 			// 	if(!checkPhoneExistsRs.result){
-					userDetailVm.user.phoneNumber = $.trim(userDetailVm.Phone) === '' ? ' ' : userDetailVm.Phone;
-					updateUser();
+			userDetailVm.user.phoneNumber = $.trim(userDetailVm.Phone) === '' ? ' ' : userDetailVm.Phone;
+			updateUser();
 			// 	}
 			// });
 		};
 
-		userDetailVm.EnalblePhoneForm = function(form){
+		userDetailVm.EnalblePhoneForm = function (form) {
 			/* jshint ignore:start */
 			form.phonenumber.$setValidity('server', true);
 			userDetailVm.e_msges['phonenumber'] = "";
 			/* jshint ignore:end */
 		};
-		
-		userDetailVm.changeDistrict = function(){
+
+		userDetailVm.changeDistrict = function () {
 			var districts = appSettings.quanHuyen[userDetailVm.user.city];
 			userDetailVm.districts = districts;
 		};
 
-		angular.element(document).ready(function() {
-            $("#avatar-file").change(function(){
-                appUtils.showLoading();
+		angular.element(document).ready(function () {
+			$("#avatar-file").change(function () {
+				appUtils.showLoading();
 				var file = $(this)[0].files[0];
-                if(file){
-                    var metadata = {
-                        contentType: file.type
+				if (file) {
+					var metadata = {
+						contentType: file.type
 					};
-					
+
 					// Generate lowres and hires
 					var _URL = window.URL || window.webkitURL;
 					var img = new Image();
@@ -182,15 +185,15 @@
 						var avatar = appUtils.getAvatar(img, maxWidth, quality, file.type);
 						avatar.name = file.name;
 						var path = 'Users/Avatar/' + userDetailVm.user.email;
-						var uploadTask = userService.uploadAvatar(path, avatar.data , metadata);
-						uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, function(snapshot) {
+						var uploadTask = userService.uploadAvatar(path, avatar.data, metadata);
+						uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, function (snapshot) {
 							// Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
 							var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 							console.log('progress');
 							console.log(progress);
-						}, function(error) {
+						}, function (error) {
 							console.log(error.code);
-						}, function(data) {
+						}, function (data) {
 							appUtils.hideLoading();
 							// Upload completed successfully, now we can get the download URL
 							var downloadURL = uploadTask.snapshot.downloadURL;
@@ -203,9 +206,9 @@
 							//updateGeneralSetting();
 						});
 					};
-                }
-            });
-        });
+				}
+			});
+		});
 
 		// userDetailVm.changeAvatar = function(form){
 		// 	appUtils.showLoading();
@@ -248,9 +251,9 @@
 
 		// 	  //Update User Details
 		// 	  userDetailVm.user.photoURL = downloadUrl;
-        //       if(userDetailVm.currentUser.$id == userDetailVm.user.$id){
-        //           $('#header-img-profile img').attr('src',downloadUrl + '');
-        //       }
+		//       if(userDetailVm.currentUser.$id == userDetailVm.user.$id){
+		//           $('#header-img-profile img').attr('src',downloadUrl + '');
+		//       }
 
 		// 	  updateUser();
 		// 	  $timeout(function(){
@@ -260,82 +263,82 @@
 		// 	});
 		// };
 
-		userDetailVm.removeRole = function(index){
-			 userDetailVm.userRoles.splice(index, 1);
+		userDetailVm.removeRole = function (index) {
+			userDetailVm.userRoles.splice(index, 1);
 		};
 
-		userDetailVm.loadData = function(){
+		userDetailVm.loadData = function () {
 			loadUserDetails();
 		};
 
-		userDetailVm.showPopupAddUserToRole = function(){
-			 var modalInstance = $uibModal.open({
+		userDetailVm.showPopupAddUserToRole = function () {
+			var modalInstance = $uibModal.open({
 				templateUrl: 'app/user/user_role/add-user-role.tpl.html',
 				controller: 'userRoleCtrl as userRoleVm',
-                size: 'lg',
-                scope: $scope,
+				size: 'lg',
+				scope: $scope,
 				backdrop: 'static',
-                resolve: {
-			        user: function () {
-			           return userDetailVm.user;
-			        }
-		        }
+				resolve: {
+					user: function () {
+						return userDetailVm.user;
+					}
+				}
 			});
 		};
 
-		userDetailVm.cancelChangeUserRoles = function(index){
+		userDetailVm.cancelChangeUserRoles = function (index) {
 			userDetailVm.cancel();
 		};
 
-		userDetailVm.saveChangeRole = function(){
+		userDetailVm.saveChangeRole = function () {
 			appUtils.showLoading();
 			var updateUser = userDetailVm.user;
 			var newRoles = [];
-			_.forEach(userDetailVm.userRoles, function(val, key) {
-                newRoles.push(val.$id);                 
-            });
-			updateUser.userRoles= newRoles;
+			_.forEach(userDetailVm.userRoles, function (val, key) {
+				newRoles.push(val.$id);
+			});
+			updateUser.userRoles = newRoles;
 			var req = userService.updateUser(updateUser);
-			req.then(function(res){
-				if(!res.result){
+			req.then(function (res) {
+				if (!res.result) {
 					appUtils.hideLoading();
 					$ngBootbox.alert(res.errorMsg.message);
 					return;
 				}
 				//Delete users List storage
 				delete $rootScope.storage.usersList;
-				
+
 				//Delete Side Bar Menus List storage
-				if(userDetailVm.currentUser.$id == userDetailVm.user.$id){
-                   delete $rootScope.storage.sidebarMenus;
-              	}
+				if (userDetailVm.currentUser.$id == userDetailVm.user.$id) {
+					delete $rootScope.storage.sidebarMenus;
+				}
 
 				appUtils.hideLoading();
-				toaster.pop('success','Success', "Change User Roles Successfully!");
-				$timeout(function(){
+				toaster.pop('success', 'Success', "Change User Roles Successfully!");
+				$timeout(function () {
 					loadUserDetails();
-				},0);
+				}, 0);
 			});
 		};
 
-		userDetailVm.loadUserDetails = function(){
+		userDetailVm.loadUserDetails = function () {
 			loadUserDetails();
 		};
 
-		userDetailVm.resetPassword = function(){
-			$ngBootbox.confirm('Are you sure want to reset password?').then(function(){
+		userDetailVm.resetPassword = function () {
+			$ngBootbox.confirm('Are you sure want to reset password?').then(function () {
 				appUtils.showLoading();
-				authService.resetPasswordAuth(userDetailVm.user.email).then(function(){
-					toaster.pop('success','Success', "Your request reset password has been sent to " + userDetailVm.user.email + "!");
+				authService.resetPasswordAuth(userDetailVm.user.email).then(function () {
+					toaster.pop('success', 'Success', "Your request reset password has been sent to " + userDetailVm.user.email + "!");
 					appUtils.hideLoading();
-				}).catch(function(error) {
-					toaster.pop('error','Error', error);
+				}).catch(function (error) {
+					toaster.pop('error', 'Error', error);
 					appUtils.hideLoading();
 				});
 			});
 		};
 
-		userDetailVm.cancel = function(){
+		userDetailVm.cancel = function () {
 			$state.go('user.list');
 		};
 

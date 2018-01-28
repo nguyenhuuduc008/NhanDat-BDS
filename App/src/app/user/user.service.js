@@ -79,7 +79,8 @@
 				phoneNumber: user.phoneNumber,
 				address: user.address,
 				city: user.city,
-				state: user.state || '',
+				district: user.district || '',
+				ward: user.ward || '',
 				zipCode: user.zipCode,
 				timestampModified: ts}).then(function(res){
 				return {result: true , data: key};

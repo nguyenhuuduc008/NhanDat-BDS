@@ -67,8 +67,7 @@
             'app.role',
             'app.settings',
             'app.search',
-            'app.dRemote',
-            'app.bds'
+            'app.dRemote'
         ])
         .config(config)
         .run(run)

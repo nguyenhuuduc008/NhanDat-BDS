@@ -26,13 +26,15 @@
 		vm.cacLoaiBDS = appSettings.cacLoaiBDS;
 		vm.cacLoaiTacNghiep = appSettings.cacLoaiTacNghiep;
 
-		vm.showInvalid = false;
+		vm.showInvalid = true;
+		/*
 		$scope.zipcodeRegx = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
 		$scope.nameRegx = /^(a-z|A-Z|0-9)*[^!#$%^&*()'"\/\\;:@=+,?\[\]\/]*$/;
 		$scope.addressRegx = /^(a-z|A-Z|0-9)*[^!$%^&*()'"\/\\;:@=+,?\[\]]*$/;
 		$scope.numberRegx = /^\d+$/;
 		$scope.currencyRegx = /^\$\d/;
 		$scope.emailRegx = /^[^!'"\/ ]+$/;
+		*/
 
 		vm.activeTab = 'thongTin';
 		vm.tabs = {
@@ -93,7 +95,7 @@
 		//Functions
 		vm.save = function (form) {
 			appUtils.showLoading();
-			// vm.showInvalid = true;
+			 vm.showInvalid = false;
 			if (form.$invalid) {
 				return;
 			}
@@ -134,7 +136,7 @@
 		};
 
 		vm.cancel = function (form) {
-			$state.go('abs.list');
+			$state.go('bds.list');
 		};
 
 		vm.changeCity = function () {

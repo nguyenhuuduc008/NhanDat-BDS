@@ -4,7 +4,7 @@
 	angular.module("app.bds")
 		.controller("editLienKetUsersCtrl", editLienKetUsersCtrl);
 	/** @ngInject */
-	function editLienKetUsersCtrl($q, $rootScope, $timeout, $scope, $state, $stateParams, $ngBootbox, $uibModal, appUtils, lienKetUsersService, roleService, permissionService, userService, bdsService, bdsViTriService, authService, toaster) {
+	function editLienKetUsersCtrl($q, $rootScope, $timeout, $scope, $state, $stateParams, $ngBootbox, $uibModal, appUtils, lienKetUsersService, roleService, permissionService, userService, bdsService, authService, toaster) {
 		$rootScope.settings.layout.showSmartphone = false;
 		$rootScope.settings.layout.showPageHead = true;
 		$rootScope.settings.layout.guestPage = false;

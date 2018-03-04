@@ -1,0 +1,37 @@
+<div class="portlet light bordered tasks-widget">
+    <div class="portlet-title">
+        <div class="actions">
+            <div class="padding-top-2">
+                <!--<list-paging ng-model="paging" on-change="changePage()"></list-paging>-->
+                <list-paging ng-model="vm.paging" change-page="vm.changePage"></list-paging>
+            </div>
+        </div>
+    </div>
+    <div class="table-scrollable table-scrollable-borderless">
+        <table class="table table-hover table-light">
+            <thead class="flip-content">
+                <tr class="uppercase">
+                    <th class="width5"> Email User </th>
+                    <th class="width20"> Nội dung </th>
+                    <th class="width5"> Loại </th>
+                    <th class="width5"> Thực Hiện Bởi </th>
+                    <th class="width5"> Thời Gian </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in vm.pagedItems[vm.paging.currentPage]">
+                    <td> {{item.userEmail}} </td>
+                    <td >
+                         {{item.content}}
+                    <td>
+                        {{item.type}}
+                    </td>
+                    <td>
+                        {{item.createdBy}}
+                    </td>
+                    <td> {{item.timestampCreated | date : "MM/dd/yyyy HH:mm:ss"}}<span></span> </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

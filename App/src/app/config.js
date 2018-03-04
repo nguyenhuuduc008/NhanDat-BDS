@@ -2,12 +2,12 @@
  	'user strict';
  	var cfgFB = {
 	  	fbConnection:{
-	 	    apiKey: "AIzaSyAgkTweswavfcy6bE-dDJaGrvXfuoNwx6Q",
-			authDomain: "nhandat-bds.firebaseapp.com",
-			databaseURL: "https://nhandat-bds.firebaseio.com",
-			projectId: "nhandat-bds",
-			storageBucket: "nhandat-bds.appspot.com",
-			messagingSenderId: "160055175076"
+	 	    apiKey: "AIzaSyAfhl3GAhHdYa02fAG1XCHCrRlawTwMGyQ",
+			authDomain: "bds-staging-375e7.firebaseapp.com",
+			databaseURL: "https://bds-staging-375e7.firebaseio.com",
+			projectId: "bds-staging-375e7",
+			storageBucket: "bds-staging-375e7.appspot.com",
+			messagingSenderId: "444150050341"
 	 	}
 	};
 	 

@@ -16,16 +16,17 @@
 		userDetailVm.currentUser = $rootScope.storage.currentUser;
 
 		userDetailVm.cities = appSettings.thanhPho;
-
+		userDetailVm.cacLoaiUser = appSettings.cacLoaiUser;
 		userDetailVm.adminRole = true;
 		// var adminRole = _.find(userDetailVm.currentUser.userRoles, function(o) { return o === "-KTlccaZaxPCGDaFPSc5"; });
 		// userDetailVm.adminRole = adminRole;
 		// console.log(adminRole);
-
+		userDetailVm.existedPhone=false;
 		userDetailVm.user = {};
 		userDetailVm.user.$id = $stateParams.id;
+		$scope.phoneRegx=/^(0-9)*[^!#$%^&*()'"\/\\;:@=+,?\[\]\/.A-Za-z ]*$/;
 		$scope.zipcodeRegx = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
-		$scope.nameRegx = /^(a-z|A-Z|0-9)*[^!#$%^&*()'"\/\\;:@=+,?\[\]\/]*$/;
+		$scope.nameRegx = /^(a-z|A-Z|0-9)*[^!#$%^&*()'"\/\\;:@=+,?\[\]\/.]*$/;
 		$scope.addressRegx = /^(a-z|A-Z|0-9)*[^!$%^&*()'"\/\\;:@=+,?\[\]]*$/;
 		userDetailVm.showInvalid = true;
 		var userPhone = '';
@@ -49,7 +50,6 @@
 				}
 			});
 		}
-
 		function setUser(result) {
 			userDetailVm.user = result;
 			userDetailVm.dataLetterPic = userDetailVm.user.firstName.charAt(0).toUpperCase() + userDetailVm.user.lastName.charAt(0).toUpperCase(); //userDetailVm.user.email.charAt(0).toUpperCase();// Handle avatar    
@@ -139,28 +139,58 @@
 					appUtils.transformObject(userDetailVm.currentUser, userDetailVm.user);
 				}
 			});
+			
 		}
 
 		//Functions
 		userDetailVm.saveEdit = function (form) {
 			appUtils.showLoading();
+			userDetailVm.existedPhone=false;
 			userDetailVm.showInvalid = true;
 			if (form.$invalid) {
+				
 				return;
 			}
-
-			// checkPhoneExists(form).then(function(checkPhoneExistsRs){
-			// 	if(!checkPhoneExistsRs.result){
 			userDetailVm.user.phoneNumber = $.trim(userDetailVm.Phone) === '' ? ' ' : userDetailVm.Phone;
-			updateUser();
-			// 	}
-			// });
+			//Check user phone
+			userService.getExitedPhone(userDetailVm.user.phoneNumber).then(function(res){
+				var data=res.data;
+				if(data.phone){//phone đã tồn tại
+					
+					if(data.userEmail==userDetailVm.user.email){//phone tồn tại nhưng là của user cũ
+						
+						userService.setPhone({
+							phone:userDetailVm.user.phoneNumber,
+							userId:userDetailVm.user.$id,
+							userEmail:userDetailVm.user.email,
+							userName:userDetailVm.user.firstName+" "+ userDetailVm.user.lastName
+						}).then(function(res){
+							updateUser();
+						});
+					}else{ //phone của user khác
+						appUtils.hideLoading();
+						userDetailVm.existedPhone=true;
+					}
+				}else{//chưa có sdt
+					userService.setPhone({
+						phone:userDetailVm.user.phoneNumber,
+						userId:userDetailVm.user.$id,
+						userEmail:userDetailVm.user.email,
+						userName:userDetailVm.user.firstName+" "+ userDetailVm.user.lastName
+					}).then(function(res){
+						updateUser();
+					});
+				}
+			}).catch(function(err){
+				$ngBootbox.alert('Lỗi xảy ra');
+					return;
+			});
 		};
 
 		userDetailVm.EnalblePhoneForm = function (form) {
 			/* jshint ignore:start */
-			form.phonenumber.$setValidity('server', true);
-			userDetailVm.e_msges['phonenumber'] = "";
+
+			userDetailVm.existedPhone=false;
 			/* jshint ignore:end */
 		};
 
@@ -198,10 +228,7 @@
 						uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, function (snapshot) {
 							// Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
 							var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-							console.log('progress');
-							console.log(progress);
 						}, function (error) {
-							console.log(error.code);
 						}, function (data) {
 							appUtils.hideLoading();
 							// Upload completed successfully, now we can get the download URL
@@ -218,61 +245,9 @@
 				}
 			});
 		});
-
-		// userDetailVm.changeAvatar = function(form){
-		// 	appUtils.showLoading();
-		// 	var file = $('#file')[0].files[0];
-		// 	// Create the file metadata
-		// 	var metadata = {
-		// 	  contentType: 'image/jpeg'
-		// 	};
-		// 	// Upload file and metadata to the object 'images/mountains.jpg'
-		// 	var uploadTask = mediaService.uploadFile('images/user_profile/', file, metadata);// Listen for state changes, errors, and completion of the upload.
-		// 	uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
-		// 	  function(snapshot) {
-		// 	    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-		// 	    var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-		// 	    console.log('Upload is ' + progress + '% done');
-		// 	  }, function(error) {
-		// 	  switch (error.code) {
-		// 	    case 'storage/unauthorized':
-		// 	      // User doesn't have permission to access the object
-		// 		  appUtils.hideLoading();
-		// 	      $ngBootbox.alert(error.error);
-		// 	      break;
-
-		// 	    case 'storage/canceled':
-		// 	      // User canceled the upload
-		// 		  appUtils.hideLoading();
-		// 	      $ngBootbox.alert(error.error);
-		// 	      break;
-
-		// 	    case 'storage/unknown':
-		// 	      // Unknown error occurred, inspect error.serverResponse
-		// 		  appUtils.hideLoading();
-		// 	      $ngBootbox.alert(error.error);
-		// 	      break;
-		// 	  }
-		// 	}, function() {
-		// 	  // Upload completed successfully, now we can get the download URL
-		// 	  appUtils.hideLoading();
-		// 	  var downloadUrl = uploadTask.snapshot.downloadURL;
-
-		// 	  //Update User Details
-		// 	  userDetailVm.user.photoURL = downloadUrl;
-		//       if(userDetailVm.currentUser.$id == userDetailVm.user.$id){
-		//           $('#header-img-profile img').attr('src',downloadUrl + '');
-		//       }
-
-		// 	  updateUser();
-		// 	  $timeout(function(){
-		// 			loadUserDetails();
-		// 			$('a.fileinput-exists').click();
-		// 		},0);
-		// 	});
-		// };
-
+		var lstRolesDelete=[];
 		userDetailVm.removeRole = function (index) {
+			lstRolesDelete.push(userDetailVm.userRoles[index].name);
 			userDetailVm.userRoles.splice(index, 1);
 		};
 
@@ -307,7 +282,10 @@
 				newRoles.push(val.$id);
 			});
 			updateUser.userRoles = newRoles;
-			var req = userService.updateUser(updateUser);
+			var req = userService.updateUser(updateUser,{
+				userEmail:updateUser.email,
+				lstRolesDelete:lstRolesDelete
+			});
 			req.then(function (res) {
 				if (!res.result) {
 					appUtils.hideLoading();
@@ -340,6 +318,7 @@
 			$ngBootbox.confirm('Are you sure want to reset password?').then(function () {
 				appUtils.showLoading();
 				authService.resetPasswordAuth(userDetailVm.user.email).then(function () {
+					userService.resetPasswordHistory(userDetailVm.user.email);
 					$scope.$apply(function () {
 						toaster.pop('success', 'Success', "Your request reset password has been sent to " + userDetailVm.user.email + "!");
 					});

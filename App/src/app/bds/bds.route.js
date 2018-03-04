@@ -60,7 +60,7 @@
 			templateUrl: './app/bds/add_edit/add-bds.tpl.html',
 			controller: 'addBdsCtrl as vm',
 			data: {
-				pageTitle: 'Add New BDS',
+				pageTitle: 'Thêm Mới Bất Động Sản',
 				module: 'bds',
 				parent: 'bds',
 				hide: true

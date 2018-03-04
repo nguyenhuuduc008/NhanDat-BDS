@@ -57,6 +57,7 @@
 
         vm.keyword = '';
         vm.filter = 'All';
+        vm.filterLoai = 'Loai';
         vm.groupedItems = [];
         vm.filteredItems = [];
         vm.pagedItems = [];
@@ -194,6 +195,18 @@
             });
         };
 
+        vm.filterItemsByLoai = function () {
+            vm.keyword = '';
+            bdsMediaService.getMediaBDS(bdsId).then(function (data) {
+                var lst = bdsMediaService.filterItemsByLoai(data, 'Loai', vm.filterLoai);
+                vm.filteredItems = appUtils.sortArray(lst, 'timestampCreated');
+                vm.paging.totalRecord = lst.length;
+                vm.paging.currentPage = 0;
+                //Group by pages
+                vm.groupToPages();
+            });
+        };
+
         vm.delete = function (item) {
             var self = this;
             $ngBootbox.confirm('Are you sure want to delete ' + item.displayName + '?')
@@ -232,6 +245,15 @@
             if (text.length > 40) {
                 return text.substring(0, 40) + ' ...';
             }
+            return text;
+        };
+
+        vm.changeTextLoai = function (text) {
+            if (text === 'noi') {
+                text = 'Nội Thất';
+                return text;
+            }
+            text = 'Ngoại Thất';
             return text;
         };
 

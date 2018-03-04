@@ -48,11 +48,10 @@
                             <span></span>
                         </label>
                     </th>
-                    <th class="text-center"> No </th>
-                    <th> Address </th>
-                    <th class="text-center"> Email </th>
-                    <th class="text-center"> Phone </th>
-                    <th class="text-center"> Status </th>
+                    <th> Địa Chỉ </th>
+                    <th> Kích Thước </th>
+                    <th> Giá </th>
+                    <th > Hướng </th>
                 </tr>
             </thead>
             <tbody>
@@ -63,12 +62,18 @@
                             <span></span>
                         </label>
                     </td>
-                    <td class="text-center"> {{$index + 1}}</td>
-                    <td><a class="primary-link" href="#" ng-click="vm.edit(item.$id)" style="word-break: break-all;"> {{vm.getFullAddress(item)}} </a></td>
-                    <td class="text-center"> {{item.email}} </td>
-                    <td class="text-center"> {{item.dienThoai}} </td>
-                    <td class="text-center" ng-if="item.status == 1">Approved</td>
-                    <td class="text-center" ng-if="item.status == 0">New</td>
+                    <td><a class="primary-link" href="#" ng-click="vm.edit(item.$id)" style="word-break: break-all;">
+                         {{vm.getFullAddress(item)}} </a></td>
+                    <td>
+                         Ngang: <span class="font-green-sharp bold">{{item.ngang|number:1}} m</span> <br>
+                         Dài: <span class="font-green-sharp bold">{{item.dai|number:1}} m</span> <br>
+                         Diện tích: <span class="font-green-sharp bold">{{item.dienTichKhuonVien|number:1}} m<sup>2</sup></span>
+                    </td>
+                    <td>
+                        Đơn giá: <span class="font-red-intense bold">{{item.donGia| currency:'':0}} VNĐ</span><br>
+                        Tổng giá: <span class="font-red-intense bold">{{item.tongGia| currency:'':0}} VNĐ</span> 
+                    </td>
+                    <td> {{item.huong}}<span></span> </td>
                 </tr>
             </tbody>
         </table>

@@ -17,6 +17,8 @@
             roleService.items().$loaded(function(data){
                 appUtils.hideLoading();
                 userRoleVm.roles = data;
+                console.log('roleservice');
+                console.log(data);
                 _.forEach(userRoleVm.roles, function(obj, key) {
                     if(userRoleVm.userRoles !== undefined && userRoleVm.userRoles.length > 0){
                         var isExisted = $.inArray(obj.$id, userRoleVm.userRoles); 
@@ -59,9 +61,22 @@
 
             console.log('-----------userRoles');
             console.log(userRoles);
+            var roleArrText=[];
+            _.forEach(userRoles,function(objRoles,key){
+                _.forEach(userRoleVm.roles,function(objRoleVM,key){
+                    if(objRoles==objRoleVM.$id){
+                        roleArrText.push(objRoleVM.name);
+                    }
+                });
+            });
 
             userRoleVm.user.userRoles = userRoles;
-            var req = userService.updateUser(userRoleVm.user);
+            console.log('userRoleVm.user inside');
+            console.log(userRoleVm.user);
+            var req = userService.updateUser(userRoleVm.user,{
+                userEmail:userRoleVm.user.email,
+                roleArrText:roleArrText
+            });
             req.then(function(res){
                 if(!res.result){
                     appUtils.hideLoading();

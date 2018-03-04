@@ -9,20 +9,33 @@
         <div class="portlet light portlet-fit bordered">
             <div class="portlet-title">
                 <div class="caption">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="input-group input-medium">
                             <select class="bs-select form-control" ng-model="vm.filter">
                                 <option value="All">All media items</option>
                                 <option value="image">Images</option>
                                 <option value="video">Videos</option>
                                 <option value="file">Files</option>
+                                <option value="file">Loại</option>
                             </select>
                             <div class="input-group-btn">
                                 <button type="button" class="btn greent" ng-click="vm.filterItems()">Filter</button>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <div class="input-group input-medium">
+                            <select class="bs-select form-control" ng-model="vm.filterLoai">
+                                <option value="Loai">Loại</option>
+                                <option value="noi">Nội Thất</option>
+                                <option value="ngoai">Ngoại Thất</option>
+                            </select>
+                            <div class="input-group-btn">
+                                <button type="button" class="btn greent" ng-click="vm.filterItemsByLoai()">Filter</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
                         <div class="inputs">
                             <div class="portlet-input input-large input-inline">
                                 <div class="input-icon right">
@@ -45,10 +58,11 @@
                         <thead>
                             <tr class="uppercase">
                                 <th></th>
-                                <th class="width35 text-left"> File </th>
+                                <th class="width30 text-left"> File </th>
                                 <th class="width10 text-center"> Type </th>
                                 <!-- <th> Author </th> -->
-                                <th class="width40 text-left">
+                                <th class="width15 text-center"> Loại </th>
+                                <th class="width30 text-left">
                                     Description
                                 </th>
                                 <!-- <th> 
@@ -72,6 +86,9 @@
                                 <!-- <td> 
                                     {{item.author}}
                                 </td> -->
+                                <td class="text-center">
+                                    {{vm.changeTextLoai(item.loai)}}
+                                </td>
                                 <td>
                                     <textarea rows="5" name="desc" placeholder="Description" ng-model="item.description" class="form-control"></textarea>
                                     <a href="#" title="Save" ng-click="vm.save(item)" class="padding-5 badge badge-success margin-top-5" style="float: right;">

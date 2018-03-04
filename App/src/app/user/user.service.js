@@ -23,11 +23,18 @@
 			insertState : insertState,
 			uploadAvatar: uploadAvatar,
 			saveChangeAvatar: saveChangeAvatar,
-			checkEmailExist: checkEmailExist
+			checkEmailExist: checkEmailExist,
+			userChangeStateHistory:userChangeStateHistory,
+			resetPasswordHistory:resetPasswordHistory,
+			getExitedPhone:getExitedPhone,
+			setPhone:setPhone
 		};
-
+		var currentUser = $rootScope.storage.currentUser.email;
 		var userRef = firebaseDataRef.child('users');
 		var exitedUserRef = firebaseDataRef.child('existed-users');
+		var existedUserPhoneRef=firebaseDataRef.child('existed-phone');
+		//historyRef
+		var userHistoryRef=firebaseDataRef.child('history/user');
 
 		return service;
 
@@ -40,6 +47,26 @@
 			return $firebaseObject(ref);
 		}
 
+		function getExitedPhone(phoneNumber){
+			return $firebaseObject(existedUserPhoneRef.child(phoneNumber)).$loaded().then(function(res){
+				return {result:true,data:res};
+			})
+			.catch(function(err){
+				return {result:false,errorMsg:err};
+			});
+		}
+		function setPhone(dataModel){
+			console.log('dataModel');
+			console.log(dataModel);
+			var key=dataModel.phone;
+
+			return existedUserPhoneRef.child(key).set(dataModel).then(function(res){
+				return {result: true , data: key};
+            }).catch(function(error) {
+		        return {result: false , errorMsg: error};
+		    });
+
+		}
 		
 		function getUserByEmail(email){
 			return $firebaseArray(userRef).$loaded().then(function(data){
@@ -56,6 +83,7 @@
 			var ts = appUtils.getTimestamp();
 			user.timestampModified = ts;
 			user.timestampCreated = ts;
+			userAddHistory(user);
             return userRef.child(uid).set(user).then(function(res){
 				var existedUser = {
 					email: user.email
@@ -67,10 +95,16 @@
 		    });
 		}
 
-        function update(user){
+        function update(user,dataParams){
 			var ts = appUtils.getTimestamp(),
 			key = user.$id;
 			user.timestampModified = ts;
+			if(!dataParams){
+				userEditHistory(user);
+			}else{
+				userChangeRoleDetailHistory(dataParams);
+			}
+			
             return userRef.child(key).update({
 				isAuthorized: user.isAuthorized, 
 				firstName: user.firstName,
@@ -82,10 +116,11 @@
 				district: user.district || '',
 				ward: user.ward || '',
 				zipCode: user.zipCode,
-				timestampModified: ts}).then(function(res){
+				timestampModified: ts,
+				loaiUser:user.loaiUser||''
+			}).then(function(res){
 				return {result: true , data: key};
             }).catch(function(error) {
-				console.log(error);
 		        return {result: false , errorMsg: error};
 		    });
 		}
@@ -156,12 +191,16 @@
 		    });
 		}
 
-		function addUserToRole(userIds, roleName){
+		function addUserToRole(userIds, roleName,roleText){
             _.forEach(userIds, function(uid){
                 var ref = userRef.child(uid);
 			    $firebaseObject(ref).$loaded().then(function(res){
                     ref.onDisconnect();
  					if(res){
+						//history
+						userChangeRoleListingHistory(res.email,roleText);
+
+
  						if(res.userRoles !== undefined && res.userRoles.length > 0){
  							var isExistRole = $.inArray(roleName,res.userRoles); 
 	 						if(isExistRole === -1){
@@ -243,5 +282,121 @@
 
 			 return $q.all(reqs);
 		 }
+		 //history
+		 function getData(model){
+			var newModel={};
+			var x;
+			for(x in model){
+				if(x.charAt(0)=='$'){
+					continue;
+				}
+				if(x=='forEach'){
+					continue;
+				}
+				newModel[x]=model[x];
+			}
+			return newModel;
+		}
+		  function userAddHistory(dataInput){
+
+			var content=JSON.stringify(dataInput).replace(/,/g, ", ");
+			 var dataModel={
+				 createdBy:currentUser,
+				 content:content,
+				 timestampCreated:Date.now(),
+				 type:'Thêm Mới User',
+				 userEmail:dataInput.email
+			 };
+			 var key=userHistoryRef.push().key;
+			 return userHistoryRef.child(key).set(dataModel).then(function (res) {
+				return { result: true, key: key };
+			}).catch(function (error) {
+				return { result: false, errorMsg: error };
+			});
+		  }
+		  function userEditHistory(model){
+			var dataInput=getData(model);
+			
+			var content=JSON.stringify(dataInput).replace(/,/g, ", ");
+			var dataModel={
+				 createdBy:currentUser,
+				 content:content,
+				 timestampCreated:Date.now(),
+				 type:'Sửa Thông Tin User',
+				 userEmail:dataInput.email
+			};
+			var key=userHistoryRef.push().key;
+			return userHistoryRef.child(key).set(dataModel).then(function (res) {
+				return { result: true, key: key };
+			}).catch(function (error) {
+				return { result: false, errorMsg: error };
+			});
+		  }
+		  function userChangeStateHistory(userEmail,type){
+			var dataModel={};
+			dataModel.timestampCreated=Date.now();
+			dataModel.createdBy=currentUser;
+			dataModel.type=type;
+			dataModel.content='';
+			dataModel.userEmail=userEmail;
+			var key=userHistoryRef.push().key;
+			return userHistoryRef.child(key).set(dataModel).then(function (res) {
+				return { result: true, key: key };
+			}).catch(function (error) {
+				return { result: false, errorMsg: error };
+			});
+		  }
+		  function userChangeRoleListingHistory(userEmail,roleText){
+			var dataModel={
+				timestampCreated:Date.now(),
+				createdBy:currentUser,
+				type:'Cấp Quyền: '+ roleText,
+				content:'',
+				userEmail:userEmail
+			};
+			var key=userHistoryRef.push().key;
+			return userHistoryRef.child(key).set(dataModel).then(function (res) {
+				return { result: true, key: key };
+			}).catch(function (error) {
+				return { result: false, errorMsg: error };
+			});
+		  }
+		  function userChangeRoleDetailHistory(dataParams){
+			var text='';
+			if(dataParams.roleArrText){
+				text='Cấp Quyền: '+ dataParams.roleArrText.join();
+			}else{
+				text='Xóa Quyền: '+ dataParams.lstRolesDelete.join();
+			}
+			var dataModel={
+				timestampCreated:Date.now(),
+				createdBy:currentUser,
+				type:text,
+				content:'',
+				userEmail:dataParams.userEmail
+			};
+			var key=userHistoryRef.push().key;
+			return userHistoryRef.child(key).set(dataModel).then(function (res) {
+				return { result: true, key: key };
+			}).catch(function (error) {
+				return { result: false, errorMsg: error };
+			});
+		  }
+		  function resetPasswordHistory(email){
+			var dataModel={
+				timestampCreated:Date.now(),
+				createdBy:currentUser,
+				type:'Resset Pawword',
+				content:'Gửi yêu cầu reset password',
+				userEmail:email
+			};
+			var key=userHistoryRef.push().key;
+			return userHistoryRef.child(key).set(dataModel).then(function (res) {
+				return { result: true, key: key };
+			}).catch(function (error) {
+				return { result: false, errorMsg: error };
+			});
+		  }
+
 	}
 })();

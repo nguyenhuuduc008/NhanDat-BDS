@@ -35,6 +35,9 @@
 		var capDoRef = firebaseDataRef.child('bds-cap-do');
 		var existedAddressRef = firebaseDataRef.child('bds-existed-address');
 
+		//historyRef
+		var bdsHistoryRef=firebaseDataRef.child('history/bds');
+
 		return service;
 
 		function getAll() {
@@ -52,6 +55,8 @@
 			obj.timestampModified = ts;
 			obj.timestampCreated = ts;
 			return bdsRef.child(danhMucBDS).child(key).set(obj).then(function (res) {
+
+				createHistoryAdd(obj);
 				createBdsLinkToCategory(key, {
 					danhMucId: obj.danhMuc,
 					timestampCreated: obj.timestampCreated,
@@ -98,6 +103,9 @@
 		function update(update) {
 			var ts = appUtils.getTimestamp();
 			update.timestampModified = ts;
+			console.log('update');
+			console.log(update);
+			createHistoryEditThongTin(update);
 			return update.$save().then(function () {
 				return { result: true, errorMsg: "" };
 			}).catch(function (error) {
@@ -255,6 +263,58 @@
 			var ref = capDoRef.child(bdsId);
 			return $firebaseObject(ref);
 		}
+		//history
+		function getData(model){
+			var newModel={};
+			var x;
+			for(x in model){
+				if(x.charAt(0)=='$'){
+					continue;
+				}
+				if(x=='forEach'){
+					continue;
+				}
+				newModel[x]=model[x];
+			}
+			return newModel;
+		}
+		function createHistoryAdd(model){
+			var content=JSON.stringify(model);
+			content=content.replace(/,/g, ", ");
+			model.content=content;
+			model.type='Tạo Mới';
+			model.timestampCreated=Date.now();
+			model.userEmail=model.email;
+			var key=bdsHistoryRef.push().key;
+			return bdsHistoryRef.child(key).set(model).then(function (res) {
+				return { result: true, key: key };
+			}).catch(function (error) {
+				return { result: false, errorMsg: error };
+			});
+		}
+		
+		function createHistoryEditThongTin(model){
+			console.log('model');
+			console.log(model);
+			var dataModel=getData(model);
+			var content=JSON.stringify(dataModel);
+			content=content.replace(/,/g, ", ");
+			dataModel.content=content;
+			dataModel.type='Sửa Đổi Thông Tin';
+			dataModel.timestampCreated=Date.now();
+			dataModel.userEmail=model.email;
+			console.log('data model');
+			console.log(dataModel);
+			var key=bdsHistoryRef.push().key;
+			return bdsHistoryRef.child(key).set(dataModel).then(function (res) {
+				return { result: true, key: key };
+			}).catch(function (error) {
+				return { result: false, errorMsg: error };
+			});
+		}
+
+
+
 
 	}
 })();

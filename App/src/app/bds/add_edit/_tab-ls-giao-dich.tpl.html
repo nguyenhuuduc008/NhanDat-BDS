@@ -16,12 +16,13 @@
                             <div class="input-inline">
                                 <div class="input-group">
                                     <span class="input-group-addon coupon-group-addon">
-                                        $
+                                        VNĐ
                                     </span>
-                                    <input class="form-control" name="amount" required format-as-currency placeholder="" ng-pattern="currencyRegx" type="text"
+                                    <input class="form-control" name="amount" required  placeholder="" ng-pattern="currencyRegx" type="number"
                                         ng-model="vm.model.amount">
-                                    <label class="control-label" ng-show="form.amount.$error.pattern">* This field just is a currency</label>
                                 </div>
+                                <label class="control-label" ng-show="form.amount.$error.pattern">* This field just is a currency</label>
+                                
                             </div>
                         </div>
                         <div class="form-group" ng-class="{'has-error': (vm.showInvalid && form.ngayGiaoDich.$error.required)}">
@@ -63,7 +64,7 @@
                 </div>
             </div>
             <div class="portlet-title" style="padding-top:0px">
-                <div class="caption ">
+                <!--<div class="caption ">
                     <div class="col-md-10 col-sm-10 col-xs-10 no-padding-right">
                         <select class="bs-select form-control" ng-model="vm.selectAction">
                             <option>Bulk Actions</option>
@@ -73,7 +74,7 @@
                     <div class="col-md-2 col-sm-2 col-xs-2 no-padding-left">
                         <button type="button" class="btn green" ng-click="vm.apply('select-role')">Apply</button>
                     </div>
-                </div>
+                </div>-->
                 <div class="actions margin-top-5">
                     <list-paging ng-model="vm.paging" change-page="changePage"></list-paging>
                 </div>
@@ -103,7 +104,7 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <a class="primary-link" href="#/bds/detail/lich-su-giao-dich?bdsId={{vm.bdsId}}&id=/{{item.$id}}">{{item.amount}}</a>
+                                    <a class="primary-link" href="#/bds/detail/lich-su-giao-dich?bdsId={{vm.bdsId}}&id=/{{item.$id}}">{{item.amount| currency:'':0}}</a>
                                 </td>
                                 <td>
                                     {{item.ngayGiaoDich | date : "MM/dd/yyyy HH:mm:ss"}}

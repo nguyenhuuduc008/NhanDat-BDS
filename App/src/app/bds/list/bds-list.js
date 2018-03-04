@@ -54,7 +54,7 @@
         };
 
         vm.getFullAddress = function (item) {
-            return item.soNha + ' ' + item.tenDuong + ', Phường/Xã ' + item.xaPhuong + ', Quận/Huyện ' + item.quanHuyen + ', Thành phố ' + item.thanhPho;
+            return item.soNha + ' ' + item.tenDuong + ', ' + item.xaPhuong + ', ' + item.quanHuyen + ', ' + item.thanhPho;
         };
 
         vm.executeSearchItems = function (keyword) {
@@ -84,6 +84,8 @@
                 appUtils.hideLoading();
                 var result = rs.data;
                 vm.filteredItems = appUtils.sortArray(result, 'timestampCreated');
+                console.log('vm.filteredItems');
+                console.log(vm.filteredItems);
                 vm.paging.totalRecord = result.length;
                 vm.paging.currentPage = 0;
                 //group by pages

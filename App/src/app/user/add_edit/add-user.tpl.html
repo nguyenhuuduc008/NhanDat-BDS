@@ -26,6 +26,14 @@
                                 <!-- PERSONAL INFO TAB -->
                                 <div class="tab-pane active row" id="tab_1_1">
                                     <form role="form" id="createUserForm" name="createUserForm" novalidate ng-submit="userAddVm.create(createUserForm)">
+                                        <div class="form-group col-md-12" ng-class="{'has-error': (createUserForm.phonenumber.$error.pattern||createUserForm.phonenumber.$error.required)&&createUserForm.phonenumber.$touched}">
+                                            <label class="control-label" >Điện Thoại<span class="required-field"> *</span></label> 
+                                            <input type="text" maxlength="11" minlength="10"  required placeholder="Primary Phone" class="form-control" name="phonenumber" ng-keyup="userAddVm.EnalblePhoneForm(createUserForm)" ng-model="userAddVm.Phone" ng-pattern="phoneRegx" />
+                                            <label class="control-label" ng-show="createUserForm.phonenumber.$error.required&&createUserForm.phonenumber.$touched">* Cần nhập Số Điện Thoại</label>
+                                            <label class="control-label" ng-show="createUserForm.phonenumber.$error.pattern&&createUserForm.phonenumber.$touched">* Số Điện thoại chỉ được nhập số</label>
+                                            <label class="control-label font-green-sharp" ng-show="createUserForm.phonenumber.$error.minlength&&!createUserForm.phonenumber.$error.pattern&&createUserForm.phonenumber.$touched">* Số Điện thoại quá ngắn</label>
+                                            <label class="control-label font-red-intense bold" ng-show="userAddVm.existedPhone&&createUserForm.phonenumber.$touched">* Số Điện thoại này đã tồn tại. Vui lòng nhập số khác!</label>
+                                        </div>
                                         <div class="form-group col-md-12" ng-class="{'has-error': (userAddVm.showInvalid && createUserForm.email.$error.required) || (createUserForm.email.$error.pattern || createUserForm.email.$error.email)}">
                                             <label class="control-label">Email
                                                 <span class="required-field">*</span>
@@ -53,11 +61,6 @@
                                             />
                                             <!--<label class="control-label" ng-show="userAddVm.showInvalid && createUserForm.lastname.$error.required">* This field is required</label>-->
                                             <label class="control-label" ng-show="createUserForm.lastname.$error.pattern">* This field does not allow special characters</label>
-                                        </div>
-                                        <div class="form-group col-md-12">
-                                            <label class="control-label">Phone Number</label>
-                                            <input type="tel" uiMaskPlaceholder type="phone" placeholder="Primary Phone" class="form-control" name="phonenumber" ng-model="userAddVm.user.phoneNumber"
-                                                ui-mask="999-999-9999" />
                                         </div>
                                         <div class="form-group col-md-6" ng-class="{'has-error': (userAddVm.showInvalid && createUserForm.address.$error.required)}">
                                             <label class="control-label">Address </label>

@@ -12,7 +12,8 @@
             searchMedia : searchMedia,
             filterItems : filterItems,
             removeMedia: removeMedia,
-            updateMedia:updateMedia
+            updateMedia:updateMedia,
+            filterItemsByLoai: filterItemsByLoai
   		};
 
   		return service;
@@ -105,6 +106,25 @@
                 rs.push(value);
             }
             });
+            return rs;
+        }
+
+        function filterItemsByLoai(items, timestamp, loai){
+            var rs = [];
+            _.forEach(items, function(value, key) {
+            var rsType;
+            if(loai){
+                rsType = loai === value.loai;
+                console.log(rsType);
+            } else {
+                rsType = true;
+            }
+            if(timestamp === 'Loai' && rsType || loai === 'Loai') {
+            // if((timestamp === 'All' || parseInt(value.timestampCreated) >= parseInt(timestamp))) {
+                rs.push(value);
+            }
+            });
+            console.log(rs);
             return rs;
         }
 

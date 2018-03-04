@@ -1,0 +1,119 @@
+<div class="portlet light bordered tasks-widget">
+    <div class="portlet-title">
+        <div class="caption caption-md" style="min-width: 275px;">
+            <select class="form-control" required>
+                <option value="" >Chọn Danmh Mục</option>
+                <option value="-1" >Tất Cả Danh Mục</option>
+                <option value="-1" >BĐS kho sơ cấp </option>
+                <option value="-1" >BĐS chờ duyệt </option>
+                <option value="-1" >BĐS mở giao dịch </option>
+                <option value="-1" >BĐS đang giao dịch</option>
+                <option value="-1" >BĐS đã giao dịch </option>
+                <option value="-1" >BĐS Ngừng giao dịch</option>
+            </select>
+        </div>
+        <div class="caption caption-md" style="padding-left:5px;">
+            <select class="form-control" required>
+                <option value="-1" >Tất Cả Trạng Thái</option>
+                <option value="-1" >Mua</option>
+                <option value="-1" >Bán </option>
+                <option value="-1" >Thuê </option>
+                <option value="-1" >Cho Thuê</option>
+            </select>
+        </div>
+        <div class="caption caption-md" style="padding-left:5px;">
+            <a type="button" href="#" class="btn blue">Duplicate</a>
+        </div>
+        <div class="inputs">
+            <div class="portlet-input input-inline">
+                <div class="input-icon right">
+                    <i class="icon-magnifier"></i>
+                    <input style="width: 280px;" type="text" class="form-control form-control-solid"  placeholder="Tìm kiếm nhu cầu ...">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portlet-title">
+        <div class="caption width70 row">
+            <div class="col-md-3 no-padding-right">
+                <select class="bs-select form-control" id="action-list">
+                    <option value="0">Bulk Actions</option>
+                    <option value="delete">Delete</option>
+                </select>
+            </div>
+            <div class="col-md-1 no-padding-left">
+                <button type="button" class="btn green" ng-click="nhuCauListingVm.applyAction('select-checkBox','action-list')">Apply</button>
+            </div>
+            <div class="col-md-3 text-center">
+                <a type="button" href="#/nhuCau/ban_choThue-modAdd?activeTab=thongTin" class="btn blue">Add New</a>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="padding-top-2">
+                <list-paging ></list-paging>
+            </div>
+        </div>
+    </div>
+    <div class="table-scrollable table-scrollable-borderless">
+        <table class="table table-hover table-light">
+            <thead class="flip-content">
+                <tr class="uppercase">
+                    <th class="width5">
+                        <label class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" id="select-all-checkBox" ng-click="nhuCauListingVm.selectAllItem('select-all-checkBox','select-checkBox')"/>
+                            <span></span>
+                        </label>
+                    </th>
+                    <th> Địa Chỉ </th>
+                    <th> Trạng Thái</th>
+                    <th> Giá </th>
+                    <th > Hướng </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <label class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" name="select-checkBox" value="1" /> 
+                            <span></span>
+                        </label>
+                    </td>
+                    <td>
+                        <a class="primary-link" href="#/nhuCau/ban_choThue-modAdd?activeTab=thongTin"  style="word-break: break-all;">
+                            Địa chỉ nhà 1
+                        </a>
+                    </td>
+                    <td>
+                        Bán
+                    </td>
+                    <td>
+                        Đơn giá: <span class="font-red-intense bold">3,000,000 VNĐ</span><br>
+                        Tổng giá: <span class="font-red-intense bold">3,000,000VNĐ</span> 
+                    </td>
+                    <td> Hướng Nam<span></span> </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" name="select-checkBox" value="2"/> 
+                            <span></span>
+                        </label>
+                    </td>
+                    <td>
+                        <a class="primary-link" href="#/nhuCau/ban_choThue-modAdd?activeTab=thongTin" style="word-break: break-all;">
+                            Địa chỉ nhà 2
+                        </a>
+                    </td>
+                    <td>
+                        Cho Thuê
+                    </td>
+                    <td>
+                        Đơn giá: <span class="font-red-intense bold">5,000,000 VNĐ</span><br>
+                        Tổng giá: <span class="font-red-intense bold">5,000,000VNĐ</span> 
+                    </td>
+                    <td> Hướng Bắc<span></span> </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

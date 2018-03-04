@@ -30,8 +30,10 @@
         //Load Data
         roleService.items().$loaded(function(data){
             userVm.roles = data;
+            console.log('userVm.roles');
+            console.log(userVm.roles);
         });
-
+        
       
 
         /*=============================================================*/
@@ -112,6 +114,7 @@
         userVm.changeUserRole = function(chkName,roleControl){
             var lstUserIds = [];
             var roleName = $('#' + roleControl).val();
+            var roleText=$('#' + roleControl).find(":selected").text();
             $('input[name=' + chkName + ']').each(function () {
                 if (this.checked === true) {
                     lstUserIds.push($(this).val() + '');
@@ -127,7 +130,7 @@
                 toaster.warning("Please choose some users to execute action!");
                 return;
             }
-            userService.addUserToRole(lstUserIds,roleName);
+            userService.addUserToRole(lstUserIds,roleName,roleText);
 
             //Delete users List storage
 			delete $rootScope.storage.usersList;
@@ -167,11 +170,24 @@
             
             $ngBootbox.confirm('Are you sure want to apply ' + actionTxt + ' action as selected?').then(function(){
                 appUtils.showLoading();
-                var reqs = [];
+                var reqs = [];var lstEmail=[];
                 if(action === 'delete'){
                     _.forEach(lstUserIds, function(obj, key) {
                          reqs.push(userService.deleteUser(obj));   
                     });
+                    //start history
+                    lstEmail=[];
+                    _.forEach(lstUserIds, function(objUserId, key) {
+                        _.forEach(userVm.filteredItems, function(objItems, key) {
+                            if(objUserId==objItems.$id){
+                                lstEmail.push(objItems.email);
+                            }   
+                       });  
+                   });
+                   _.forEach(lstEmail, function(objEmail, key) {
+                        userService.userChangeStateHistory(objEmail,'Xóa User');
+                    });
+                   //end History
                     $q.all(reqs).then(function(res){
                         appUtils.hideLoading();
                         var err = _.find(res, function(item){
@@ -189,6 +205,19 @@
                      _.forEach(lstUserIds, function(obj, key) {  
                          reqs.push(userService.unAuthorizedUser(obj)); 
                     });
+                     //start history
+                     lstEmail=[];
+                     _.forEach(lstUserIds, function(objUserId, key) {
+                         _.forEach(userVm.filteredItems, function(objItems, key) {
+                             if(objUserId==objItems.$id){
+                                 lstEmail.push(objItems.email);
+                             }   
+                        });  
+                    });
+                    _.forEach(lstEmail, function(objEmail, key) {
+                         userService.userChangeStateHistory(objEmail,'disable');
+                     });
+                    //end History
                     $q.all(reqs).then(function(res){
                         appUtils.hideLoading();
                         var err = _.find(res, function(item){
@@ -205,7 +234,20 @@
                 }else if(action === 'enable'){
                     _.forEach(lstUserIds, function(obj, key) {
                          reqs.push(userService.authorizedUser(obj)); 
-                    });  
+                    });
+                     //start history
+                     lstEmail=[];
+                     _.forEach(lstUserIds, function(objUserId, key) {
+                         _.forEach(userVm.filteredItems, function(objItems, key) {
+                             if(objUserId==objItems.$id){
+                                 lstEmail.push(objItems.email);
+                             }   
+                        });  
+                    });
+                    _.forEach(lstEmail, function(objEmail, key) {
+                         userService.userChangeStateHistory(objEmail,'enable');
+                     });
+                    //end History  
                     $q.all(reqs).then(function(res){
                          appUtils.hideLoading();
                         var err = _.find(res, function(item){

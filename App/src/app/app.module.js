@@ -67,7 +67,10 @@
             'app.role',
             'app.settings',
             'app.search',
-            'app.dRemote'
+            'app.dRemote',
+            'app.setting',
+            'app.nhuCau',
+            'app.lichSu'
         ])
         .config(config)
         .run(run)

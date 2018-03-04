@@ -8,7 +8,7 @@
 		$rootScope.settings.layout.showSmartphone = false;
 		$rootScope.settings.layout.showPageHead = true;
 		$rootScope.settings.layout.guestPage = false;
-		$scope.currencyRegx = /^\$\d/;
+	//	$scope.currencyRegx = /^\$\d/;
 		$scope.emailRegx = /^[^!'"\/ ]+$/;
 		var vm = this; // jshint ignore:line
 		vm.currentUser = $rootScope.storage.currentUser;

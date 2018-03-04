@@ -27,12 +27,12 @@
 		vm.bdsId = $stateParams.bdsId;
 		vm.model = {};
 		vm.model.$id = vm.bdsId;
-		$scope.zipcodeRegx = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
+		/*$scope.zipcodeRegx = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
 		$scope.nameRegx = /^(a-z|A-Z|0-9)*[^!#$%^&*()'"\/\\;:@=+,?\[\]\/]*$/;
 		$scope.addressRegx = /^(a-z|A-Z|0-9)*[^!$%^&*()'"\/\\;:@=+,?\[\]]*$/;
 		$scope.numberRegx = /^\d+$/;
         $scope.currencyRegx = /^\$\d/;
-		$scope.emailRegx = /^[^!'"\/ ]+$/;
+		$scope.emailRegx = /^[^!'"\/ ]+$/;*/
 		vm.showInvalid = true;
 		
 		vm.activeTab='thongTin';

@@ -1,0 +1,31 @@
+<div class="row">
+    <div class="form-group col-md-6">
+        <label class="control-label">Đông tứ trạch</label>
+        <select class="form-control" required>
+            <option value="" >Đông</option>
+            <option value="-1" >Nam</option>
+            <option value="-1" >Bắc</option>
+            <option value="-1" > Đông Nam</option>
+        </select>
+    </div>
+    <div class="form-group col-md-6">
+        <label class="control-label">Tây tứ trạch</label>
+        <select class="form-control" required>
+            <option value="" >Đông Bắc</option>
+            <option value="-1" >Tây Bắc</option>
+            <option value="-1" >Tây Nam</option>
+            <option value="-1" >Tây</option>
+        </select>
+    </div>
+
+    <div class=" col-md-12">
+        <div class="margin-top-20 pull-right">
+            <button class="btn green grreen-haze" type="submit" ng-disabled="createForm.$invalid">
+                Save
+            </button>
+            <button class="btn default" type="button" ng-click="vm.cancel()">
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>

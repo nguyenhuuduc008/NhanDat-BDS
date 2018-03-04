@@ -9,7 +9,7 @@
 		$rootScope.settings.layout.showPageHead = true;
 		$rootScope.settings.layout.guestPage = false;
         var appSettings = $rootScope.storage.appSettings;
-        $scope.currencyRegx = /^\$\d/;
+        //$scope.currencyRegx = /^\$\d/;
 		var vm = this; // jshint ignore:line
 		vm.currentUser = $rootScope.storage.currentUser;
 		vm.bdsId = $stateParams.bdsId;

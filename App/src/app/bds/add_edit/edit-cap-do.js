@@ -17,6 +17,8 @@
 		};
 
 		vm.cacLoaiCapDo = appSettings.cacLoaiCapDo;
+		console.log('vm.cacLoaiCapDo');
+		console.log(vm.cacLoaiCapDo);
 		vm.showInvalid = true;
 
 		vm.activeTab = 'capDo';
@@ -93,6 +95,7 @@
 			bdsService.getCapDo(vm.bdsId).$loaded().then(function(rs){
 				if(rs && rs.timestampCreated){
 					vm.model = rs;
+					
 				}
 				appUtils.hideLoading();
 			});

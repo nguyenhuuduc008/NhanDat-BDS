@@ -24,9 +24,9 @@
 					permission: 'Home'
 				},
 			    resolve: {
-			        // "currentAuth": ["authService", function (authService) {
-			        //     return authService.requireSignIn();
-			        // }]
+			        "currentAuth": ["authService", function (authService) {
+			            return authService.requireSignIn();
+			        }]
 			    }
 			}
 		);

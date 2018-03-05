@@ -103,7 +103,7 @@
                 if (!loaded) {
                     return '/dremote/dremoteholder?link=' + encodeURIComponent(path);
                 }else
-                    return '/home';
+                    return '/bds/list';
         });
 
         $provide.decorator('taOptions', ['taRegisterTool', '$delegate', 'appUtils', function (taRegisterTool, taOptions, appUtils) {

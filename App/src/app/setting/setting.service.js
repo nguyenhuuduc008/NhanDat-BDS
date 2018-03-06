@@ -86,7 +86,20 @@
             getOnceLoaiUser:getOnceLoaiUser,
             addLoaiUser:addLoaiUser,
             removeLoaiUser:removeLoaiUser,
-            updateLoaiUser:updateLoaiUser
+            updateLoaiUser:updateLoaiUser,
+
+            getCacLoaiDanhMucBDS:getCacLoaiDanhMucBDS,
+            getOnceLoaiDanhMucBDS:getOnceLoaiDanhMucBDS,
+            addLoaiDanhMucBDS:addLoaiDanhMucBDS,
+            removeLoaiDanhMucBDS:removeLoaiDanhMucBDS,
+            updateLoaiDanhMucBDS:updateLoaiDanhMucBDS,
+
+            getCacLoaiNhuCau:getCacLoaiNhuCau,
+            getOnceLoaiNhuCau:getOnceLoaiNhuCau,
+            addLoaiNhuCau:addLoaiNhuCau,
+            removeLoaiNhuCau:removeLoaiNhuCau,
+            updateLoaiNhuCau:updateLoaiNhuCau,
+
         };
         //Ref
         var cacLoaiQuyHoachRef=firebaseDataRef.child('app-options/cacLoaiQuyHoach');
@@ -103,6 +116,8 @@
         var cacLoaiNguonBDSRef=firebaseDataRef.child('app-options/cacNguonBDS');
         var cacLoaiMucDichRef=firebaseDataRef.child('app-options/cacLoaiMucDich');
         var cacLoaiUserRef=firebaseDataRef.child('app-options/cacLoaiUser');
+        var cacLoaiDanhMucBDSRef=firebaseDataRef.child('app-options/cacDanhMucBDS');
+        var cacLoaiNhuCauRef=firebaseDataRef.child('app-options/cacLoaiNhuCau');
         
         return service;
         //function cacLoaiQUyHoach
@@ -632,6 +647,82 @@
         }
         function updateLoaiUser(idLoai,dataModel){
             return cacLoaiUserRef.child(idLoai).update({
+                text:dataModel.text
+            }).then(function(res){
+                return {result:true,data:idLoai};
+            }).catch(function(error){
+                return {result:false,errMsg:error};
+            });
+        }
+        // cac loai danh muc bds
+        function getCacLoaiDanhMucBDS(){
+            return $firebaseArray(cacLoaiDanhMucBDSRef);
+        }
+        function getOnceLoaiDanhMucBDS(id){
+            return $firebaseObject(cacLoaiDanhMucBDSRef.child(id)).$loaded().then(function(res){
+                return {result:true,data:res};
+            }).catch(function(error){
+                return {result:false,errMsg:error};
+            });
+        }
+        function addLoaiDanhMucBDS(dataModel){
+            var key=cacLoaiDanhMucBDSRef.push().key;
+            return cacLoaiDanhMucBDSRef.child(key).update({
+                text:dataModel.text,
+                value:key
+            }).then(function(res){
+                return {result:true,data:key};
+            }).catch(function(error){
+                return {result:false,errMsg:error};
+            });
+        }
+        function removeLoaiDanhMucBDS(idLoai){
+            return cacLoaiDanhMucBDSRef.child(idLoai).remove().then(function(){
+                return {result: true , errorMsg: ""};
+            }).catch(function(error){
+                return {result: false , errorMsg: error};
+            });
+        }
+        function updateLoaiDanhMucBDS(idLoai,dataModel){
+            return cacLoaiDanhMucBDSRef.child(idLoai).update({
+                text:dataModel.text
+            }).then(function(res){
+                return {result:true,data:idLoai};
+            }).catch(function(error){
+                return {result:false,errMsg:error};
+            });
+        }
+        //cac loai nhu cau
+        function getCacLoaiNhuCau(){
+            return $firebaseArray(cacLoaiNhuCauRef);
+        }
+        function getOnceLoaiNhuCau(id){
+            return $firebaseObject(cacLoaiNhuCauRef.child(id)).$loaded().then(function(res){
+                return {result:true,data:res};
+            }).catch(function(error){
+                return {result:false,errMsg:error};
+            });
+        }
+        function addLoaiNhuCau(dataModel){
+            var key=cacLoaiNhuCauRef.push().key;
+            return cacLoaiNhuCauRef.child(key).update({
+                text:dataModel.text,
+                value:key
+            }).then(function(res){
+                return {result:true,data:key};
+            }).catch(function(error){
+                return {result:false,errMsg:error};
+            });
+        }
+        function removeLoaiNhuCau(idLoai){
+            return cacLoaiNhuCauRef.child(idLoai).remove().then(function(){
+                return {result: true , errorMsg: ""};
+            }).catch(function(error){
+                return {result: false , errorMsg: error};
+            });
+        }
+        function updateLoaiNhuCau(idLoai,dataModel){
+            return cacLoaiNhuCauRef.child(idLoai).update({
                 text:dataModel.text
             }).then(function(res){
                 return {result:true,data:idLoai};

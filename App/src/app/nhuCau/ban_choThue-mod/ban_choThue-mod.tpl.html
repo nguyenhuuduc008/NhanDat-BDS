@@ -5,6 +5,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="portlet light bordered">
+                            <h3>{{vm.tenNhuCau}} Bất Động Sản</h3>
                             <div class="portlet-title">
                                 <div class="caption col-md-12 text-right action-tools">
                                     <a href="javascript:;" ng-click="historyBack()" class="btn btn-circle grey-mint" title="Back">Back</a>
@@ -16,7 +17,7 @@
                                     <span class="caption-subject font-blue-madison bold uppercase">Thông Tin Bất Động Sản</span>
                                 </div>
                                 <ul class="nav nav-tabs">
-                                        <li ng-class="{active: key == ban_choThueModVm.activeTab}" ng-repeat="(key,tab) in ban_choThueModVm.tabs" ng-click="ban_choThueModVm.loadTab(key)">
+                                        <li ng-class="{active: key == vm.activeTab}" ng-repeat="(key,tab) in vm.tabs" ng-click="vm.loadTab(key)">
                                             <a data-toggle="tab">{{tab.title}}</a>
                                         </li>
                                     </ul>
@@ -24,7 +25,7 @@
                             <div class="portlet-body">
                                 <div class="tab-content">
                                     <!-- PERSONAL INFO TAB -->
-                                    <div class="tab-pane fade" id="tab_{{key}}" ng-class="{'active in': key == ban_choThueModVm.activeTab}" ng-repeat="(key,tab) in ban_choThueModVm.tabs">
+                                    <div class="tab-pane fade" id="tab_{{key}}" ng-class="{'active in': key == vm.activeTab}" ng-repeat="(key,tab) in vm.tabs">
                                         <div ng-include="tab.url"></div>
                                     </div>
                                     <!-- END PERSONAL INFO TAB -->

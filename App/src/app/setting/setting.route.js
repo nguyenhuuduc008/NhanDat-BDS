@@ -10,7 +10,7 @@
                 controller: 'capDoListCtr',
                 controllerAs: 'capDoListVm',
                 data: {
-					pageTitle: 'Cài Đặc',
+					pageTitle: 'Cài Đặt',
 					module: 'setting',
 					icon: 'icon-settings',
 					permission: 'Setting'
@@ -730,6 +730,108 @@
             controllerAs: 'userModVm',
             data: {
                 pageTitle: 'Sửa Loại User',
+                module: 'setting',
+                parent: 'settingList',
+                hide:true
+            },
+            resolve:{
+                "currentAuth": ["authService", function(authService) {
+                    return authService.requireSignIn();
+                 }]
+            }
+         }).state('danhMucBDS-list',{
+            parent: 'root',
+            url: '/setting/danhMucBDS-list',
+            templateUrl: 'app/setting/danhMucBDS/danhMucBDS-list.tpl.html',
+            controller: 'danhMucBDSListCtr',
+            controllerAs: 'danhMucBDSListVm',
+            data: {
+                pageTitle: 'Quản Lý Danh Mục BĐS',
+                module: 'setting',
+                icon: 'icon-settings',
+                parent: 'settingList'
+            },
+            resolve:{
+                "currentAuth": ["authService", function(authService) {
+                    return authService.requireSignIn();
+                 }]
+            }
+         }).state('danhMucBDS-add',{
+            parent: 'root',
+            url: '/setting/danhMucBDS-mod',
+            templateUrl: 'app/setting/danhMucBDS/danhMucBDS-mod.tpl.html',
+            controller: 'danhMucBDSModCtr',
+            controllerAs: 'danhMucBDSModVm',
+            data: {
+                pageTitle: 'Thêm Danh Mục BĐS',
+                module: 'setting',
+                parent: 'settingList',
+                hide:true
+            },
+            resolve:{
+                "currentAuth": ["authService", function(authService) {
+                    return authService.requireSignIn();
+                 }]
+            }
+         }).state('danhMucBDS-edit',{
+            parent: 'root',
+            url: '/setting/danhMucBDS-mod/:idLoai',
+            templateUrl: 'app/setting/danhMucBDS/danhMucBDS-mod.tpl.html',
+            controller: 'danhMucBDSModCtr',
+            controllerAs: 'danhMucBDSModVm',
+            data: {
+                pageTitle: 'Sửa Danh Mục BĐS',
+                module: 'setting',
+                parent: 'settingList',
+                hide:true
+            },
+            resolve:{
+                "currentAuth": ["authService", function(authService) {
+                    return authService.requireSignIn();
+                 }]
+            }
+         }).state('nhuCau-list',{
+            parent: 'root',
+            url: '/setting/nhuCau-list',
+            templateUrl: 'app/setting/nhuCau/nhuCau-list.tpl.html',
+            controller: 'nhuCauListCtr',
+            controllerAs: 'nhuCauListVm',
+            data: {
+                pageTitle: 'Quản Lý Loại Nhu Cầu',
+                module: 'setting',
+                icon: 'icon-settings',
+                parent: 'settingList'
+            },
+            resolve:{
+                "currentAuth": ["authService", function(authService) {
+                    return authService.requireSignIn();
+                 }]
+            }
+         }).state('nhuCau-add',{
+            parent: 'root',
+            url: '/setting/nhuCau-mod',
+            templateUrl: 'app/setting/nhuCau/nhuCau-mod.tpl.html',
+            controller: 'nhuCauModCtr',
+            controllerAs: 'nhuCauModVm',
+            data: {
+                pageTitle: 'Thêm Loại Nhu Cầu',
+                module: 'setting',
+                parent: 'settingList',
+                hide:true
+            },
+            resolve:{
+                "currentAuth": ["authService", function(authService) {
+                    return authService.requireSignIn();
+                 }]
+            }
+         }).state('nhuCau-edit',{
+            parent: 'root',
+            url: '/setting/nhuCau-mod/:idLoai',
+            templateUrl: 'app/setting/nhuCau/nhuCau-mod.tpl.html',
+            controller: 'nhuCauModCtr',
+            controllerAs: 'nhuCauModVm',
+            data: {
+                pageTitle: 'Sửa Loại Nhu Cầu',
                 module: 'setting',
                 parent: 'settingList',
                 hide:true

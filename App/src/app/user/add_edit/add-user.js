@@ -19,7 +19,7 @@
 		userAddVm.showInvalid = false;
 		$scope.emailRegx = /^[^!'"\/ ]+$/;
 		$scope.phoneRegx=/^(0-9)*[^!#$%^&*()'"\/\\;:@=+,?\[\]\/.A-Za-z ]*$/;
-		$scope.passwordRegx =/^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,12}$/;
+		//$scope.passwordRegx =/^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,12}$/;
 		$scope.nameRegx = /^(a-z|A-Z|0-9)*[^!#$%^&*()'"\/\\;:@=+,?\[\]\/]*$/;
 		$scope.addressRegx = /^(a-z|A-Z|0-9)*[^!$%^&*()'"\/\\;:@=+,?\[\]]*$/;
 		$scope.zipcodeRegx = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
@@ -58,11 +58,11 @@
 			}
 
 			// check password
-			var pvalid = $scope.passwordRegx.test(userAddVm.user.password);
-			if(!pvalid){
-				$ngBootbox.alert('Password must be 6-12 characters long and include at least one letter and one number. Passwords are case sensitive.');
-			    return;		
-			}
+			// var pvalid = $scope.passwordRegx.test(userAddVm.user.password);
+			// if(!pvalid){
+			// 	$ngBootbox.alert('Password must be 6-12 characters long and include at least one letter and one number. Passwords are case sensitive.');
+			//     return;		
+			// }
 			userAddVm.user.phoneNumber = $.trim(userAddVm.Phone) === '' ? ' ' : userAddVm.Phone;
 				//check phone existed
 				userService.getExitedPhone(userAddVm.user.phoneNumber).then(function(resdata){

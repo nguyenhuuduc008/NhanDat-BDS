@@ -102,7 +102,7 @@
 		};
 
 		states['bds.tacNghiep'] = {
-			url: '/detail/tac-nghiep?bdsId&id',
+			url: '/detail/tac-nghiep?bdsId&id&user',
 			templateUrl: './app/bds/add_edit/edit-tac-nghiep.tpl.html',
 			controller: 'editTacNghiepCtrl as vm',
 			data: {

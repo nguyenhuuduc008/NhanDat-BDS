@@ -13,6 +13,8 @@
 		var appSettings = $rootScope.storage.appSettings;
 		vm.model = {};
 		vm.bdsId = $stateParams.bdsId;
+		vm.user = $stateParams.user;
+		console.log('ESDSADSADSADSAD',$rootScope.storage);
 		if ($stateParams.id) {
 			vm.model.$id = $stateParams.id;
 		}
@@ -22,6 +24,7 @@
 		vm.formTitle = 'Tạo Mới';
 		vm.selectAction = 'Bulk Actions';
 
+		vm.listUser = [];
 		vm.cacLoaiTacNghiep = appSettings.cacLoaiTacNghiep;
 		vm.activeTab = 'tacNghiep';
 		vm.tabs = {
@@ -196,7 +199,9 @@
 			vm.formTitle = 'Thay Đổi';
 			vm.showAddNew = false;
 			vm.model.$id = item.$id;
-			vm.model.ten = item.ten;
+			vm.model.userPhone = item.userPhone;
+			vm.model.user = vm.user;
+			vm.model.thongtin = item.thongtin;
 			vm.model.loaiTacNghiep = item.loaiTacNghiep;
 			vm.model.ngayTacNghiep = item.ngayTacNghiep;
 		};
@@ -213,15 +218,22 @@
 			appUtils.showLoading();
 			var self = this;
 			var update = null;
+			if(!vm.model.userPhone) {
+				toaster.warning("User không tồn tại!");
+				appUtils.hideLoading();
+				return;
+			}
 			if (vm.model.$id) {
 				tacNghiepService.get(vm.bdsId, vm.model.$id).$loaded().then(function (data) {
 					update = data;
 
-					update.ten = vm.model.ten;
+					update.thongtin = vm.model.thongtin;
 					update.loaiTacNghiep = vm.model.loaiTacNghiep;
 					update.ngayTacNghiep = vm.model.ngayTacNghiep;
-					update.uid = vm.currentUser.$id;
+					//update.uid = vm.currentUser.$id;
+					update.userPhone = vm.model.userPhone;
 					update.timestampModified = appUtils.getTimestamp();
+
 					tacNghiepService.update(update).then(function (rs) {
 						appUtils.hideLoading();
 						if (rs.result) {
@@ -233,6 +245,7 @@
 					});
 				});
 			} else {
+				delete vm.model.user;
 				tacNghiepService.create(vm.bdsId, vm.model).then(function (rs) {
 					appUtils.hideLoading();
 					if (rs.result) {
@@ -256,6 +269,39 @@
 			return 'Unknown';
 		};
 
+		vm.getUserByPhone = function(phone) {
+			tacNghiepService.getUserByPhone(phone).then(function(res) {
+				if(!res.phone) {
+					toaster.warning("User không tồn tại!");
+					vm.model.userPhone = '';
+					vm.model.user = '';
+					return;
+				}
+				vm.model.userPhone = res.phone;
+				vm.model.user = res.userName;
+			});
+		};
+
+		function getListUserByPhone() {
+			tacNghiepService.getListUserByPhone().then(function(data) {
+				console.log('LISTSSSS', data);
+				vm.listUser = data;
+			});
+		}
+
+		vm.textUser = function (phone) {
+			var rs = _.find(vm.listUser, function (o) {
+				return o.phone + '' == phone + '';
+			});
+			if (rs) {
+				return rs.userName;
+			}
+			console.log('PHONENUMBER',phone);
+			return 'Unknown';
+		};
+
+		
+		getListUserByPhone();
 		vm.search('');
 		loadBDSTacNghiep();
 	}

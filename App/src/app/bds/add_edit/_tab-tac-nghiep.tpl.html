@@ -9,16 +9,6 @@
             <div class="portlet-body form">
                 <form role="form" name="form" novalidate ng-submit="vm.save()">
                     <div class="form-body">
-                        <div class="form-group" ng-class="{'has-error': (vm.showInvalid && form.ten.$error.required) || form.ten.$error.pattern}">
-                            <label class="control-label">Tên
-                                <span class="required-field">*</span>
-                            </label>
-                            <input class="form-control" type="text" placeholder="Tên tác nghiệp" ng-model="vm.model.ten" required ng-pattern="vm.nameRegx"
-                                name="ten" />
-                            <small>The name is how it appears on your site.</small>
-                            <label class="control-label" ng-show="vm.showInvalid && form.ten.$error.required">* This field is required</label>
-                            <label class="control-label" ng-show="form.ten.$error.pattern">* This field dose not allow special characters</label>
-                        </div>
                         <div class="form-group" ng-class="{'has-error': (vm.showInvalid && form.loaiTacNghiep.$error.required)}">
                             <label class="control-label">Loại tác nghiệp
                                 <span class="required-field">*</span>
@@ -33,6 +23,31 @@
                                     <!-- <small>The description is not prominent by default; however, some themes may show it.</small> -->
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error': (vm.showInvalid && form.thongtin.$error.required) || form.thongtin.$error.pattern}">
+                            <label class="control-label">Thông tin tác nghiệp
+                                <span class="required-field">*</span>
+                            </label>
+                            <input class="form-control" type="text" placeholder="Thông tin tác nghiệp" ng-model="vm.model.thongtin" required ng-pattern="vm.nameRegx"
+                                name="thongtin" />
+                            <label class="control-label" ng-show="vm.showInvalid && form.thongtin.$error.required">* This field is required</label>
+                            <label class="control-label" ng-show="form.thongtin.$error.pattern">* This field dose not allow special characters</label>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error': (vm.showInvalid && form.user.$error.required) || form.user.$error.pattern}">
+                            <label class="control-label">User
+                                <span class="required-field">*</span>
+                            </label>
+                            <div class="input-group mb-3">
+                                <input class="form-control" type="text" placeholder="Số điện thoại" ng-model="vm.model.user" required ng-pattern="vm.nameRegx"
+                                    name="user" />
+                                <span class="input-group-btn input-group-addon no-padding">
+                                    <button class="btn btn-defaul" type="button" style="padding: 6px;" ng-click="vm.getUserByPhone(vm.model.user)">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            <label class="control-label" ng-show="vm.showInvalid && form.user.$error.required">* This field is required</label>
+                            <label class="control-label" ng-show="form.user.$error.pattern">* This field dose not allow special characters</label>
                         </div>
                         <div class="form-group" ng-class="{'has-error': (vm.showInvalid && form.ngayTacNghiep.$error.required)}">
                             <label class="control-label">Ngày giờ
@@ -91,8 +106,9 @@
                                         <span></span>
                                     </label>
                                 </th>
-                                <th> Tên </th>
                                 <th> Loại </th>
+                                <th> Thông tin </th>
+                                <th> User </th>
                                 <th> Ngày Giờ </th>
                             </tr>
                         </thead>
@@ -104,10 +120,11 @@
                                         <span></span>
                                     </label>
                                 </td>
-                                <td>
-                                    <a class="primary-link" href="#/bds/detail/tac-nghiep?bdsId={{vm.bdsId}}&id=/{{item.$id}}">{{item.ten}}</a>
-                                </td>
                                 <td>{{vm.textLoaiTacNghiep(item.loaiTacNghiep)}}</td>
+                                <td>
+                                    <a class="primary-link" href="#/bds/detail/tac-nghiep?bdsId={{vm.bdsId}}&id={{item.$id}}&user={{vm.textUser(item.userPhone)}}">{{item.thongtin}}</a>
+                                </td>
+                                <td>{{vm.textUser(item.userPhone)}}</td>
                                 <td>
                                     {{item.ngayTacNghiep | date : "MM/dd/yyyy HH:mm:ss"}}
                                 </td>

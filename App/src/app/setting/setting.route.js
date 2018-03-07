@@ -127,7 +127,58 @@
                     return authService.requireSignIn();
                  }]
             }
-         }).state('tacNghiep-list',{
+         }).state('loaiTacNghiep-list',{
+            parent: 'root',
+            url: '/setting/loaiTacNghiep-list',
+            templateUrl: 'app/setting/loaiTacNghiep/loaiTacNghiep-list.tpl.html',
+            controller: 'loaiTacNghiepListCtr',
+            controllerAs: 'loaiTacNghiepListVm',
+            data: {
+                pageTitle: 'Quản Lý Loại Tác Nghiệp',
+                module: 'setting',
+                icon: 'icon-settings',
+                parent: 'settingList'
+            },
+            resolve:{
+                "currentAuth": ["authService", function(authService) {
+                    return authService.requireSignIn();
+                 }]
+            }
+         }).state('loaiTacNghiep-add',{
+            parent: 'root',
+            url: '/setting/loaiTacNghiep-mod',
+            templateUrl: 'app/setting/loaiTacNghiep/loaiTacNghiep-mod.tpl.html',
+            controller: 'loaiTacNghiepModCtr',
+            controllerAs: 'loaiTacNghiepModVm',
+            data: {
+                pageTitle: 'Thêm Loại Tác Nghiệp',
+                module: 'setting',
+                parent: 'settingList',
+                hide:true
+            },
+            resolve:{
+                "currentAuth": ["authService", function(authService) {
+                    return authService.requireSignIn();
+                 }]
+            }
+         }).state('loaiTacNghiep-edit',{
+            parent: 'root',
+            url: '/setting/loaiTacNghiep-mod/:idLoai',
+            templateUrl: 'app/setting/loaiTacNghiep/loaiTacNghiep-mod.tpl.html',
+            controller: 'loaiTacNghiepModCtr',
+            controllerAs: 'loaiTacNghiepModVm',
+            data: {
+                pageTitle: 'Sửa Loại Tác Nghiệp',
+                module: 'setting',
+                parent: 'settingList',
+                hide:true
+            },
+            resolve:{
+                "currentAuth": ["authService", function(authService) {
+                    return authService.requireSignIn();
+                 }]
+            }
+        }).state('tacNghiep-list',{
             parent: 'root',
             url: '/setting/tacNghiep-list',
             templateUrl: 'app/setting/tacNghiep/tacNghiep-list.tpl.html',
@@ -142,36 +193,32 @@
             resolve:{
                 "currentAuth": ["authService", function(authService) {
                     return authService.requireSignIn();
-                 }]
+                 }],
+                 deps: ['$ocLazyLoad', function($ocLazyLoad){
+					return $ocLazyLoad.load({
+						cache: true,
+						files: [
+							'./app/bds/tacNghiep.service.js'
+						]
+					});
+				}]
             }
-         }).state('tacNghiep-add',{
+         }).state('tacNghiep-edit',{
             parent: 'root',
-            url: '/setting/tacNghiep-mod',
+            url: '/setting/tacNghiep-mod/:id',
             templateUrl: 'app/setting/tacNghiep/tacNghiep-mod.tpl.html',
             controller: 'tacNghiepModCtr',
             controllerAs: 'tacNghiepModVm',
             data: {
-                pageTitle: 'Thêm Loại Tác Nghiệp',
+                pageTitle: 'Sửa Tác Nghiệp',
                 module: 'setting',
                 parent: 'settingList',
                 hide:true
             },
-            resolve:{
-                "currentAuth": ["authService", function(authService) {
-                    return authService.requireSignIn();
-                 }]
-            }
-         }).state('tacNghiep-edit',{
-            parent: 'root',
-            url: '/setting/tacNghiep-mod/:idLoai',
-            templateUrl: 'app/setting/tacNghiep/tacNghiep-mod.tpl.html',
-            controller: 'tacNghiepModCtr',
-            controllerAs: 'tacNghiepModVm',
-            data: {
-                pageTitle: 'Sửa Loại Tác Nghiệp',
-                module: 'setting',
-                parent: 'settingList',
-                hide:true
+            params: {
+                id: null,
+                bdsId: null,
+                text: null
             },
             resolve:{
                 "currentAuth": ["authService", function(authService) {
@@ -185,7 +232,7 @@
             controller: 'viTriListCtr',
             controllerAs: 'viTriListVm',
             data: {
-                pageTitle: 'Quản Lý Vị Trí',
+                pageTitle: 'Quản Lý Loại Vị Trí',
                 module: 'setting',
                 icon: 'icon-settings',
                 parent: 'settingList'
@@ -287,7 +334,7 @@
             controller: 'bDSListCtr',
             controllerAs: 'bDSListVm',
             data: {
-                pageTitle: 'Quản Lý Bất Động Sản',
+                pageTitle: 'Quản Lý Loại BĐS',
                 module: 'setting',
                 icon: 'icon-settings',
                 parent: 'settingList'

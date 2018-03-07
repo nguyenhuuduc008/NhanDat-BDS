@@ -5,13 +5,17 @@
 	/** @ngInject **/
 	function tacNghiepService($q, $filter, $firebaseObject, $firebaseArray, firebaseDataRef, appUtils) {
 		var rootPath = 'bds-tac-nghiep', tacNghiepRef = firebaseDataRef.child(rootPath);
+		var phonePath = 'existed-phone', phoneRef = firebaseDataRef.child(phonePath); 
 		var tacNghiepService = {
 			get: get,
 			getAll: getAll,
 			create: create,
 			update: update,
 			deleteItem: deleteItem,
-			search: search
+			search: search,
+			updateInfo: updateInfo,
+			getUserByPhone: getUserByPhone,
+			getListUserByPhone: getListUserByPhone
 		};
 
 		return tacNghiepService;
@@ -42,6 +46,16 @@
 			update.timestampModified = ts;
 			return update.$save().then(function () {
 				return { result: true, errorMsg: "" };
+			}).catch(function (error) {
+				return { result: false, errorMsg: error };
+			});
+		}
+
+		function updateInfo(id, bdsId, update) {
+			var ts = appUtils.getTimestamp();
+			update.timestampModified = ts;
+			return tacNghiepRef.child(bdsId).child(id).update(update).then(function (result) {
+				return { result: true, errorMsg: "", key: id };
 			}).catch(function (error) {
 				return { result: false, errorMsg: error };
 			});
@@ -84,6 +98,16 @@
 				return true;
 			}
 			return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
+		}
+
+		function getUserByPhone(phone) {
+			phone = phone || 'a';
+			var ref = phoneRef.child(phone);
+			return $firebaseObject(ref).$loaded();
+		}
+
+		function getListUserByPhone() {
+			return $firebaseArray(phoneRef).$loaded();
 		}
 	}
 })();

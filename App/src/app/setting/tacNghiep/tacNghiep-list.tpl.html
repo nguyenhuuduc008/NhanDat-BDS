@@ -3,22 +3,34 @@
         <!-- BEGIN BORDERED TABLE PORTLET-->
         <div class="portlet light portlet-fit bordered">
             <div class="portlet-title">
-                <div class="caption">
-                    <div class="col-md-10 no-padding-right">
-                        <select class="bs-select form-control" id="action-list" ng-model="tacNghiepListVm.selectAction">
-                            <option>Bulk Actions</option>
-                            <option>Delete</option>
+                <div class="caption col-md-12">
+                    <div class="col-md-3">
+                        <h5 class="no-margin-top">Loại Tác Nghiệp</h5>
+                        <select class="bs-select form-control" id="action-list" ng-model="tacNghiepListVm.loaiTacNghiep">
+                            <option disabled>Chọn loại</option>
+                            <option ng-repeat="loai in tacNghiepListVm.listLoaiTacNghiep">{{loai.text}}</option>
                         </select>
                     </div>
-                    <div class="col-md-2 no-padding-left">
-                        <button type="button" class="btn green" ng-click="tacNghiepListVm.apply('select-checkBox')">Apply</button>
-                    </div>
-                </div>
-                <div class="actions">
-                    <div class="btn-group btn-group-devided">
-                        <div class="col-md-1">
-                            <a href="#/setting/tacNghiep-mod" class="btn blue">Add New</a>
+                    <div class="form-group col-md-3">
+                        <h5 class="control-label">User</h5>
+                        <div class="input-group mb-3">
+                            <input class="form-control" type="text" placeholder="Số điện thoại" ng-model="tacNghiepListVm.user" name="user" />
+                            <span class="input-group-btn input-group-addon no-padding">
+                                <button class="btn btn-defaul" type="button" style="padding: 6px;" ng-click="tacNghiepListVm.getUserByPhone(tacNghiepListVm.user)">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
                         </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <h5 class="control-label">Khoảng thời gian</h5>
+                        <single-date-picker name="thoigian" ng-model="tacNghiepListVm.thoigian" hour-format="true"></single-date-picker>
+                    </div>
+                    <div class="col-md-3">
+                        <h5 class="no-margin-top">&nbsp</h5>
+                        <button type="button" class="btn green" ng-click="tacNghiepListVm.filter('select-checkBox')">Lọc</button>
+                        &nbsp&nbsp
+                        <button type="button" class="btn green" ng-click="tacNghiepListVm.fullList()">Tất cả</button>
                     </div>
                 </div>
             </div>
@@ -34,17 +46,23 @@
                                     </label>
                                 </th>
                                 <th class="width25"> Loại Tác Nghiệp </th>
+                                <th class="width25"> Thông Tin Tác Nghiệp </th>
+                                <th class="width25"> User </th>
+                                <th class="width25"> Khoảng Thời Gian </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="item in tacNghiepListVm.items">
+                            <tr ng-repeat="item in tacNghiepListVm.listTacNghiep">
                                 <td class="width5">
                                     <label class="mt-checkbox mt-checkbox-outline">
                                         <input type="checkbox" name="select-checkBox" value="{{item.$id}}"/>
                                         <span></span>
                                     </label>
                                 </td>
-                                <td class="width25"><a href="#/setting/tacNghiep-mod/{{item.$id}}"> {{item.text}} </a></td>
+                                <td class="width25">{{item.loaiTacNghiep}}</td>
+                                <td class="width25"><a href="" ng-click="tacNghiepListVm.edit(item.id, item.bdsId, item.thongtin)">{{item.thongtin}}</a></td>
+                                <td class="width25">{{tacNghiepListVm.textUser(item.userPhone)}} </a></td>
+                                <td class="width25">{{item.ngayTacNghiep}}</td>
                             </tr>
                         </tbody>
                     </table>

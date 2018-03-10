@@ -1,0 +1,141 @@
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN BORDERED TABLE PORTLET-->
+        <div class="portlet light portlet-fit bordered">
+            <div class="portlet-title">
+                <div class="caption col-md-12">
+                    <div class="col-md-3 text-right">
+                        <label class="control-label padding-top-10">{{hanhChinhListVm.input}}</label>
+                    </div>
+                    <div class="col-md-6">
+                        <input class="form-control" type="text" placeholder="{{hanhChinhListVm.input}}" ng-model="hanhChinhListVm.model.text" name="hanhChinhInput" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="button" class="btn green" ng-click="hanhChinhListVm.actionHanhChinh(hanhChinhListVm.model.text)">{{hanhChinhListVm.buttonType}}</button>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body row">
+                <div class="col-md-12">
+                    <div class="col-md-3">
+                        <div class="mt-element-list">
+                            <div class="mt-list-head list-todo default">
+                                <div class="row">
+                                    <div class="list-head-title-container col-md-10">Cấp Tỉnh (Tỉnh/ Thành phố trung ương)</div>
+                                    <div class="col-md-2 text-center">
+                                        <a class="task-trash" href="javascript:;" style="color: blue" title="Thêm Tỉnh" ng-click="hanhChinhListVm.addInput('capTinh')">
+                                            <i class="fa fa-plus"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-list-container list-todo" style="height:300px">
+                                <div class="" style="position: relative; overflow: auto; width: 100%; max-height: 300px;">
+                                    <table class="table table-hover no-margin-bottom">
+                                        <tbody>
+                                            <tr ng-repeat="item in hanhChinhListVm.listCapTinh" ng-class="{active: hanhChinhListVm.capTinhActive == $index}" ng-click="hanhChinhListVm.chooseHanhChinh(item, 'capHuyen', $index)">
+                                                <td>{{item.text}}
+                                                    <a class="pull-right" href="javascript:;" style="color: red" title="Xóa Tỉnh" ng-click="hanhChinhListVm.deleteHanhChinh('capTinh', item)">
+                                                        <i class="fa fa-remove"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="mt-element-list">
+                            <div class="mt-list-head list-todo default">
+                                <div class="row">
+                                    <div class="list-head-title-container col-md-10">Cấp Huyện (Quận/ Huyện/ Thị xã/ Thành phố thuộc tỉnh)</div>
+                                    <div class="col-md-2 text-center">
+                                        <a class="task-trash" href="javascript:;" style="color: blue" title="Thêm Huyện" ng-click="hanhChinhListVm.addInput('capHuyen')" ng-class="{linkDisabled: hanhChinhListVm.capTinhActive < 0}">
+                                            <i class="fa fa-plus"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-list-container list-todo" style="height:300px">
+                                <div class="" style="position: relative; overflow: auto; width: 100%; max-height: 300px;">
+                                    <table class="table table-hover no-margin-bottom">
+                                        <tbody>
+                                            <tr ng-repeat="item in hanhChinhListVm.listCapHuyen" ng-class="{active: hanhChinhListVm.capHuyenActive == $index}" ng-click="hanhChinhListVm.chooseHanhChinh(item, 'capXa', $index)">
+                                                <td>{{item.text}}
+                                                    <a class="pull-right" href="javascript:;" style="color: red" title="Xóa Tỉnh" ng-click="hanhChinhListVm.deleteHanhChinh('capHuyen', item)">
+                                                        <i class="fa fa-remove"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="mt-element-list">
+                            <div class="mt-list-head list-todo default">
+                                <div class="row">
+                                    <div class="list-head-title-container col-md-10">Cấp Xã (Xã/ Phường/ Thị trấn)</div>
+                                    <div class="col-md-2 text-center">
+                                        <a class="task-trash" href="javascript:;" style="color: blue" title="Thêm Xã" ng-click="hanhChinhListVm.addInput('capXa')" ng-class="{linkDisabled: (hanhChinhListVm.capHuyenActive < 0)}">
+                                            <i class="fa fa-plus"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-list-container list-todo" style="height:300px">
+                                <div class="" style="position: relative; overflow: auto; width: 100%; max-height: 300px;">
+                                    <table class="table table-hover no-margin-bottom">
+                                        <tbody>
+                                            <tr ng-repeat="item in hanhChinhListVm.listCapXa" ng-class="{active: hanhChinhListVm.capXaActive == $index}" ng-click="hanhChinhListVm.chooseHanhChinh(item, 'duong', $index)">
+                                                <td>{{item.text}}
+                                                    <a class="pull-right" href="javascript:;" style="color: red" title="Xóa Tỉnh" ng-click="hanhChinhListVm.deleteHanhChinh('capXa', item)">
+                                                        <i class="fa fa-remove"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="mt-element-list">
+                            <div class="mt-list-head list-todo default">
+                                <div class="row">
+                                    <div class="list-head-title-container col-md-10">Đường</div>
+                                    <div class="col-md-2 text-center">
+                                        <a class="task-trash" href="javascript:;" style="color: blue" title="Thêm Đường" ng-click="hanhChinhListVm.addInput('duong')" ng-class="{linkDisabled: (hanhChinhListVm.capXaActive < 0)}">
+                                            <i class="fa fa-plus"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-list-container list-todo" style="height:300px">
+                                <div class="" style="position: relative; overflow: auto; width: 100%; max-height: 300px;">
+                                    <table class="table table-hover no-margin-bottom">
+                                        <tbody>
+                                            <tr ng-repeat="item in hanhChinhListVm.listDuong" ng-class="{active: hanhChinhListVm.duongActive == $index}" ng-click="hanhChinhListVm.chooseHanhChinh(item, 'last', $index)">
+                                                <td>{{item.text}}
+                                                    <a class="pull-right" href="javascript:;" style="color: red" title="Xóa Tỉnh" ng-click="hanhChinhListVm.deleteHanhChinh('duong', item)">
+                                                        <i class="fa fa-remove"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END BORDERED TABLE PORTLET-->
+    </div>
+</div>

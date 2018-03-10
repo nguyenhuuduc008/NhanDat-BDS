@@ -145,8 +145,8 @@
 							var arr = fbUser.displayName.split(regx);
 							console.log(arr);
 							if(arr && arr.length > 0){
-								fbUser.firstName = arr[0] || '',
-								fbUser.lastName = arr[1] || ''
+								fbUser.firstName = arr[0] || '';
+								fbUser.lastName = arr[1] || '';
 							}
 						}
 						console.log('getUserInfo');

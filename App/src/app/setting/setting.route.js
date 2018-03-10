@@ -225,6 +225,23 @@
                     return authService.requireSignIn();
                  }]
             }
+         }).state('hanhChinh-list',{
+            parent: 'root',
+            url: '/setting/hanhChinh-list',
+            templateUrl: 'app/setting/hanhChinh/hanhChinh-list.tpl.html',
+            controller: 'hanhChinhListCtr',
+            controllerAs: 'hanhChinhListVm',
+            data: {
+                pageTitle: 'Quản Lý Hành Chính',
+                module: 'setting',
+                icon: 'icon-settings',
+                parent: 'settingList'
+            },
+            resolve:{
+                "currentAuth": ["authService", function(authService) {
+                    return authService.requireSignIn();
+                 }],
+            }
          }).state('viTri-list',{
             parent: 'root',
             url: '/setting/viTri-list',

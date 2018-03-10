@@ -100,6 +100,15 @@
             removeLoaiNhuCau:removeLoaiNhuCau,
             updateLoaiNhuCau:updateLoaiNhuCau,
 
+            getListLoaiHanhChinh: getListLoaiHanhChinh,
+            getListChildHanhChinh: getListChildHanhChinh,
+            addLoaiHanhChinh: addLoaiHanhChinh,
+            addChildHanhChinh: addChildHanhChinh,
+            updateLoaiHanhChinh: updateLoaiHanhChinh,
+            updateChildHanhChinh: updateChildHanhChinh,
+            getLoaiHanhChinh: getLoaiHanhChinh,
+            deleteLoaiHanhChinh: deleteLoaiHanhChinh
+
         };
         //Ref
         var cacLoaiQuyHoachRef=firebaseDataRef.child('app-options/cacLoaiQuyHoach');
@@ -118,6 +127,7 @@
         var cacLoaiUserRef=firebaseDataRef.child('app-options/cacLoaiUser');
         var cacLoaiDanhMucBDSRef=firebaseDataRef.child('app-options/cacDanhMucBDS');
         var cacLoaiNhuCauRef=firebaseDataRef.child('app-options/cacLoaiNhuCau');
+        var cacLoaiHanhChinhRef=firebaseDataRef.child('app-options/cacLoaiHanhChinh');
         
         return service;
         //function cacLoaiQUyHoach
@@ -729,6 +739,57 @@
             }).catch(function(error){
                 return {result:false,errMsg:error};
             });
+        }
+
+        //quan ly hanh chinh
+        function getListLoaiHanhChinh(path) {
+            var ref = cacLoaiHanhChinhRef.child(path);
+            return $firebaseArray(ref).$loaded();
+        }
+        function getListChildHanhChinh(path, parentKey) {
+            var ref = cacLoaiHanhChinhRef.child(path).child(parentKey);
+            return $firebaseArray(ref).$loaded();
+        }
+        function addLoaiHanhChinh(dataModel,addPath){
+            var key = cacLoaiHanhChinhRef.push().key;
+            return cacLoaiHanhChinhRef.child(addPath).child(key).set(dataModel).then(function(res){
+                return {result:true,key:key};
+            }).catch(function(error){
+                return {result:false,errMsg:error};
+            });
+        }
+        function addChildHanhChinh(dataModel,addPath, parentKey){
+            var key = cacLoaiHanhChinhRef.push().key;
+            return cacLoaiHanhChinhRef.child(addPath).child(parentKey).child(key).set(dataModel).then(function(res){
+                return {result:true,key:key};
+            }).catch(function(error){
+                return {result:false,errMsg:error};
+            });
+        }
+        function updateLoaiHanhChinh(dataModel,addPath, key){
+            return cacLoaiHanhChinhRef.child(addPath).child(key).update(dataModel).then(function(res){
+                return {result:true,key:key};
+            }).catch(function(error){
+                return {result:false,errMsg:error};
+            });
+        }
+        function updateChildHanhChinh(dataModel,addPath, parentKey, key){
+            return cacLoaiHanhChinhRef.child(addPath).child(parentKey).child(key).update(dataModel).then(function(res){
+                return {result:true,key:key};
+            }).catch(function(error){
+                return {result:false,errMsg:error};
+            });
+        }
+        function getLoaiHanhChinh(path, key) {
+            var ref = cacLoaiHanhChinhRef.child(path).child(key);
+            return $firebaseObject(ref).$loaded();            
+        }
+        function deleteLoaiHanhChinh(addPath, key) {
+            return cacLoaiHanhChinhRef.child(addPath).child(key).remove().then(function(res){
+                return {result:true,key:key};
+            }).catch(function(error){
+                return {result:false,errMsg:error};
+            });            
         }
         //---
     }

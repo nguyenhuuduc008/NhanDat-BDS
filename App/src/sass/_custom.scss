@@ -309,6 +309,12 @@ body{
     margin-top: 60px;
 }
 
+.linkDisabled  {
+    cursor: not-allowed;
+    pointer-events: none;
+    color: grey !important;
+}
+
 #media{
 	button.btn{
         margin-left: -1px;

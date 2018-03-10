@@ -39,80 +39,74 @@
             firebaseAuth(loginVm);
 		};
 
+        loginVm.googleLogin = function(){
+            var provider = new firebase.auth.GoogleAuthProvider();
+            provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+            provider.setCustomParameters({
+                'login_hint': 'user@example.com'
+            });
+
+            return authService.signUpWithPopup(provider).then(function(data){
+                if(data.result){
+                    CheckNSetStorageData(data.uid);
+                }else{
+                    appUtils.hideLoading();
+                    $scope.showError = true;
+                    $scope.errMessage = data.errorMessage;
+                    authService.logout();
+                }
+            });
+           
+        };
+
+        loginVm.facebookLogin = function(){
+            var provider = new firebase.auth.FacebookAuthProvider();
+            provider.addScope('user_birthday');
+            provider.setCustomParameters({
+                'display': 'popup'
+            });
+            return authService.signUpWithPopup(provider).then(function(data){
+                if(data.result){
+                    CheckNSetStorageData(data.uid);
+                }else{
+                    appUtils.hideLoading();
+                    $scope.showError = true;
+                    $scope.errMessage = data.errorMessage;
+                    authService.logout();
+                }
+            });
+        };
+
+        loginVm.phoneLogin = function(){
+            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+                'size': 'normal',
+                'callback': function(response) {
+                var phoneNumber = getPhoneNumberFromUserInput();
+                var appVerifier = window.recaptchaVerifier;
+                firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
+                .then(function (confirmationResult) {
+                // SMS sent. Prompt user to type the code from the message, then sign the
+                // user in with confirmationResult.confirm(code).
+                window.confirmationResult = confirmationResult;
+                }).catch(function (error) {
+                // Error; SMS not sent
+                // ...
+                });
+                },
+                'expired-callback': function() {
+                    // Response expired. Ask user to solve reCAPTCHA again.
+                    // ...
+                }
+            });
+        };
+
         function firebaseAuth ( loginVm ) {
             //Delete cache of current user
             delete $rootScope.storage.currentUser;
             appUtils.showLoading();
             authService.login(loginVm).then(function(result) {
                 if (result) {
-                    authService.getUserInfo(result.uid).then(function(user){
-                        var roles = firebaseDataRef.child('roles');
-                        var appOptions = firebaseDataRef.child('app-options');
-                        var permissions = firebaseDataRef.child('permissions');
-                        var lstRoles = [];
-                        var lstPermissions = [];
-                        if(user && user.isDeleted){
-                            $scope.$apply(function(){
-                                $scope.showError = true;
-                                $scope.errMessage = "This user may have been deleted.";
-                            });
-                            appUtils.hideLoading();
-                            authService.deleteAuthUser(result.uid);
-                        }else if(user && (user.isAuthorized && user.isAuthorized === true)){
-                            if(!user.userRoles || user.userRoles.length <= 0){
-                                $scope.$apply(function(){
-                                    appUtils.hideLoading();
-                                    $scope.showError = true;
-                                    $scope.errMessage = "There are no permissions to access!";
-                                    authService.logout();
-                                });
-                            }else{
-                                var userRoleIds = user.userRoles;
-                                //Get all states
-                                var allState = $state.get();
-                                // $firebaseArray(roles).$loaded().then(function(data){
-                                //     lstRoles = data;
-                                //     var backendAccessVal = 'Backend Access';
-                                //     var backendAccessRole =  _.find(lstRoles, {name: backendAccessVal});
-                                //     // console.log(backendAccessRole);
-                                //     if(backendAccessRole){
-                                user.$id = result.uid;
-                                $rootScope.storage.currentUser = user;
-                                appSettingService.getSettings().then(function(optionRs){
-                                    $rootScope.storage.appSettings = optionRs;
-                                });
-                                // old code will be removed
-                                // $firebaseObject(appOptions).$loaded().then(function(optionRs){
-                                //     $rootScope.storage.appSettings = optionRs;
-                                // });
-
-                                // $state.go('index');
-                                var dashboardUrl = '/#/bds/list';
-                                // if(window.location.href.indexOf('admin') !== -1){
-                                //     dashboardUrl = '/admin/#/home';
-                                // }
-                                window.location.href = dashboardUrl;
-                                $rootScope.settings.layout.showPageHead = false;
-                                $rootScope.settings.layout.showSideBar = true;
-                                $rootScope.settings.layout.showHeader = true;
-                                $rootScope.settings.layout.showSmartphone = true;
-                                    // }
-                                // });
-                            }
-                        }else{
-                            $scope.$apply(function(){
-                                appUtils.hideLoading();
-                                $scope.showError = true;
-                                $scope.errMessage = "Invalid user name/password";
-                                authService.logout();
-                            });
-                        }   
-                    }).catch(function(error) {
-                        appUtils.hideLoading();
-                        $scope.showError = true;
-                        $scope.errMessage = error.message;
-                        authService.logout();
-                    });
+                    CheckNSetStorageData(result.uid);
                 }
                 $scope.loading = false;
             }).catch(function(error) {
@@ -121,6 +115,77 @@
                 $scope.showError = true;
                 // $scope.errMessage = error.message;
                 $scope.errMessage = "The password that you've entered is incorrect.";
+            });
+        }
+
+        function CheckNSetStorageData(uid){
+            authService.getUserInfo(uid).then(function(user){
+                var roles = firebaseDataRef.child('roles');
+                var appOptions = firebaseDataRef.child('app-options');
+                var permissions = firebaseDataRef.child('permissions');
+                var lstRoles = [];
+                var lstPermissions = [];
+                if(user && user.isDeleted){
+                    $scope.$apply(function(){
+                        $scope.showError = true;
+                        $scope.errMessage = "This user may have been deleted.";
+                    });
+                    appUtils.hideLoading();
+                    authService.deleteAuthUser(uid);
+                }else if(user && (user.isAuthorized && user.isAuthorized === true)){
+                    if(!user.userRoles || user.userRoles.length <= 0){
+                        $scope.$apply(function(){
+                            appUtils.hideLoading();
+                            $scope.showError = true;
+                            $scope.errMessage = "There are no permissions to access!";
+                            authService.logout();
+                        });
+                    }else{
+                        var userRoleIds = user.userRoles;
+                        //Get all states
+                        var allState = $state.get();
+                        // $firebaseArray(roles).$loaded().then(function(data){
+                        //     lstRoles = data;
+                        //     var backendAccessVal = 'Backend Access';
+                        //     var backendAccessRole =  _.find(lstRoles, {name: backendAccessVal});
+                        //     // console.log(backendAccessRole);
+                        //     if(backendAccessRole){
+                        user.$id = uid;
+                        $rootScope.storage.currentUser = user;
+                        appSettingService.getSettings().then(function(optionRs){
+                            $rootScope.storage.appSettings = optionRs;
+                        });
+                        // old code will be removed
+                        // $firebaseObject(appOptions).$loaded().then(function(optionRs){
+                        //     $rootScope.storage.appSettings = optionRs;
+                        // });
+
+                        // $state.go('index');
+                        var dashboardUrl = '/#/bds/list';
+                        // if(window.location.href.indexOf('admin') !== -1){
+                        //     dashboardUrl = '/admin/#/home';
+                        // }
+                        window.location.href = dashboardUrl;
+                        $rootScope.settings.layout.showPageHead = false;
+                        $rootScope.settings.layout.showSideBar = true;
+                        $rootScope.settings.layout.showHeader = true;
+                        $rootScope.settings.layout.showSmartphone = true;
+                            // }
+                        // });
+                    }
+                }else{
+                    $scope.$apply(function(){
+                        appUtils.hideLoading();
+                        $scope.showError = true;
+                        $scope.errMessage = "Invalid user name/password";
+                        authService.logout();
+                    });
+                }   
+            }).catch(function(error) {
+                appUtils.hideLoading();
+                $scope.showError = true;
+                $scope.errMessage = error.message;
+                authService.logout();
             });
         }
 

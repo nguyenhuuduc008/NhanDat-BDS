@@ -44,6 +44,17 @@
             </label>
             <a href="javascript:;" id="forget-password" class="forget-password" ng-click="loginVm.openResetPassPopup()">Forgot Password?</a>
         </div>
+        <div class="login-options">
+            <h4>Or login with</h4>
+            <ul class="social-icons">
+                <li>
+                    <a class="social-icon-color facebook" ng-click="loginVm.facebookLogin()"  data-original-title="facebook" href="javascript:;"></a>
+                </li>
+                <li>
+                    <a class="social-icon-color googleplus" ng-click="loginVm.googleLogin()" data-original-title="Goole Plus" href="javascript:;"></a>
+                </li>
+            </ul>
+        </div>
     </form>
     <!-- END LOGIN FORM -->
     <!-- BEGIN FORGOT PASSWORD FORM -->

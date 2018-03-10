@@ -4,12 +4,13 @@
 	angular
 		.module('app.auth').factory("authService", authService);
 		/** @ngInject */
-		function authService($rootScope, $firebaseAuth, $q, firebaseDataRef, $http, APP_CONFIG) {
+		function authService($rootScope, $firebaseAuth, $q, firebaseDataRef, $http, APP_CONFIG, appUtils) {
 			var auth = $firebaseAuth();
 
 			var service = {
 				auth: auth,
 				login: login,
+				signUpWithPopup: signUpWithPopup,
 				logout: logout,
 				sendWelcomeEmail: sendWelcomeEmail,
 				waitForSignIn: waitForSignIn,
@@ -71,6 +72,18 @@
 				});
 			}
 
+			function signUpWithPopup(provider){
+				return firebase.auth().signInWithPopup(provider).then(function(result) {
+					var user = result.user;
+					return createFBUser(user.uid, user).then(function(rs){
+						return {result : rs, uid: user.uid};
+					});
+				}).catch(function(error) {
+					var errorMessage = error.message;
+					return {result : false, errorMessage: errorMessage};	
+				});	
+			}
+
 			function deleteAuthUser(uid) {
 				var reqs = [];
 				reqs.push(firebaseDataRef.child('users/' + uid).remove());
@@ -106,34 +119,78 @@
 				});
 			}
 
-			function createFBUser(authId, profile, user) {
-				var userRef = firebaseDataRef.child('users');
-				user = {
-					displayName: profile.lastname + ' ' + profile.firstname,
-					firstName: profile.firstname,
-					lastName: profile.lastname,
-					address: '',
-					city: '',
-					state: 'TX',
-					zipCode: '',
-					email: user.email,
-					primaryPhone: profile.phone,
-					cellPhone: '',
-					isReceiveEmail: false,
-					interests: '',
-					occupation: '',
-					about: '',
-					websiteUrl: '',
-					// password: user.password,
-					userRoles: ['-KTlcsVRwRIIftqNVoiY'],
-					photoURL: '',
-					isAuthorized: true,
-					externalId: profile.employeeId,
-					repCode: profile.repCode,
-					isDeleted: false
-				};
+			function createFBUser(authId, user) {
+				return getUserInfo(authId).then(function(rs){
+					console.log('getUserInfo');
+					console.log(rs);
+					if(rs === null){
+						var fbUser = {
+							address: '',
+							city: '',
+							email: user.email,
+							displayName: user.displayName || '',
+							firstName: '',
+							isAuthorized: true,
+							isDeleted: false,
+							lastName: '',
+							primaryPhone: '',
+							photoURL: user.photoURL || '',
+							state: '',
+							zipCode: '',
+							userRoles: ['-L1RFG7CNHThFmm5jHk2'],
+						};
 
-				userRef.child(authId).set(user);
+						if(fbUser.displayName && _.trim(fbUser.displayName) !== ''){
+							var regx = new RegExp(' ');
+							var arr = fbUser.displayName.split(regx);
+							console.log(arr);
+							if(arr && arr.length > 0){
+								fbUser.firstName = arr[0] || '',
+								fbUser.lastName = arr[1] || ''
+							}
+						}
+						console.log('getUserInfo');
+						console.log(fbUser);
+						return create(fbUser, authId);
+					}else{
+						return true;
+					}
+				});
+
 			}
+
+			function create(user,uid){
+				var ts = appUtils.getTimestamp();
+				user.timestampModified = ts;
+				user.timestampCreated = ts;
+				userAddHistory(user);
+				return firebaseDataRef.child('users').child(uid).set(user).then(function(res){
+					var existedUser = {
+						email: user.email
+					};
+					firebaseDataRef.child('existed-users').child(uid).set(existedUser).then(function(res){});
+					return {result: true , data: uid};
+				}).catch(function(error) {
+					return {result: false , errorMsg: error};
+				});
+			}
+
+			function userAddHistory(dataInput){
+				var content=JSON.stringify(dataInput).replace(/,/g, ", ");
+				var dataModel={
+						createdBy: dataInput.email,
+						content:content,
+						timestampCreated:Date.now(),
+						type:'Thêm Mới User',
+						userEmail:dataInput.email
+					};
+					var key = firebaseDataRef.child('history/user').push().key;
+					return firebaseDataRef.child('history/user').child(key).set(dataModel).then(function (res) {
+					return { result: true, key: key };
+				}).catch(function (error) {
+					return { result: false, errorMsg: error };
+				});
+			}
+			
 		}
 })();

@@ -68,10 +68,9 @@
                             <div class="col-md-6">
                                 <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.xaPhuong.$error.required)}">
                                     <label class="control-label">Xã / Phường
-                                        <span class="required-field">*</span>
                                     </label>
                                     <!-- <input type="text" name="xaPhuong" placeholder="Xã / Phường" class="form-control" required ng-model="vm.model.xaPhuong" /> -->
-                                    <select name="xaPhuong" ng-model="vm.model.xaPhuong" class="form-control" required>
+                                    <select name="xaPhuong" ng-model="vm.model.xaPhuong" class="form-control">
                                         <option value="" disabled>Xã / Phường</option>
                                         <option ng-repeat="item in vm.wards" value="{{item.value}}" ng-selected="item.value == vm.model.xaPhuong">{{item.text}}</option>
                                     </select>

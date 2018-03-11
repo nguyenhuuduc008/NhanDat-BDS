@@ -1,0 +1,68 @@
+<div class="row" id="permission">
+        <div class="col-md-12">
+            <!-- BEGIN PORTLET-->
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="actions">
+                        <a class="btn btn-circle btn-icon-only blue" href="#/quyTrinhPhapLy/quyTrinhPhapLy-list">
+                            <i class="icon-list"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <!-- BEGIN FORM-->
+                    <form ng-submit="quyTrinhPhapLyAddVm.create(quyTrinhPhapLyForm)" role="form"  name="quyTrinhPhapLyForm" novalidate>
+                        <div class="form-body">
+                            <div class="form-group col-md-12" ng-class="{'has-error': (quyTrinhPhapLyAddVm.showInvalid && quyTrinhPhapLyForm.name.$error.required) || quyTrinhPhapLyForm.name.$error.pattern}">
+                                <label class="control-label">Tên Quy Trình
+                                    <span class="required-field">*</span>
+                                </label>
+                                <input type="text" name="name" placeholder="Tên Quy Trình" class="form-control" required ng-pattern="nameRegx" ng-model="quyTrinhPhapLyAddVm.model.tenQuyTrinh"
+                                />
+                                <!--<label class="control-label" ng-show="quyTrinhPhapLyAddVm.showInvalid && quyTrinhPhapLyForm.name.$error.required">* This field is required</label>-->
+                                <label class="control-label" ng-show="quyTrinhPhapLyForm.name.$error.pattern">* This field does not allow special characters</label>
+                            </div>
+                            <div class="form-group  col-md-6" ng-class="{'has-error': (quyTrinhPhapLyAddVm.showInvalid && quyTrinhPhapLyForm.thanhPho.$error.required)}">
+                                <label class="control-label">Thành phố
+                                    <span class="required-field">*</span>
+                                </label>
+                                <!-- <input type="text" name="thanhPho" placeholder="Thành phố" class="form-control" required ng-model="quyTrinhPhapLyAddVm.model.thanhPho" /> -->
+                                <select name="thanhPho" ng-model="quyTrinhPhapLyAddVm.model.thanhPho" class="form-control" ng-change="quyTrinhPhapLyAddVm.changeCity()" required>
+                                    <option value="" disabled>Thành phố</option>
+                                    <option ng-repeat="item in quyTrinhPhapLyAddVm.cities" value="{{item.value}}" ng-selected="item.value == quyTrinhPhapLyAddVm.model.thanhPho">{{item.text}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group  col-md-6" ng-class="{'has-error': (quyTrinhPhapLyAddVm.showInvalid && quyTrinhPhapLyForm.quanHuyen.$error.required)}">
+                                <label class="control-label">Quận / Huyện
+                                    <span class="required-field">*</span>
+                                </label>
+                                <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" required ng-model="quyTrinhPhapLyAddVm.model.quanHuyen"/> -->
+                                <select name="quanHuyen" ng-model="quyTrinhPhapLyAddVm.model.quanHuyen" class="form-control" ng-change="quyTrinhPhapLyAddVm.changeDistrict()" required>
+                                    <option value="" disabled>Quận / Huyện</option>
+                                    <option ng-repeat="item in quyTrinhPhapLyAddVm.districts" value="{{item.value}}" ng-selected="item.value == quyTrinhPhapLyAddVm.model.quanHuyen">{{item.text}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group  col-md-12" ng-class="{'has-error': (quyTrinhPhapLyAddVm.showInvalid && quyTrinhPhapLyForm.quanHuyen.$error.required)}">
+                                <label class="control-label">Nội Dung
+                                    
+                                </label>
+                                <summernote ng-model="quyTrinhPhapLyAddVm.model.noiDung" name="quytrinh-editor" config="options"></summernote>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <button type="submit" class="btn green"ng-disabled="quyTrinhPhapLyForm.$invalid">
+                                        <i class="fa fa-check"></i> Save
+                                    </button>
+                                    <button type="button" class="btn default" ng-click="quyTrinhPhapLyAddVm.cancel()">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- END FORM-->
+                </div>
+            </div>
+        </div>
+    </div>
+    

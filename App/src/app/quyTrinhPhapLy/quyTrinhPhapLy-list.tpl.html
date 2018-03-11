@@ -1,0 +1,98 @@
+<div class="row">
+        <div class="col-md-6 text-left">
+
+        </div>
+        <div class="col-md-6 text-right">
+                <a href="#/quyTrinhPhapLy/quyTrinhPhapLy-add"  class="btn blue btn-outline sbold margin-top-bottom-5" >Add New</a>
+        </div>
+        <div class="col-md-12">
+            <!-- BEGIN BORDERED TABLE PORTLET-->
+            <div class="portlet light portlet-fit bordered">
+                <div class="portlet-title">
+                    <div class="caption width70 row">
+                        <div class="col-md-3 no-padding-right">
+                            <div class="inputs">
+                                <div class="portlet-input input-inline">
+                                    <div class="input-icon right">
+                                        <i class="icon-magnifier"></i>
+                                        <input type="text" class="form-control form-control-solid" ng-model="quyTrinhPhapLyListVm.cri.keyword" placeholder="search..." ng-change="quyTrinhPhapLyListVm.search(quyTrinhPhapLyListVm.cri)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 no-padding-right">
+                            <select name="thanhPho" ng-model="quyTrinhPhapLyListVm.cri.thanhPho" class="form-control" ng-change="quyTrinhPhapLyListVm.changeCity()">
+                                <option value="all">All</option>
+                                <option ng-repeat="item in quyTrinhPhapLyListVm.cities" value="{{item.value}}" ng-selected="item.value == quyTrinhPhapLyListVm.cri.thanhPho">{{item.text}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 no-padding-right">
+                            <select name="quanHuyen" ng-model="quyTrinhPhapLyListVm.cri.quanHuyen" class="form-control">
+                                <option value="all">All</option>
+                                <option ng-repeat="item in quyTrinhPhapLyListVm.districts" value="{{item.value}}" ng-selected="item.value == quyTrinhPhapLyListVm.cri.quanHuyen">{{item.text}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 no-padding-right">
+                            <buton class="btn green btn-outline sbold" ng-click="quyTrinhPhapLyListVm.search(quyTrinhPhapLyListVm.cri)">Filter</button>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <list-paging ng-model="quyTrinhPhapLyListVm.paging"  change-page="changePage"></list-paging>
+                    </div>
+                </div>
+                <div class="portlet-title">
+                    <div class="caption width70 row">
+                        <div class="col-md-3 no-padding-right">
+                            <select class="bs-select form-control" id="action-list" ng-model="quyTrinhPhapLyListVm.selectAction">
+                                <option>Bulk Actions</option>
+                                <option>Delete</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1 no-padding-left">
+                            <button type="button" class="btn green" ng-click="quyTrinhPhapLyListVm.apply('select-quytrinhphaply')">Apply</button>
+                        </div>
+                        <div class="col-md-7 no-padding-right">
+                            
+                        </div>
+                    </div>
+                    <div class="actions">
+                    </div>
+                </div>
+                <div class="portlet-body">
+    
+                    <div class="table-scrollable table-scrollable-borderless">
+                        <table class="table table-hover table-light">
+                            <thead>
+                                <tr class="uppercase">
+                                    <th class="width5">
+                                        <label class="mt-checkbox mt-checkbox-outline">
+                                            <input type="checkbox" id="select-all-quytrinhphaply" ng-click="quyTrinhPhapLyListVm.selectAll('select-all-quytrinhphaply','select-quytrinhphaply')"/>
+                                            <span></span>
+                                        </label>
+                                    </th>
+                                    <th class="width45"> Tên Quy Trình </th>
+                                    <th class="width25"> Thành Phố </th>
+                                    <th class="width25"> Quận/Huyện </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in quyTrinhPhapLyListVm.pagedItems[quyTrinhPhapLyListVm.paging.currentPage]">
+                                    <td class="width5">
+                                        <label class="mt-checkbox mt-checkbox-outline">
+                                            <input type="checkbox" name="select-qutrinhphaply" value="{{item.$id}}"/>
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td class="width45"><a href="#/quyTrinhPhapLy/quyTrinhPhapLy-edit/{{item.$id}}"> {{item.tenQuyTrinh}} </a></td>
+                                    <td class="width25">{{quyTrinhPhapLyListVm.getThanhPhoName(item.thanhPho)}}</td>
+                                    <td class="width25">{{quyTrinhPhapLyListVm.getQuanHuyenName(item.thanhPho, item.quanHuyen)}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- END BORDERED TABLE PORTLET-->
+        </div>
+    </div>
+    

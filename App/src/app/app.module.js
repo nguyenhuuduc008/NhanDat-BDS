@@ -70,7 +70,8 @@
             'app.dRemote',
             'app.setting',
             'app.nhuCau',
-            'app.lichSu'
+            'app.lichSu',
+            'app.quytrinhphaply'
         ])
         .config(config)
         .run(run)

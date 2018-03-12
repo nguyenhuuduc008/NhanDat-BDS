@@ -84,7 +84,7 @@
                 return tp.value === key;
             });
             return thanhpho !== undefined ? thanhpho.text : '';
-        }
+        };
         
         quyTrinhPhapLyListVm.getQuanHuyenName = function(thanhPhoKey, quanHuyenKey){
             var qhs = appSettings.quanHuyen[thanhPhoKey];
@@ -92,7 +92,7 @@
                 return qh.value === quanHuyenKey;
             });
             return quanhuyen !== undefined ? quanhuyen.text : '';
-        }
+        };
 
         quyTrinhPhapLyListVm.groupToPages = function () {
             quyTrinhPhapLyListVm.pagedItems = [];

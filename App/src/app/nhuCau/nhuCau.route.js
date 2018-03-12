@@ -1,6 +1,7 @@
 (function(){
     'use strict';
     angular.module('app.nhuCau').config(config);
+    /** @ngInject */
     function config($stateProvider){
         $stateProvider.state('nhuCauListing',{
                 parent: 'root',
@@ -53,16 +54,7 @@
             resolve:{
                 "currentAuth": ["authService", function(authService) {
                     return authService.requireSignIn();
-                 }],
-                 deps: ['$ocLazyLoad', function($ocLazyLoad){
-					return $ocLazyLoad.load({
-						cache: true,
-						name: 'app.nhuCau',
-						files: [
-                            './app/bds/bds.service.js'
-						]
-					});
-				}]
+                 }]
             }
         }).state('ban_choThueEdit',{
             parent: 'root',
@@ -79,16 +71,7 @@
             resolve:{
                 "currentAuth": ["authService", function(authService) {
                     return authService.requireSignIn();
-                 }],
-                 deps: ['$ocLazyLoad', function($ocLazyLoad){
-					return $ocLazyLoad.load({
-						cache: true,
-						name: 'app.nhuCau',
-						files: [
-                            './app/bds/bds.service.js'
-						]
-					});
-				}]
+                 }]
             }
         })
         /*

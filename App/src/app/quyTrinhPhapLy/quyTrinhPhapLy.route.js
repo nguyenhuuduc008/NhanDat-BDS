@@ -1,6 +1,7 @@
 (function(){
     'use strict';
     angular.module('app.quytrinhphaply').config(config);
+     /** @ngInject **/
     function config($stateProvider){
         $stateProvider.state(
             'quyTrinhPhapLy',{

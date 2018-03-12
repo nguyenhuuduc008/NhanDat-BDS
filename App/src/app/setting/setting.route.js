@@ -1,6 +1,7 @@
 (function(){
     'use strict';
     angular.module('app.setting').config(config);
+    /** @ngInject */
     function config($stateProvider){
         $stateProvider.state(
             'settingList',{
@@ -193,15 +194,7 @@
             resolve:{
                 "currentAuth": ["authService", function(authService) {
                     return authService.requireSignIn();
-                 }],
-                 deps: ['$ocLazyLoad', function($ocLazyLoad){
-					return $ocLazyLoad.load({
-						cache: true,
-						files: [
-							'./app/bds/tacNghiep.service.js'
-						]
-					});
-				}]
+                }]
             }
          }).state('tacNghiep-edit',{
             parent: 'root',

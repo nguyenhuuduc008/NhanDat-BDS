@@ -44,17 +44,16 @@
                     settingService.getListChildHanhChinh('capXa', parentKey).then(function (data) {
                         hanhChinhListVm.listCapXa = data;
                     });
-                    break;
-                default:
                     settingService.getListChildHanhChinh('duong', parentKey).then(function (data) {
                         hanhChinhListVm.listDuong = data;
                     });
+                    break;
+                // default:
+                //     settingService.getListChildHanhChinh('duong', parentKey).then(function (data) {
+                //         hanhChinhListVm.listDuong = data;
+                //     });
             }
         }
-
-        hanhChinhListVm.addNew = function() {
-            $state.go('hanhChinh-edit');
-        };
 
         hanhChinhListVm.addInput = function(input) {
             switch(input) {
@@ -77,11 +76,11 @@
                     hanhChinhListVm.parentKey = hanhChinhListVm.capHuyenKey;
                     break;
                 default:
-                    if(hanhChinhListVm.capXaActive < -1)
+                    if(hanhChinhListVm.capHuyenActive < -1)
                         return;
                     hanhChinhListVm.input = 'Đường';
                     hanhChinhListVm.isAddChild = true;
-                    hanhChinhListVm.parentKey = hanhChinhListVm.capXaKey;
+                    hanhChinhListVm.parentKey = hanhChinhListVm.capHuyenKey;
             }
             hanhChinhListVm.buttonType = "Thêm Mới";
             hanhChinhListVm.model = {};
@@ -225,18 +224,18 @@
                         break;
                     case 'capXa':
                         deleteHanhChinhWithParent(hanhChinhListVm.capHuyenKey, item.$id);
-                        hanhChinhListVm.capXaActive = -1;
+                        //hanhChinhListVm.capXaActive = -1;
                         hanhChinhListVm.buttonType = "Thêm Mới";
-                        hanhChinhListVm.deleteArray = ['duong'];
-                        deleteChildHanhChinh(0, item.$id);
+                        // hanhChinhListVm.deleteArray = ['duong'];
+                        // deleteChildHanhChinh(0, item.$id);
                         break;
                     default:
-                        deleteHanhChinhWithParent(hanhChinhListVm.capXaKey, item.$id);
+                        deleteHanhChinhWithParent(hanhChinhListVm.capHuyenKey, item.$id);
                         hanhChinhListVm.buttonType = "Thêm Mới";
                 }
 
             }, function() {
-                alert('cancel');
+                console.log('cancel');
             });
         };
 
@@ -264,8 +263,8 @@
                     hanhChinhListVm.capHuyenKey = choice.$id;
                     hanhChinhListVm.isEditChild = true;
                     hanhChinhListVm.input = 'Cấp Huyện';
-                    hanhChinhListVm.listDuong = [];
                     hanhChinhListVm.capXaActive = -1;
+                    hanhChinhListVm.duongActive = -1;
                     break;
                 case 'duong':
                     hanhChinhListVm.hanhChinhPath = 'capXa';
@@ -273,6 +272,7 @@
                     hanhChinhListVm.capXaKey = choice.$id;
                     hanhChinhListVm.isEditChild = true;
                     hanhChinhListVm.input = 'Cấp Xã';
+                    hanhChinhListVm.duongActive = -1;
                     break;
                 default:
                     hanhChinhListVm.hanhChinhPath = 'duong';
@@ -280,6 +280,7 @@
                     hanhChinhListVm.duongKey = choice.$id;
                     hanhChinhListVm.isEditChild = true;
                     hanhChinhListVm.input = 'Đường';
+                    hanhChinhListVm.capXaActive = -1;
                     return;
             }
             getListLoaiHanhChinh(path, choice.$id);

@@ -33,7 +33,7 @@
                                 <div class="" style="position: relative; overflow: auto; width: 100%; max-height: 300px;">
                                     <table class="table table-hover no-margin-bottom">
                                         <tbody>
-                                            <tr ng-repeat="item in hanhChinhListVm.listCapTinh" ng-class="{active: hanhChinhListVm.capTinhActive == $index}" ng-click="hanhChinhListVm.chooseHanhChinh(item, 'capHuyen', $index)">
+                                            <tr ng-repeat="item in hanhChinhListVm.listCapTinh" ng-class="{danger: hanhChinhListVm.capTinhActive == $index}" ng-click="hanhChinhListVm.chooseHanhChinh(item, 'capHuyen', $index)">
                                                 <td>{{item.text}}
                                                     <a class="pull-right" href="javascript:;" style="color: red" title="Xóa Tỉnh" ng-click="hanhChinhListVm.deleteHanhChinh('capTinh', item)">
                                                         <i class="fa fa-remove"></i>
@@ -62,7 +62,7 @@
                                 <div class="" style="position: relative; overflow: auto; width: 100%; max-height: 300px;">
                                     <table class="table table-hover no-margin-bottom">
                                         <tbody>
-                                            <tr ng-repeat="item in hanhChinhListVm.listCapHuyen" ng-class="{active: hanhChinhListVm.capHuyenActive == $index}" ng-click="hanhChinhListVm.chooseHanhChinh(item, 'capXa', $index)">
+                                            <tr ng-repeat="item in hanhChinhListVm.listCapHuyen" ng-class="{danger: hanhChinhListVm.capHuyenActive == $index}" ng-click="hanhChinhListVm.chooseHanhChinh(item, 'capXa', $index)">
                                                 <td>{{item.text}}
                                                     <a class="pull-right" href="javascript:;" style="color: red" title="Xóa Tỉnh" ng-click="hanhChinhListVm.deleteHanhChinh('capHuyen', item)">
                                                         <i class="fa fa-remove"></i>
@@ -91,7 +91,7 @@
                                 <div class="" style="position: relative; overflow: auto; width: 100%; max-height: 300px;">
                                     <table class="table table-hover no-margin-bottom">
                                         <tbody>
-                                            <tr ng-repeat="item in hanhChinhListVm.listCapXa" ng-class="{active: hanhChinhListVm.capXaActive == $index}" ng-click="hanhChinhListVm.chooseHanhChinh(item, 'duong', $index)">
+                                            <tr ng-repeat="item in hanhChinhListVm.listCapXa" ng-class="{danger: hanhChinhListVm.capXaActive == $index}" ng-click="hanhChinhListVm.chooseHanhChinh(item, 'duong', $index)">
                                                 <td>{{item.text}}
                                                     <a class="pull-right" href="javascript:;" style="color: red" title="Xóa Tỉnh" ng-click="hanhChinhListVm.deleteHanhChinh('capXa', item)">
                                                         <i class="fa fa-remove"></i>
@@ -110,7 +110,7 @@
                                 <div class="row">
                                     <div class="list-head-title-container col-md-10">Đường</div>
                                     <div class="col-md-2 text-center">
-                                        <a class="task-trash" href="javascript:;" style="color: blue" title="Thêm Đường" ng-click="hanhChinhListVm.addInput('duong')" ng-class="{linkDisabled: (hanhChinhListVm.capXaActive < 0)}">
+                                        <a class="task-trash" href="javascript:;" style="color: blue" title="Thêm Đường" ng-click="hanhChinhListVm.addInput('duong')" ng-class="{linkDisabled: (hanhChinhListVm.capHuyenActive < 0)}">
                                             <i class="fa fa-plus"></i>
                                         </a>
                                     </div>
@@ -120,7 +120,7 @@
                                 <div class="" style="position: relative; overflow: auto; width: 100%; max-height: 300px;">
                                     <table class="table table-hover no-margin-bottom">
                                         <tbody>
-                                            <tr ng-repeat="item in hanhChinhListVm.listDuong" ng-class="{active: hanhChinhListVm.duongActive == $index}" ng-click="hanhChinhListVm.chooseHanhChinh(item, 'last', $index)">
+                                            <tr ng-repeat="item in hanhChinhListVm.listDuong" ng-class="{danger: hanhChinhListVm.duongActive == $index}" ng-click="hanhChinhListVm.chooseHanhChinh(item, 'last', $index)">
                                                 <td>{{item.text}}
                                                     <a class="pull-right" href="javascript:;" style="color: red" title="Xóa Tỉnh" ng-click="hanhChinhListVm.deleteHanhChinh('duong', item)">
                                                         <i class="fa fa-remove"></i>

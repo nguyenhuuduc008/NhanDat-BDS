@@ -106,7 +106,6 @@
             addChildHanhChinh: addChildHanhChinh,
             updateLoaiHanhChinh: updateLoaiHanhChinh,
             updateChildHanhChinh: updateChildHanhChinh,
-            getLoaiHanhChinh: getLoaiHanhChinh,
             deleteLoaiHanhChinh: deleteLoaiHanhChinh
 
         };
@@ -779,10 +778,6 @@
             }).catch(function(error){
                 return {result:false,errMsg:error};
             });
-        }
-        function getLoaiHanhChinh(path, key) {
-            var ref = cacLoaiHanhChinhRef.child(path).child(key);
-            return $firebaseObject(ref).$loaded();            
         }
         function deleteLoaiHanhChinh(addPath, key) {
             return cacLoaiHanhChinhRef.child(addPath).child(key).remove().then(function(res){

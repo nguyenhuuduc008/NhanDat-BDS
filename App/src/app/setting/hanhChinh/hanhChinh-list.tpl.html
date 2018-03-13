@@ -8,7 +8,8 @@
                         <label class="control-label padding-top-10">{{hanhChinhListVm.input}}</label>
                     </div>
                     <div class="col-md-6">
-                        <input class="form-control" type="text" placeholder="{{hanhChinhListVm.input}}" ng-model="hanhChinhListVm.model.text" name="hanhChinhInput" required/>
+                        <input class="form-control" type="text" placeholder="{{hanhChinhListVm.input}}" ng-model="hanhChinhListVm.model.text" name="hanhChinhInput" required ng-pattern="nameRegx"/>
+                        <div ng-show="hanhChinhListVm.isRegex" class="text-danger"><h5>Vui lòng không nhập ký tự đặc biệt!</h5></div>
                     </div>
                     <div class="col-md-3">
                         <button type="button" class="btn green" ng-click="hanhChinhListVm.actionHanhChinh(hanhChinhListVm.model.text)">{{hanhChinhListVm.buttonType}}</button>

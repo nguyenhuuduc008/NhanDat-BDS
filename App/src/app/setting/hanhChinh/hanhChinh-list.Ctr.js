@@ -3,7 +3,7 @@
     angular.module('app.setting')
     .controller('hanhChinhListCtr', hanhChinhListCtr);
     	/** @ngInject */
-    function hanhChinhListCtr($rootScope, $scope, $state,$q,settingService,appUtils,$ngBootbox,toaster){
+    function hanhChinhListCtr($rootScope, $scope, $state,$q,settingService,appUtils,$ngBootbox,toaster, MarkRemoval){
         $rootScope.settings.layout.showSmartphone = false;
         $rootScope.settings.layout.showBreadcrumb = false;
         $rootScope.settings.layout.guestPage = false;
@@ -11,6 +11,8 @@
         var currentUser = $rootScope.storage.currentUser;
         var hanhChinhListVm =this;// jshint ignore:line
 
+        var nameRegx = /^(a-z|A-Z|0-9)*[^!#$%^&*()'"\/\\;:@=+,?\[\]\/]*$/;
+        hanhChinhListVm.isRegex = false;
         hanhChinhListVm.input = 'Cấp Tỉnh';
         hanhChinhListVm.model = {};
         hanhChinhListVm.hanhChinhPath = "capTinh";
@@ -88,10 +90,10 @@
             hanhChinhListVm.hanhChinhPath = input;
         };
 
-        function addHanhChinh(isAddChild, parentKey) {
+        function addHanhChinh(isAddChild, parentKey, key) {
             if(isAddChild) {
                 hanhChinhListVm.model.parentKey = parentKey;
-                settingService.addChildHanhChinh(hanhChinhListVm.model, hanhChinhListVm.hanhChinhPath, parentKey).then(function(res) {
+                settingService.updateChildHanhChinh(hanhChinhListVm.model, hanhChinhListVm.hanhChinhPath, parentKey, key).then(function(res) {
                     if(!res) {
                         toaster.error('Lỗi','Thêm không thành công');
                         return;
@@ -103,7 +105,7 @@
                     });
                 });
             } else {
-                settingService.addLoaiHanhChinh(hanhChinhListVm.model, hanhChinhListVm.hanhChinhPath).then(function(res) {
+                settingService.updateLoaiHanhChinh(hanhChinhListVm.model, hanhChinhListVm.hanhChinhPath, key).then(function(res) {
                     if(!res) {
                         toaster.error('Lỗi','Thêm không thành công');
                         return;
@@ -147,10 +149,17 @@
         }
 
         hanhChinhListVm.actionHanhChinh = function(formInput) {
+            var regex = formInput.search(nameRegx);
+            if(regex < 0) {
+                hanhChinhListVm.isRegex = true;
+                return; 
+            }
             if(formInput == '' || formInput == null || formInput == undefined)
                     return;
+            hanhChinhListVm.isRegex = false;        
             if(hanhChinhListVm.isAdd) {
-                addHanhChinh(hanhChinhListVm.isAddChild, hanhChinhListVm.parentKey);
+                var key = MarkRemoval.removeUnicode(hanhChinhListVm.model.text);
+                addHanhChinh(hanhChinhListVm.isAddChild, hanhChinhListVm.parentKey, key);
             } else {
                 updateHanhChinh(hanhChinhListVm.isEditChild, hanhChinhListVm.model.parentKey, hanhChinhListVm.parentKey);
             }
@@ -167,6 +176,8 @@
                 }
                 $scope.$apply(function() {
                     toaster.success('Thành Công','Xóa thành công');
+                    hanhChinhListVm.parentKey = parentKey;
+                    hanhChinhListVm.isAdd = true;
                 });
             }); 
         }
@@ -183,6 +194,8 @@
                 }
                 $scope.$apply(function() {
                     toaster.success('Thành Công','Xóa thành công');
+                    hanhChinhListVm.parentKey = parentKey;
+                    hanhChinhListVm.isAdd = true;
                 });
             }); 
         }
@@ -197,6 +210,9 @@
                     return;
                 else {
                     settingService.deleteLoaiHanhChinh(hanhChinhListVm.deleteArray[pathArrIndex], key);
+                    if(hanhChinhListVm.deleteArray[pathArrIndex] == 'capXa') {
+                        settingService.deleteLoaiHanhChinh('duong', key);
+                    }
                     _.forEach(rs, function(item, key) {
                         pathArrIndex++;
                         deleteChildHanhChinh(pathArrIndex, item.$id);
@@ -212,14 +228,14 @@
                         deleteHanhChinhNoParent(item.$id);
                         hanhChinhListVm.capTinhActive = -1;
                         hanhChinhListVm.buttonType = "Thêm Mới";
-                        hanhChinhListVm.deleteArray = ['capHuyen', 'capXa', 'duong'];
+                        hanhChinhListVm.deleteArray = ['capHuyen', 'capXa'];
                         deleteChildHanhChinh(0, item.$id);
                         break;
                     case 'capHuyen':
                         deleteHanhChinhWithParent(hanhChinhListVm.capTinhKey, item.$id);
                         hanhChinhListVm.capHuyenActive = -1;
                         hanhChinhListVm.buttonType = "Thêm Mới";
-                        hanhChinhListVm.deleteArray = ['capXa', 'duong'];
+                        hanhChinhListVm.deleteArray = ['capXa'];
                         deleteChildHanhChinh(0, item.$id);
                         break;
                     case 'capXa':

@@ -194,7 +194,16 @@
             resolve:{
                 "currentAuth": ["authService", function(authService) {
                     return authService.requireSignIn();
-                }]
+                 }]
+                //  ,
+                //  deps: ['$ocLazyLoad', function($ocLazyLoad){
+				// 	return $ocLazyLoad.load({
+				// 		cache: true,
+				// 		files: [
+				// 			'./app/bds/tacNghiep.service.js'
+				// 		]
+				// 	});
+				// }]
             }
          }).state('tacNghiep-edit',{
             parent: 'root',
@@ -233,7 +242,16 @@
             resolve:{
                 "currentAuth": ["authService", function(authService) {
                     return authService.requireSignIn();
-                 }],
+                }]
+                // ,
+                // deps: ['$ocLazyLoad', function($ocLazyLoad){
+				// 	return $ocLazyLoad.load({
+				// 		cache: true,
+				// 		files: [
+				// 			'./app/common/utils/mark-removal.service.js'
+				// 		]
+				// 	});
+				// }]
             }
          }).state('viTri-list',{
             parent: 'root',

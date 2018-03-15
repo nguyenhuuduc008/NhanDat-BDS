@@ -712,11 +712,10 @@
                 return {result:false,errMsg:error};
             });
         }
-        function addLoaiNhuCau(dataModel){
-            var key=cacLoaiNhuCauRef.push().key;
-            return cacLoaiNhuCauRef.child(key).update({
-                text:dataModel.text,
-                value:key
+        function addLoaiNhuCau(dataModel, key){
+            return cacLoaiNhuCauRef.child(key).set({
+                text: dataModel.text,
+                value: key
             }).then(function(res){
                 return {result:true,data:key};
             }).catch(function(error){
@@ -732,7 +731,8 @@
         }
         function updateLoaiNhuCau(idLoai,dataModel){
             return cacLoaiNhuCauRef.child(idLoai).update({
-                text:dataModel.text
+                text:dataModel.text,
+                value: idLoai
             }).then(function(res){
                 return {result:true,data:idLoai};
             }).catch(function(error){

@@ -33,7 +33,8 @@
                                         <span></span>
                                     </label>
                                 </th>
-                                <th class="width25"> Loại Nhu Cầu </th>
+                                <th class="width25"> Tên Loại Nhu Cầu </th>
+                                <th class="width25"> Form Loại Nhu Cầu </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,7 +45,8 @@
                                         <span></span>
                                     </label>
                                 </td>
-                                <td class="width25"><a href="#/setting/nhuCau-mod/{{item.$id}}"> {{item.text}} </a></td>
+                                <td class="width25"><a href="" ng-click="nhuCauListVm.toEdit(item)"> {{item.text}} </a></td>
+                                <td class="width25"> {{nhuCauListVm.changeForm(item.value)}}</td>
                             </tr>
                         </tbody>
                     </table>

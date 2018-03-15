@@ -396,7 +396,7 @@
             controller: 'bDSModCtr',
             controllerAs: 'bDSModVm',
             data: {
-                pageTitle: 'Sửa Loại Bất Động Sản',
+                pageTitle: 'Chi Tiết Loại Bất Động Sản',
                 module: 'setting',
                 parent: 'settingList',
                 hide:true
@@ -910,6 +910,9 @@
                 module: 'setting',
                 parent: 'settingList',
                 hide:true
+            },
+            params: {
+                item: null,
             },
             resolve:{
                 "currentAuth": ["authService", function(authService) {

@@ -11,21 +11,33 @@
             </div>
             <div class="portlet-body form">
                 <!-- BEGIN FORM-->
-                <form ng-submit="bDSModVm.idLoai ? bDSModVm.edit(thisForm) : bDSModVm.add(thisForm)" role="form"  name="thisForm" novalidate>
+                <form ng-submit="bDSModVm.idLoai ? bDSModVm.edit(thisForm) : bDSModVm.add(thisForm)" role="form" name="thisForm" novalidate>
                     <div class="form-body">
                         <div class="form-group col-md-6" ng-class="{'has-error': (thisForm.text.$error.required)&&thisForm.text.$touched}">
-                            <label class="control-label">Loại bất động sản </label>
+                            <label class="control-label">Loại bất động sản  </label>
                             <input name="text" type="text" placeholder="Nội dung loại bất động sản" ng-model="bDSModVm.item.text" class="form-control" required />
                             <!-- <label class="control-label" ng-show="thisForm.text.$error.pattern">* This field does not allow special characters</label> -->
+                        </div>
+                        <div class="form-group col-md-6" ng-class="{'has-error': (thisForm.loaiForm.$error.required)&&thisForm.loaiForm.$touched}">
+                            <label class="control-label">Loại form </label>
+                            <select name="text" type="text" placeholder="Loại form" ng-model="bDSModVm.item.loaiForm" class="form-control">
+                                <option value="form1" selected>Form 1</option>
+                                <option value="form2">Form 2</option>
+                                <option value="form3">Form 3</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12" ng-class="{'has-error':thisForm.ghiChu.$touched}">
+                            <label class="control-label">Ghi chú </label>
+                            <input name="text" type="text" placeholder="Ghi chú" ng-model="bDSModVm.item.ghiChu" class="form-control" />
                         </div>
                     </div>
                     <div class="form-actions">
                         <div class="row">
                             <div class="col-md-offset-3 col-md-9">
-                                <button type="submit" class="btn green"ng-disabled="thisForm.$invalid">
-                                    <i class="fa fa-check"></i> Save
+                                <button type="submit" class="btn green" ng-disabled="thisForm.$invalid">
+                                    <i class="fa fa-check"></i> Lưu
                                 </button>
-                                <button type="button" class="btn default" ng-click="bDSModVm.cancel()">Cancel</button>
+                                <button type="button" class="btn default" ng-click="bDSModVm.cancel()">Hủy</button>
                             </div>
                         </div>
                     </div>

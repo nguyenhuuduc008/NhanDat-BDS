@@ -5,7 +5,7 @@
         .controller('bdsListCtrl', bdsListCtrl);
 
     /** @ngInject */
-    function bdsListCtrl($rootScope, $q, $scope, $state, $timeout, $ngBootbox, appUtils, toaster, currentAuth, bdsService, authService, $http) {
+    function bdsListCtrl($rootScope, $q, $scope, $state, $timeout, $ngBootbox, appUtils, toaster, currentAuth, bdsService, settingService, authService, $http, $filter) {
         $rootScope.settings.layout.showSmartphone = false;
         $rootScope.settings.layout.showPageHead = true;
         $rootScope.settings.layout.guestPage = false;
@@ -84,6 +84,9 @@
                 appUtils.hideLoading();
                 var result = rs.data;
                 vm.filteredItems = appUtils.sortArray(result, 'timestampCreated');
+
+                getCapDo();
+
                 console.log('vm.filteredItems');
                 console.log(vm.filteredItems);
                 vm.paging.totalRecord = result.length;
@@ -152,6 +155,24 @@
         vm.edit = function (id) {
             $state.go('bds.thongTin', { bdsId: id });
         };
+
+
+        function getCapDo() {
+            settingService.getCacLoaiCapDo().$loaded().then(function (res) {
+                var cacLoaiCapDo = res;
+                $.each(vm.filteredItems, function (i) {
+                    bdsService.getCapDo(this.$id).$loaded().then(function (rs) {
+                        if (rs && rs.timestampCreated) {
+                            $.each(cacLoaiCapDo, function (j) {
+                                if (cacLoaiCapDo[j].value == rs.capDo) {
+                                    vm.filteredItems[i].capDoColor = { 'color': cacLoaiCapDo[j].color };
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+        }
 
         //Init
         vm.searchAllItems('');

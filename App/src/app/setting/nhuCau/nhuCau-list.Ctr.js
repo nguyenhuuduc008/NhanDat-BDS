@@ -16,6 +16,22 @@
         nhuCauListVm.selectAll = function(controlId, name){
             appUtils.checkAllCheckBox(controlId,name);
         };
+
+        var formType = {
+            ban: 'Bán',
+            mua: 'Mua',
+            thue: 'Thuê',
+            'cho-thue': 'Cho Thuê'
+        };
+
+        nhuCauListVm.changeForm = function(key) {
+            return formType[key];
+        };
+
+        nhuCauListVm.toEdit = function(item) {
+            $state.go('nhuCau-edit', {item: item});
+        };
+
         nhuCauListVm.apply = function(chkName){
             appUtils.showLoading();
             var self = this;
@@ -38,8 +54,6 @@
             }
             $ngBootbox.confirm('Are you sure want to apply ' + nhuCauListVm.selectAction + ' action as selected?')
             .then(function() {
-                console.log('lstIds');
-                console.log(lstIds);
                 var removePromise=[];
                 _.forEach(lstIds, function(id){
                     removePromise.push(settingService.removeLoaiNhuCau(id));
@@ -57,8 +71,6 @@
         function getCacLoaiNhuCau(){
             settingService.getCacLoaiNhuCau().$loaded().then(function(res){
                 nhuCauListVm.items=res;
-                console.log(' nhuCauListVm.items');
-                console.log( nhuCauListVm.items);
             });
         }
         function init(){

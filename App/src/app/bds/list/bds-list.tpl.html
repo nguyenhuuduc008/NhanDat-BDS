@@ -2,8 +2,8 @@
     <div class="portlet-title">
         <div class="caption caption-md" style="min-width: 275px;">
             <select name="bdsCate" ng-model="vm.bdsCate" class="form-control" required ng-change="vm.executeSearchItems(vm.keyword)">
-                <option value="" disabled >Chọn Danh Mục</option>
-                <option value="-1" >Tất Cả Danh Mục</option>
+                <option value="" disabled>Chọn Danh Mục</option>
+                <option value="-1">Tất Cả Danh Mục</option>
                 <option ng-repeat="item in vm.cacDanhMucBDS" value="{{item.value}}" ng-selected="item.value == vm.bdsCate">{{item.text}}</option>
             </select>
         </div>
@@ -11,25 +11,25 @@
             <div class="portlet-input input-inline">
                 <div class="input-icon right">
                     <i class="icon-magnifier" ng-click="vm.executeSearchItems(vm.keyword)"></i>
-                    <input style="width: 280px;" type="text" class="form-control form-control-solid" ng-model="vm.keyword" placeholder="Enter key word to search" ng-keydown="$event.keyCode === 13 && vm.executeSearchItems(vm.keyword)">
+                    <input style="width: 280px;" type="text" class="form-control form-control-solid" ng-model="vm.keyword" placeholder="tìm kiếm" ng-keydown="$event.keyCode === 13 && vm.executeSearchItems(vm.keyword)">
                 </div>
             </div>
         </div>
-        
+
     </div>
     <div class="portlet-title">
         <div class="caption width70 row">
             <div class="col-md-3 no-padding-right">
                 <select class="bs-select form-control" id="action-list">
-                    <option value="0">Bulk Actions</option>
-                    <option value="delete">Delete</option>
+                    <option value="0">-- Chọn --</option>
+                    <option value="delete">Xóa</option>
                 </select>
             </div>
             <div class="col-md-1 no-padding-left">
-                <button type="button" class="btn green" ng-click="vm.applyAction('select-item','action-list')">Apply</button>
+                <button type="button" class="btn green" ng-click="vm.applyAction('select-item','action-list')">Áp dụng</button>
             </div>
             <div class="col-md-3 text-center">
-                <a type="button" href="#" ng-click="vm.addNew()" class="btn blue">Add New</a>
+                <a type="button" href="#" ng-click="vm.addNew()" class="btn blue">Thêm mới</a>
             </div>
         </div>
         <div class="actions">
@@ -44,34 +44,37 @@
                 <tr class="uppercase">
                     <th class="width5">
                         <label class="mt-checkbox mt-checkbox-outline">
-                            <input type="checkbox" id="select-all-item" ng-click="vm.selectAllItem('select-all-item','select-item')"/>
+                            <input type="checkbox" id="select-all-item" ng-click="vm.selectAllItem('select-all-item','select-item')" />
                             <span></span>
                         </label>
                     </th>
                     <th> Địa Chỉ </th>
                     <th> Kích Thước </th>
                     <th> Giá </th>
-                    <th > Hướng </th>
+                    <th> Hướng </th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="item in vm.pagedItems[vm.paging.currentPage]">
                     <td>
                         <label class="mt-checkbox mt-checkbox-outline">
-                            <input type="checkbox" name="select-item" value="{{item.$id}}" class="chk-select-item"/> 
+                            <input type="checkbox" name="select-item" value="{{item.$id}}" class="chk-select-item" />
                             <span></span>
                         </label>
                     </td>
-                    <td><a class="primary-link" href="#" ng-click="vm.edit(item.$id)" style="word-break: break-all;">
-                         {{vm.getFullAddress(item)}} </a></td>
                     <td>
-                         Ngang: <span class="font-green-sharp bold">{{item.ngang|number:1}} m</span> <br>
-                         Dài: <span class="font-green-sharp bold">{{item.dai|number:1}} m</span> <br>
-                         Diện tích: <span class="font-green-sharp bold">{{item.dienTichKhuonVien|number:1}} m<sup>2</sup></span>
+                        <a class="primary-link" href="#" ng-click="vm.edit(item.$id)" style="word-break: break-all" ng-style="item.capDoColor">
+                           {{vm.getFullAddress(item)}}
+                        </a>
+                    </td>
+                    <td>
+                        Ngang: <span class="font-green-sharp bold">{{item.ngang|number:1}} m</span> <br>
+                        Dài: <span class="font-green-sharp bold">{{item.dai|number:1}} m</span> <br>
+                        Diện tích: <span class="font-green-sharp bold">{{item.dienTichKhuonVien|number:1}} m<sup>2</sup></span>
                     </td>
                     <td>
                         Đơn giá: <span class="font-red-intense bold">{{item.donGia| currency:'':0}} VNĐ</span><br>
-                        Tổng giá: <span class="font-red-intense bold">{{item.tongGia| currency:'':0}} VNĐ</span> 
+                        Tổng giá: <span class="font-red-intense bold">{{item.tongGia| currency:'':0}} VNĐ</span>
                     </td>
                     <td> {{item.huong}}<span></span> </td>
                 </tr>

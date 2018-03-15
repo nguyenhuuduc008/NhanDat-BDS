@@ -9,33 +9,45 @@
         $rootScope.settings.layout.guestPage = false;
         var appSettings = $rootScope.storage.appSettings;    
         var currentNhuCau = $rootScope.storage.currentNhuCau;
+        var editForm = '';
         var nhuCauModVm =this;// jshint ignore:line
-        nhuCauModVm.item={};
-        nhuCauModVm.idLoai=$stateParams.idLoai;
-        console.log('nhuCauModVm.idLoai');
-        console.log(nhuCauModVm.idLoai);
         
         //nhuCauModVm.nameRegx = /^(a-z|A-Z|0-9)*[^!#$%^&*()'"\/\\;:@=+,?\[\]\/]*$/;
-
-        function getOnceLoaiNhuCau(idLoai){
-            settingService.getOnceLoaiNhuCau(idLoai).then(function(res){
-                if(res.result){
-                    nhuCauModVm.item=res.data;
-                }
+        if($stateParams.item == null || $stateParams.item == undefined) {
+            nhuCauModVm.item={};
+            nhuCauModVm.isAdd = true;
+            settingService.getCacLoaiNhuCau().$loaded().then(function(res){
+                nhuCauModVm.items=res;
+                console.log('TESTETSE', res);
             });
         }
+        else {
+            nhuCauModVm.item={
+                text: $stateParams.item.text,
+                form: $stateParams.item.value,
+            };       
+            nhuCauModVm.isAdd = false;    
+            editForm = $stateParams.item.value;
+        }
+
+
         nhuCauModVm.edit=function(form){
             appUtils.showLoading();
-            settingService.updateLoaiNhuCau(nhuCauModVm.idLoai,nhuCauModVm.item).then(function(res){
-                if(res.result){
+            if(nhuCauModVm.item.form == editForm) {
+                settingService.updateLoaiNhuCau(nhuCauModVm.item.form, nhuCauModVm.item).then(function (res) {
+                    if (res.result) {
+                        appUtils.hideLoading();
+                        toaster.success("Sửa Loại Nhu Cầu thành công!");
+                        $state.go('nhuCau-list');
+                    }
+                }).catch(function () {
                     appUtils.hideLoading();
-                    toaster.success("Sửa Loại Nhu Cầu thành công!");
-                    $state.go('nhuCau-list');
-                }
-            }).catch(function(){
-                appUtils.hideLoading();
-                toaster.warning("Sửa Loại Nhu Cầu không thành công!");
-            });
+                    toaster.warning("Sửa Loại Nhu Cầu không thành công!");
+                });
+                return;
+            } 
+            appUtils.hideLoading();
+            toaster.warning('Form loại nhu cầu đã tồn tại!');
         };
         nhuCauModVm.cancel=function(){
             $state.go('nhuCau-list');
@@ -43,17 +55,24 @@
 
         nhuCauModVm.add=function(form){
             appUtils.showLoading();
-            settingService.addLoaiNhuCau(nhuCauModVm.item).then(function(res){
-                if(res.result){
-                    appUtils.hideLoading();
-                    toaster.success("Thêm Loai Nhu Cầu mới thành công!");
-                    $state.go('nhuCau-list');
-                }
-            }).catch(function(){
-                appUtils.hideLoading();
-                toaster.warning("Thêm Loai Nhu Cầu mới không thành công!");
+            var res = _.find(nhuCauModVm.items, function(o) {
+                return o.value == nhuCauModVm.item.form;
             });
-            
+            if(res == undefined) {
+                settingService.updateLoaiNhuCau(nhuCauModVm.item.form, nhuCauModVm.item).then(function(res){
+                    if(res.result){
+                        appUtils.hideLoading();
+                        toaster.success("Thêm Loai Nhu Cầu mới thành công!");
+                        $state.go('nhuCau-list');
+                    }
+                }).catch(function(){
+                    appUtils.hideLoading();
+                    toaster.warning("Thêm Loai Nhu Cầu mới không thành công!");
+                });    
+                return;            
+            }
+            appUtils.hideLoading();
+            toaster.warning('Form loại nhu cầu đã tồn tại!');
         };
 
         function init(){

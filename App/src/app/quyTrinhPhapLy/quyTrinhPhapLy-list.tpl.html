@@ -3,7 +3,7 @@
 
         </div>
         <div class="col-md-6 text-right">
-                <a href="#/quyTrinhPhapLy/quyTrinhPhapLy-add"  class="btn blue btn-outline sbold margin-top-bottom-5" >Add New</a>
+                <a href="#/quyTrinhPhapLy/quyTrinhPhapLy-add"  class="btn blue btn-outline sbold margin-top-bottom-5" >Thêm Mới</a>
         </div>
         <div class="col-md-12">
             <!-- BEGIN BORDERED TABLE PORTLET-->
@@ -15,20 +15,20 @@
                                 <div class="portlet-input input-inline">
                                     <div class="input-icon right">
                                         <i class="icon-magnifier"></i>
-                                        <input type="text" class="form-control form-control-solid" ng-model="quyTrinhPhapLyListVm.cri.keyword" placeholder="search..." ng-change="quyTrinhPhapLyListVm.search(quyTrinhPhapLyListVm.cri)">
+                                        <input type="text" class="form-control form-control-solid" ng-model="quyTrinhPhapLyListVm.cri.keyword" placeholder="Tìm kiếm..." ng-change="quyTrinhPhapLyListVm.search(quyTrinhPhapLyListVm.cri)">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3 no-padding-right">
                             <select name="thanhPho" ng-model="quyTrinhPhapLyListVm.cri.thanhPho" class="form-control" ng-change="quyTrinhPhapLyListVm.changeCity()">
-                                <option value="all">All</option>
+                                <option value="all">Tất cả</option>
                                 <option ng-repeat="item in quyTrinhPhapLyListVm.cities" value="{{item.value}}" ng-selected="item.value == quyTrinhPhapLyListVm.cri.thanhPho">{{item.text}}</option>
                             </select>
                         </div>
                         <div class="col-md-3 no-padding-right">
                             <select name="quanHuyen" ng-model="quyTrinhPhapLyListVm.cri.quanHuyen" class="form-control">
-                                <option value="all">All</option>
+                                <option value="all">Tất cả</option>
                                 <option ng-repeat="item in quyTrinhPhapLyListVm.districts" value="{{item.value}}" ng-selected="item.value == quyTrinhPhapLyListVm.cri.quanHuyen">{{item.text}}</option>
                             </select>
                         </div>
@@ -44,12 +44,12 @@
                     <div class="caption width70 row">
                         <div class="col-md-3 no-padding-right">
                             <select class="bs-select form-control" id="action-list" ng-model="quyTrinhPhapLyListVm.selectAction">
-                                <option>Bulk Actions</option>
-                                <option>Delete</option>
+                                <option>Chọn</option>
+                                <option>Xóa</option>
                             </select>
                         </div>
                         <div class="col-md-1 no-padding-left">
-                            <button type="button" class="btn green" ng-click="quyTrinhPhapLyListVm.apply('select-quytrinhphaply')">Apply</button>
+                            <button type="button" class="btn green" ng-click="quyTrinhPhapLyListVm.apply('select-quytrinhphaply')">Thực thi</button>
                         </div>
                         <div class="col-md-7 no-padding-right">
                             

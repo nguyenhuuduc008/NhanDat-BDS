@@ -296,6 +296,7 @@
          **/
 
         function removeUnicode(text) {
+            if(text == undefined) return;
             var str = text.replace(/[^\u0000-\u007F]/g, function(a) {return diacriticsMap[a] || a;});
             str = str.replace(/\s+/g, '-');
             return str;

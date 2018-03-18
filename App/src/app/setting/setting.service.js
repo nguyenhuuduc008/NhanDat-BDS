@@ -93,6 +93,7 @@
             addLoaiDanhMucBDS:addLoaiDanhMucBDS,
             removeLoaiDanhMucBDS:removeLoaiDanhMucBDS,
             updateLoaiDanhMucBDS:updateLoaiDanhMucBDS,
+            updateKhoDefault: updateKhoDefault,
 
             getCacLoaiNhuCau:getCacLoaiNhuCau,
             getOnceLoaiNhuCau:getOnceLoaiNhuCau,
@@ -124,7 +125,7 @@
         var cacLoaiNguonBDSRef=firebaseDataRef.child('app-options/cacNguonBDS');
         var cacLoaiMucDichRef=firebaseDataRef.child('app-options/cacLoaiMucDich');
         var cacLoaiUserRef=firebaseDataRef.child('app-options/cacLoaiUser');
-        var cacLoaiDanhMucBDSRef=firebaseDataRef.child('app-options/cacDanhMucBDS');
+        var cacLoaiDanhMucBDSRef=firebaseDataRef.child('app-options/cacKhoBDS');
         var cacLoaiNhuCauRef=firebaseDataRef.child('app-options/cacLoaiNhuCau');
         var cacLoaiHanhChinhRef=firebaseDataRef.child('app-options/cacLoaiHanhChinh');
         
@@ -222,7 +223,8 @@
             var key=cacLoaiTacNghiepRef.push().key;
             return cacLoaiTacNghiepRef.child(key).update({
                 text:dataModel.text,
-                value:key
+                value: key,
+                cus_key: dataModel.cus_key
             }).then(function(res){
                 return {result:true,data:key};
             }).catch(function(error){
@@ -238,7 +240,8 @@
         }
         function updateLoaiTacNghiep(idLoai,dataModel){
             return cacLoaiTacNghiepRef.child(idLoai).update({
-                text:dataModel.text
+                text: dataModel.text,
+                cus_key: dataModel.cus_key
             }).then(function(res){
                 return {result:true,data:idLoai};
             }).catch(function(error){
@@ -336,7 +339,9 @@
             var key=cacLoaiBDSRef.push().key;
             return cacLoaiBDSRef.child(key).update({
                 text:dataModel.text,
-                value:key
+                value: key,
+                loaiForm: dataModel.loaiForm,
+                ghiChu: dataModel.ghiChu,
             }).then(function(res){
                 return {result:true,data:key};
             }).catch(function(error){
@@ -352,7 +357,9 @@
         }
         function updateLoaiBDS(idLoai,dataModel){
             return cacLoaiBDSRef.child(idLoai).update({
-                text:dataModel.text
+                text: dataModel.text,
+                loaiForm: dataModel.loaiForm,
+                ghiChu: dataModel.ghiChu,
             }).then(function(res){
                 return {result:true,data:idLoai};
             }).catch(function(error){
@@ -694,9 +701,18 @@
         }
         function updateLoaiDanhMucBDS(idLoai,dataModel){
             return cacLoaiDanhMucBDSRef.child(idLoai).update({
-                text:dataModel.text
+                text: dataModel.text,
             }).then(function(res){
                 return {result:true,data:idLoai};
+            }).catch(function(error){
+                return {result:false,errMsg:error};
+            });
+        }
+        function updateKhoDefault(dataKey){
+            return cacLoaiDanhMucBDSRef.update({
+                'khoDefault': dataKey,
+            }).then(function(res){
+                return {result:true,data:dataKey};
             }).catch(function(error){
                 return {result:false,errMsg:error};
             });

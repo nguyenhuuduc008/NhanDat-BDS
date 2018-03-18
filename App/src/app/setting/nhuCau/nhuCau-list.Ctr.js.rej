@@ -1,0 +1,24 @@
+diff a/App/src/app/setting/nhuCau/nhuCau-list.Ctr.js b/App/src/app/setting/nhuCau/nhuCau-list.Ctr.js	(rejected hunks)
+@@ -16,6 +16,22 @@
+         nhuCauListVm.selectAll = function(controlId, name){
+             appUtils.checkAllCheckBox(controlId,name);
+         };
++
++        var formType = {
++            ban: 'Bán',
++            mua: 'Mua',
++            thue: 'Thuê',
++            'cho-thue': 'Cho Thuê'
++        };
++
++        nhuCauListVm.changeForm = function(key) {
++            return formType[key];
++        };
++
++        nhuCauListVm.toEdit = function(item) {
++            $state.go('nhuCau-edit', {item: item});
++        };
++
+         nhuCauListVm.apply = function(chkName){
+             appUtils.showLoading();
+             var self = this;

@@ -11,7 +11,7 @@
             </div>
             <div class="portlet-body form">
                 <!-- BEGIN FORM-->
-                <form ng-submit="nhuCauModVm.isAdd ? nhuCauModVm.add(thisForm) : nhuCauModVm.edit(thisForm)" role="form"  name="thisForm" novalidate>
+                <form ng-submit="nhuCauModVm.isAdd ? nhuCauModVm.add(form) : nhuCauModVm.edit(form)" role="form"  name="thisForm" novalidate>
                     <div class="form-body">
                         <div class="form-group col-md-6" ng-class="{'has-error': (thisForm.text.$error.required)&&thisForm.text.$touched}">
                             <label class="control-label">Tên Loại Nhu Cầu </label>

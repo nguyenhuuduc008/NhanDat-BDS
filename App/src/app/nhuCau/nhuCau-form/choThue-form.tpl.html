@@ -1,0 +1,407 @@
+<div class="row">
+    <h4 class="text-center">Nhu cầu Cho Thuê</h4>
+    <form role="form" id="createForm" name="createForm" novalidate ng-submit="nhuCauThemMoiVm.save(createForm)">
+        <div class="tab-pane" id="tab_1">
+            <!--Địa chỉ -->
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-equalizer font-blue-hoki"></i>
+                        <span class="caption-subject font-blue-hoki bold uppercase">Thông Tin Cơ Bản</span>
+                    </div>
+                    <div class="tools">
+                        <a href="" class="collapse"> </a>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <!-- BEGIN FORM-->
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.soNha.$error.required)}">
+                                    <label class="control-label">Tiêu Đề
+                                        <span class="required-field">*</span>
+                                    </label>
+                                    <input type="text" name="tieuDe" placeholder="Tiêu Đề" class="form-control" required ng-model="nhuCauThemMoiVm.model.tieuDe"
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.loaiNhuCau.$error.required)}">
+                                    <label class="control-label">Loại Nhu Cầu
+                                        <span class="required-field">*</span>
+                                    </label>
+                                    <!-- <input type="text" name="thanhPho" placeholder="Thành phố" class="form-control" required ng-model="nhuCauThemMoiVm.model.thanhPho" /> -->
+                                    <select name="loaiNhuCau" ng-model="nhuCauThemMoiVm.model.loaiNhuCau" class="form-control" ng-change="nhuCauThemMoiVm.changeCity()"
+                                        required>
+                                        <option value="" disabled>Loại Nhu Cầu</option>
+                                        <option ng-repeat="item in nhuCauThemMoiVm.cities" value="{{item.value}}" ng-selected="item.value == nhuCauThemMoiVm.model.thanhPho">{{item.text}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.loaiBDS.$error.required)}">
+                                    <label class="control-label">Loại Bât Động Sản
+                                        <span class="required-field">*</span>
+                                    </label>
+                                    <!-- <input type="text" name="loaiBDS" placeholder="Thành phố" class="form-control" required ng-model="nhuCauThemMoiVm.model.loaiBDS" /> -->
+                                    <select name="loaiBDS" ng-model="nhuCauThemMoiVm.model.loaiBDS" class="form-control" ng-change="nhuCauThemMoiVm.changeCity()"
+                                        required>
+                                        <option value="" disabled>Loại BDS</option>
+                                        <option ng-repeat="item in nhuCauThemMoiVm.cities" value="{{item.value}}" ng-selected="item.value == nhuCauThemMoiVm.model.loaiBDS">{{item.text}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.thanhPho.$error.required)}">
+                                    <label class="control-label">Tỉnh / Thành phố
+                                        <span class="required-field">*</span>
+                                    </label>
+                                    <!-- <input type="text" name="thanhPho" placeholder="Thành phố" class="form-control" required ng-model="nhuCauThemMoiVm.model.thanhPho" /> -->
+                                    <select name="thanhPho" ng-model="nhuCauThemMoiVm.model.thanhPho" class="form-control" ng-change="nhuCauThemMoiVm.changeCity()"
+                                        required>
+                                        <option value="" disabled>Tỉnh / Thành phố</option>
+                                        <option ng-repeat="item in nhuCauThemMoiVm.cities" value="{{item.$id}}" ng-selected="item.$id == nhuCauThemMoiVm.model.thanhPho">{{item.text}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.quanHuyen.$error.required)}">
+                                    <label class="control-label">Quận / Huyện
+                                        <span class="required-field">*</span>
+                                    </label>
+                                    <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" required ng-model="nhuCauThemMoiVm.model.quanHuyen"/> -->
+                                    <select name="quanHuyen" ng-model="nhuCauThemMoiVm.model.quanHuyen" class="form-control" ng-change="nhuCauThemMoiVm.changeDistrict()"
+                                        required>
+                                        <option value="" disabled>Quận / Huyện</option>
+                                        <option ng-repeat="item in nhuCauThemMoiVm.districts" value="{{item.$id}}" ng-selected="item.$id == nhuCauThemMoiVm.model.quanHuyen">{{item.text}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.thanhPho.$error.required)}">
+                                    <label class="control-label">Phường / Xã
+                                        <span class="required-field">*</span>
+                                    </label>
+                                    <!-- <input type="text" name="thanhPho" placeholder="Thành phố" class="form-control" required ng-model="nhuCauThemMoiVm.model.thanhPho" /> -->
+                                    <select name="phuongXa" ng-model="nhuCauThemMoiVm.model.phuongXa" class="form-control" required>
+                                        <option value="" disabled>Phường / Xã</option>
+                                        <option ng-repeat="item in nhuCauThemMoiVm.xaList" value="{{item.$id}}" ng-selected="item.$id == nhuCauThemMoiVm.model.phuongXa">{{item.text}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.quanHuyen.$error.required)}">
+                                    <label class="control-label">Đường / Phố
+                                        <span class="required-field">*</span>
+                                    </label>
+                                    <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" required ng-model="nhuCauThemMoiVm.model.quanHuyen"/> -->
+                                    <select name="duongPho" ng-model="nhuCauThemMoiVm.model.duongPho" class="form-control" required>
+                                        <option value="" disabled>Đường / Phố</option>
+                                        <option ng-repeat="item in nhuCauThemMoiVm.duongList" value="{{item.$id}}" ng-selected="item.$id == nhuCauThemMoiVm.model.duongPho">{{item.text}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.soNha.$error.required)}">
+                                    <label class="control-label">Số nhà
+                                        <span class="required-field">*</span>
+                                    </label>
+                                    <input type="text" name="soNha" placeholder="Số nhà" class="form-control" required ng-model="nhuCauThemMoiVm.model.soNha"
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.quanHuyen.$error.required)}">
+                                    <label class="control-label">Loại Vị Trí
+                                        <span class="required-field">*</span>
+                                    </label>
+                                    <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" required ng-model="nhuCauThemMoiVm.model.quanHuyen"/> -->
+                                    <select name="quanHuyen" ng-model="nhuCauThemMoiVm.model.quanHuyen" class="form-control" ng-change="nhuCauThemMoiVm.changeDistrict()"
+                                        required>
+                                        <option value="" disabled>--Loại Vị Trí</option>
+                                        <option ng-repeat="item in nhuCauThemMoiVm.districts" value="{{item.value}}" ng-selected="item.value == nhuCauThemMoiVm.model.quanHuyen">{{item.text}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.soNha.$error.required)}">
+                                    <label class="control-label">Diện Tich
+                                        <span class="required-field">*</span>
+                                    </label>
+                                    <input type="text" name="soNha" placeholder="Diện Tích" class="form-control" required ng-model="nhuCauThemMoiVm.model.soNha"
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.quanHuyen.$error.required)}">
+                                    <label class="control-label">Dự Án
+                                        <span class="required-field">*</span>
+                                    </label>
+                                    <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" required ng-model="nhuCauThemMoiVm.model.quanHuyen"/> -->
+                                    <select name="quanHuyen" ng-model="nhuCauThemMoiVm.model.quanHuyen" class="form-control" ng-change="nhuCauThemMoiVm.changeDistrict()"
+                                        required>
+                                        <option value="" disabled>--Dự Án</option>
+                                        <option ng-repeat="item in nhuCauThemMoiVm.districts" value="{{item.value}}" ng-selected="item.value == nhuCauThemMoiVm.model.quanHuyen">{{item.text}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.soNha.$error.required)}">
+                                    <label class="control-label">Giá
+                                        <span class="required-field">*</span>
+                                    </label>
+                                    <input type="text" name="soNha" placeholder="--Giá" class="form-control" required ng-model="nhuCauThemMoiVm.model.soNha"
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.quanHuyen.$error.required)}">
+                                    <label class="control-label">Thoả Thuận
+                                        <span class="required-field">*</span>
+                                    </label>
+                                    <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" required ng-model="nhuCauThemMoiVm.model.quanHuyen"/> -->
+                                    <select name="quanHuyen" ng-model="nhuCauThemMoiVm.model.quanHuyen" class="form-control" ng-change="nhuCauThemMoiVm.changeDistrict()"
+                                        required>
+                                        <option value="" disabled>Thoả Thuận</option>
+                                        <option ng-repeat="item in nhuCauThemMoiVm.districts" value="{{item.value}}" ng-selected="item.value == nhuCauThemMoiVm.model.quanHuyen">{{item.text}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.soNha.$error.required)}">
+                                    <label class="control-label">Địa Chỉ
+                                        <span class="required-field">*</span>
+                                    </label>
+                                    <input type="text" name="tieuDe" placeholder="Địa Chỉ" class="form-control" required ng-model="nhuCauThemMoiVm.model.tieuDe"
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.soNha.$error.required)}">
+                                    <label class="control-label">Thông Tin Mô Tả
+                                        <span class="required-field">*</span>
+                                    </label>
+                                    <textarea rows="6" name="tieuDe" class="form-control" required ng-model="nhuCauThemMoiVm.model.tieuDe"></textarea>
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <!-- END FORM-->
+                    </div>
+                </div>
+                <!--Thông Tin Chung-->
+            </div>
+            <!--Ban Do-->
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-equalizer font-blue-hoki"></i>
+                        <span class="caption-subject font-blue-hoki bold uppercase">Bản Đồ</span>
+                    </div>
+                    <div class="tools">
+                        <a href="" class="collapse"> </a>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <!-- BEGIN FORM-->
+                    <div class="form-body">
+                        ban do
+                    </div>
+                    <!-- END FORM-->
+                </div>
+            </div>
+            <!--Hinh Anh-->
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-equalizer font-blue-hoki"></i>
+                        <span class="caption-subject font-blue-hoki bold uppercase">Hình Ảnh / Video</span>
+                    </div>
+                    <div class="tools">
+                        <a href="" class="collapse"> </a>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <!-- BEGIN FORM-->
+                    <div class="form-body">
+                        video
+                    </div>
+                    <!-- END FORM-->
+                </div>
+            </div>
+            <!--Thông tin khác-->
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-equalizer font-blue-hoki"></i>
+                        <span class="caption-subject font-blue-hoki bold uppercase">Thông Tin Khác</span>
+                    </div>
+                    <div class="tools">
+                        <a href="" class="collapse"> </a>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <!-- BEGIN FORM-->
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.ttThuongMai.$error.required)}">
+                                    <label class="control-label">Ngang
+
+                                    </label>
+                                    <input type="text" name="ttThuongMai" placeholder="Ngang" class="form-control" ng-model="nhuCauThemMoiVm.model.ttThuongMai"
+                                    />
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.cvMoiGioi.$error.required)}">
+                                    <label class="control-label">Dài
+
+                                    </label>
+                                    <input type="text" name="cvMoiGioi" placeholder="Dài" class="form-control" ng-model="nhuCauThemMoiVm.model.cvMoiGioi"
+                                    />
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <div class="row">
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.duAn.$error.required)}">
+                                    <label class="control-label">Hướng Nhà
+
+                                    </label>
+                                    <select name="duAn" ng-model="nhuCauThemMoiVm.model.duAn" class="form-control">
+                                        <option value="" disabled>--KXD</option>
+                                        <option ng-repeat="item in nhuCauThemMoiVm.cacDuAn" value="{{item.value}}" ng-selected="item.value == nhuCauThemMoiVm.model.duAn">{{item.text}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.phiMG.$error.required) || (createForm.phiMG.$error.pattern)}">
+                                    <label class="control-label">Số Tăng
+                            
+                                    </label>
+                                    <input type="text" name="phiMG" placeholder="--Số Tăng" class="form-control" ng-model="nhuCauThemMoiVm.model.phiMG" ng-pattern="currencyRegx"
+                                    />
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.namXayDung.$error.required) || createForm.namXayDung.$error.pattern}">
+                                    <label class="control-label">Số Phòng Ngủ
+
+                                    </label>
+                                    <input type="text" name="namXayDung" placeholder="Số Phòng Ngủ" class="form-control" ng-model="nhuCauThemMoiVm.model.namXayDung"
+                                        ng-pattern="numberRegx" />
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.tyLeMG.$error.required)}">
+                                    <label class="control-label">Số WC
+
+                                    </label>
+                                    <input type="text" name="tyLeMG" placeholder="Số WC" class="form-control" ng-model="nhuCauThemMoiVm.model.tyLeMG" />
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.dienGiai.$error.required)}">
+                                    <label class="control-label">Nội Thất
+                                        <!--   -->
+                                    </label>
+                                    <textarea rows="5" type="text" name="dienGiai" placeholder="Thông Tin Nội Thất" class="form-control" ng-model="nhuCauThemMoiVm.model.dienGiai"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END FORM-->
+                </div>
+            </div>
+            <!-- Thông tin liên hệ-->
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-equalizer font-blue-hoki"></i>
+                        <span class="caption-subject font-blue-hoki bold uppercase">Thông Tin Liên Hệ</span>
+                    </div>
+                    <div class="tools">
+                        <a href="" class="collapse"> </a>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <!-- BEGIN FORM-->
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.email.$error.required) || (createForm.email.$error.pattern || createForm.email.$error.email)}">
+                                    <label class="control-label">Tên Liên Hệ
+                                        <span class="required-field">*</span>
+                                    </label>
+                                    <input type="email" name="email" placeholder="--Tên Liên Hệ" class="form-control" required ng-model="nhuCauThemMoiVm.model.email"
+                                        ng-pattern="emailRegx" />
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                    <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.email.$error.required) || (createForm.email.$error.pattern || createForm.email.$error.email)}">
+                                        <label class="control-label">Địa Chỉ
+                                            <span class="required-field">*</span>
+                                        </label>
+                                        <input type="email" name="email" placeholder="--Địa Chỉ" class="form-control" required ng-model="nhuCauThemMoiVm.model.email"
+                                            ng-pattern="emailRegx" />
+                                    </div>
+                                </div>
+                            <div class="col-md-12">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.email.$error.required) || (createForm.email.$error.pattern || createForm.email.$error.email)}">
+                                    <label class="control-label">Email
+                                        <span class="required-field">*</span>
+                                    </label>
+                                    <input type="email" name="email" placeholder="Email" class="form-control" required ng-model="nhuCauThemMoiVm.model.email"
+                                        ng-pattern="emailRegx" />
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.dienThoai.$error.required)}">
+                                    <label class="control-label">Điện thoại
+                                        <span class="required-field">*</span>
+                                    </label>
+                                    <input type="text" name="dienThoai" placeholder="Điện thoại" ui-mask="999-999-9999" class="form-control" required ng-model="nhuCauThemMoiVm.model.dienThoai"
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                    <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.dienThoai.$error.required)}">
+                                        <label class="control-label">Di Động
+                                            <span class="required-field">*</span>
+                                        </label>
+                                        <input type="text" name="dienThoai" placeholder="Di Động" ui-mask="999-999-9999" class="form-control" required ng-model="nhuCauThemMoiVm.model.dienThoai"
+                                        />
+                                    </div>
+                                </div>
+                            <!--/span-->
+                        </div>
+                    </div>
+                    <!-- END FORM-->
+                </div>
+            </div>
+        </div>
+        <div class=" col-md-12">
+            <div class="margin-top-20 pull-right">
+                <button class="btn green grreen-haze" type="submit" ng-disabled="">
+                    Save
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

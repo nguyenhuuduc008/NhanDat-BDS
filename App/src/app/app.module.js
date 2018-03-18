@@ -71,7 +71,9 @@
             'app.setting',
             'app.nhuCau',
             'app.lichSu',
-            'app.quytrinhphaply'
+            'app.quangCao',
+            'app.quytrinhphaply',
+			'app.baoCaoThongKe'
         ])
         .config(config)
         .run(run)

@@ -1,9 +1,9 @@
 <div class="portlet light bordered tasks-widget">
     <div class="portlet-title">
         <div class="caption caption-md" style="min-width: 275px;">
-            <select class="form-control" required id="idDanhMuc">
-                <option value="allDanhMuc" >Tất Cả Danh Mục</option>
-                <option ng-repeat="item in vm.cacDanhMucBDS" value="{{item.value}}" ng-selected="item.value == vm.bdsCate">{{item.text}}</option>
+            <select class="form-control" required id="idDanhMuc" ng-model="vm.item.khoBDSKey">
+                <option value="allDanhMuc" disabled selected>Tất Cả Kho</option>
+                <option ng-repeat="item in vm.khoBDSList" value="{{item.$id}}">{{item.text}}</option>
             </select>
         </div>
         <div class="caption caption-md" style="padding-left:5px;">

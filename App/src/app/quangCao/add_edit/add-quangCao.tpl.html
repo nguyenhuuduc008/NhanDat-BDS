@@ -1,0 +1,130 @@
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PROFILE CONTENT -->
+        <div class="profile-content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="portlet light bordered">
+                        <div class="portlet-title">
+                            <div class="caption col-md-12 text-right action-tools">
+                                <a href="javascript:;" ng-click="historyBack()" class="btn btn-circle grey-mint" title="Back">Back</a>
+                            </div>
+                        </div>
+                        <div class="portlet-title tabbable-line">
+                            <div class="caption caption-md">
+                                <i class="icon-globe theme-font hide"></i>
+                                <span class="caption-subject font-blue-madison bold uppercase">Thông tin Quảng Cáo</span>
+                            </div>
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#tab_1_1" data-toggle="tab">Quảng Cáo</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="portlet-body">
+                            <div class="tab-content">
+                                <!-- PERSONAL INFO TAB -->
+                                <div class="tab-pane active row" id="tab_1_1">
+                                    <form role="form" id="form" name="form" novalidate ng-submit="qcVM.create(form)">
+                                        <div class="form-group col-md-6" >
+                                            <div class="fileinput fileinput-new" data-provides="fileinput" style="width:100%;">
+                    
+                                            <div class="profile-userpic text-center padding-10">
+                                                <p ng-if="qcVM.quangCao.photoURL ===''" class="img-responsive"  data-letters="QC" ></p>
+                                                <img ng-if="qcVM.quangCao.photoURL !==''" src="{{ qcVM.quangCao.photoURL}}" id="imgProfile" class="img-responsive" alt="profile-image">       
+                                            </div>
+ 
+                                            <div class="text-center">
+                                                <span class="btn-file" style="cursor: pointer; color:blue;">
+                                                    <span class="fileinput-new"> Change QuangCao </span>
+                                                    <input type="file" id="avatar-file" name=""> 
+                                                </span>
+                                            </div>
+                                        </div>
+                                            
+                                        </div>
+                                        <div class="form-group col-md-6" ng-class="{'has-error': (qcVM.showInvalid && form.timeShow.$error.required)}">
+                                            <label class="control-label">Thời gian Hiện Thị</label>
+                                            <single-date-picker name="timeShow" ng-model="qcVM.quangCao.timeShow" hour-format="false" 
+                                                is-require="true" value="{{qcVM.quangCao.timeShow}}">
+                                            </single-date-picker>
+                                            <label class="control-label" ng-show="qcVM.showInvalid && form.timeShow.$error.required">
+                                                * This field is required
+                                            </label>
+                                        </div>
+                                        
+                                        <div>
+                                            <input type="hidden"  name="id"  value="{{qcVM.quangCao.id}}" ng-model="qcVM.quangCao.id" />
+                                        </div>
+                                        <div class="form-group col-md-12" ng-class="{'has-error': (form.phoneNumber.$error.pattern||form.phoneNumber.$error.required)&&form.phoneNumber.$touched}">
+                                            <label class="control-label">Điện Thoại<span class="required-field"> *</span></label>
+                                            <input type="text" maxlength="11" minlength="10" required placeholder="Primary Phone" class="form-control" 
+                                            name="phoneNumber"  
+                                            ng-model="qcVM.quangCao.phoneNumber" ng-pattern="phoneRegx" value="{{qcVM.quangCao.phoneNumber}}"/>
+
+                                            <!--Warning-->
+                                            <label class="control-label" ng-show="form.phoneNumber.$error.required&&form.phoneNumber.$touched">* Cần nhập Số Điện Thoại</label>
+                                            <label class="control-label" ng-show="form.phoneNumber.$error.pattern&&form.phoneNumber.$touched">* Số Điện thoại chỉ được nhập số</label>
+                                            <label class="control-label font-green-sharp" ng-show="form.phoneNumber.$error.minlength&&!form.phoneNumber.$error.pattern&&form.phoneNumber.$touched">* Số Điện thoại quá ngắn</label>
+                                        </div>
+                                        <div class="form-group col-md-12" ng-class="{'has-error': (qcVM.showInvalid && form.email.$error.required) || (form.email.$error.pattern || form.email.$error.email)}">
+                                            <label class="control-label">Email
+                                                <span class="required-field">*</span>
+                                            </label>
+                                            <input type="email" placeholder="Email" class="form-control" name="email" ng-model="qcVM.quangCao.email" required autocapitalize="off" ng-pattern="emailRegx" value="{{qcVM.quangCao.email}}"/>
+                                            <!--Warning-->
+                                            <label class="control-label" ng-show="form.email.$error.pattern || form.email.$error.email">* Email is not valid</label>
+                                        </div>
+                                        <div class="form-group col-md-6" ng-class="{'has-error': (qcVM.showInvalid && form.viTri.$error.required) || form.viTri.$error.pattern}">
+                                            <label class="control-label">Vị Trí
+                                                <span class="required-field">*</span>
+                                            </label>
+                                            <!-- <input type="text" name="viTri" placeholder="Vị Trí" class="form-control" required ng-model="qcVM.quangCao.viTri"  value="{{qcVM.quangCao.viTri}}"/> -->
+                                             <select class="bs-select form-control" id="action-list" ng-model="qcVM.quangCao.viTri"  >
+                                                <option value="top">Banner Top</option>
+                                                <option value="left1">Banner Left 1</option>
+                                                <option value="left2">Banner Left 2</option>
+                                                <option value="right1">Banner Right 1</option>
+                                                <option value="right2">Banner Right 2</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-6" ng-class="{'has-error': (qcVM.showInvalid && form.duongDan.$error.required) || form.duongDan.$error.pattern}" }>
+                                            <label class="control-label">Đường Dẫn
+                                                <span class="required-field">*</span>
+                                            </label>
+                                            <input type="text" name="duongDan" placeholder="Đường Dẫn" class="form-control" required ng-model="qcVM.quangCao.duongDan" value="{{qcVM.quangCao.duongDan}}"/>
+                                        </div>
+                                      
+                                        <div class="col-md-12">
+                                            <div class="margin-top-20">
+                                                
+                                                <button class="btn green grreen-haze" type="submit" ng-disabled="form.$invalid">
+                                                    
+                                                    <span ng-if="qcVM.control.isEdit">Edit</span> 
+                                                    <span ng-if="!qcVM.control.isEdit">
+                                                            Add
+                                                     </span> 
+
+                                                   
+                                                </button>
+
+                                                <button class="btn default" type="button" ng-click="qcVM.cancel()">
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- END PERSONAL INFO TAB -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END PROFILE CONTENT -->
+    </div>
+    <div class="col-md-6">
+    </div>
+</div>
+<!-- END PAGE BASE CONTENT -->

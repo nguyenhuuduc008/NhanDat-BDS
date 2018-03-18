@@ -33,7 +33,9 @@
                                         <span></span>
                                     </label>
                                 </th>
-                                <th class="width25"> Loại Danh Mục BĐS </th>
+                                <th class="width25"> Loại Kho BĐS </th>
+                                <th class="width25"> Data Key </th>
+                                <th class="width25"> Tình Trạng </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,7 +46,9 @@
                                         <span></span>
                                     </label>
                                 </td>
-                                <td class="width25"><a href="#/setting/danhMucBDS-mod/{{item.$id}}"> {{item.text}} </a></td>
+                                <td class="width25"><a href="" ng-click="danhMucBDSListVm.toEdit(item)"> {{item.text}} </a></td>
+                                <td class="width25">{{item.$id}}</td>
+                                <td class="width25" ng-show="item.$id === danhMucBDSListVm.itemDefault.$value">Kho Mặc Định</td>
                             </tr>
                         </tbody>
                     </table>

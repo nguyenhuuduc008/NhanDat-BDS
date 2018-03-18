@@ -821,7 +821,7 @@
             controller: 'danhMucBDSListCtr',
             controllerAs: 'danhMucBDSListVm',
             data: {
-                pageTitle: 'Quản Lý Danh Mục BĐS',
+                pageTitle: 'Quản Lý Kho BĐS',
                 module: 'setting',
                 icon: 'icon-settings',
                 parent: 'settingList'
@@ -838,7 +838,7 @@
             controller: 'danhMucBDSModCtr',
             controllerAs: 'danhMucBDSModVm',
             data: {
-                pageTitle: 'Thêm Danh Mục BĐS',
+                pageTitle: 'Thêm Kho BĐS',
                 module: 'setting',
                 parent: 'settingList',
                 hide:true
@@ -855,10 +855,13 @@
             controller: 'danhMucBDSModCtr',
             controllerAs: 'danhMucBDSModVm',
             data: {
-                pageTitle: 'Sửa Danh Mục BĐS',
+                pageTitle: 'Sửa Kho BĐS',
                 module: 'setting',
                 parent: 'settingList',
                 hide:true
+            },
+            params: {
+                item: null
             },
             resolve:{
                 "currentAuth": ["authService", function(authService) {

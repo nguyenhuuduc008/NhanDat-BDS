@@ -16,6 +16,11 @@
         danhMucBDSListVm.selectAll = function(controlId, name){
             appUtils.checkAllCheckBox(controlId,name);
         };
+
+        danhMucBDSListVm.toEdit = function(item) {
+            $state.go('danhMucBDS-edit', {item: item});
+        };
+
         danhMucBDSListVm.apply = function(chkName){
             appUtils.showLoading();
             var self = this;
@@ -56,9 +61,10 @@
         };
         function getCacLoaiDanhMucBDS(){
             settingService.getCacLoaiDanhMucBDS().$loaded().then(function(res){
-                danhMucBDSListVm.items=res;
-                console.log(' danhMucBDSListVm.items');
-                console.log( danhMucBDSListVm.items);
+                danhMucBDSListVm.items = _.filter(res, function(o) {
+                    return o.$id !== "khoDefault";
+                });
+                danhMucBDSListVm.itemDefault = _.find(res, ['$id','khoDefault']);
             });
         }
         function init(){

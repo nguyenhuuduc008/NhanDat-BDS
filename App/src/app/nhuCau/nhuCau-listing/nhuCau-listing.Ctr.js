@@ -3,7 +3,7 @@
     angular.module('app.nhuCau')
     .controller('nhuCauListingCtr', nhuCauListingCtr);
     	/** @ngInject */
-    function nhuCauListingCtr($rootScope, $scope, $state,$q,nhuCauService,appUtils,$ngBootbox,toaster){
+    function nhuCauListingCtr($rootScope, $scope, $state,$q,nhuCauService,appUtils,$ngBootbox,toaster, settingService){
         $rootScope.settings.layout.showSmartphone = false;
         $rootScope.settings.layout.showBreadcrumb = false;
         $rootScope.settings.layout.guestPage = false;
@@ -11,10 +11,20 @@
         var currentUser = $rootScope.storage.currentUser;
         var vm =this;// jshint ignore:line
         //
-        vm.cacDanhMucBDS = appSettings.cacDanhMucBDS;
+        vm.item = {};
+        //vm.cacDanhMucBDS = appSettings.cacDanhMucBDS;
         vm.cacLoaiNhuCau = appSettings.cacLoaiNhuCau;
-        console.log('vm.cacDanhMucBDS');
         console.log(vm.cacDanhMucBDS);
+
+        //Load data
+        settingService.getCacLoaiDanhMucBDS().$loaded().then(function(data) {
+            vm.khoBDSList = _.filter(data, function(o) {
+                return o.$id !== "khoDefault";
+            });
+            vm.khoBDSDefault = _.find(data, ['$id', 'khoDefault']);
+            vm.item.khoBDSKey = !!vm.khoBDSDefault ? vm.khoBDSDefault.$value : 'allDanhMuc';
+        });
+
         //page
         vm.groupedItems = [];
         vm.filteredItems = [];

@@ -4,10 +4,11 @@
     /** @ngInject **/
     function nhuCauService($q, $filter, $firebaseObject, $firebaseArray, firebaseDataRef, appUtils,toaster,$ngBootbox){
         var service={
-            themMoiNhuCau:themMoiNhuCau,
+            addNhuCauBan:addNhuCauBan,
             getNhuCau:getNhuCau,
             updateNhuCau:updateNhuCau,
-            getOnceNhuCau:getOnceNhuCau 
+            getOnceNhuCau:getOnceNhuCau,
+            addNhuCauMua: addNhuCauMua
         };
         //Ref
         var nhuCauRef=firebaseDataRef.child('nhuCau');
@@ -34,26 +35,26 @@
 			});
         }
 
-        function themMoiNhuCau(loaiNhuCauId,loaiNhuCauText,bdsId,danhMucId,noiDung){
-            console.log('loaiNhuCauId');
-            console.log(loaiNhuCauId);
-            var ref=nhuCauRef.child(loaiNhuCauId);
-         
-            var bdsRefLink='bds/'+danhMucId+'/' + bdsId;
-            console.log('bdsRef');
-            console.log(bdsRef);
-            var key=ref.push().key;
-            var objData={
-                loaiNhuCauId:loaiNhuCauId,
-                bdsId:bdsId,
-                bdsRefLink:bdsRefLink,
-                loaiNhuCauText:loaiNhuCauText,
-                danhMucId:danhMucId,
-                noiDung:noiDung,
-                timestampCreated:Date.now()
-            };
-            return ref.child(key).set(objData).then(function(res){
-                return {result:true,key:key};
+        function addNhuCauBan(khoBDSId, loaiNhuCauId, bdsModel){
+            var ref = bdsRef.child(khoBDSId + "/" + loaiNhuCauId);
+            var bdsKey = ref.push().key;
+            bdsModel.timestampCreated = Date.now();
+
+            return ref.child(bdsKey).set(bdsModel).then(function(res){
+                return {result:true,key:bdsKey};
+            }).catch(function(err){
+                return {result:true,errMsg:err};
+            });
+            
+        }
+
+        function addNhuCauMua(khoBDSId, loaiNhuCauId, bdsModel){
+            var ref = nhuCauRef.child(khoBDSId + "/" + loaiNhuCauId);
+            var bdsKey = ref.push().key;
+            bdsModel.timestampCreated = Date.now();
+  
+            return ref.child(bdsKey).set(bdsModel).then(function(res){
+                return {result:true,key:bdsKey};
             }).catch(function(err){
                 return {result:true,errMsg:err};
             });

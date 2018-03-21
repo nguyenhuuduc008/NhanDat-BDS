@@ -37,7 +37,7 @@
 			templateUrl: './app/user/list/user-list.tpl.html',
 			controller: 'userListCtrl as userVm',
 			data: {
-				pageTitle: 'Users',
+				pageTitle: 'Người dùng',
 				module: 'user',
 				icon: 'fa fa-users',
 				permission: 'User'
@@ -60,7 +60,7 @@
 			templateUrl: './app/user/add_edit/add-user.tpl.html',
 			controller: 'addUserCtrl as userAddVm',
 			data: {
-				pageTitle: 'Add New User',
+				pageTitle: 'Thêm người dùng',
 				module: 'user',
 				parent: 'user',
 				hide: true
@@ -83,7 +83,7 @@
 			templateUrl: './app/user/add_edit/edit-user.tpl.html',
 			controller: 'editUserCtrl as userDetailVm',
 			data: {
-				pageTitle: 'User Info',
+				pageTitle: 'Thông tin người',
 				module: 'user',
 				parent: 'user',
 				hide: true

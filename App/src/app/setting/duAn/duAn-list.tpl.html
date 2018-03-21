@@ -6,18 +6,18 @@
                 <div class="caption">
                     <div class="col-md-10 no-padding-right">
                         <select class="bs-select form-control" id="action-list" ng-model="duAnListVm.selectAction">
-                            <option>Bulk Actions</option>
-                            <option>Delete</option>
+                            <option>Chọn</option>
+                            <option>Xóa</option>
                         </select>
                     </div>
                     <div class="col-md-2 no-padding-left">
-                        <button type="button" class="btn green" ng-click="duAnListVm.apply('select-checkBox')">Apply</button>
+                        <button type="button" class="btn green" ng-click="duAnListVm.apply('select-checkBox')">Áp dụng</button>
                     </div>
                 </div>
                 <div class="actions">
                     <div class="btn-group btn-group-devided">
                         <div class="col-md-1">
-                            <a href="#/setting/duAn-mod" class="btn blue">Add New</a>
+                            <a href="#/setting/duAn-mod" class="btn blue">Thêm mới</a>
                         </div>
                     </div>
                 </div>
@@ -33,7 +33,8 @@
                                         <span></span>
                                     </label>
                                 </th>
-                                <th class="width25"> Loại Dự Án </th>
+                                <th class="width25"> Tên dự án </th>
+                                <th class="width25"> Mô tả </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,7 +45,8 @@
                                         <span></span>
                                     </label>
                                 </td>
-                                <td class="width25"><a href="#/setting/duAn-mod/{{item.$id}}"> {{item.text}} </a></td>
+                                <td class="width25"><a href="#/setting/duAn-mod/{{item.$id}}"> {{item.tenDuAn}} </a></td>
+                                <td class="width25"><label>{{item.moTa}}</label></td>
                             </tr>
                         </tbody>
                     </table>

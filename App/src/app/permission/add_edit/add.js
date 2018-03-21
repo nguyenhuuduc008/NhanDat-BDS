@@ -65,7 +65,7 @@
       var existed = _.find(permissionVm.permissions , { name: permissionVm.model.name });
       if (existed) {
         appUtils.hideLoading();
-        $ngBootbox.alert('Permission is existed');
+        $ngBootbox.alert('Quyền đã tồn tại');
         return;
       }
       $('input[name=tnc]').each(function () {
@@ -79,7 +79,7 @@
       permissionService.create(permissionVm.model).then(function (rs) {
         appUtils.hideLoading();
         if (rs.result) {
-          toaster.success("Save success!");
+          toaster.success("Lưu thành công!");
           delete $rootScope.storage.permissions;
           $state.go('permissionList');
         } else {

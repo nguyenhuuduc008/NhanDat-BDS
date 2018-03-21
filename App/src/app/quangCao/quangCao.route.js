@@ -39,7 +39,7 @@
 			data: {
 				pageTitle: 'Quảng Cáo',
 				module: 'quangCao',
-				icon: 'icon-settings',
+				icon: 'icon-diamond',
 				permission: 'QuangCao'
 			},
 			resolve: {

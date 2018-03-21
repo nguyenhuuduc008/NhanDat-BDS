@@ -1,0 +1,889 @@
+﻿<script src="/lib/metronic/theme/assets/global/plugins/amcharts/amcharts/amcharts.js"></script>
+<script src="/lib/metronic/theme/assets/global/plugins/amcharts/amcharts/serial.js"></script>
+<script src="/lib/metronic/theme/assets/global/plugins/amcharts/amcharts/pie.js"></script>
+
+<style>
+    .chart-content {
+        width: 100%;
+        height: 381px;
+        overflow: hidden;
+        text-align: left;
+    }
+</style>
+<div class="row" id="permission">
+    <div class="col-md-12">
+        <div class="portlet light portlet-fit bordered">
+            <div class="portlet-body">
+                <div class="table-scrollable table-scrollable-borderless">
+                  
+                    <div class="row">
+                        <!--Tống số Tác Nghiệp của Nhóm theo Ngày, Tháng Quí, Năm-->
+                        <div class="col-md-12">
+                            <div class="portlet light bordered">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="icon-bar-chart font-green-haze"></i>
+                                        <span class="caption-subject bold uppercase font-green-haze">Tống số Tác Nghiệp theo Loại Tác Nghiệp và Khu Vực</span>
+                                        <span class="caption-helper"></span>
+                                    </div>
+                                    <div class="tools">
+                                        <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+                                        <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
+                                        <a href="javascript:;" class="reload" data-original-title="" title=""> </a>
+                                        <a href="javascript:;" class="fullscreen" data-original-title="" title=""> </a>
+                                        <a href="javascript:;" class="remove" data-original-title="" title=""> </a>
+                                    </div>
+                                </div>
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <div class="form-group">
+                                            <div style="float:left">
+                                                <select name="thanhPho" class="form-control ng-pristine ng-untouched ng-not-empty ng-valid ng-valid-required" style="width:100px">
+                                                    <option value="" selected>2018</option>
+                                                    <option value="">2017</option>
+                                                    <option value="">2016</option>
+                                                </select>
+                                            </div>
+                                            <div style="float: left;padding: 6px;margin-left: 10px;">
+                                                Quý: <input type="radio" name="q" checked /> 1 <input name="q" type="radio" /> 2 <input name="q" type="radio" /> 3 <input name="q" type="radio" /> 4
+                                            </div>
+                                            <div style="float: left;padding: 6px;margin-left: 10px;">
+                                                Tháng: <input type="radio" checked name="t" /> 1 <input name="t" type="radio" /> 2 <input name="t" type="radio" /> 3
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="chart-content" id="chartdiv1"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="portlet light bordered">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="icon-bar-chart font-green-haze"></i>
+                                        <span class="caption-subject bold uppercase font-green-haze">Tống số Tác Nghiệp của Nhân Viên theo Ngày, Tháng Quí, Năm</span>
+                                        <span class="caption-helper"></span>
+                                    </div>
+                                    <div class="tools">
+                                        <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+                                        <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
+                                        <a href="javascript:;" class="reload" data-original-title="" title=""> </a>
+                                        <a href="javascript:;" class="fullscreen" data-original-title="" title=""> </a>
+                                        <a href="javascript:;" class="remove" data-original-title="" title=""> </a>
+                                    </div>
+                                </div>
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <div class="form-group">
+                                            <div style="float:left">
+                                                <select name="thanhPho" class="form-control ng-pristine ng-untouched ng-not-empty ng-valid ng-valid-required" style="width:100px">
+                                                    <option value="" selected>2018</option>
+                                                    <option value="">2017</option>
+                                                    <option value="">2016</option>
+                                                </select>
+                                            </div>
+                                            <div style="float: left;padding: 6px;margin-left: 10px;">
+                                                Quý: <input type="radio" name="q" checked /> 1 <input name="q" type="radio" /> 2 <input name="q" type="radio" /> 3 <input name="q" type="radio" /> 4
+                                            </div>
+                                            <div style="float: left;padding: 6px;margin-left: 10px;">
+                                                Tháng: <input type="radio" checked name="t" /> 1 <input name="t" type="radio" /> 2 <input name="t" type="radio" /> 3
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="chart-content" id="chartdiv2"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="portlet light bordered">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="icon-bar-chart font-green-haze"></i>
+                                        <span class="caption-subject bold uppercase font-green-haze">Tống số Tác Nghiệp của Nhóm theo Ngày, Tháng Quí, Năm</span>
+                                        <span class="caption-helper"></span>
+                                    </div>
+                                    <div class="tools">
+                                        <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+                                        <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
+                                        <a href="javascript:;" class="reload" data-original-title="" title=""> </a>
+                                        <a href="javascript:;" class="fullscreen" data-original-title="" title=""> </a>
+                                        <a href="javascript:;" class="remove" data-original-title="" title=""> </a>
+                                    </div>
+                                </div>
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <div class="form-group">
+                                            <div style="float:left">
+                                                <select name="thanhPho" class="form-control ng-pristine ng-untouched ng-not-empty ng-valid ng-valid-required" style="width:100px">
+                                                    <option value="" selected>--Chọn--</option>
+                                                    <option value="">Nguyễn Văn A</option>
+                                                    <option value="">Trịnh Xuân B</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="chart-content" id="chartdiv3"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    loadChart_1();
+    function loadChart_1() {
+
+        var chart;
+        var chartData = [
+            {
+                "day": "1",
+                "Key1": 5,
+                "Key2": 7,
+                "Key3": 9,
+                "Key4": 4,
+                "Key5": 10,
+                "Key6": 1
+            },
+            {
+                "day": "2",
+                "Key1": 5,
+                "Key2": 4,
+                "Key3": 5,
+                "Key4": 6,
+                "Key5": 7,
+                "Key6": 8
+            },
+             {
+                 "day": "3",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "4",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "5",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "6",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "7",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "8",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "9",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "10",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             },
+
+             {
+                 "day": "11",
+                 "Key1": 5,
+                 "Key2": 7,
+                 "Key3": 9,
+                 "Key4": 4,
+                 "Key5": 10,
+                 "Key6": 1
+             },
+            {
+                "day": "12",
+                "Key1": 5,
+                "Key2": 4,
+                "Key3": 5,
+                "Key4": 6,
+                "Key5": 7,
+                "Key6": 8
+            },
+             {
+                 "day": "13",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "14",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "15",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "16",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "17",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "18",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "19",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "20",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             },
+
+        ];
+
+        // SERIAL CHART
+        chart = new AmCharts.AmSerialChart();
+        chart.dataProvider = chartData;
+        chart.categoryField = "day";
+
+        // sometimes we need to set margins manually
+        // autoMargins should be set to false in order chart to use custom margin values
+        chart.autoMargins = false;
+        chart.marginLeft = 0;
+        chart.marginRight = 0;
+        chart.marginTop = 30;
+        chart.marginBottom = 40;
+
+        // AXES
+        // category
+        var categoryAxis = chart.categoryAxis;
+        categoryAxis.gridAlpha = 0;
+        categoryAxis.axisAlpha = 0;
+        categoryAxis.gridPosition = "start";
+
+        // value
+        var valueAxis = new AmCharts.ValueAxis();
+        valueAxis.stackType = "100%"; // this line makes the chart 100% stacked
+        valueAxis.gridAlpha = 0;
+        valueAxis.axisAlpha = 0;
+        valueAxis.labelsEnabled = false;
+        chart.addValueAxis(valueAxis);
+
+        // GRAPHS
+        // first graph
+        var graph = new AmCharts.AmGraph();
+        graph.title = "Khu vực 1";
+        graph.labelText = "[[value]]";
+        //graph.balloonText = "[[title]], [[category]]<br><span style='font-size:14px;'><b>[[value]]</b> ([[percents]]%)</span>";
+        graph.valueField = "Key1";
+        graph.type = "column";
+        graph.lineAlpha = 0;
+        graph.fillAlphas = 1;
+        graph.lineColor = "#C72C95";
+        chart.addGraph(graph);
+
+        // second graph
+        graph = new AmCharts.AmGraph();
+        graph.title = "Khu vực 2";
+        graph.labelText = "[[value]]";
+        //graph.balloonText = "[[title]], [[category]]<br><span style='font-size:14px;'><b>[[value]]</b> ([[percents]]%)</span>";
+        graph.valueField = "Key2";
+        graph.type = "Nhóm 2";
+        graph.lineAlpha = 0;
+        graph.fillAlphas = 1;
+        graph.lineColor = "#D8E0BD";
+        chart.addGraph(graph);
+
+        // third graph
+        graph = new AmCharts.AmGraph();
+        graph.title = "Khu vực 3";
+        graph.labelText = "[[value]]";
+        //graph.balloonText = "[[title]], [[category]]<br><span style='font-size:14px;'><b>[[value]]</b></span>";
+        graph.valueField = "Key3";
+        graph.type = "column";
+        graph.lineAlpha = 0;
+        graph.fillAlphas = 1;
+        graph.lineColor = "#B3DBD4";
+        chart.addGraph(graph);
+
+        // fourth graph
+        graph = new AmCharts.AmGraph();
+        graph.title = "Khu vực 4";
+        graph.labelText = "[[value]]";
+        //graph.balloonText = "[[title]], [[category]]<br><span style='font-size:14px;'><b>[[value]]</b> ([[percents]]%)</span>";
+        graph.valueField = "Key4";
+        graph.type = "column";
+        graph.lineAlpha = 0;
+        graph.fillAlphas = 1;
+        graph.lineColor = "#69A55C";
+        chart.addGraph(graph);
+
+        // fifth graph
+        graph = new AmCharts.AmGraph();
+        graph.title = "Khu vực 5";
+        graph.labelText = "[[value]]";
+        //graph.balloonText = "[[title]], [[category]]<br><span style='font-size:14px;'><b>[[value]]</b> ([[percents]]%)</span>";
+        graph.valueField = "Key5";
+        graph.type = "column";
+        graph.lineAlpha = 0;
+        graph.fillAlphas = 1;
+        graph.lineColor = "#B5B8D3";
+        chart.addGraph(graph);
+
+        // sixth graph
+        graph = new AmCharts.AmGraph();
+        graph.title = "Khu vực 6";
+        graph.labelText = "[[value]]";
+        //graph.balloonText = "[[title]], [[category]]<br><span style='font-size:14px;'><b>[[value]]</b> ([[percents]]%)</span>";
+        graph.valueField = "Key6";
+        graph.type = "column";
+        graph.lineAlpha = 0;
+        graph.fillAlphas = 1;
+        graph.lineColor = "#F4E23B";
+        chart.addGraph(graph);
+
+        // LEGEND
+        var legend = new AmCharts.AmLegend();
+        legend.borderAlpha = 0.2;
+        legend.horizontalGap = 10;
+        legend.autoMargins = false;
+        legend.marginLeft = 20;
+        legend.marginRight = 20;
+        chart.addLegend(legend);
+
+        var chartScrollbar = new AmCharts.ChartScrollbar();
+        chart.addChartScrollbar(chartScrollbar);
+
+        // WRITE
+        chart.write("chartdiv1");
+    }
+
+    loadChart_2()
+    function loadChart_2() {
+       
+        var chart;
+        var chartData = [
+            {
+                "day": "1",
+                "Key1": 5,
+                "Key2": 7,
+                "Key3": 9,
+                "Key4": 4,
+                "Key5": 10,
+                "Key6": 1
+            },
+            {
+                "day": "2",
+                "Key1": 5,
+                "Key2": 4,
+                "Key3": 5,
+                "Key4": 6,
+                "Key5": 7,
+                "Key6": 8
+            },
+             {
+                 "day": "3",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "4",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "5",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "6",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "7",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "8",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "9",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "10",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             },
+
+             {
+                 "day": "11",
+                 "Key1": 5,
+                 "Key2": 7,
+                 "Key3": 9,
+                 "Key4": 4,
+                 "Key5": 10,
+                 "Key6": 1
+             },
+            {
+                "day": "12",
+                "Key1": 5,
+                "Key2": 4,
+                "Key3": 5,
+                "Key4": 6,
+                "Key5": 7,
+                "Key6": 8
+            },
+             {
+                 "day": "13",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "14",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "15",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "16",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "17",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "18",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "19",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             }, {
+                 "day": "20",
+                 "Key1": 5,
+                 "Key2": 6,
+                 "Key3": 7,
+                 "Key4": 4,
+                 "Key5": 5,
+                 "Key6": 6
+             },
+
+        ];
+
+        // SERIAL CHART
+        chart = new AmCharts.AmSerialChart();
+        chart.dataProvider = chartData;
+        chart.categoryField = "day";
+
+        // sometimes we need to set margins manually
+        // autoMargins should be set to false in order chart to use custom margin values
+        chart.autoMargins = false;
+        chart.marginLeft = 0;
+        chart.marginRight = 0;
+        chart.marginTop = 30;
+        chart.marginBottom = 40;
+
+        // AXES
+        // category
+        var categoryAxis = chart.categoryAxis;
+        categoryAxis.gridAlpha = 0;
+        categoryAxis.axisAlpha = 0;
+        categoryAxis.gridPosition = "start";
+
+        // value
+        var valueAxis = new AmCharts.ValueAxis();
+        valueAxis.stackType = "100%"; // this line makes the chart 100% stacked
+        valueAxis.gridAlpha = 0;
+        valueAxis.axisAlpha = 0;
+        valueAxis.labelsEnabled = false;
+        chart.addValueAxis(valueAxis);
+
+        // GRAPHS
+        // first graph
+        var graph = new AmCharts.AmGraph();
+        graph.title = "Nhóm 1";
+        graph.labelText = "[[value]]";
+        //graph.balloonText = "[[title]], [[category]]<br><span style='font-size:14px;'><b>[[value]]</b> ([[percents]]%)</span>";
+        graph.valueField = "Key1";
+        graph.type = "column";
+        graph.lineAlpha = 0;
+        graph.fillAlphas = 1;
+        graph.lineColor = "#C72C95";
+        chart.addGraph(graph);
+
+        // second graph
+        graph = new AmCharts.AmGraph();
+        graph.title = "Nhóm 2";
+        graph.labelText = "[[value]]";
+        //graph.balloonText = "[[title]], [[category]]<br><span style='font-size:14px;'><b>[[value]]</b> ([[percents]]%)</span>";
+        graph.valueField = "Key2";
+        graph.type = "Nhóm 2";
+        graph.lineAlpha = 0;
+        graph.fillAlphas = 1;
+        graph.lineColor = "#D8E0BD";
+        chart.addGraph(graph);
+
+        // third graph
+        graph = new AmCharts.AmGraph();
+        graph.title = "Nhóm 3";
+        graph.labelText = "[[value]]";
+        //graph.balloonText = "[[title]], [[category]]<br><span style='font-size:14px;'><b>[[value]]</b></span>";
+        graph.valueField = "Key3";
+        graph.type = "column";
+        graph.lineAlpha = 0;
+        graph.fillAlphas = 1;
+        graph.lineColor = "#B3DBD4";
+        chart.addGraph(graph);
+
+        // fourth graph
+        graph = new AmCharts.AmGraph();
+        graph.title = "Nhóm 4";
+        graph.labelText = "[[value]]";
+        //graph.balloonText = "[[title]], [[category]]<br><span style='font-size:14px;'><b>[[value]]</b> ([[percents]]%)</span>";
+        graph.valueField = "Key4";
+        graph.type = "column";
+        graph.lineAlpha = 0;
+        graph.fillAlphas = 1;
+        graph.lineColor = "#69A55C";
+        chart.addGraph(graph);
+
+        // fifth graph
+        graph = new AmCharts.AmGraph();
+        graph.title = "Nhóm 5";
+        graph.labelText = "[[value]]";
+        //graph.balloonText = "[[title]], [[category]]<br><span style='font-size:14px;'><b>[[value]]</b> ([[percents]]%)</span>";
+        graph.valueField = "Key5";
+        graph.type = "column";
+        graph.lineAlpha = 0;
+        graph.fillAlphas = 1;
+        graph.lineColor = "#B5B8D3";
+        chart.addGraph(graph);
+
+        // sixth graph
+        graph = new AmCharts.AmGraph();
+        graph.title = "Nhóm 6";
+        graph.labelText = "[[value]]";
+        //graph.balloonText = "[[title]], [[category]]<br><span style='font-size:14px;'><b>[[value]]</b> ([[percents]]%)</span>";
+        graph.valueField = "Key6";
+        graph.type = "column";
+        graph.lineAlpha = 0;
+        graph.fillAlphas = 1;
+        graph.lineColor = "#F4E23B";
+        chart.addGraph(graph);
+
+        // LEGEND
+        var legend = new AmCharts.AmLegend();
+        legend.borderAlpha = 0.2;
+        legend.horizontalGap = 10;
+        legend.autoMargins = false;
+        legend.marginLeft = 20;
+        legend.marginRight = 20;
+        chart.addLegend(legend);
+
+        var chartScrollbar = new AmCharts.ChartScrollbar();
+        chart.addChartScrollbar(chartScrollbar);
+
+        // WRITE
+        chart.write("chartdiv3");
+    }
+
+    loadChart_3()
+    function loadChart_3() {
+        var chartData = [
+           {
+               "lineColor": "#8e44ad",
+               "key": "1",
+               "value": 0
+           }, {
+               "key": "2",
+               "value": 0
+           }, {
+               "key": "3",
+               "value": 0
+           }, {
+               "key": "4",
+               "value": 0
+           }, {
+               "key": "5",
+               "value": 0
+           }, {
+               "key": "6",
+               "value": 0
+           }, {
+               "key": "7",
+               "value": 0
+           }, {
+               "key": "8",
+               "value": 0,
+           }, {
+               "key": "9",
+               "value": 10
+           }, {
+               "key": "10",
+               "value": 5
+           }, {
+               "key": "11",
+               "value": 4
+           }, {
+               "key": "12",
+               "value": 20
+           }, {
+               "key": "13",
+               "value": 4
+           }, {
+               "key": "14",
+               "value": 3
+           }, {
+               "key": "15",
+               "value": 4
+           }, {
+               "key": "16",
+               "value": 25,
+           }, {
+               "key": "17",
+               "value": 23,
+           }, {
+               "key": "18",
+               "value": 56
+           }, {
+               "key": "19",
+               "value": 0
+           }, {
+               "key": "20",
+               "value": 0
+           }, {
+               "key": "21",
+               "value": 0
+           }, {
+               "key": "22",
+               "value": 0
+           }, {
+               "key": "23",
+               "value": 0
+           }, {
+               "key": "24",
+               "value": 0,
+           }, {
+               "key": "25",
+               "value": 0
+           }, {
+               "key": "26",
+               "value": 1
+           }, {
+               "key": "27",
+               "value": 4
+           }, {
+               "key": "28",
+               "value": 19
+           }, {
+               "key": "29",
+               "value": 20
+           }, {
+               "key": "30",
+               "value": 26,
+
+           }, {
+               "key": "31",
+               "value": 30,
+           }
+        ];
+
+        var chart = new AmCharts.AmSerialChart();
+        chart.dataProvider = chartData;
+        chart.categoryField = "key";
+
+        var balloon = chart.balloon;
+        balloon.cornerRadius = 6;
+        balloon.adjustBorderColor = false;
+        balloon.horizontalPadding = 10;
+        balloon.verticalPadding = 10;
+
+        // AXES
+        // category axis
+        var categoryAxis = chart.categoryAxis;
+        categoryAxis.gridAlpha = 0;
+
+        // as we have data of different units, we create two different value axes
+        // Duration value axis
+        var durationAxis = new AmCharts.ValueAxis();
+        durationAxis.gridAlpha = 0.05;
+        durationAxis.axisAlpha = 0;
+        chart.addValueAxis(durationAxis);
+
+        // GRAPHS
+        // duration graph
+        var durationGraph1 = new AmCharts.AmGraph();
+        durationGraph1.title = "value";
+        durationGraph1.valueField = "value";
+        durationGraph1.type = "smoothedLine"
+        durationGraph1.valueAxis = durationAxis; // indicate which axis should be used
+        durationGraph1.lineColorField = "lineColor";
+        durationGraph1.fillColorsField = "lineColor";
+        durationGraph1.fillAlphas = 0.3;
+        durationGraph1.balloonText = "[[value]]";
+        durationGraph1.lineThickness = 1;
+        durationGraph1.legendValueText = "[[value]]";
+        durationGraph1.bullet = "round";
+        durationGraph1.bulletBorderThickness = 1;
+        durationGraph1.bulletBorderAlpha = 1;
+        durationGraph1.labelPosition = 'top';
+        durationGraph1.labelOffset = 1;
+        durationGraph1.labelText = "[[value]]";
+        chart.addGraph(durationGraph1);
+
+        // CURSOR
+        var chartCursor = new AmCharts.ChartCursor();
+        chartCursor.zoomable = true;
+        chartCursor.cursorAlpha = 0;
+        chart.addChartCursor(chartCursor);
+
+        var chartScrollbar = new AmCharts.ChartScrollbar();
+        chart.addChartScrollbar(chartScrollbar);
+
+        // WRITE
+        chart.write("chartdiv2");
+    }
+</script>

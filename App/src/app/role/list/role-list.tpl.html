@@ -10,30 +10,30 @@
                 <form role="form" name="roleForm" novalidate ng-submit="roleVm.save()">
                     <div class="form-body">
                         <div class="form-group" ng-class="{'has-error': (roleVm.showInvalid && roleForm.name.$error.required) || roleForm.name.$error.pattern}">
-                            <label class="control-label">Name <span class="required-field">*</span></label>
-                            <input class="form-control" type="text" placeholder="Enter name here" ng-model="roleVm.model.name" required ng-pattern="roleVm.nameRegx" name="name"/>
-                            <small>The name is how it appears on your site.</small>
-                            <label class="control-label" ng-show="roleVm.showInvalid && roleForm.name.$error.required">* This field is required</label>
-                            <label class="control-label" ng-show="roleForm.name.$error.pattern">* This field dose not allow special characters</label>
+                            <label class="control-label">Tên <span class="required-field">*</span></label>
+                            <input class="form-control" type="text" placeholder="Nhập tên" ng-model="roleVm.model.name" required ng-pattern="roleVm.nameRegx" name="name"/>
+                            <small>Tên hiển thị trên website.</small>
+                            <label class="control-label" ng-show="roleVm.showInvalid && roleForm.name.$error.required">* Bắt buộc nhập</label>
+                            <label class="control-label" ng-show="roleForm.name.$error.pattern">* Không cho phép nhập ký tự đặc biệt</label>
                         </div>
                         <div class="form-group last">
-                            <label class="control-label">Description</label>
+                            <label class="control-label">Mô tả</label>
                             <div class="row">
                                 <div class="col-md-12">
                                     <textarea class="wysihtml5 form-control" rows="10" ng-model="roleVm.model.description"></textarea>
-                                    <small>The description is not prominent by default; however, some themes may show it.</small>
+                                    <small>Mô tả không theo mặc định, mô tả theo từng chủ đề riêng.</small>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group" ng-class="{'has-error': (roleVm.showInvalid && roleForm.name.$error.required) || roleForm.name.$error.pattern}">
-                            <label class="control-label">Number <span class="required-field">*</span></label>
-                            <input class="form-control" type="number" placeholder="Enter number here" ng-model="roleVm.model.number" required name="rolenumber"/>
-                            <label class="control-label" ng-show="roleVm.showInvalid && roleForm.rolenumber.$error.required">* This field is required</label>
+                            <label class="control-label">Số <span class="required-field">*</span></label>
+                            <input class="form-control" type="number" placeholder="Nhập số" ng-model="roleVm.model.number" required name="rolenumber"/>
+                            <label class="control-label" ng-show="roleVm.showInvalid && roleForm.rolenumber.$error.required">* Bắt buộc nhập</label>
                         </div>
                     </div>
                     <div class="form-actions">
-                        <button type="submit" class="btn green" ng-disabled="roleForm.$invalid">Save role</button>
-                        <button type="button" class="btn default" ng-show="!roleVm.showAddNew" ng-click="roleVm.cancel()">Cancel</button>
+                        <button type="submit" class="btn green" ng-disabled="roleForm.$invalid">Lưu vai trò</button>
+                        <button type="button" class="btn default" ng-show="!roleVm.showAddNew" ng-click="roleVm.cancel()">Hủy bỏ</button>
                     </div>
                 </form>
             </div>
@@ -46,7 +46,7 @@
                     <div class="portlet-input input-small input-inline">
                         <div class="input-icon right">
                             <i class="icon-magnifier"></i>
-                            <input type="text" class="form-control form-control-solid" ng-model="roleVm.keyword" placeholder="search..." ng-change="roleVm.search(roleVm.keyword)">
+                            <input type="text" class="form-control form-control-solid" ng-model="roleVm.keyword" placeholder="Tìm kiếm..." ng-change="roleVm.search(roleVm.keyword)">
                         </div>
                     </div>
                 </div>
@@ -59,12 +59,12 @@
                 <div class="caption ">
                     <div class="col-md-10 col-sm-10 col-xs-10 no-padding-right">
                         <select class="bs-select form-control" ng-model="roleVm.selectAction">
-                            <option>Bulk Actions</option>
-                            <option>Delete</option>
+                            <option>Chọn</option>
+                            <option>Xóa</option>
                         </select>
                     </div>
                     <div class="col-md-2 col-sm-2 col-xs-2 no-padding-left">
-                        <button type="button" class="btn green" ng-click="roleVm.apply('select-role')">Apply</button>
+                        <button type="button" class="btn green" ng-click="roleVm.apply('select-role')">Áp dụng</button>
                     </div>                   
                 </div>
                 <div class="actions margin-top-5">
@@ -83,9 +83,9 @@
                                         <span></span>
                                     </label>
                                 </th>
-                                <th> Name </th>
-                                <th> description </th>
-                                <th> Number </th>
+                                <th> Tên </th>
+                                <th> Mô tả </th>
+                                <th> Số </th>
                             </tr>
                         </thead>
                         <tbody>

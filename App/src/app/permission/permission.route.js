@@ -16,7 +16,7 @@
 				controller: 'PermissionListCtrl',
 				controllerAs: 'permissionVm',
 				data: {
-					pageTitle: 'Permissions',
+					pageTitle: 'Phân quyền',
 					module: 'permission',
 					icon: 'icon-settings',
 					permission: 'Permissions'
@@ -35,7 +35,7 @@
 				controller: 'PermissionListCtrl',
 				controllerAs: 'permissionVm',
 				data: {
-					pageTitle: 'All Permissions',
+					pageTitle: 'Tất cả quyền',
 					module: 'permission',
 					parent: 'permissionList'
 				},
@@ -53,7 +53,7 @@
 				controller: 'PermissionAddCtrl',
 				controllerAs: 'permissionVm',
 				data: {
-					pageTitle: 'Add Permission',
+					pageTitle: 'Thêm quyền',
 					module: 'permission',
 					parent: 'permissionList'
 				},
@@ -71,7 +71,7 @@
 				controller: 'PermissionEditCtrl',
 				controllerAs: 'permissionVm',
 				data: {
-					pageTitle: 'Edit Permission',
+					pageTitle: 'Chỉnh sửa quyền',
 					module: 'permission',
 					hide: true,
 					parent: 'permissionList'

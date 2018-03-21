@@ -3,7 +3,7 @@
  
     
     angular.module('app.quangCao').controller('quangCaoListCtrl', quangCaoListCtrl);
-
+    
     /** @ngInject */
     function quangCaoListCtrl($rootScope,$q, $scope, $state,$timeout,$ngBootbox,appUtils,toaster, currentAuth, authService, quangCaoService, roleService,permissionService, $http) {
             
@@ -25,7 +25,14 @@
             totalPage: 0,
             totalRecord: 0
         };
-        
+        /*General*/ 
+        $scope.dataViTri = [{name: "top", value:"Banner Top"},
+                            {name: "left1", value:"Banner Left 1"},
+                            {name: "left2", value:"Banner Left 2"},
+                            {name: "right1", value:"Banner Right 1"},
+                            {name: "right2", value:"Banner Right 2"},
+                            {name: "right3", value:"Banner Right 3"}
+                        ];
         //Load Data
        
         
@@ -34,6 +41,7 @@
 
         /*=============================================================*/
         function initPage(){
+             
             vm.search(vm.keyword);
         }
 
@@ -94,7 +102,7 @@
                 return;
             }
             
-            $ngBootbox.confirm('Are you sure want to apply ' + actionTxt + ' action as selected?').then(function(){
+            $ngBootbox.confirm('Bạn chắc chắn muốn ' + actionTxt + ' những quảng Cáo đã chọn?').then(function(){
                 appUtils.showLoading();
               
                 var reqs = [];var lstEmail=[];
@@ -147,6 +155,13 @@
                     appUtils.hideLoading();
                 }
             });
+
+             
+        };
+
+        vm.formatPhone = function (phoneNo) {
+            phoneNo = phoneNo.replace(/(\d\d\d)(\d\d\d)(\d\d\d\d)/, "($1)-$2-$3");
+            return phoneNo;
         };
 
         initPage();

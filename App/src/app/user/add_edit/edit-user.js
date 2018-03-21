@@ -101,7 +101,7 @@
 				if (res.data !== null && res.data.length >= 1) {
 					if (userPhone != userDetailVm.Phone) {
 						form.phonenumber.$setValidity('server', false);
-						userDetailVm.e_msges['phonenumber'] = "Phone number already exists. Please enter another.";
+						userDetailVm.e_msges['phonenumber'] = "Số điện thoại đã tồn tại. Vui lòng nhập số khác.";
 						deferred.resolve({ result: true });
 						return deferred.promise;
 					}
@@ -111,7 +111,7 @@
 			}, function (res) {
 				// show not found error
 				form.phonenumber.$setValidity('server', false);
-				userDetailVm.e_msges['phonenumber'] = "Phone number already exists. Please enter another.";
+				userDetailVm.e_msges['phonenumber'] = "Số điện thoại đã tồn tại. Vui lòng nhập số khác.";
 				deferred.resolve({ result: true });
 			});
 			/* jshint ignore:end */
@@ -131,7 +131,7 @@
 				delete $rootScope.storage.usersList;
 				appUtils.hideLoading();
 				$scope.$apply(function () {
-					toaster.pop('success', 'Success', "Account Updated.");
+					toaster.pop('success', 'Thành công', "Tài khoản được cập nhật.");
 				});
 				userPhone = userDetailVm.user.phoneNumber;
 				//Set new value for current user of local storage
@@ -302,7 +302,7 @@
 
 				appUtils.hideLoading();
 				$scope.$apply(function () {
-					toaster.pop('success', 'Success', "Change User Roles Successfully!");
+					toaster.pop('success', 'Thành công', "Thay đổi quyền người dùng thành công!");
 				});
 				$timeout(function () {
 					loadUserDetails();
@@ -315,17 +315,17 @@
 		};
 
 		userDetailVm.resetPassword = function () {
-			$ngBootbox.confirm('Are you sure want to reset password?').then(function () {
+			$ngBootbox.confirm('Bạn có muốn thay đổi mật khẩu?').then(function () {
 				appUtils.showLoading();
 				authService.resetPasswordAuth(userDetailVm.user.email).then(function () {
 					userService.resetPasswordHistory(userDetailVm.user.email);
 					$scope.$apply(function () {
-						toaster.pop('success', 'Success', "Your request reset password has been sent to " + userDetailVm.user.email + "!");
+						toaster.pop('success', 'Thành công', "Yêu cầu đổi mật khẩu được gửi đến " + userDetailVm.user.email + "!");
 					});
 					appUtils.hideLoading();
 				}).catch(function (error) {
 					$scope.$apply(function () {
-						toaster.pop('error', 'Error', error);
+						toaster.pop('error', 'Lỗi', error);
 					});
 					appUtils.hideLoading();
 				});

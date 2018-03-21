@@ -1,7 +1,7 @@
 (function () {
     'use strict';
-    angular.module('app.baoCaoThongKe')
-    .controller('bdsListCtr', bdsListCtr);
+    angular.module('app.timKiem')
+    .controller('timKiemCtr', bdsListCtr);
     /** @ngInject */
     function bdsListCtr($rootScope, $scope, $state, $q, appUtils, $ngBootbox, toaster) {
         $rootScope.settings.layout.showSmartphone = false;

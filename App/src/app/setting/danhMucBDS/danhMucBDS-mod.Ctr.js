@@ -68,12 +68,10 @@
             } else {
                 settingService.updateLoaiDanhMucBDS(danhMucBDSModVm.item.key, danhMucBDSModVm.item).then(function (res) {
                     if (res.result) {
-                        if(danhMucBDSModVm.changeDefault == danhMucBDSModVm.changeKey || danhMucBDSModVm.changeDefault == null) {
-                            if(danhMucBDSModVm.item.isDefault)
-                                settingService.updateKhoDefault(danhMucBDSModVm.item.key);
-                            else   
-                                settingService.updateKhoDefault(null);
-                        }
+                        if (danhMucBDSModVm.item.isDefault)
+                            settingService.updateKhoDefault(danhMucBDSModVm.item.key);
+                        else
+                            settingService.updateKhoDefault(null);
                         appUtils.hideLoading();
                         toaster.success("Sửa Loại Kho BĐS thành công!");
                         $state.go('danhMucBDS-list');

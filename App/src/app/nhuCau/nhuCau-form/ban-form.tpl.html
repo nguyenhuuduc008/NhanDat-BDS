@@ -18,38 +18,12 @@
                     <div class="form-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.soNha.$error.required)}">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.tieuDe.$error.required)}">
                                     <label class="control-label">Tiêu Đề
                                         <span class="required-field">*</span>
                                     </label>
-                                    <input type="text" name="tieuDe" placeholder="Tiêu Đề" class="form-control" required1 ng-model="nhuCauThemMoiVm.model.tieuDe"
+                                    <input type="text" name="tieuDe" placeholder="Tiêu Đề" required class="form-control" ng-model="nhuCauThemMoiVm.model.tieuDe"
                                     />
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.loaiNhuCau.$error.required)}">
-                                    <label class="control-label">Loại Nhu Cầu
-                                        <span class="required-field">*</span>
-                                    </label>
-                                    <!-- <input type="text" name="thanhPho" placeholder="Thành phố" class="form-control" required1 ng-model="nhuCauThemMoiVm.model.thanhPho" /> -->
-                                    <select name="loaiNhuCau" ng-model="nhuCauThemMoiVm.model.loaiNhuCau" class="form-control" ng-change="nhuCauThemMoiVm.changeCity()"
-                                        required>
-                                        <option value="" disabled>Loại Nhu Cầu</option>
-                                        <option ng-repeat="item in nhuCauThemMoiVm.cities" value="{{item.value}}" ng-selected="item.value == nhuCauThemMoiVm.model.thanhPho">{{item.text}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group" ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.loaiBDS.$error.required)}">
-                                    <label class="control-label">Loại Bât Động Sản
-                                        <span class="required-field">*</span>
-                                    </label>
-                                    <!-- <input type="text" name="loaiBDS" placeholder="Thành phố" class="form-control" required1 ng-model="nhuCauThemMoiVm.model.loaiBDS" /> -->
-                                    <select name="loaiBDS" ng-model="nhuCauThemMoiVm.model.loaiBDS" class="form-control selectpicker" ng-change="nhuCauThemMoiVm.changeCity()"
-                                        required>
-                                        <option value="" disabled>Loại BDS</option>
-                                        <option ng-repeat="item in nhuCauThemMoiVm.cities" value="{{item.value}}" ng-selected="item.value == nhuCauThemMoiVm.model.loaiBDS">{{item.text}}</option>
-                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -57,10 +31,10 @@
                                     <label class="control-label">Tỉnh / Thành phố
                                         <span class="required-field">*</span>
                                     </label>
-                                    <!-- <input type="text" name="thanhPho" placeholder="Thành phố" class="form-control" required1 ng-model="nhuCauThemMoiVm.model.thanhPho" /> -->
-                                    <select name="thanhPho" ng-model="nhuCauThemMoiVm.model.thanhPho" class="form-control" ng-change="nhuCauThemMoiVm.changeCity()"
+                                    <!-- <input type="text" name="thanhPho" placeholder="Thành phố" class="form-control" ng-model="nhuCauThemMoiVm.model.thanhPho" /> -->
+                                    <select name="thanhPho" required ng-model="nhuCauThemMoiVm.model.thanhPho" class="form-control" ng-change="nhuCauThemMoiVm.changeCity()"
                                         required>
-                                        <option value="" disabled>Tỉnh / Thành phố</option>
+                                        <option value="" disabled>Tỉnh / Thành phố </option>
                                         <option ng-repeat="item in nhuCauThemMoiVm.cities" value="{{item.$id}}" ng-selected="item.$id == nhuCauThemMoiVm.model.thanhPho">{{item.text}}</option>
                                     </select>
                                 </div>
@@ -71,7 +45,7 @@
                                     <label class="control-label">Quận / Huyện
                                         <span class="required-field">*</span>
                                     </label>
-                                    <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" required1 ng-model="nhuCauThemMoiVm.model.quanHuyen"/> -->
+                                    <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" ng-model="nhuCauThemMoiVm.model.quanHuyen"/> -->
                                     <select name="quanHuyen" ng-model="nhuCauThemMoiVm.model.quanHuyen" class="form-control" ng-change="nhuCauThemMoiVm.changeDistrict()"
                                         required>
                                         <option value="" disabled>Quận / Huyện</option>
@@ -82,9 +56,9 @@
                             <div class="col-md-6">
                                 <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.thanhPho.$error.required)}">
                                     <label class="control-label">Phường / Xã
-                                        <span class="required-field">*</span>
+                                         
                                     </label>
-                                    <!-- <input type="text" name="thanhPho" placeholder="Thành phố" class="form-control" required1 ng-model="nhuCauThemMoiVm.model.thanhPho" /> -->
+                                    <!-- <input type="text" name="thanhPho" placeholder="Thành phố" class="form-control" ng-model="nhuCauThemMoiVm.model.thanhPho" /> -->
                                     <select name="phuongXa" ng-model="nhuCauThemMoiVm.model.phuongXa" class="form-control" required>
                                         <option value="" disabled>Phường / Xã</option>
                                         <option ng-repeat="item in nhuCauThemMoiVm.xaList" value="{{item.$id}}" ng-selected="item.$id == nhuCauThemMoiVm.model.phuongXa">{{item.text}}</option>
@@ -93,11 +67,10 @@
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.quanHuyen.$error.required)}">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.duongPho.$error.required)}">
                                     <label class="control-label">Đường / Phố
-                                        <span class="required-field">*</span>
                                     </label>
-                                    <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" required1 ng-model="nhuCauThemMoiVm.model.quanHuyen"/> -->
+                                    <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" ng-model="nhuCauThemMoiVm.model.quanHuyen"/> -->
                                     <select name="duongPho" ng-model="nhuCauThemMoiVm.model.duongPho" class="form-control" required>
                                         <option value="" disabled>Đường / Phố</option>
                                         <option ng-repeat="item in nhuCauThemMoiVm.duongList" value="{{item.$id}}" ng-selected="item.$id == nhuCauThemMoiVm.model.duongPho">{{item.text}}</option>
@@ -107,84 +80,81 @@
                             <div class="col-md-6">
                                 <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.soNha.$error.required)}">
                                     <label class="control-label">Số nhà
-                                        <span class="required-field">*</span>
+                                         
                                     </label>
-                                    <input type="text" name="soNha" placeholder="Số nhà" class="form-control" required1 ng-model="nhuCauThemMoiVm.model.soNha"
+                                    <input type="text" name="soNha" placeholder="Số nhà" class="form-control" ng-model="nhuCauThemMoiVm.model.soNha"
                                     />
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.quanHuyen.$error.required)}">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.loaiViTri.$error.required)}">
                                     <label class="control-label">Loại Vị Trí
-                                        <span class="required-field">*</span>
+                                         
                                     </label>
-                                    <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" required1 ng-model="nhuCauThemMoiVm.model.quanHuyen"/> -->
-                                    <select name="quanHuyen" ng-model="nhuCauThemMoiVm.model.quanHuyen" class="form-control" ng-change="nhuCauThemMoiVm.changeDistrict()"
-                                        required>
+                                    <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" ng-model="nhuCauThemMoiVm.model.quanHuyen"/> -->
+                                    <select name="loaiViTri" ng-model="nhuCauThemMoiVm.model.loaiViTri" class="form-control">
                                         <option value="" disabled>--Loại Vị Trí</option>
-                                        <option ng-repeat="item in nhuCauThemMoiVm.districts" value="{{item.value}}" ng-selected="item.value == nhuCauThemMoiVm.model.quanHuyen">{{item.text}}</option>
+                                        <option ng-repeat="item in nhuCauThemMoiVm.cacLoaiViTri" value="{{item.value}}" ng-selected="item.value == nhuCauThemMoiVm.model.loaiViTri">{{item.text}}</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.soNha.$error.required)}">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.dienTich.$error.required)}">
                                     <label class="control-label">Diện Tich
-                                        <span class="required-field">*</span>
+                                         
                                     </label>
-                                    <input type="text" name="soNha" placeholder="Diện Tích" class="form-control" required1 ng-model="nhuCauThemMoiVm.model.soNha"
+                                    <input type="text" name="dienTich" placeholder="Diện Tích" class="form-control" ng-model="nhuCauThemMoiVm.model.dienTich"
                                     />
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.quanHuyen.$error.required)}">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.duAn.$error.required)}">
                                     <label class="control-label">Dự Án
-                                        <span class="required-field">*</span>
+                                         
                                     </label>
-                                    <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" required1 ng-model="nhuCauThemMoiVm.model.quanHuyen"/> -->
-                                    <select name="quanHuyen" ng-model="nhuCauThemMoiVm.model.quanHuyen" class="form-control" ng-change="nhuCauThemMoiVm.changeDistrict()"
-                                        required>
+                                    <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" ng-model="nhuCauThemMoiVm.model.quanHuyen"/> -->
+                                    <select name="duAn" ng-model="nhuCauThemMoiVm.model.duAn" class="form-control">
                                         <option value="" disabled>--Dự Án</option>
-                                        <option ng-repeat="item in nhuCauThemMoiVm.districts" value="{{item.value}}" ng-selected="item.value == nhuCauThemMoiVm.model.quanHuyen">{{item.text}}</option>
+                                        <option ng-repeat="item in nhuCauThemMoiVm.cacDuAn" value="{{item.value}}" ng-selected="item.value == nhuCauThemMoiVm.model.duAn">{{item.text}}</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.gia.$error.required)}">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.diaChiBDS.$error.required)}">
                                     <label class="control-label">Giá
-                                        <span class="required-field">*</span>
+                                         
                                     </label>
-                                    <div ya-no-ui-slider='nhuCauThemMoiVm.options'></div>
-                                    <div class="well"></div>
+                                    <input type="text" name="gia" placeholder="Giá" class="form-control" ng-model="nhuCauThemMoiVm.model.gia"
+                                    />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.quanHuyen.$error.required)}">
                                     <label class="control-label">Thoả Thuận
-                                        <span class="required-field">*</span>
+                                         
                                     </label>
-                                    <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" required1 ng-model="nhuCauThemMoiVm.model.quanHuyen"/> -->
-                                    <select name="quanHuyen" ng-model="nhuCauThemMoiVm.model.quanHuyen" class="form-control" ng-change="nhuCauThemMoiVm.changeDistrict()"
+                                    <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" ng-model="nhuCauThemMoiVm.model.quanHuyen"/> -->
+                                    <select name="thoaThuan" ng-model="nhuCauThemMoiVm.model.thoaThuan" class="form-control" ng-change="nhuCauThemMoiVm.changeDistrict()"
                                         required>
                                         <option value="" disabled>Thoả Thuận</option>
-                                        <option ng-repeat="item in nhuCauThemMoiVm.districts" value="{{item.value}}" ng-selected="item.value == nhuCauThemMoiVm.model.quanHuyen">{{item.text}}</option>
+                                        <option  value="{{item.value}}" ng-selected="item.value == nhuCauThemMoiVm.model.thoaThuan">{{item.text}}</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.soNha.$error.required)}">
-                                    <label class="control-label">Địa Chỉ
-                                        <span class="required-field">*</span>
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.diaChiBDS.$error.required)}">
+                                    <label class="control-label">Địa Chỉ Khác
                                     </label>
-                                    <input type="text" name="tieuDe" placeholder="Địa Chỉ" class="form-control" required1 ng-model="nhuCauThemMoiVm.model.tieuDe"
+                                    <input type="text" name="diaChiBDS" placeholder="Địa Chỉ" class="form-control" ng-model="nhuCauThemMoiVm.model.diaChiBDS"
                                     />
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.soNha.$error.required)}">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.thongTinMoTa.$error.required)}">
                                     <label class="control-label">Thông Tin Mô Tả
-                                        <span class="required-field">*</span>
+                                         
                                     </label>
-                                    <textarea rows="6" name="tieuDe" class="form-control" required1 ng-model="nhuCauThemMoiVm.model.tieuDe"></textarea>
+                                    <textarea rows="6" name="thongTinMoTa" class="form-control" ng-model="nhuCauThemMoiVm.model.thongTinMoTa"></textarea>
                                 </div>
                             </div>
                             <!--/span-->
@@ -226,8 +196,10 @@
                 </div>
                 <div class="portlet-body form">
                     <!-- BEGIN FORM-->
-                    <div class="form-body">
-                        video
+                    <div class="form-body row">
+                        <div class="col-md-12" >
+                            <ng-dropzone class="dropzone" options="nhuCauThemMoiVm.dzOptions" callbacks="nhuCauThemMoiVm.dzCallbacks" methods="nhuCauThemMoiVm.dzMethods"></ng-dropzone>
+                        </div>
                     </div>
                     <!-- END FORM-->
                 </div>
@@ -248,21 +220,21 @@
                     <div class="form-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.ttThuongMai.$error.required)}">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.ngang.$error.required)}">
                                     <label class="control-label">Ngang
 
                                     </label>
-                                    <input type="text" name="ttThuongMai" placeholder="Ngang" class="form-control" ng-model="nhuCauThemMoiVm.model.ttThuongMai"
+                                    <input type="text" name="ngang" placeholder="Ngang" class="form-control" ng-model="nhuCauThemMoiVm.model.ngang"
                                     />
                                 </div>
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.cvMoiGioi.$error.required)}">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.dai.$error.required)}">
                                     <label class="control-label">Dài
 
                                     </label>
-                                    <input type="text" name="cvMoiGioi" placeholder="Dài" class="form-control" ng-model="nhuCauThemMoiVm.model.cvMoiGioi"
+                                    <input type="text" name="dai" placeholder="Dài" class="form-control" ng-model="nhuCauThemMoiVm.model.dai"
                                     />
                                 </div>
                             </div>
@@ -271,55 +243,54 @@
                         <div class="row">
                             <!--/span-->
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.duAn.$error.required)}">
+                                <div class="form-group  " >
                                     <label class="control-label">Hướng Nhà
 
                                     </label>
-                                    <select name="duAn" ng-model="nhuCauThemMoiVm.model.duAn" class="form-control">
+                                    <select name="huongNha" ng-model="nhuCauThemMoiVm.model.huongNha" class="form-control">
                                         <option value="" disabled>--KXD</option>
-                                        <option ng-repeat="item in nhuCauThemMoiVm.cacDuAn" value="{{item.value}}" ng-selected="item.value == nhuCauThemMoiVm.model.duAn">{{item.text}}</option>
+                                        <option ng-repeat="item in nhuCauThemMoiVm.cacLoaiHuong " value="{{item.value}}" ng-selected="item.value == nhuCauThemMoiVm.model.huongNha">{{item.text}}</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.phiMG.$error.required) || (createForm.phiMG.$error.pattern)}">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.soTang.$error.required) || (createForm.soTang.$error.pattern)}">
                                     <label class="control-label">Số Tăng
                             
                                     </label>
-                                    <input type="text" name="phiMG" placeholder="--Số Tăng" class="form-control" ng-model="nhuCauThemMoiVm.model.phiMG" ng-pattern="currencyRegx"
-                                    />
+                                    <input type="text" name="soTang" placeholder="--Số Tăng" class="form-control" ng-model="nhuCauThemMoiVm.model.soTang" />
                                 </div>
                             </div>
                             <!--/span-->
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.namXayDung.$error.required) || createForm.namXayDung.$error.pattern}">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.soPhongNgu.$error.required) || createForm.soPhongNgu.$error.pattern}">
                                     <label class="control-label">Số Phòng Ngủ
 
                                     </label>
-                                    <input type="text" name="namXayDung" placeholder="Số Phòng Ngủ" class="form-control" ng-model="nhuCauThemMoiVm.model.namXayDung"
+                                    <input type="text" name="soPhongNgu" placeholder="Số Phòng Ngủ" class="form-control" ng-model="nhuCauThemMoiVm.model.soPhongNgu"
                                         ng-pattern="numberRegx" />
                                 </div>
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.tyLeMG.$error.required)}">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.soWC.$error.required)}">
                                     <label class="control-label">Số WC
 
                                     </label>
-                                    <input type="text" name="tyLeMG" placeholder="Số WC" class="form-control" ng-model="nhuCauThemMoiVm.model.tyLeMG" />
+                                    <input type="text" name="soWC" placeholder="Số WC" class="form-control" ng-model="nhuCauThemMoiVm.model.soWC" />
                                 </div>
                             </div>
                             <!--/span-->
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.dienGiai.$error.required)}">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.noiThat.$error.required)}">
                                     <label class="control-label">Nội Thất
                                         <!--   -->
                                     </label>
-                                    <textarea rows="5" type="text" name="dienGiai" placeholder="Thông Tin Nội Thất" class="form-control" ng-model="nhuCauThemMoiVm.model.dienGiai"
+                                    <textarea rows="5" type="text" name="noiThat" placeholder="Thông Tin Nội Thất" class="form-control" ng-model="nhuCauThemMoiVm.model.noiThat"
                                     />
                                 </div>
                             </div>
@@ -344,51 +315,50 @@
                     <div class="form-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.email.$error.required) || (createForm.email.$error.pattern || createForm.email.$error.email)}">
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.tenLienHe.$error.required)}">
                                     <label class="control-label">Tên Liên Hệ
-                                        <span class="required-field">*</span>
+                                         
                                     </label>
-                                    <input type="email" name="email" placeholder="--Tên Liên Hệ" class="form-control" required1 ng-model="nhuCauThemMoiVm.model.email"
+                                    <input type="text" name="tenLienHe" placeholder="--Tên Liên Hệ" class="form-control" ng-model="nhuCauThemMoiVm.model.tenLienHe"
                                         ng-pattern="emailRegx" />
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                    <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.email.$error.required) || (createForm.email.$error.pattern || createForm.email.$error.email)}">
+                                    <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.diaChi.$error.required)}">
                                         <label class="control-label">Địa Chỉ
-                                            <span class="required-field">*</span>
+                                             
                                         </label>
-                                        <input type="email" name="email" placeholder="--Địa Chỉ" class="form-control" required1 ng-model="nhuCauThemMoiVm.model.email"
-                                            ng-pattern="emailRegx" />
+                                        <input type="text" name="diaChi" placeholder="--Địa Chỉ" class="form-control" ng-model="nhuCauThemMoiVm.model.diaChi"/>
                                     </div>
                                 </div>
                             <div class="col-md-12">
                                 <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.email.$error.required) || (createForm.email.$error.pattern || createForm.email.$error.email)}">
                                     <label class="control-label">Email
-                                        <span class="required-field">*</span>
+                                         
                                     </label>
-                                    <input type="email" name="email" placeholder="Email" class="form-control" required1 ng-model="nhuCauThemMoiVm.model.email"
+                                    <input type="email" name="email" placeholder="Email" class="form-control" ng-model="nhuCauThemMoiVm.model.email"
                                         ng-pattern="emailRegx" />
                                 </div>
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
                                 <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.dienThoai.$error.required)}">
-                                    <label class="control-label">Điện thoại
-                                        <span class="required-field">*</span>
+                                    <label class="control-label">Điện Thoại
+                                         
                                     </label>
-                                    <input type="text" name="dienThoai" placeholder="Điện thoại" ui-mask="999-999-9999" class="form-control" required1 ng-model="nhuCauThemMoiVm.model.dienThoai"
+                                    <input type="text" name="dienThoai" placeholder="Di Động" ui-mask="999-999-9999" class="form-control" ng-model="nhuCauThemMoiVm.model.dienThoai"
                                     />
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                    <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.dienThoai.$error.required)}">
-                                        <label class="control-label">Di Động
-                                            <span class="required-field">*</span>
-                                        </label>
-                                        <input type="text" name="dienThoai" placeholder="Di Động" ui-mask="999-999-9999" class="form-control" required1 ng-model="nhuCauThemMoiVm.model.dienThoai"
-                                        />
-                                    </div>
+                                <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.diDong.$error.required)}">
+                                    <label class="control-label">Di Động
+                                         
+                                    </label>
+                                    <input type="text" name="diDong" placeholder="Di Động" ui-mask="999-999-9999" class="form-control" ng-model="nhuCauThemMoiVm.model.diDong"
+                                    />
                                 </div>
+                            </div>
                             <!--/span-->
                         </div>
                     </div>
@@ -397,9 +367,9 @@
             </div>
         </div>
         <div class=" col-md-12">
-            <div class="margin-top-20 pull-right">
+            <div class="margin-top-20 pull-right" style="position: absolute; right: 10px;">
                 <button class="btn green grreen-haze" type="submit" ng-disabled="">
-                    Save
+                    Lưu
                 </button>
             </div>
         </div>

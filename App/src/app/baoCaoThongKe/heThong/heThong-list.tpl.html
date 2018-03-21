@@ -1,0 +1,105 @@
+﻿<script src="/lib/metronic/theme/assets/global/plugins/amcharts/amcharts/amcharts.js"></script>
+<script src="/lib/metronic/theme/assets/global/plugins/amcharts/amcharts/serial.js"></script>
+<script src="/lib/metronic/theme/assets/global/plugins/amcharts/amcharts/pie.js"></script>
+
+<style>
+    .chart-content {
+        width: 100%;
+        height: 381px;
+        overflow: hidden;
+        text-align: left;
+    }
+</style>
+<div class="row" id="permission">
+    <div class="col-md-12">
+        <div class="portlet light portlet-fit bordered">
+            <div class="portlet-body">
+                <div class="table-scrollable table-scrollable-borderless">
+                    <div class="row">
+                        <!--Tổng số lượt truy cập vào web theo Tên Thiết Bị-->
+                        <div class="col-md-12">
+                            <div class="portlet light bordered">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="icon-bar-chart font-green-haze"></i>
+                                        <span class="caption-subject bold uppercase font-green-haze">Tổng số lượt truy cập vào web theo Tên Thiết Bị</span>
+                                        <span class="caption-helper"></span>
+                                    </div>
+                                    <div class="tools">
+                                        <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+                                        <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
+                                        <a href="javascript:;" class="reload" data-original-title="" title=""> </a>
+                                        <a href="javascript:;" class="fullscreen" data-original-title="" title=""> </a>
+                                        <a href="javascript:;" class="remove" data-original-title="" title=""> </a>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="chart-content" id="chartdiv1"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    loadChart_1();
+    function loadChart_1() {
+        var chartData = [{
+            "key": 'Decktop',
+            "value": 23,
+        }, {
+            "key": "Mobile",
+            "value": 43,
+            "expenses": 22.8
+        }, {
+            "key": "Tablet",
+            "value": 10,
+        }, {
+            "key": "TV",
+            "value": 34,
+        }, {
+            "key": "Khác",
+            "value": 64,
+            "expenses": 25
+        }];
+
+        var chart = new AmCharts.AmSerialChart();
+        chart.dataProvider = chartData;
+        chart.categoryField = "key";
+        chart.startDuration = 1;
+        chart.rotate = false;
+
+        // AXES
+        // category
+        var categoryAxis = chart.categoryAxis;
+        categoryAxis.gridPosition = "start";
+        categoryAxis.axisColor = "#67b7dc";
+        categoryAxis.dashLength = 1;
+
+        // GRAPHS
+        var graph1 = new AmCharts.AmGraph();
+        graph1.type = "column";
+        graph1.title = "Tổng số";
+        graph1.valueField = "value";
+        graph1.lineAlpha = 0;
+        graph1.fillColors = "#67b7dc";
+        graph1.fillAlphas = 0.8;
+        graph1.balloonText = "<span style='font-size:13px;'>[[title]] [[category]]:<b>[[value]]</b></span>";
+        graph1.labelPosition = 'top';
+        graph1.labelOffset = 1;
+        graph1.labelText = "[[value]]";
+        chart.addGraph(graph1);
+
+        // LEGEND
+        var legend = new AmCharts.AmLegend();
+        legend.useGraphSettings = true;
+        chart.addLegend(legend);
+
+        // WRITE
+        chart.write("chartdiv1");
+    }
+</script>

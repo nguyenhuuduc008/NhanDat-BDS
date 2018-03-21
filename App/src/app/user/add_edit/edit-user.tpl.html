@@ -98,13 +98,13 @@
                     <div class="portlet light bordered">
                         <div class="portlet-title">
                             <div class="caption col-md-12 text-right action-tools">
-                                <a href="javascript:;" ng-click="historyBack()" class="btn btn-circle grey-mint" title="Back">Back</a>
+                                <a href="javascript:;" ng-click="historyBack()" class="btn btn-circle grey-mint" title="Back">Trở về</a>
                             </div>
                         </div>
                         <div class="portlet-title tabbable-line">
                             <div class="caption caption-md">
                                 <i class="icon-globe theme-font hide"></i>
-                                <span class="caption-subject font-blue-madison bold uppercase">Thông Tin User</span>
+                                <span class="caption-subject font-blue-madison bold uppercase">Thông Tin Người dùng</span>
                             </div>
                             <ul class="nav nav-tabs">
                                 <li class="active">
@@ -125,7 +125,7 @@
                             <div class="tab-content">
                                 <!-- Tab thông tin -->
                                 <div class="tab-pane active row" id="tab_1_1">
-                                     <a href="javascript:;" class="btn blue text-right" ng-click="userDetailVm.resetPassword()" style="float: right;"> Reset Password </a>
+                                     <a href="javascript:;" class="btn blue text-right" ng-click="userDetailVm.resetPassword()" style="float: right;"> Thay đổi mật khẩu </a>
                                     <form role="form" id="editUserForm" name="editUserForm" novalidate ng-submit="userDetailVm.saveEdit(editUserForm)" >
                                             <div class="form-group col-md-12" ng-class="{'has-error': (editUserForm.phonenumber.$error.pattern||editUserForm.phonenumber.$error.required)}">
                                                 <label class="control-label" >Điện Thoại<span class="required-field"> *</span></label> 
@@ -136,7 +136,7 @@
                                                 <label class="control-label font-red-intense bold" ng-show="userDetailVm.existedPhone">* Số Điện thoại này đã tồn tại. Vui lòng nhập số khác!</label>
                                             </div>
                                         <div class="form-group col-md-12">
-                                            <label class="control-label">Email</label>
+                                            <label class="control-label">E-mail</label>
                                             <input type="email" disabled class="form-control" name="email" ng-model="userDetailVm.user.email" autocapitalize="off"/>
                                         </div>  
                                         <div class="form-group col-md-6" ng-class="{'has-error': (userDetailVm.showInvalid && editUserForm.firstname.$error.required) || editUserForm.firstname.$error.pattern}">
@@ -195,7 +195,7 @@
                                                 <input id="isAuthorized" type="checkbox" name="isauthorized" ng-model="userDetailVm.user.isAuthorized"/>
                                                 <span></span>
                                             </label>
-                                            <label for="isAuthorized" >IsAuthorized</label>
+                                            <label for="isAuthorized" >Ủy quyền</label>
                                         </div>
                                         <div class=" col-md-12">
                                             <div class="margin-top-20">
@@ -215,7 +215,7 @@
                                 <!-- PRIVACY SETTINGS TAB -->
                                 <div class="tab-pane" id="tab_1_2">
                                     <div class="col-md-12 text-right margin-bottom-10">
-                                        <a href="#" class="btn blue" ng-click="userDetailVm.showPopupAddUserToRole()">Add Role</a>
+                                        <a href="#" class="btn blue" ng-click="userDetailVm.showPopupAddUserToRole()">Thêm quyền</a>
                                     </div>
                                     <form role="form" id="changeUserRoles" name="changeUserRoles" novalidate ng-submit="userDetailVm.saveChangeRole()">
                                         <table class="table table-light table-hover">            
@@ -231,16 +231,16 @@
                                                 </td>
                                             </tr>
                                             <tr ng-if="userDetailVm.userRoles.length == 0">
-                                                <td>User does not have any roles assigned</td>
+                                                <td>Người dùng chưa được cấp quyền</td>
                                             </tr>
                                         </table>
                                         <!--end profile-settings-->
                                         <div class="margin-top-10">
                                             <button class="btn green" type="submit" >
-                                                Save Change
+                                                Lưu lại
                                             </button>
                                             <button class="btn default" type="button" ng-click="userDetailVm.cancelChangeUserRoles()">
-                                                Cancel
+                                                Hủy bỏ
                                             </button>
                                            
                                         </div>
@@ -254,12 +254,12 @@
                                             <div class="caption ">
                                                 <div class="col-md-10 col-sm-10 col-xs-10 no-padding-right">
                                                     <select class="bs-select form-control" ng-model="roleVm.selectAction">
-                                                        <option>Bulk Actions</option>
-                                                        <option>Delete</option>
+                                                        <option>Chọn</option>
+                                                        <option>Xóa</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-md-2 col-sm-2 col-xs-2 no-padding-left">
-                                                    <button type="button" class="btn green" ng-click="roleVm.apply('select-role')">Apply</button>
+                                                    <button type="button" class="btn green" ng-click="roleVm.apply('select-role')">Áp dụng</button>
                                                 </div>                   
                                             </div>
                                             <div class="actions margin-top-5">
@@ -278,9 +278,9 @@
                                                                     <span></span>
                                                                 </label>
                                                             </th>
-                                                            <th> Name </th>
-                                                            <th> description </th>
-                                                            <th> Number </th>
+                                                            <th> Tên </th>
+                                                            <th> Mô tả </th>
+                                                            <th> Số </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -311,7 +311,7 @@
                                 <!--end BĐS-->
                                 <!--start Nhu Cầu-->
                                 <div class="tab-pane" id="tab_1_4">
-                                    <p>hello</p>
+                                    <p>Xin chào</p>
                                     
                                 </div>
                                 <!--end Nhu Cầu-->

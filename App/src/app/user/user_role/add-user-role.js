@@ -90,7 +90,7 @@
 				if(currentUser.$id == userRoleVm.user.$id){
                    delete $rootScope.storage.sidebarMenus;
               	}
-                toaster.pop('success','Success', "Add role to user successfully!");
+                toaster.pop('success','Thành công', "Thêm vai trò người dùng thành công!");
                 $scope.$parent.userDetailVm.loadUserDetails();
                 
             });

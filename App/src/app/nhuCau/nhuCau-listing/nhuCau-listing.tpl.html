@@ -2,20 +2,20 @@
     <div class="portlet-title">
         <div class="caption caption-md" style="min-width: 275px;">
             <select class="form-control" required id="idDanhMuc" ng-model="vm.item.khoBDSKey">
-                <option value="allDanhMuc" disabled selected>Tất Cả Kho</option>
+                <option value="allDanhMuc" selected>Tất Cả Kho</option>
                 <option ng-repeat="item in vm.khoBDSList" value="{{item.$id}}">{{item.text}}</option>
             </select>
         </div>
         <div class="caption caption-md" style="padding-left:5px;">
-            <select class="form-control" required id="idTrangThai">
-                <option value="allTrangThai" >Tất Cả Trạng Thái</option>
+            <select class="form-control" required id="idTrangThai" ng-model="vm.item.nhuCauKey">
+                <option value="allTrangThai" selected>Tất Cả Trạng Thái</option>
                 <option ng-repeat="item in vm.cacLoaiNhuCau" value="{{item.value}}" ng-selected="item.value == vm.bdsCate">{{item.text}}</option>
                 
             </select>
         </div>
         
-        <div class="caption caption-md" style="padding-left:5px;">
-            <a type="button" href="#" class="btn blue" ng-click="vm.appDung('idDanhMuc','idTrangThai')">Áp Dụng</a>
+        <div class="caption caption-md" style="padding-left:5px;" >
+            <a type="button" href="#" class="btn blue" ng-click="vm.appDung(vm.item.khoBDSKey, vm.item.nhuCauKey)">Áp Dụng</a>
         </div>
         <!--
         <div class="inputs">
@@ -63,7 +63,7 @@
                             <span></span>
                         </label>
                     </th>
-                    <th class="width25"> Nội Dung </th>
+                    <th class="width25"> Tiêu Đề</th>
                     <th> Trạng Thái</th>
                 </tr>
             </thead>
@@ -77,7 +77,7 @@
                     </td>
                     <td>
                         <a class="primary-link" href="#" ng-click="vm.chiTietnhuCau(item)"  style="word-break: break-all;">
-                            {{item.noiDung}}
+                            {{item.tieuDe}}
                         </a>
                     </td>
                     <td>

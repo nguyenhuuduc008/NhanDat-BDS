@@ -94,7 +94,7 @@
 		}
 
 		function uploadAvatar(folderPath, file, metadata){
-            return storageRef.child(folderPath + file.name).put(file, metadata);
+            return storageRef.child(folderPath).put(file, metadata);
 		}
 
 		function saveChangeAvatar(id, avartaUrl){

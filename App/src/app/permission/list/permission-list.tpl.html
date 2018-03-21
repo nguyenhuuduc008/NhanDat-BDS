@@ -6,18 +6,18 @@
                 <div class="caption">
                     <div class="col-md-10 no-padding-right">
                         <select class="bs-select form-control" id="action-list" ng-model="permissionVm.selectAction">
-                            <option>Bulk Actions</option>
-                            <option>Delete</option>
+                            <option>Chọn</option>
+                            <option>Xóa</option>
                         </select>
                     </div>
                     <div class="col-md-2 no-padding-left">
-                        <button type="button" class="btn green" ng-click="permissionVm.apply('select-permission')">Apply</button>
+                        <button type="button" class="btn green" ng-click="permissionVm.apply('select-permission')">Áp dụng</button>
                     </div>
                 </div>
                 <div class="actions">
                     <div class="btn-group btn-group-devided">
                         <div class="col-md-1">
-                            <a href="#/permission/add" class="btn blue">Add New</a>
+                            <a href="#/permission/add" class="btn blue">Thêm mới</a>
                         </div>
                     </div>
                 </div>
@@ -33,8 +33,8 @@
                                         <span></span>
                                     </label>
                                 </th>
-                                <th class="th-title"> Permissions </th>
-                                <th class="th-title"> Index </th>
+                                <th class="th-title"> Quyền </th>
+                                <th class="th-title"> Thứ tự </th>
                                 <th ng-repeat="role in permissionVm.roles"> {{role.name}} </th>
                             </tr>
                         </thead>

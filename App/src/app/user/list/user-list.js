@@ -122,12 +122,12 @@
             });
 
             if(roleName === 0 || parseInt(roleName) === 0){
-                toaster.warning("Please choose role to execute!");
+                toaster.warning("Vui lòng chọn thao tác!");
                 return;
             }
 
             if(lstUserIds.length === 0){
-                toaster.warning("Please choose some users to execute action!");
+                toaster.warning("Vui lòng chọn người dùng cần thao tác!");
                 return;
             }
             userService.addUserToRole(lstUserIds,roleName,roleText);
@@ -140,7 +140,7 @@
                 delete $rootScope.storage.sidebarMenus;
             }
 
-            toaster.pop('success','Success', "Assign Role Successful!");
+            toaster.pop('success','Thành công', "Phân quyền thành công!");
             
             $timeout(function(){
                 initPage();
@@ -159,16 +159,16 @@
             var actionTxt = $('#' + actionControl +' option:selected').text();
 
             if(action === 0 || parseInt(action) === 0){
-                toaster.warning("Please choose action to execute!");
+                toaster.warning("Vui lòng chọn thao tác!");
                 return;
             }
 
             if(lstUserIds.length === 0){
-                toaster.warning("Please choose some users to execute action!");
+                toaster.warning("Vui lòng chọn người dùng cần thao tác!");
                 return;
             }
             
-            $ngBootbox.confirm('Are you sure want to apply ' + actionTxt + ' action as selected?').then(function(){
+            $ngBootbox.confirm('Bạn có chắc muốn thực hiện thao tác ' + actionTxt + ' ?').then(function(){
                 appUtils.showLoading();
                 var reqs = [];var lstEmail=[];
                 if(action === 'delete'){
@@ -185,7 +185,7 @@
                        });  
                    });
                    _.forEach(lstEmail, function(objEmail, key) {
-                        userService.userChangeStateHistory(objEmail,'Xóa User');
+                        userService.userChangeStateHistory(objEmail,'Xóa người dùng');
                     });
                    //end History
                     $q.all(reqs).then(function(res){
@@ -195,9 +195,9 @@
                         });
                         if(err === undefined){
                             delete $rootScope.storage.usersList;
-                             toaster.pop('success','Success', "Delete Successful!");    
+                             toaster.pop('success','Thành công', "Xóa thành công!");    
                         }else{
-                             toaster.pop('error','Error', "Delete Error!"); 
+                             toaster.pop('error','Thất bại', "Xóa thất bại!"); 
                         }
                         initPage();     
                     });  
@@ -225,9 +225,9 @@
                         });
                         if(err === undefined){
                             delete $rootScope.storage.usersList;
-                             toaster.pop('success','Success', "Disable Successful!");    
+                             toaster.pop('success','Thành công', "Xóa thành công!");    
                         }else{
-                             toaster.pop('error','Error', "Disable Error!"); 
+                             toaster.pop('error','Thất bại', "Xóa thất bại!"); 
                         }
                         initPage();     
                     }); 
@@ -255,9 +255,9 @@
                         });
                         if(err === undefined){
                             delete $rootScope.storage.usersList;
-                             toaster.pop('success','Success', "Enable Successful!");    
+                             toaster.pop('success','Thành công', "Hiển thị thành công!");    
                         }else{
-                             toaster.pop('error','Error', "Enable Error!"); 
+                             toaster.pop('error','Thất bại', "Hiển thị thất bại!"); 
                         }
                         initPage(); 
                     }); 

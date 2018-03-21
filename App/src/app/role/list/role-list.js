@@ -19,9 +19,9 @@
         var roleVm = this;
         roleVm.nameRegx = /^(a-z|A-Z|0-9)*[^!#$%^&*()'"\/\\;:@=+,?\[\]\/]*$/;
         roleVm.showInvalid = false;
-        roleVm.formTitle = 'Add New Role';
+        roleVm.formTitle = 'Thêm vai trò';
         roleVm.showAddNew = true;
-        roleVm.selectAction = 'Bulk Actions';
+        roleVm.selectAction = 'Chọn';
         roleVm.model = {};
         if($stateParams.id){
             roleVm.model.$id = $stateParams.id;
@@ -96,11 +96,11 @@
         roleVm.search('');
 
         roleVm.delete = function(){
-          $ngBootbox.confirm('Are you sure want to delete ' + roleVm.model.name + '?')
+          $ngBootbox.confirm('Bạn có chắc muốn xóa ' + roleVm.model.name + '?')
           .then(function() {
             roleService.remove(roleVm.model.$id).then(function(rs){
                     if(rs.result){
-                        toaster.success("Delete success!");
+                        toaster.success("Xóa thành công!");
                     }else{
                         toaster.error(rs.errorMsg);
                     }
@@ -123,19 +123,19 @@
                     lstIds.push($(this).val() + '');
                 }
             });
-            var removeIndex = roleVm.selectAction.indexOf('Delete');
+            var removeIndex = roleVm.selectAction.indexOf('Xóa');
             if(removeIndex === -1){
                 appUtils.hideLoading();
-                toaster.warning("Please choose action to execute!");
+                toaster.warning("Vui lòng chọn thao tác!");
                 return;
             } 
 
             if(lstIds.length <= 0){
                 appUtils.hideLoading();
-                toaster.warning("Please choose some items to execute action!");
+                toaster.warning("Vui lòng chọn dòng cần thao tác!");
             	return;
             }
-            $ngBootbox.confirm('Are you sure want to apply ' + roleVm.selectAction + ' action as selected?')
+            $ngBootbox.confirm('Bạn có chắc muốn thực hiện thao tác ' + roleVm.selectAction + ' ?')
             .then(function() {
                 var removeRs = [];
                 if(removeIndex > -1){
@@ -145,7 +145,7 @@
                     
                     $q.all(removeRs).then(function(rs){
                         appUtils.hideLoading();
-                        toaster.success("Delete success!");
+                        toaster.success("Xóa thành công!");
                         self.search('');
                     });
                 }
@@ -157,7 +157,7 @@
 
         roleVm.edit = function(item){
             roleVm.showInvalid = true;
-        	roleVm.formTitle = 'Edit Role';
+        	roleVm.formTitle = 'Chỉnh sửa vai trò';
         	roleVm.showAddNew = false;
 	        roleVm.model.$id = item.$id;
 	        roleVm.model.name = item.name;
@@ -188,7 +188,7 @@
                     });
                     if(existedName.length > 0){
                         appUtils.hideLoading();
-                        toaster.warning('The name is ' + roleVm.model.name + " has existed, please try another!");
+                        toaster.warning('Tên ' + roleVm.model.name + " đã tồn tại, vui lòng nhập lại!");
                         return;
                     }
                     existedNumber = _.filter(roleVm.items, function(t) { 
@@ -201,7 +201,7 @@
                         });
                     if(existedNumber.length > 0){
                         appUtils.hideLoading();
-                        toaster.warning('The number is ' + roleVm.model.number + " has existed, please try another!");
+                        toaster.warning('Số ' + roleVm.model.number + " đã tồn tại, vui lòng nhập lại!");
                         return;
                     }
 
@@ -213,7 +213,7 @@
                     roleService.update(update).then(function(rs){
                         appUtils.hideLoading();
                         if(rs.result){
-                            toaster.success("Save success!");
+                            toaster.success("Lưu thành công!");
                             self.search('');
                         }else{
                             toaster.error(rs.errorMsg);
@@ -228,7 +228,7 @@
                 });
                 if(existedName.length > 0){
                     appUtils.hideLoading();
-                    toaster.warning('The name is ' + roleVm.model.name + " has existed, please try another!");
+                    toaster.warning('Tên ' + roleVm.model.name + " đã tồn tại, Vui lòng nhập lại!");
                     return;
                 }
                 existedNumber = _.filter(roleVm.items, function(t) { 
@@ -238,7 +238,7 @@
                     });
                 if(existedNumber.length > 0){
                     appUtils.hideLoading();
-                    toaster.warning('The number is ' + roleVm.model.number + " has existed, please try another!");
+                    toaster.warning('Số ' + roleVm.model.number + " đã tồn tại, Vui lòng nhập lại!");
                     return;
                 }
 
@@ -246,7 +246,7 @@
                     appUtils.hideLoading();
                     if(rs.result){
                         self.search('');
-                        toaster.success("Save success!");
+                        toaster.success("Lưu thành công!");
                         roleVm.model = {};
                     }else{
                         toaster.error(rs.errorMsg);

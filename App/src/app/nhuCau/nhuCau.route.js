@@ -33,68 +33,39 @@
                 parent: 'nhuCauListing',
                 hide:true
             },
+            params: {
+                item: null,
+                isEdit: null
+            },
             resolve:{
                 "currentAuth": ["authService", function(authService) {
                     return authService.requireSignIn();
                  }]
                  
             }
-        }).state('ban_choThueAdd',{
+        }).state('nhuCauEdit',{
             parent: 'root',
-            url: '/nhuCau/ban_choThueAdd?activeTab&loaiNhuCauId&loaiNhuCauText',
-            templateUrl: 'app/nhuCau/ban_choThue-mod/ban_choThue-mod.tpl.html',
-            controller: 'ban_choThueAddCtr',
-            controllerAs: 'vm',
+            url: '/nhuCau/nhuCauEdit',
+            templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
+            controller: 'nhuCauThemMoiCtr',
+            controllerAs: 'nhuCauThemMoiVm',
             data: {
-                pageTitle: 'Quản Lý Thông Tin',
+                pageTitle: 'Sửa Nhu Cầu',
                 module: 'nhuCau',
                 parent: 'nhuCauListing',
                 hide:true
+            },
+            params: {
+                item: null,
+                isEdit: null
             },
             resolve:{
                 "currentAuth": ["authService", function(authService) {
                     return authService.requireSignIn();
                  }]
+                 
             }
-        }).state('ban_choThueEdit',{
-            parent: 'root',
-            url: '/nhuCau/ban_choThueEdit?id&bdsId&activeTab&loaiNhuCauId',
-            templateUrl: 'app/nhuCau/ban_choThue-mod/ban_choThue-mod.tpl.html',
-            controller: 'ban_choThueEditCtr',
-            controllerAs: 'vm',
-            data: {
-                pageTitle: 'Quản Lý Thông Tin',
-                module: 'nhuCau',
-                parent: 'nhuCauListing',
-                hide:true
-            },
-            resolve:{
-                "currentAuth": ["authService", function(authService) {
-                    return authService.requireSignIn();
-                 }]
-            }
-        })
-        /*
-        .state('nhuCauthongTin',{
-            parent: 'root',
-            url: '/nhuCau/ban_choThue-modAdd?bdsId&activeTab',
-            templateUrl: 'app/nhuCau/ban_choThue-mod/ban_choThue-mod.tpl.html',
-            controller: 'ban_choThueModCtr',
-            controllerAs: 'ban_choThueModVm',
-            data: {
-                pageTitle: 'Quản Lý Thông Tin',
-                module: 'nhuCau',
-                parent: 'nhuCauListing',
-                hide:true
-            },
-            resolve:{
-                "currentAuth": ["authService", function(authService) {
-                    return authService.requireSignIn();
-                 }]
-            }
-        })
-         */
-        ;
+        });
          //----
     }
 })();

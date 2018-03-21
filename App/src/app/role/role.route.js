@@ -16,7 +16,7 @@
 				controller: 'RoleListCtrl',
 				controllerAs: 'roleVm',
 				data: {
-					pageTitle: 'Roles',
+					pageTitle: 'Vai trò',
 					module: 'roles',
 					icon: 'fa fa-circle-o',
 					permission: 'Roles'
@@ -35,7 +35,7 @@
 				controller: 'RoleListCtrl',
 				controllerAs: 'roleVm',
 				data: {
-					pageTitle: 'Edit Role',
+					pageTitle: 'Chỉnh sửa vai trò',
 					module: 'roles'
 				},
 				resolve:{

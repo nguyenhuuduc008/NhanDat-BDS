@@ -6,20 +6,22 @@
         <div class="caption width70 row">
             <div class="col-md-3 no-padding-right">
                 <select class="bs-select form-control" id="action-list">
-                    <option value="0">Bulk Actions</option>
-                    <option value="delete">Delete</option>
+                    <option value="0">Chọn hành động</option>
+                    <option value="delete">Xóa</option>
                     <!-- <option value="disable">Disable</option>
                     <option value="enable">Enable</option> -->
                 </select>
             </div>
             <div class="col-md-1 no-padding-left">
-                <button type="button" class="btn green" ng-click="vm.applyAction('select-quangCao','action-list')">Apply</button>
+                <button type="button" class="btn green" ng-click="vm.applyAction('select-quangCao','action-list')">Áp dụng</button>
             </div>
            
-            
-             <a class="btn  blue" href="#/quangCao/details">
+            <div class="col-md-1 ">
+                <a class="btn  blue" href="#/quangCao/details">
                   Thêm mới
-            </a>
+                </a>    
+            </div>
+            
 
         </div>
         <div class="actions">
@@ -41,9 +43,9 @@
                     <th class="width5"> Image </th>
                     <th class="width25"> Vị Trí </th>
                     <th class="width25"> Đường Dẫn </th>
-                    <th class="hidden-sm text-center width15"> Thời Gian Hiển Thị  </th>
+                    <th class="hidden-sm text-center width7"> Thời Gian Hiển Thị  </th>
           
-                    <th class="hidden-sm text-center width5"> Phone Numbber </th>
+                    <th class="hidden-sm text-center width15"> Số điện thoại </th>
                 </tr>
             </thead>
             <tbody>
@@ -56,24 +58,23 @@
                     </td>
 
                     <td class="fit">
-                        <p ng-if="item.photoURL ===''" class="img-responsive quangCao-pic" data-letters="{{vm.dataLetterPic(item)}}" ></p>
-                        <img ng-click="vm.edit(item.$id)"  ng-if="item.photoURL !==''"   ng-src="{{item.photoURL}}" class="quangCao-pic" class="" alt="profile-image"> 
+                        <a href="/#/quangCao/details?id={{item.$id}}"  > 
+                            <p ng-if="item.photoURL ===''" class="img-responsive quangCao-pic" data-letters="{{vm.dataLetterPic(item)}}" >
+                                
+                            </p>
+                            <img   ng-if="item.photoURL !==''"   ng-src="{{item.photoURL}}" class="quangCao-pic" class="" alt="profile-image"> 
+                        </a>
                     </td>
 
-                    <!--  <td> <a class="primary-link" href="#" ng-click="vm.edit(item.$id)" style="word-break: break-all;">{{item.viTri}}</a> </td> -->
+                  
                     <td>
-                        <select class="bs-select form-control" id="action-list" ng-model="item.viTri" >
-                            <option value="top" selected="item.viTri == 'top'">Banner Top</option>
-                            <option value="left1" selected="item.viTri == 'left1'">Banner Left 1</option>
-                            <option value="left2" selected="item.viTri == 'left2'">Banner Left 2</option>
-                            <option value="right1" selected="item.viTri == 'right1'">Banner Right 1</option>
-                            <option value="right2" selected="item.viTri == 'right2'">Banner Right 2</option>
+                        <select disabled="true" ng-model="item.viTri" ng-options="itemVT as itemVT.value  for itemVT in dataViTri  track by itemVT.name">
                         </select>
                     </td>
-                    <td> <a class="primary-link" href="#">{{item.duongDan}}</a></td>
+                    <td> <a class="primary-link" href="{{item.duongDan}}">{{item.duongDan}}</a></td>
                     
                     <td class="hidden-sm text-center">{{item.timeShow}}</td>
-                    <td class="hidden-sm text-center">{{item.phoneNumber | tel}}</td>
+                    <td class="hidden-sm text-center phoneno">{{vm.formatPhone(item.phoneNumber)}}</td>
                     
                 </tr>
             </tbody>

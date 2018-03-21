@@ -16,7 +16,7 @@
         //     return;
         // }
         var permissionVm = this;
-        permissionVm.selectAction = 'Bulk Actions';
+        permissionVm.selectAction = 'Chọn';
 
 		permissionVm.items = [];
 		permissionVm.roles = [];
@@ -77,18 +77,18 @@
                     lstIds.push($(this).val() + '');
                 }
             });
-            var removeIndex = permissionVm.selectAction.indexOf('Delete');
+            var removeIndex = permissionVm.selectAction.indexOf('Xóa');
             if(removeIndex === -1){
                 appUtils.hideLoading();
-                toaster.warning("Please choose action to execute!");
+                toaster.warning("Vui lòng chọn thao tác thực hiện!");
                 return;
             } 
             if(lstIds.length <= 0){
                 appUtils.hideLoading();
-                toaster.warning("Please choose some items to execute action!");
+                toaster.warning("Vui lòng chọn dòng cần thao tác!");
                 return;
             }
-            $ngBootbox.confirm('Are you sure want to apply ' + permissionVm.selectAction + ' action as selected?')
+            $ngBootbox.confirm('Bạn có chắc muốn thực hiện thao tác ' + permissionVm.selectAction + ' ?')
             .then(function() {
                 var removeRs = [];
                 if(removeIndex > -1){
@@ -97,7 +97,7 @@
                     });
                     $q.all(removeRs).then(function(rs){
                         appUtils.hideLoading();
-                        toaster.success("Delete success!");
+                        toaster.success("Xóa thành công!");
                         loadData();
                     });
                 }

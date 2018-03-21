@@ -1,0 +1,857 @@
+﻿<script src="/lib/metronic/theme/assets/global/plugins/amcharts/amcharts/amcharts.js"></script>
+<script src="/lib/metronic/theme/assets/global/plugins/amcharts/amcharts/serial.js"></script>
+<script src="/lib/metronic/theme/assets/global/plugins/amcharts/amcharts/pie.js"></script>
+
+<style>
+    .chart-content {
+        width: 100%;
+        height: 381px;
+        overflow: hidden;
+        text-align: left;
+    }
+
+    .result-item-img {
+        width: 120px !important;
+        overflow: hidden !important;
+        border: 1px solid #dfdfdf !important;
+        padding: 2px !important;
+    }
+</style>
+<div class="row" id="permission">
+    <div class="col-md-12">
+        <div class="portlet light portlet-fit bordered">
+            <div class="portlet-body">
+                <div class="table-scrollable table-scrollable-borderless">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="portlet light bordered">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="icon-bar-chart font-green-haze"></i>
+                                        <span class="caption-subject bold uppercase font-green-haze">Điều kiện tìm kiếm</span>
+                                        <span class="caption-helper"></span>
+                                    </div>
+                                    <div class="tools">
+                                        <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+                                        <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
+                                        <a href="javascript:;" class="reload" data-original-title="" title=""> </a>
+                                        <a href="javascript:;" class="fullscreen" data-original-title="" title=""> </a>
+                                        <a href="javascript:;" class="remove" data-original-title="" title=""> </a>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="row">
+									  <div class="col-md-2">
+                                            Loại nhu cầu:
+                                            <select name="thanhPho" class="form-control ng-pristine ng-untouched ng-not-empty ng-valid ng-valid-required">
+                                                <option value="" selected>Bán</option>
+                                                <option value="">Cho thuê</option>
+                                                <option value="">Ký gửi</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            Loại bất động sản:
+                                            <select name="thanhPho" class="form-control ng-pristine ng-untouched ng-not-empty ng-valid ng-valid-required">
+                                                <option value="" selected>Nhà mặt tiền</option>
+                                                <option value="">Nhà trong hẻm</option>
+                                                <option value="">Biệt thự, nhà liền kề</option>
+                                                <option value="">Căn hộ chung cư</option>
+                                                <option value="">Mặt bằng</option>
+                                                <option value="">Kho xưởng</option>
+                                                <option value="">Nhà hàng khách sạn</option>
+                                                <option value="">Shop, kiot, quán</option>
+                                                <option value="">Trang tại</option>
+                                                <option value="">Phòng trọ, nhà trọ</option>
+                                                <option value="">Đất thổ cư, đất ở</option>
+                                                <option value="">Đất nền dự án</option>
+                                                <option value="">Đất nông nghiệp</option>
+                                                <option value="">Các loại khác</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            Tỉnh/Thành:
+                                            <select name="thanhPho" class="form-control ng-pristine ng-untouched ng-not-empty ng-valid ng-valid-required">
+                                                <option value="" selected>Tp.Hồ Chí Mình</option>
+                                                <option value="">Hà nội</option>
+                                                <option value="">Hải phòng</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            Quận/Huyện:
+                                            <select name="thanhPho" class="form-control ng-pristine ng-untouched ng-not-empty ng-valid ng-valid-required">
+                                                <option value="" selected>Q1</option>
+                                                <option value="">Q2</option>
+                                                <option value="">Q3</option>
+                                                <option value="">Q4</option>
+                                                <option value="">Q5</option>
+                                                <option value="">Q6</option>
+                                                <option value="">Q7</option>
+                                                <option value="">Q8</option>
+                                                <option value="">Q9</option>
+                                                <option value="">Q10</option>
+                                                <option value="">Q11</option>
+                                                <option value="">Q12</option>
+                                                <option value="">Q. Bình Thạnh</option>
+                                                <option value="">Q. Bình Tân</option>
+                                                <option value="">Q. Gò Vấp</option>
+                                                <option value="">Q. Tân Bình</option>
+                                                <option value="">Q. Tân Phú</option>
+                                                <option value="">H. Bình Chánh</option>
+                                                <option value="">H. Củ Chi</option>
+                                                <option value="">H. Hóc Môn</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            Hướng:
+                                            <select name="thanhPho" class="form-control ng-pristine ng-untouched ng-not-empty ng-valid ng-valid-required">
+                                                <option value="" selected>Đông</option>
+                                                <option value="" selected>Đông Nam</option>
+                                                <option value="" selected>Đông Bắc</option>
+                                                <option value="">Tây</option>
+                                                <option value="">Tây Nam</option>
+                                                <option value="">Tây Bắc</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top:20px">
+                                        <div class="col-md-2 ">
+                                            Diện tích từ (m2):<br>
+                                            <input class="form-control ng-pristine ng-untouched ng-valid ng-empty" type="number" max="999999" />
+                                        </div>
+                                        <div class="col-md-2 ">
+                                            đến (m2):<br>
+                                            <input class="form-control ng-pristine ng-untouched ng-valid ng-empty" type="number" max="999999" />
+                                        </div>
+                                        <div class="col-md-2">
+                                            Giá từ (VND):<br>
+                                            <input class="form-control ng-pristine ng-untouched ng-valid ng-empty" type="number" max="" />
+                                        </div>
+                                        <div class="col-md-2">
+                                            đến (VND):<br>
+                                            <input class="form-control ng-pristine ng-untouched ng-valid ng-empty" type="number" max="" />
+                                        </div>
+                                        <div class="col-md-2" style="margin-top:19px">
+                                            <button class="btn btn-primary">Tìm kiếm</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="portlet light bordered">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="icon-bar-chart font-green-haze"></i>
+                                    <span class="caption-subject bold uppercase font-green-haze">Có 5 kết quả tìm thấy</span>
+                                    <span class="caption-helper"></span>
+                                </div>
+                                <div class="tools">
+                                    <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+                                    <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
+                                    <a href="javascript:;" class="reload" data-original-title="" title=""> </a>
+                                    <a href="javascript:;" class="fullscreen" data-original-title="" title=""> </a>
+                                    <a href="javascript:;" class="remove" data-original-title="" title=""> </a>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab_actions_pending">
+                                        <div class="mt-comments">
+                                            <div class="mt-comment">
+                                                <div class="mt-comment-img result-item-img">
+                                                    <img src="./img/logo-sa.png">
+                                                </div>
+                                                <div class="mt-comment-body">
+                                                    <div class="mt-comment-info">
+                                                        <span class="mt-comment-author" style="font-size:18px;color:#0094ff">Bán gấp nhà mặt tiền đượng Mạc Đỉnh Chi, Q.1, tp.HCM</span>
+                                                        <span class="mt-comment-date" style="color:#ff0000">Hôm nay, 10:30AM</span>
+                                                    </div>
+                                                    <div class="mt-comment-text"><span>Kích thước: <b style="color:#060606">4x20</b></span>  -  <span>Diện tích: <b style="color:#060606">100m2</b></span>  -  <span>Hướng: <b style="color:#060606">Đông</b></span></div>
+                                                    <div class="mt-comment-details">
+                                                        <span class="mt-comment-status mt-comment-status-rejected"><b>1 tỷ 200 triệu</b></span>
+                                                        <ul class="mt-comment-actions" style="display:block !important">
+                                                            <li>
+                                                                <a href="#" style="color:#0026ff !important;text-transform:none">Xem chi tiết</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                            </div>
+
+                                            <div class="mt-comment">
+                                                <div class="mt-comment-img result-item-img">
+                                                    <img src="./img/logo-sa.png">
+                                                </div>
+                                                <div class="mt-comment-body">
+                                                    <div class="mt-comment-info">
+                                                        <span class="mt-comment-author" style="font-size:18px;color:#0094ff">Bán gấp nhà mặt tiền đường Trần Hưng Đạo, Q.1, tp.HCM</span>
+                                                        <span class="mt-comment-date" style="color:#ff0000">Hôm nay, 11:30AM</span>
+                                                    </div>
+                                                    <div class="mt-comment-text"><span>Kích thước: <b style="color:#060606">4x30</b></span>  -  <span>Diện tích: <b style="color:#060606">120m2</b></span>  -  <span>Hướng: <b style="color:#060606">Tây</b></span></div>
+                                                    <div class="mt-comment-details">
+                                                        <span class="mt-comment-status mt-comment-status-rejected"><b>900 triệu</b></span>
+                                                        <ul class="mt-comment-actions" style="display:block !important">
+                                                            <li>
+                                                                <a href="#" style="color:#0026ff !important;text-transform:none">Xem chi tiết</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                            </div>
+
+                                            <div class="mt-comment">
+                                                <div class="mt-comment-img result-item-img">
+                                                    <img src="./img/logo-sa.png">
+                                                </div>
+                                                <div class="mt-comment-body">
+                                                    <div class="mt-comment-info">
+                                                        <span class="mt-comment-author" style="font-size:18px;color:#0094ff">Bán gấp nhà mặt tiền đượng Mạc Đỉnh Chi, Q.1, tp.HCM</span>
+                                                        <span class="mt-comment-date" style="color:#ff0000">Hôm nay, 10:30AM</span>
+                                                    </div>
+                                                    <div class="mt-comment-text"><span>Kích thước: <b style="color:#060606">4x20</b></span>  -  <span>Diện tích: <b style="color:#060606">100m2</b></span>  -  <span>Hướng: <b style="color:#060606">Đông</b></span></div>
+                                                    <div class="mt-comment-details">
+                                                        <span class="mt-comment-status mt-comment-status-rejected"><b>1 tỷ 200 triệu</b></span>
+                                                        <ul class="mt-comment-actions" style="display:block !important">
+                                                            <li>
+                                                                <a href="#" style="color:#0026ff !important;text-transform:none">Xem chi tiết</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                            </div>
+
+                                            <div class="mt-comment">
+                                                <div class="mt-comment-img result-item-img">
+                                                    <img src="./img/logo-sa.png">
+                                                </div>
+                                                <div class="mt-comment-body">
+                                                    <div class="mt-comment-info">
+                                                        <span class="mt-comment-author" style="font-size:18px;color:#0094ff">Bán gấp nhà mặt tiền đượng Mạc Đỉnh Chi, Q.1, tp.HCM</span>
+                                                        <span class="mt-comment-date" style="color:#ff0000">Hôm nay, 10:30AM</span>
+                                                    </div>
+                                                    <div class="mt-comment-text"><span>Kích thước: <b style="color:#060606">4x20</b></span>  -  <span>Diện tích: <b style="color:#060606">100m2</b></span>  -  <span>Hướng: <b style="color:#060606">Đông</b></span></div>
+                                                    <div class="mt-comment-details">
+                                                        <span class="mt-comment-status mt-comment-status-rejected"><b>1 tỷ 200 triệu</b></span>
+                                                        <ul class="mt-comment-actions" style="display:block !important">
+                                                            <li>
+                                                                <a href="#" style="color:#0026ff !important;text-transform:none">Xem chi tiết</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                            </div>
+
+                                            <div class="mt-comment">
+                                                <div class="mt-comment-img result-item-img">
+                                                    <img src="./img/logo-sa.png">
+                                                </div>
+                                                <div class="mt-comment-body">
+                                                    <div class="mt-comment-info">
+                                                        <span class="mt-comment-author" style="font-size:18px;color:#0094ff">Bán gấp nhà mặt tiền đượng Mạc Đỉnh Chi, Q.1, tp.HCM</span>
+                                                        <span class="mt-comment-date" style="color:#ff0000">Hôm nay, 10:30AM</span>
+                                                    </div>
+                                                    <div class="mt-comment-text"><span>Kích thước: <b style="color:#060606">4x20</b></span>  -  <span>Diện tích: <b style="color:#060606">100m2</b></span>  -  <span>Hướng: <b style="color:#060606">Đông</b></span></div>
+                                                    <div class="mt-comment-details">
+                                                        <span class="mt-comment-status mt-comment-status-rejected"><b>1 tỷ 200 triệu</b></span>
+                                                        <ul class="mt-comment-actions" style="display:block !important">
+                                                            <li>
+                                                                <a href="#" style="color:#0026ff !important;text-transform:none">Xem chi tiết</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Thống kê số lượng BĐS-->
+                    <div class="col-md-4">
+                        <div class="portlet light bordered">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="icon-bar-chart font-green-haze"></i>
+                                    <span class="caption-subject bold uppercase font-green-haze">Biểu Đồ Đơn Giá / Tổng Giá</span>
+                                    <span class="caption-helper"></span>
+                                </div>
+                                <div class="tools">
+                                    <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+                                    <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
+                                    <a href="javascript:;" class="reload" data-original-title="" title=""> </a>
+                                    <a href="javascript:;" class="fullscreen" data-original-title="" title=""> </a>
+                                    <a href="javascript:;" class="remove" data-original-title="" title=""> </a>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                Biểu Đồ Đơn Giá / Tổng Giá
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+
+<script>
+    loadChart_1();
+    function loadChart_1() {
+        var chartData = [{
+            "key": 'Nhà Phố',
+            "value": 100,
+        }, {
+            "key": "Căn Hộ",
+            "value": 253,
+            "expenses": 22.8
+        }, {
+            "key": "Đất Nền",
+            "value": 456,
+        }, {
+            "key": "Dự Án",
+            "value": 234,
+        }, {
+            "key": "Kho Xưởng",
+            "value": 124,
+            "expenses": 25
+        }, {
+            "key": "Đất Thổ Cư",
+            "value": 312,
+        }];
+
+        var chart = new AmCharts.AmSerialChart();
+        chart.dataProvider = chartData;
+        chart.categoryField = "key";
+        chart.startDuration = 1;
+        chart.rotate = false;
+
+        // AXES
+        // category
+        var categoryAxis = chart.categoryAxis;
+        categoryAxis.gridPosition = "start";
+        categoryAxis.axisColor = "#67b7dc";
+        categoryAxis.dashLength = 1;
+
+        // GRAPHS
+        var graph1 = new AmCharts.AmGraph();
+        graph1.type = "column";
+        graph1.title = "Tổng số";
+        graph1.valueField = "value";
+        graph1.lineAlpha = 0;
+        graph1.fillColors = "#67b7dc";
+        graph1.fillAlphas = 0.8;
+        graph1.balloonText = "<span style='font-size:13px;'>[[title]] [[category]]:<b>[[value]]</b></span>";
+        graph1.labelPosition = 'top';
+        graph1.labelOffset = 1;
+        graph1.labelText = "[[value]]";
+        chart.addGraph(graph1);
+
+        // LEGEND
+        var legend = new AmCharts.AmLegend();
+        legend.useGraphSettings = true;
+        chart.addLegend(legend);
+
+        // WRITE
+        chart.write("chartdiv1");
+    }
+
+    loadChart_2()
+    function loadChart_2() {
+        var chartData = [
+           {
+               "lineColor": "#ffc321",
+               "key": "300",
+               "value": 408
+           }, {
+               "key": "300 - 400",
+               "value": 482
+           }, {
+               "key": "400-500",
+               "value": 562
+           }, {
+               "key": "500-600",
+               "value": 379
+           }, {
+               "key": "600-700",
+               "value": 501
+           }, {
+               "key": "800-900",
+               "value": 443
+           }, {
+               "key": "900-1000",
+               "value": 405
+           }, {
+               "key": "2000",
+               "value": 309,
+           },
+           // group 2
+           {
+               "lineColor": "#fd813c",
+               "key": "300",
+               "value": 345
+           }, {
+               "key": "300 - 400",
+               "value": 123
+           }, {
+               "key": "400-500",
+               "value": 232
+           }, {
+               "key": "500-600",
+               "value": 32
+           }, {
+               "key": "600-700",
+               "value": 435
+           }, {
+               "key": "800-900",
+               "value": 23
+           }, {
+               "key": "900-1000",
+               "value": 43
+           }, {
+               "key": "2000",
+               "value": 234,
+           },
+            // group 3
+           {
+               "lineColor": "#95a5a6",
+               "key": "300",
+               "value": 322,
+           }, {
+               "key": "300 - 400",
+               "value": 323
+           }, {
+               "key": "400-500",
+               "value": 122
+           }, {
+               "key": "500-600",
+               "value": 123
+           }, {
+               "key": "600-700",
+               "value": 332
+           }, {
+               "key": "800-900",
+               "value": 232
+           }, {
+               "key": "900-1000",
+               "value": 405
+           }, {
+               "key": "2000",
+               "value": 232,
+               "lineColor": "#CC0000"
+           },
+        ];
+
+        // SERIAL CHART
+        var chart = new AmCharts.AmSerialChart();
+        chart.dataProvider = chartData;
+
+        chart.categoryField = "key";
+        // chart.dataDateFormat = "YYYY-MM-DD";
+
+        var balloon = chart.balloon;
+        balloon.cornerRadius = 6;
+        balloon.adjustBorderColor = false;
+        balloon.horizontalPadding = 10;
+        balloon.verticalPadding = 10;
+
+        // AXES
+        // category axis
+        var categoryAxis = chart.categoryAxis;
+        categoryAxis.gridAlpha = 0;
+
+        // as we have data of different units, we create two different value axes
+        // Duration value axis
+        var durationAxis = new AmCharts.ValueAxis();
+        durationAxis.gridAlpha = 0.05;
+        durationAxis.axisAlpha = 0;
+        chart.addValueAxis(durationAxis);
+
+        // GRAPHS
+        // duration graph
+        var durationGraph = new AmCharts.AmGraph();
+        durationGraph.title = "value";
+        durationGraph.valueField = "value";
+        durationGraph.type = "smoothedLine"
+        durationGraph.valueAxis = durationAxis; // indicate which axis should be used
+        durationGraph.lineColorField = "lineColor";
+        durationGraph.fillColorsField = "lineColor";
+        durationGraph.fillAlphas = 0.3;
+        durationGraph.balloonText = "[[value]]";
+        durationGraph.lineThickness = 1;
+        durationGraph.legendValueText = "[[value]]";
+        durationGraph.bullet = "round";
+        durationGraph.bulletBorderThickness = 1;
+        durationGraph.bulletBorderAlpha = 1;
+        durationGraph.labelPosition = 'top';
+        durationGraph.labelOffset = 1;
+        durationGraph.labelText = "[[value]]";
+        chart.addGraph(durationGraph);
+
+        // CURSOR
+        var chartCursor = new AmCharts.ChartCursor();
+        chartCursor.zoomable = true;
+        chartCursor.cursorAlpha = 0;
+        chart.addChartCursor(chartCursor);
+
+        var chartScrollbar = new AmCharts.ChartScrollbar();
+        chart.addChartScrollbar(chartScrollbar);
+
+        // WRITE
+        chart.write("chartdiv2");
+    }
+
+    loadChart_3()
+    function loadChart_3() {
+        var chartData = [
+           {
+               "lineColor": "#8e44ad",
+               "key": "1",
+               "value": 408
+           }, {
+               "key": "2",
+               "value": 482
+           }, {
+               "key": "3",
+               "value": 562
+           }, {
+               "key": "4",
+               "value": 379
+           }, {
+               "key": "5",
+               "value": 501
+           }, {
+               "key": "6",
+               "value": 443
+           }, {
+               "key": "7",
+               "value": 405
+           }, {
+               "key": "8",
+               "value": 309,
+           }, {
+               "key": "9",
+               "value": 345
+           }, {
+               "key": "10",
+               "value": 123
+           }, {
+               "key": "11",
+               "value": 232
+           }, {
+               "key": "12",
+               "value": 32
+           }, {
+               "key": "13",
+               "value": 435
+           }, {
+               "key": "14",
+               "value": 23
+           }, {
+               "key": "15",
+               "value": 43
+           }, {
+               "key": "16",
+               "value": 234,
+           }, {
+               "key": "17",
+               "value": 322,
+           }, {
+               "key": "18",
+               "value": 323
+           }, {
+               "key": "19",
+               "value": 122
+           }, {
+               "key": "20",
+               "value": 123
+           }, {
+               "key": "21",
+               "value": 332
+           }, {
+               "key": "22",
+               "value": 232
+           }, {
+               "key": "23",
+               "value": 405
+           }, {
+               "key": "24",
+               "value": 232,
+           }, {
+               "key": "25",
+               "value": 122
+           }, {
+               "key": "26",
+               "value": 123
+           }, {
+               "key": "27",
+               "value": 332
+           }, {
+               "key": "28",
+               "value": 232
+           }, {
+               "key": "29",
+               "value": 405
+           }, {
+               "key": "30",
+               "value": 232,
+
+           }, {
+               "key": "31",
+               "value": 232,
+           }
+        ];
+
+        var chart = new AmCharts.AmSerialChart();
+        chart.dataProvider = chartData;
+        chart.categoryField = "key";
+
+        var balloon = chart.balloon;
+        balloon.cornerRadius = 6;
+        balloon.adjustBorderColor = false;
+        balloon.horizontalPadding = 10;
+        balloon.verticalPadding = 10;
+
+        // AXES
+        // category axis
+        var categoryAxis = chart.categoryAxis;
+        categoryAxis.gridAlpha = 0;
+
+        // as we have data of different units, we create two different value axes
+        // Duration value axis
+        var durationAxis = new AmCharts.ValueAxis();
+        durationAxis.gridAlpha = 0.05;
+        durationAxis.axisAlpha = 0;
+        chart.addValueAxis(durationAxis);
+
+        // GRAPHS
+        // duration graph
+        var durationGraph1 = new AmCharts.AmGraph();
+        durationGraph1.title = "value";
+        durationGraph1.valueField = "value";
+        durationGraph1.type = "smoothedLine"
+        durationGraph1.valueAxis = durationAxis; // indicate which axis should be used
+        durationGraph1.lineColorField = "lineColor";
+        durationGraph1.fillColorsField = "lineColor";
+        durationGraph1.fillAlphas = 0.3;
+        durationGraph1.balloonText = "[[value]]";
+        durationGraph1.lineThickness = 1;
+        durationGraph1.legendValueText = "[[value]]";
+        durationGraph1.bullet = "round";
+        durationGraph1.bulletBorderThickness = 1;
+        durationGraph1.bulletBorderAlpha = 1;
+        durationGraph1.labelPosition = 'top';
+        durationGraph1.labelOffset = 1;
+        durationGraph1.labelText = "[[value]]";
+        chart.addGraph(durationGraph1);
+
+        // CURSOR
+        var chartCursor = new AmCharts.ChartCursor();
+        chartCursor.zoomable = true;
+        chartCursor.cursorAlpha = 0;
+        chart.addChartCursor(chartCursor);
+
+        var chartScrollbar = new AmCharts.ChartScrollbar();
+        chart.addChartScrollbar(chartScrollbar);
+
+        // WRITE
+        chart.write("chartdiv3");
+    }
+
+    loadChart_4()
+    function loadChart_4() {
+        var chartData = [
+           {
+               "lineColor": "#2ecc71",
+               "key": "1",
+               "value": 408
+           }, {
+               "key": "2",
+               "value": 482
+           }, {
+               "key": "3",
+               "value": 562
+           }, {
+               "key": "4",
+               "value": 379
+           }, {
+               "key": "5",
+               "value": 501
+           }, {
+               "key": "6",
+               "value": 443
+           }, {
+               "key": "7",
+               "value": 405
+           }, {
+               "key": "8",
+               "value": 309,
+           }, {
+               "key": "9",
+               "value": 345
+           }, {
+               "key": "10",
+               "value": 123
+           }, {
+               "key": "11",
+               "value": 232
+           }, {
+               "key": "12",
+               "value": 32
+           }, {
+               "key": "13",
+               "value": 435
+           }, {
+               "key": "14",
+               "value": 23
+           }, {
+               "key": "15",
+               "value": 43
+           }, {
+               "key": "16",
+               "value": 234,
+           }, {
+               "key": "17",
+               "value": 322,
+           }, {
+               "key": "18",
+               "value": 323
+           }, {
+               "key": "19",
+               "value": 122
+           }, {
+               "key": "20",
+               "value": 123
+           }, {
+               "key": "21",
+               "value": 332
+           }, {
+               "key": "22",
+               "value": 232
+           }, {
+               "key": "23",
+               "value": 405
+           }, {
+               "key": "24",
+               "value": 232,
+           }, {
+               "key": "25",
+               "value": 122
+           }, {
+               "key": "26",
+               "value": 123
+           }, {
+               "key": "27",
+               "value": 332
+           }, {
+               "key": "28",
+               "value": 232
+           }, {
+               "key": "29",
+               "value": 405
+           }, {
+               "key": "30",
+               "value": 232,
+
+           }, {
+               "key": "31",
+               "value": 232,
+           }
+        ];
+
+        var chart = new AmCharts.AmSerialChart();
+        chart.dataProvider = chartData;
+        chart.categoryField = "key";
+
+        var balloon = chart.balloon;
+        balloon.cornerRadius = 6;
+        balloon.adjustBorderColor = false;
+        balloon.horizontalPadding = 10;
+        balloon.verticalPadding = 10;
+
+        // AXES
+        // category axis
+        var categoryAxis = chart.categoryAxis;
+        categoryAxis.gridAlpha = 0;
+
+        // as we have data of different units, we create two different value axes
+        // Duration value axis
+        var durationAxis = new AmCharts.ValueAxis();
+        durationAxis.gridAlpha = 0.05;
+        durationAxis.axisAlpha = 0;
+        chart.addValueAxis(durationAxis);
+
+        // GRAPHS
+        // duration graph
+        var durationGraph1 = new AmCharts.AmGraph();
+        durationGraph1.title = "value";
+        durationGraph1.valueField = "value";
+        durationGraph1.type = "smoothedLine"
+        durationGraph1.valueAxis = durationAxis; // indicate which axis should be used
+        durationGraph1.lineColorField = "lineColor";
+        durationGraph1.fillColorsField = "lineColor";
+        durationGraph1.fillAlphas = 0.3;
+        durationGraph1.balloonText = "[[value]]";
+        durationGraph1.lineThickness = 1;
+        durationGraph1.legendValueText = "[[value]]";
+        durationGraph1.bullet = "round";
+        durationGraph1.bulletBorderThickness = 1;
+        durationGraph1.bulletBorderAlpha = 1;
+        durationGraph1.labelPosition = 'top';
+        durationGraph1.labelOffset = 1;
+        durationGraph1.labelText = "[[value]]";
+        chart.addGraph(durationGraph1);
+
+        // CURSOR
+        var chartCursor = new AmCharts.ChartCursor();
+        chartCursor.zoomable = true;
+        chartCursor.cursorAlpha = 0;
+        chart.addChartCursor(chartCursor);
+
+        var chartScrollbar = new AmCharts.ChartScrollbar();
+        chart.addChartScrollbar(chartScrollbar);
+
+        // WRITE
+        chart.write("chartdiv4");
+    }
+
+    loadChart_5()
+    function loadChart_5() {
+        var chart;
+        var legend;
+
+        var chartData = [{
+
+            key: "Thuê",
+            value: 43
+        }, {
+
+            key: "Bán",
+            value: 67
+        }];
+
+        chart = new AmCharts.AmPieChart();
+        chart.dataProvider = chartData;
+        chart.titleField = "key";
+        chart.valueField = "value";
+        chart.outlineColor = "#FFFFFF";
+        chart.outlineAlpha = 0.8;
+        chart.outlineThickness = 2;
+
+        // WRITE
+        chart.write("chartdiv5");
+    }
+</script>

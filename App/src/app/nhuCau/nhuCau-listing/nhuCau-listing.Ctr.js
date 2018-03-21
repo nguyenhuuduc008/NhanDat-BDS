@@ -12,18 +12,24 @@
         var vm =this;// jshint ignore:line
         //
         vm.item = {};
-        //vm.cacDanhMucBDS = appSettings.cacDanhMucBDS;
+        vm.cacKhoBDS = appSettings.cacKhoBDS;
         vm.cacLoaiNhuCau = appSettings.cacLoaiNhuCau;
-        console.log(vm.cacDanhMucBDS);
+        vm.khoBDSList = [];
+        console.log(vm.cacKhoBDS);
+        vm.item.nhuCauKey ='allTrangThai';
 
         //Load data
-        settingService.getCacLoaiDanhMucBDS().$loaded().then(function(data) {
-            vm.khoBDSList = _.filter(data, function(o) {
-                return o.$id !== "khoDefault";
-            });
-            vm.khoBDSDefault = _.find(data, ['$id', 'khoDefault']);
-            vm.item.khoBDSKey = !!vm.khoBDSDefault ? vm.khoBDSDefault.$value : 'allDanhMuc';
+        vm.item.khoBDSKey = "allDanhMuc";
+        _.forEach(vm.cacKhoBDS, function(item, key) {
+            if(key != 'khoDefault') {
+                vm.khoBDSList.push({
+                    $id: key,
+                    text: item.text
+                });
+            } 
         });
+            // vm.khoBDSDefault = _.find(data, ['$id', 'khoDefault']);
+            // vm.item.khoBDSKey = !!vm.khoBDSDefault ? vm.khoBDSDefault.$value : 'allDanhMuc';
 
         //page
         vm.groupedItems = [];
@@ -54,33 +60,62 @@
         };
         vm.appDung=function(idDanhMuc,idTrangThai){
             //check valid
-            var idDanhMucValue=$('#' + idDanhMuc).val();
-            var idDanhMucText=$('#'+idDanhMuc +' option:selected').text();
-            var idTrangThaiValue=$('#' + idTrangThai).val();
-            var idTrangThaiText=$('#'+idTrangThai +' option:selected').text();
-            if(idTrangThaiValue=='allTrangThai'){
+            if(idTrangThai=='allTrangThai'){
                 toaster.warning("Bạn cần lựa chọn Trạng Thái!");
                 return;
             }
-            if(idDanhMucValue=='allDanhMuc'){
+            if(idDanhMuc =='allDanhMuc'){
                 toaster.warning("Bạn cần lựa chọn Danh Mục!");
                 return;
             }
-            //get data
-            nhuCauService.getNhuCau(idTrangThaiValue).$loaded().then(function(res){
-                console.log('res');
-                console.log(res);
-                var result = res;
-                vm.filteredItems = appUtils.sortArray(result, 'timestampCreated');
-                console.log('vm.filteredItems');
-                console.log(vm.filteredItems);
-                vm.paging.totalRecord = result.length;
-                vm.paging.currentPage = 0;
-                //group by pages
-                vm.groupToPages();
-            }).catch(function(err){
-                toaster.warning(err);
-            });
+            // get data
+            if(idTrangThai == 'ban' || idTrangThai == 'cho-thue' ) {
+                nhuCauService.getNhuCauBanById(idDanhMuc).$loaded().then(function(data){
+                    var res = _.find(data, function(o) {
+                        return o.$id == idTrangThai;
+                    });
+                    var result = [];
+                    _.forEach(res, function(item, key) {
+                        if(_.isObject(item)) {
+                            item.bdsKey = key;
+                            result.push(item);
+                        }
+                    });
+                    console.log('NOTRIGHTHERA', result);
+                    vm.filteredItems = appUtils.sortArray(result, 'timestampCreated');
+                    console.log('vm.filteredItems');
+                    console.log(vm.filteredItems);
+                    vm.paging.totalRecord = result.length;
+                    vm.paging.currentPage = 0;
+                    //group by pages
+                    vm.groupToPages();
+                }).catch(function(err){
+                    toaster.warning(err);
+                });
+            } else {
+                nhuCauService.getNhuCauMuaById(idDanhMuc).$loaded().then(function(data){
+                    var res = _.find(data, function(o) {
+                        return o.$id == idTrangThai;
+                    });
+                    var result = [];
+                    _.forEach(res, function(item, key) {
+                        if(_.isObject(item)) {
+                            item.bdsKey = key;
+                            result.push(item);
+                        }
+                    });
+                    console.log('NOTRIGHTHERA', result);
+                    vm.filteredItems = appUtils.sortArray(result, 'timestampCreated');
+                    console.log('vm.filteredItems');
+                    console.log(vm.filteredItems);
+                    vm.paging.totalRecord = result.length;
+                    vm.paging.currentPage = 0;
+                    //group by pages
+                    vm.groupToPages();
+                }).catch(function(err){
+                    toaster.warning(err);
+                });
+            }
         };
         //xoa nhu cau
         vm.appDungLuaChon=function(selectedCheckBox,idLuaChon){
@@ -93,29 +128,10 @@
             }
            
         };
-        vm.chiTietnhuCau=function(item){
-            console.log('item');
-            console.log(item);
-            console.log(item.noiDung);
-            if(item.loaiNhuCauText=='Bán'){
-                $state.go('ban_choThueEdit',{
-                    id:item.$id,
-                    bdsId:item.bdsId,
-                    activeTab:'thongTin',
-                    loaiNhuCauId:item.loaiNhuCauId
-                });
-            }
-            if(item.loaiNhuCauText=='Cho Thuê'){
-                $state.go('ban_choThueEdit',{
-                    id:item.$id,
-                    bdsId:item.bdsId,
-                    activeTab:'thongTin',
-                    loaiNhuCauId:item.loaiNhuCauId
-                });
-            }
+        vm.chiTietnhuCau = function (item) {
+            console.log('ITENSSSS', item);
+            $state.go('nhuCauEdit', { item: item, isEdit: true });
         };
         
-
-
     } 
 })();

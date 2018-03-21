@@ -2,13 +2,18 @@
     'use strict';
     angular.module('app.nhuCau').factory('nhuCauService', nhuCauService);
     /** @ngInject **/
-    function nhuCauService($q, $filter, $firebaseObject, $firebaseArray, firebaseDataRef, appUtils,toaster,$ngBootbox){
+    function nhuCauService($q, $filter, $firebaseObject, $firebaseArray, firebaseDataRef, appUtils,toaster,$ngBootbox, storageRef){
         var service={
             addNhuCauBan:addNhuCauBan,
-            getNhuCau:getNhuCau,
-            updateNhuCau:updateNhuCau,
+            getNhuCauBan:getNhuCauBan,
+            getNhuCauMua:getNhuCauMua,
             getOnceNhuCau:getOnceNhuCau,
-            addNhuCauMua: addNhuCauMua
+            addNhuCauMua: addNhuCauMua,
+            uploadMediaStorage: uploadMediaStorage,
+            updateNhuCauMua: updateNhuCauMua,
+            updateNhuCauBan: updateNhuCauBan,
+            getNhuCauBanById: getNhuCauBanById,
+            getNhuCauMuaById: getNhuCauMuaById
         };
         //Ref
         var nhuCauRef=firebaseDataRef.child('nhuCau');
@@ -16,23 +21,49 @@
         
         return service;
         //function 
-        function getNhuCau(loaiTrangThaiId){
-            return $firebaseArray(nhuCauRef.child(loaiTrangThaiId));
+        function getNhuCauBan(){
+            return $firebaseArray(bdsRef);
+        }
+        function getNhuCauMua(){
+            return $firebaseArray(nhuCauRef);
+        }
+        function getNhuCauBanById(loaiKhoId){
+            var ref = bdsRef.child(loaiKhoId);
+            return $firebaseArray(ref);
+        }
+        function getNhuCauMuaById(loaiKhoId){
+            return $firebaseArray(nhuCauRef.child(loaiKhoId));
         }
         function getOnceNhuCau(loaiNhuCauId,id){
             return $firebaseObject(nhuCauRef.child(loaiNhuCauId).child(id));
         }
 
-        function updateNhuCau(datModel){
-            var ts = appUtils.getTimestamp();
-			update.timestampModified = ts;
-			console.log('update');
-			console.log(update);
-			return datModel.$save().then(function () {
-				return { result: true, errorMsg: "" };
-			}).catch(function (error) {
-				return { result: false, errorMsg: error };
-			});
+        function updateNhuCauMua(khoBDSId, loaiNhuCauId, bdsModel, bdsKey){
+            var ref = nhuCauRef.child(khoBDSId + "/" + loaiNhuCauId);
+            bdsModel.timestampModified= Date.now();
+
+            delete bdsModel.$$hashKey;
+            delete bdsModel.bdsKey;
+
+            return ref.child(bdsKey).update(bdsModel).then(function(res){
+                return {result:true,key:bdsKey};
+            }).catch(function(err){
+                return {result:true,errMsg:err};
+            });
+        }
+
+        function updateNhuCauBan(khoBDSId, loaiNhuCauId, bdsModel, bdsKey) {
+            var ref = bdsRef.child(khoBDSId + "/" + loaiNhuCauId);
+            bdsModel.timestampModified= Date.now();
+            
+            delete bdsModel.$$hashKey;
+            delete bdsModel.bdsKey;
+  
+            return ref.child(bdsKey).update(bdsModel).then(function(res){
+                return {result:true,key:bdsKey};
+            }).catch(function(err){
+                return {result:true,errMsg:err};
+            });
         }
 
         function addNhuCauBan(khoBDSId, loaiNhuCauId, bdsModel){
@@ -60,6 +91,10 @@
             });
             
         }
+
+		function uploadMediaStorage(folderPath, file, metadata){
+            return storageRef.child(folderPath + file.name).put(file, metadata);
+		}
         //---
     }
 })();

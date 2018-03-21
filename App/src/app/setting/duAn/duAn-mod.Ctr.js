@@ -24,6 +24,7 @@
                 }
             });
         }
+                
         duAnModVm.edit=function(form){
             appUtils.showLoading();
             settingService.updateLoaiDuAn(duAnModVm.idLoai,duAnModVm.item).then(function(res){
@@ -36,7 +37,8 @@
                 appUtils.hideLoading();
                 toaster.warning("Sửa Loại Dự Án không thành công!");
             });
-        };
+        };        
+
         duAnModVm.cancel=function(){
             $state.go('duAn-list');
         };

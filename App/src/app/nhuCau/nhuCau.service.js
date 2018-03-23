@@ -13,7 +13,10 @@
             updateNhuCauMua: updateNhuCauMua,
             updateNhuCauBan: updateNhuCauBan,
             getNhuCauBanById: getNhuCauBanById,
-            getNhuCauMuaById: getNhuCauMuaById
+            getNhuCauMuaById: getNhuCauMuaById,
+            updateMediaData: updateMediaData,
+            deleteMediaStorage: deleteMediaStorage,
+            deleteMediaData: deleteMediaData
         };
         //Ref
         var nhuCauRef=firebaseDataRef.child('nhuCau');
@@ -38,6 +41,26 @@
             return $firebaseObject(nhuCauRef.child(loaiNhuCauId).child(id));
         }
 
+        function updateMediaData(khoBDSId, loaiNhuCauId, bdsKey, bdsModel, mediaKey) {
+            var ref = bdsRef.child(khoBDSId + "/" + loaiNhuCauId + "/" + bdsKey + "/media");
+
+            return ref.child(mediaKey).update(bdsModel).then(function(res){
+                return {result:true,key:mediaKey};
+            }).catch(function(err){
+                return {result:true,errMsg:err};
+            });
+        } 
+
+        function deleteMediaData(khoBDSId, loaiNhuCauId, bdsKey, mediaKey) {
+            var ref = bdsRef.child(khoBDSId + "/" + loaiNhuCauId + "/" + bdsKey + "/media");
+
+            return ref.child(mediaKey).remove().then(function(res){
+                return {result:true,key:mediaKey};
+            }).catch(function(err){
+                return {result:true,errMsg:err};
+            });
+        } 
+
         function updateNhuCauMua(khoBDSId, loaiNhuCauId, bdsModel, bdsKey){
             var ref = nhuCauRef.child(khoBDSId + "/" + loaiNhuCauId);
             bdsModel.timestampModified= Date.now();
@@ -58,6 +81,10 @@
             
             delete bdsModel.$$hashKey;
             delete bdsModel.bdsKey;
+
+            _.forEach(bdsModel.media, function(item, key) {
+                delete item.$$hashKey;
+            });
   
             return ref.child(bdsKey).update(bdsModel).then(function(res){
                 return {result:true,key:bdsKey};
@@ -94,7 +121,15 @@
 
 		function uploadMediaStorage(folderPath, file, metadata){
             return storageRef.child(folderPath + file.name).put(file, metadata);
-		}
+        }
+        
+        function deleteMediaStorage(folderPath) {
+            return storageRef.child(folderPath).delete().then(function(res) {
+                return {result:true};
+            }).catch(function(err){
+                return {result:true,errMsg:err};
+            });
+        }
         //---
     }
 })();

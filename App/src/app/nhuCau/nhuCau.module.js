@@ -1,4 +1,4 @@
 (function() {
 	'use strict';
-	angular.module('app.nhuCau', []);
+	angular.module('app.nhuCau', ['app.Directive.Paging']);
 })();

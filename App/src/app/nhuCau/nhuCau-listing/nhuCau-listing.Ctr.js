@@ -129,7 +129,6 @@
            
         };
         vm.chiTietnhuCau = function (item) {
-            console.log('ITENSSSS', item);
             $state.go('nhuCauEdit', { item: item, isEdit: true });
         };
         

@@ -110,6 +110,87 @@
         };
 
         nhuCauThemMoiVm.dzMethods = {};
+
+        nhuCauThemMoiVm.filteredItems = [];
+        nhuCauThemMoiVm.pagedItems = [];
+        nhuCauThemMoiVm.paging = {
+            pageSize: 1,
+            currentPage: 0,
+            totalPage: 0,
+            totalRecord: 0
+        };
+
+        nhuCauThemMoiVm.groupToPages = function () {
+            nhuCauThemMoiVm.pagedItems = [];
+            for (var i = 0; i < nhuCauThemMoiVm.filteredItems.length; i++) {
+                if (i % nhuCauThemMoiVm.paging.pageSize === 0) {
+                    nhuCauThemMoiVm.pagedItems[Math.floor(i / nhuCauThemMoiVm.paging.pageSize)] = [nhuCauThemMoiVm.filteredItems[i]];
+                } else {
+                    nhuCauThemMoiVm.pagedItems[Math.floor(i / nhuCauThemMoiVm.paging.pageSize)].push(nhuCauThemMoiVm.filteredItems[i]);
+                }
+            }
+            if (nhuCauThemMoiVm.filteredItems.length % nhuCauThemMoiVm.paging.pageSize === 0) {
+                nhuCauThemMoiVm.paging.totalPage = nhuCauThemMoiVm.filteredItems.length / nhuCauThemMoiVm.paging.pageSize;
+            } else {
+                nhuCauThemMoiVm.paging.totalPage = Math.floor(nhuCauThemMoiVm.filteredItems.length / nhuCauThemMoiVm.paging.pageSize) + 1;
+            }
+        };
+
+        function loadMedia(media) {
+            _.forEach(media, function (item, key) {
+                item.mediaKey = key;
+                nhuCauThemMoiVm.filteredItems.push(item);
+            });
+            nhuCauThemMoiVm.paging.totalRecord = nhuCauThemMoiVm.filteredItems.length;
+            nhuCauThemMoiVm.paging.currentPage = 0;
+
+            nhuCauThemMoiVm.groupToPages();
+        }
+
+
+        nhuCauThemMoiVm.changePage = function () {
+            nhuCauThemMoiVm.groupToPages();
+        };
+
+        nhuCauThemMoiVm.saveMedia = function(mediaObj) {
+            appUtils.showLoading();
+            var mediaModel = {
+                fileDescription: mediaObj.fileDescription,
+            };
+            nhuCauService.updateMediaData(nhuCauThemMoiVm.model.khoBDSKey, nhuCauThemMoiVm.model.loaiNhuCauKey, nhuCauThemMoiVm.model.bdsKey, mediaModel, mediaObj.mediaKey).then(function(res) {
+                if(res.result) {
+                    appUtils.hideLoading();
+                    $scope.$apply(function() {
+                        toaster.success("Thay Đổi Hình Ảnh / Video Thành Công");
+                    });
+                    return;
+                }
+                appUtils.hideLoading();
+                toaster.error("Thay Đổi Hình Ảnh / Video Không Thành Công!");
+            });
+        };
+
+        nhuCauThemMoiVm.deleteMedia = function(mediaObj) {
+            nhuCauService.deleteMediaData(nhuCauThemMoiVm.model.khoBDSKey, nhuCauThemMoiVm.model.loaiNhuCauKey, nhuCauThemMoiVm.model.bdsKey, mediaObj.mediaKey).then(function(res) {
+                if(res.result) {
+                    appUtils.hideLoading();
+                    $scope.$apply(function() {
+                        nhuCauService.deleteMediaStorage(mediaObj.fullPath);
+
+                        var media = _.filter(nhuCauThemMoiVm.filteredItems, function(o) {
+                            return (mediaObj.mediaKey != o.mediaKey);
+                        });
+                        nhuCauThemMoiVm.filteredItems = [];
+                        nhuCauThemMoiVm.pagedItems = [];
+                        loadMedia(media);
+                        toaster.success("Xoá Hình Ảnh / Video Thành Công");
+                    });
+                    return;
+                }
+                appUtils.hideLoading();
+                toaster.error("Xoá Hình Ảnh / Video Không Thành Công!");
+            });
+        };
       
         //function
         nhuCauThemMoiVm.changeCity = function () {
@@ -200,6 +281,7 @@
                         bdsKey = res.key;
                         nhuCauThemMoiVm.dzMethods.processQueue();
                         toaster.success("Thêm Mới Nhu Cầu Bán Thành Công");
+                        $state.go('nhuCauListing');
                     });
                     return;
                 }
@@ -216,6 +298,7 @@
                         bdsKey = res.key;
                         nhuCauThemMoiVm.dzMethods.processQueue();
                         toaster.success("Thêm Mới Nhu Cầu Cho Thuê Thành Công");
+                        $state.go('nhuCauListing');
                     });
                     return;
                 }
@@ -230,6 +313,7 @@
                     appUtils.hideLoading();
                     $scope.$apply(function() {
                         toaster.success("Thêm Mới Nhu Cầu Mua Thành Công");
+                        $state.go('nhuCauListing');
                     });
                     return;
                 }
@@ -244,6 +328,7 @@
                     appUtils.hideLoading();
                     $scope.$apply(function() {
                         toaster.success("Thêm Mới Nhu Cầu Thuê Thành Công");
+                        $state.go('nhuCauListing');
                     });
                     return;
                 }
@@ -260,6 +345,7 @@
                         bdsKey = res.key;
                         nhuCauThemMoiVm.dzMethods.processQueue();
                         toaster.success("Sửa Nhu Cầu Bán Thành Công");
+                        $state.go('nhuCauListing');
                     });
                     return;
                 }
@@ -276,6 +362,7 @@
                         bdsKey = res.key;
                         nhuCauThemMoiVm.dzMethods.processQueue();
                         toaster.success("Sửa Nhu Cầu Cho Thuê Thành Công");
+                        $state.go('nhuCauListing');
                     });
                     return;
                 }
@@ -290,6 +377,7 @@
                     appUtils.hideLoading();
                     $scope.$apply(function() {
                         toaster.success("Sửa Nhu Cầu Mua Thành Công");
+                        $state.go('nhuCauListing');
                     });
                     return;
                 }
@@ -304,6 +392,7 @@
                     appUtils.hideLoading();
                     $scope.$apply(function() {
                         toaster.success("Sửa Nhu Cầu Thuê Thành Công");
+                        $state.go('nhuCauListing');
                     });
                     return;
                 }
@@ -326,7 +415,9 @@
                 if(nhuCauThemMoiVm.model.thanhPho) 
                     nhuCauThemMoiVm.changeCity(nhuCauThemMoiVm.model.thanhPho);
                 if(nhuCauThemMoiVm.model.quanHuyen) 
-                    nhuCauThemMoiVm.changeDistrict(nhuCauThemMoiVm.model.quanHuyen);    
+                    nhuCauThemMoiVm.changeDistrict(nhuCauThemMoiVm.model.quanHuyen);   
+                    
+                loadMedia(nhuCauThemMoiVm.model.media);    
             } else {
                 nhuCauThemMoiVm.model = {};
                 nhuCauThemMoiVm.model.loaiNhuCauKey = '0';

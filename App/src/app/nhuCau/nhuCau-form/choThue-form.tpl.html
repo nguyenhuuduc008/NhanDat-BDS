@@ -204,6 +204,49 @@
                         <div class="col-md-12">
                             <ng-dropzone class="dropzone" options="nhuCauThemMoiVm.dzOptions" callbacks="nhuCauThemMoiVm.dzCallbacks" methods="nhuCauThemMoiVm.dzMethods"></ng-dropzone>
                         </div>
+                        <div class="col-md-12">
+                            <div class="actions padding-top-10 pull-right">
+                                <list-paging ng-model="nhuCauThemMoiVm.paging" change-page="nhuCauThemMoiVm.changePage"></list-paging>
+                            </div>
+                            <div class="table-scrollable table-scrollable-borderless">
+                                <table class="table table-hover table-light">
+                                    <thead>
+                                        <tr class="uppercase">
+                                            <th></th>
+                                            <th class="width30 text-left"> Hình Ảnh / Video </th>
+                                            <th class="width15 text-center"> Loại </th>
+                                            <th class="width30 text-left">Ghi Chú</th>
+                                            <th class="width20 text-center"> Actions </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in nhuCauThemMoiVm.pagedItems[nhuCauThemMoiVm.paging.currentPage]">
+                                            <td colspan="2" style="vertical-align: middle; text-align: center;">
+                                                <img class="lib-media-icon" src={{item.downloadUrl}} alt="media" style="width: 100%;">
+                                                <label>{{item.fileName}}</label>
+                                            </td>
+                                            <td class="text-center">
+                                                {{item.loai}}
+                                            </td>
+                                            <td>
+                                                <textarea rows="5" name="desc" placeholder="Ghi Chú" ng-model="item.fileDescription" class="form-control"></textarea>
+                                                <a href="#" title="Save" ng-click="nhuCauThemMoiVm.saveMedia(item)" class="padding-5 badge badge-success margin-top-5" style="float: right;">
+                                                    Lưu
+                                                </a>
+                                            </td>
+                                            <td align="center">
+                                                <button class="btn padding-5 badge badge-warning" title="Copy Hes Link" ngclipboard data-clipboard-text="{{item.downloadUrl}}">
+                                                    <i class="fa fa-link "></i>
+                                                </button>
+                                                <a href="#" title="Delete" ng-click="nhuCauThemMoiVm.deleteMedia(item)" class="padding-5 badge badge-danger">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                     <!-- END FORM-->
                 </div>

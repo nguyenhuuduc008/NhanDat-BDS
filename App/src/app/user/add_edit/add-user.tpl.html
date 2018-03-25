@@ -7,17 +7,17 @@
                     <div class="portlet light bordered">
                         <div class="portlet-title">
                             <div class="caption col-md-12 text-right action-tools">
-                                <a href="javascript:;" ng-click="historyBack()" class="btn btn-circle grey-mint" title="Back">Back</a>
+                                <a href="javascript:;" ng-click="historyBack()" class="btn btn-circle grey-mint" title="Back">Trở về</a>
                             </div>
                         </div>
                         <div class="portlet-title tabbable-line">
                             <div class="caption caption-md">
                                 <i class="icon-globe theme-font hide"></i>
-                                <span class="caption-subject font-blue-madison bold uppercase">User Infomation</span>
+                                <span class="caption-subject font-blue-madison bold uppercase">Thông tin người dùng</span>
                             </div>
                             <ul class="nav nav-tabs">
                                 <li class="active">
-                                    <a href="#tab_1_1" data-toggle="tab">User Info</a>
+                                    <a href="#tab_1_1" data-toggle="tab">Thông tin người dùng</a>
                                 </li>
                             </ul>
                         </div>
@@ -26,102 +26,108 @@
                                 <!-- PERSONAL INFO TAB -->
                                 <div class="tab-pane active row" id="tab_1_1">
                                     <form role="form" id="createUserForm" name="createUserForm" novalidate ng-submit="userAddVm.create(createUserForm)">
+                                            <div class="form-group col-md-12" ng-class="{'has-error': (userAddVm.showInvalid && createUserForm.username.$error.required) || createUserForm.username.$error.pattern}">
+                                                    <label class="control-label">Tên đăng nhập
+                                                        <span class="required-field">*</span>
+                                                    </label>
+                                                    <input type="text" name="username" placeholder="Tên đăng nhập" class="form-control" required ng-pattern="nameRegx" ng-model="userAddVm.user.userName"/>                                                    
+                                                    <label class="control-label" ng-show="createUserForm.username.$error.pattern">* Không cho phép nhập ký tự đặc biệt</label>
+                                                </div>
                                         <div class="form-group col-md-12" ng-class="{'has-error': (createUserForm.phonenumber.$error.pattern||createUserForm.phonenumber.$error.required)&&createUserForm.phonenumber.$touched}">
                                             <label class="control-label" >Điện Thoại<span class="required-field"> *</span></label> 
-                                            <input type="text" maxlength="11" minlength="10"  required placeholder="Primary Phone" class="form-control" name="phonenumber" ng-keyup="userAddVm.EnalblePhoneForm(createUserForm)" ng-model="userAddVm.Phone" ng-pattern="phoneRegx" />
+                                            <input type="text" maxlength="11" minlength="10"  required placeholder="Số điện thoại" class="form-control" name="phonenumber" ng-keyup="userAddVm.EnalblePhoneForm(createUserForm)" ng-model="userAddVm.Phone" ng-pattern="phoneRegx" />
                                             <label class="control-label" ng-show="createUserForm.phonenumber.$error.required&&createUserForm.phonenumber.$touched">* Cần nhập Số Điện Thoại</label>
                                             <label class="control-label" ng-show="createUserForm.phonenumber.$error.pattern&&createUserForm.phonenumber.$touched">* Số Điện thoại chỉ được nhập số</label>
                                             <label class="control-label font-green-sharp" ng-show="createUserForm.phonenumber.$error.minlength&&!createUserForm.phonenumber.$error.pattern&&createUserForm.phonenumber.$touched">* Số Điện thoại quá ngắn</label>
                                             <label class="control-label font-red-intense bold" ng-show="userAddVm.existedPhone&&createUserForm.phonenumber.$touched">* Số Điện thoại này đã tồn tại. Vui lòng nhập số khác!</label>
                                         </div>
                                         <div class="form-group col-md-12" ng-class="{'has-error': (userAddVm.showInvalid && createUserForm.email.$error.required) || (createUserForm.email.$error.pattern || createUserForm.email.$error.email)}">
-                                            <label class="control-label">Email
+                                            <label class="control-label">E-mail
                                                 <span class="required-field">*</span>
                                             </label>
-                                            <input type="email" placeholder="Email" class="form-control" name="email" ng-model="userAddVm.user.email" required autocapitalize="off"
+                                            <input type="email" placeholder="E-mail" class="form-control" name="email" ng-model="userAddVm.user.email" required autocapitalize="off"
                                                 ng-pattern="emailRegx" />
                                             <!--<label class="control-label" ng-show="userAddVm.showInvalid && createUserForm.email.$error.required">* This field is required</label>-->
-                                            <label class="control-label" ng-show="createUserForm.email.$error.pattern || createUserForm.email.$error.email">* This is not valid</label>
+                                            <label class="control-label" ng-show="createUserForm.email.$error.pattern || createUserForm.email.$error.email">* Chưa chính xác</label>
                                         </div>
                                         <div class="form-group col-md-6" ng-class="{'has-error': (userAddVm.showInvalid && createUserForm.firstname.$error.required) || createUserForm.firstname.$error.pattern}">
-                                            <label class="control-label">First Name
+                                            <label class="control-label">Tên
                                                 <span class="required-field">*</span>
                                             </label>
-                                            <input type="text" name="firstname" placeholder="First Name" class="form-control" required ng-pattern="nameRegx" ng-model="userAddVm.user.firstName"
+                                            <input type="text" name="firstname" placeholder="Tên" class="form-control" required ng-pattern="nameRegx" ng-model="userAddVm.user.firstName"
                                             />
                                             <!--<label class="control-label" ng-show="userAddVm.showInvalid && createUserForm.firstname.$error.required">* This field is required</label>-->
-                                            <label class="control-label" ng-show="createUserForm.firstname.$error.pattern">* This field does not allow special characters</label>
+                                            <label class="control-label" ng-show="createUserForm.firstname.$error.pattern">* Không cho phép nhập ký tự đặc biệt</label>
                                         </div>
                                         <div class="form-group col-md-6" ng-class="{'has-error': (userAddVm.showInvalid && createUserForm.lastname.$error.required) || createUserForm.lastname.$error.pattern}"
                                             }>
-                                            <label class="control-label">Last Name
+                                            <label class="control-label">Họ và Chữ lót
                                                 <span class="required-field">*</span>
                                             </label>
-                                            <input type="text" name="lastname" placeholder="Last Name" class="form-control" required ng-pattern="nameRegx" ng-model="userAddVm.user.lastName"
+                                            <input type="text" name="lastname" placeholder="Họ và Chữ lót" class="form-control" required ng-pattern="nameRegx" ng-model="userAddVm.user.lastName"
                                             />
                                             <!--<label class="control-label" ng-show="userAddVm.showInvalid && createUserForm.lastname.$error.required">* This field is required</label>-->
-                                            <label class="control-label" ng-show="createUserForm.lastname.$error.pattern">* This field does not allow special characters</label>
+                                            <label class="control-label" ng-show="createUserForm.lastname.$error.pattern">* Không cho phép nhập ký tự đặc biệt</label>
                                         </div>
                                         <div class="form-group col-md-6" ng-class="{'has-error': (userAddVm.showInvalid && createUserForm.address.$error.required)}">
-                                            <label class="control-label">Address </label>
-                                            <input name="address" type="text" placeholder="Address" ng-model="userAddVm.user.address" class="form-control" />
+                                            <label class="control-label">Địa chỉ </label>
+                                            <input name="address" type="text" placeholder="Địa chỉ" ng-model="userAddVm.user.address" class="form-control" />
                                             <!--<label class="control-label" ng-show="userAddVm.showInvalid && createUserForm.address.$error.required">* This field is required</label>-->
-                                            <label class="control-label" ng-show="createUserForm.address.$error.pattern">* This field does not allow special characters</label>
+                                            <label class="control-label" ng-show="createUserForm.address.$error.pattern">* Không cho phép nhập ký tự đặc biệt</label>
                                         </div>
                                         <div class="form-group col-md-6" ng-class="{'has-error': userAddVm.showInvalid && createUserForm.city.$error.required}">
-                                            <label class="control-label">City </label>
+                                            <label class="control-label">Tỉnh / Thành phố </label>
                                             <select name="city" ng-model="userAddVm.user.city" class="form-control" ng-change="userAddVm.changeCity()">
-                                                <option value="" disabled>Please Choose City</option>
-                                                <option ng-repeat="item in userAddVm.cities" value="{{item.value}}" ng-selected="item.value == userAddVm.user.city">{{item.text}}</option>
+                                                <option value="" disabled>Tỉnh / Thành phố</option>
+                                                <option ng-repeat="item in userAddVm.cities" value="{{item.$id}}" ng-selected="item.$id == userAddVm.user.city">{{item.text}}</option>
                                             </select>
                                             <!--<label class="control-label" ng-show="userAddVm.showInvalid && createUserForm.state.$error.required">* This field is required</label>-->
                                         </div>
                                         <div class="form-group col-md-6" ng-class="{'has-error': userAddVm.showInvalid && createUserForm.district.$error.required}">
-                                            <label class="control-label">District </label>
+                                            <label class="control-label">Quận / Huyện </label>
                                             <select name="district" ng-model="userAddVm.user.district" class="form-control" ng-change="userAddVm.changeDistrict()">
-                                                <option value="" disabled>Please Choose District</option>
-                                                <option ng-repeat="item in userAddVm.districts" value="{{item.value}}" ng-selected="item.value == userAddVm.user.district">{{item.text}}</option>
+                                                <option value="" disabled>Quận / Huyện </option>
+                                                <option ng-repeat="item in userAddVm.districts" value="{{item.$id}}" ng-selected="item.$id == userAddVm.user.district">{{item.text}}</option>
                                             </select>
                                             <!--<label class="control-label" ng-show="userAddVm.showInvalid && createUserForm.state.$error.required">* This field is required</label>-->
                                         </div>
                                         <div class="form-group col-md-6" ng-class="{'has-error': userAddVm.showInvalid && createUserForm.ward.$error.required}">
-                                            <label class="control-label">Ward </label>
+                                            <label class="control-label">Phường / Xã </label>
                                             <select name="ward" ng-model="userAddVm.user.ward" class="form-control">
-                                                <option value="" disabled>Please Choose Ward</option>
-                                                <option ng-repeat="item in userAddVm.wards" value="{{item.value}}" ng-selected="item.value == userAddVm.user.ward">{{item.text}}</option>
+                                                <option value="" disabled>Phường / Xã</option>
+                                                <option ng-repeat="item in userAddVm.wards" value="{{item.$id}}" ng-selected="item.$id == userAddVm.user.ward">{{item.text}}</option>
                                             </select>
                                             <!--<label class="control-label" ng-show="userAddVm.showInvalid && createUserForm.state.$error.required">* This field is required</label>-->
                                         </div>
                                         <div class="form-group col-md-12">
                                             <div ng-class="{'has-error': (userAddVm.showInvalid && createUserForm.password.$error.required) || createUserForm.password.$error.pattern}">
-                                                <label class="control-label">Password
+                                                <label class="control-label">Mật khẩu
                                                     <span class="required-field">*</span>
                                                 </label>
-                                                <input name="password" type="password" placeholder="Password" class="form-control " ng-model="userAddVm.user.password" required
+                                                <input name="password" type="password" placeholder="Mật khẩu" class="form-control " ng-model="userAddVm.user.password" required
                                                     />
                                                 <!--<label class="control-label" ng-show="userAddVm.showInvalid && createUserForm.password.$error.required">* This field is required</label>-->
-                                                <!-- <label class="control-label" ng-show="createUserForm.password.$error.pattern">* Password must be 6-12 characters long and include at least one letter and
-                                                    one number. Passwords are case sensitive.</label> -->
+                                                <label class="control-label" ng-show="createUserForm.password.$error.pattern">* Mật khẩu phải dài từ 6-12 ký tự và bao gồm ít nhất một chữ cái và một số. Mật khẩu phân biệt chữ hoa chữ thường.</label>
                                             </div>
                                             <div class="form-group col-md-12">
                                             </div>
                                             <div ng-class="{'has-error': (userAddVm.showInvalid && createUserForm.confirmPassword.$error.required) || createUserForm.confirmPassword.$error.match}">
-                                                <label class="control-label">Retype Password
+                                                <label class="control-label">Nhập lại mật khẩu
                                                     <span class="required-field">*</span>
                                                 </label>
-                                                <input name="confirmPassword" type="password" placeholder="Retype Password" class="form-control " ng-model="userAddVm.user.confirmPassword"
+                                                <input name="confirmPassword" type="password" placeholder="Nhập lại mật khẩu" class="form-control " ng-model="userAddVm.user.confirmPassword"
                                                     required password-match="userAddVm.user.password" />
                                                 <!--<label class="control-label" ng-show="userAddVm.showInvalid && createUserForm.password.$error.required">* This field is required</label>-->
-                                                <label class="control-label" ng-show="createUserForm.confirmPassword.$error.match">* Passwords do not match.</label>
+                                                <label class="control-label" ng-show="createUserForm.confirmPassword.$error.match">* Mật khẩu chưa chính xác.</label>
                                             </div>
                                         </div>
                                         <div class=" col-md-12">
                                             <div class="margin-top-20">
                                                 <button class="btn green grreen-haze" type="submit" ng-disabled="createUserForm.$invalid">
-                                                    Add
+                                                    Lưu lại
                                                 </button>
                                                 <button class="btn default" type="button" ng-click="userAddVm.cancel()">
-                                                    Cancel
+                                                    Hủy bỏ
                                                 </button>
                                             </div>
                                         </div>

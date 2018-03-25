@@ -13,13 +13,16 @@
             $rootScope.reProcessSideBar = false;
         }
 
-		var userAddVm = this; // jshint ignore:line
-		userAddVm.cities = appSettings.thanhPho;
+		var userAddVm = this; // jshint ignore:line		
+		userAddVm.cacLoaiHanhChinh = appSettings.cacLoaiHanhChinh;
+        userAddVm.cities = [];
+        userAddVm.districts = [];        
+
 		userAddVm.existedPhone=false;
 		userAddVm.showInvalid = false;
 		$scope.emailRegx = /^[^!'"\/ ]+$/;
 		$scope.phoneRegx=/^(0-9)*[^!#$%^&*()'"\/\\;:@=+,?\[\]\/.A-Za-z ]*$/;
-		//$scope.passwordRegx =/^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,12}$/;
+		$scope.passwordRegx =/^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,12}$/;
 		$scope.nameRegx = /^(a-z|A-Z|0-9)*[^!#$%^&*()'"\/\\;:@=+,?\[\]\/]*$/;
 		$scope.addressRegx = /^(a-z|A-Z|0-9)*[^!$%^&*()'"\/\\;:@=+,?\[\]]*$/;
 		$scope.zipcodeRegx = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
@@ -49,32 +52,40 @@
 			/* jshint ignore:end */
 		};
 
+		_.forEach(userAddVm.cacLoaiHanhChinh.capTinh, function (item, key) {
+            userAddVm.cities.push({
+                $id: key,
+                text: item.text
+            });
+        });
+
 		//Functions
 		userAddVm.create = function(form){
 			appUtils.showLoading();
 			userAddVm.showInvalid = true;
 			if(form.$invalid){
+				appUtils.hideLoading();
 				return;
-			}
-
+			}			
 			// check password
-			// var pvalid = $scope.passwordRegx.test(userAddVm.user.password);
-			// if(!pvalid){
-			// 	$ngBootbox.alert('Password must be 6-12 characters long and include at least one letter and one number. Passwords are case sensitive.');
-			//     return;		
-			// }
+			var pvalid = $scope.passwordRegx.test(userAddVm.user.password);
+			 if(!pvalid){
+			 	$ngBootbox.alert('Mật khẩu phải dài từ 6-12 ký tự và bao gồm ít nhất một chữ cái và một số. Mật khẩu phân biệt chữ hoa chữ thường.');
+				appUtils.hideLoading();
+				return;		
+			}
 			userAddVm.user.phoneNumber = $.trim(userAddVm.Phone) === '' ? ' ' : userAddVm.Phone;
 				//check phone existed
 				userService.getExitedPhone(userAddVm.user.phoneNumber).then(function(resdata){
-					var data=resdata.data;
+					var data = resdata.data;					
 					if(data.phone){// phone đã tồn tại
 						userAddVm.existedPhone=true;
 						appUtils.hideLoading();
-					}else{
-						var onSuccess = function(res){
+					} else {
+						var onSuccess = function(res){							
 							if(!res || !res.result){
 								appUtils.hideLoading();
-								$ngBootbox.alert(res.errorMsg.message);
+								$ngBootbox.alert(res.errorMsg);
 								return;	
 							}
 							//Add more info of user in firebase
@@ -82,32 +93,31 @@
 							delete userAddVm.user.confirmPassword;
 			
 							userService.createUser(userAddVm.user,res.uid).then(function(res){
+								debugger;								
 								if(!res.result){				
-									$ngBootbox.alert(res.errorMsg.message);
+									$ngBootbox.alert(res.errorMsg);
 									return;
 								}
-								toaster.pop('success','Success', "Account Created.");
-								appUtils.hideLoading();
-			
+								toaster.pop('success','Thành công', "Tài khoản người dùng đã được tạo.");
+								appUtils.hideLoading();			
 								//Delete users List storage
 								//delete $rootScope.storage.usersList;
 								//create succces go to edit view
 								//$rootScope.reProcessSideBar = true;
 								$state.go('user.details', {id: res.data});		
 							}, function(res){
-								$ngBootbox.alert(res.errorMsg.message);
+								$ngBootbox.alert(res.errorMsg);
 								appUtils.hideLoading();
 								return;
 							});
 						};//on Success
 			
 						var onFail = function(res){
-							$ngBootbox.alert(res.errorMsg.message);
+							$ngBootbox.alert(res.errorMsg);
 							appUtils.hideLoading();
 							return;
 						};
-			
-						
+								
 						userService.checkUserIsDeleted(userAddVm.user.email).then(function(res){
 							if(res === null){
 								// isPhoneExistReq.then(function(res){
@@ -119,7 +129,7 @@
 								// });	
 							}else{
 								appUtils.hideLoading();
-								$ngBootbox.confirm('The user has been archived. Do you want to restore that user now ?').then(function(){
+								$ngBootbox.confirm('Người dùng đã được lưu trữ. Bạn có muốn khôi phục lại người dùng đó ngay bây giờ?').then(function(){
 									userService.restoreUser(res.$id).then(function(resRestore){
 										if(resRestore.result){
 											userService.get(res.$id).$loaded().then(function(userData){
@@ -131,8 +141,7 @@
 							}
 						});
 					}
-				});
-			
+				});			
 		};
 
 		userAddVm.cancel = function(form){
@@ -140,13 +149,35 @@
 		};
 		
 		userAddVm.changeCity = function(){
-			var districts = appSettings.quanHuyen[userAddVm.user.city];
-			userAddVm.districts = districts;
+			var districts;			
+			userAddVm.districts = [];
+            _.forEach(userAddVm.cacLoaiHanhChinh.capHuyen, function (item, key) {                     
+                if(key === userAddVm.user.city) {
+                    districts = item;
+                }
+            });
+            _.forEach(districts, function (item, key) {
+                userAddVm.districts.push({
+                    $id: key,
+                    text: item.text
+                });
+            });     
 		};
 		
-		userAddVm.changeDistrict = function () {
-			var wards = appSettings.phuongXa[userAddVm.user.district];
-			userAddVm.wards = wards;
+		userAddVm.changeDistrict = function () {			
+			var wards;
+			userAddVm.wards = [];
+			_.forEach(userAddVm.cacLoaiHanhChinh.capXa, function(item, key){
+				if(key === userAddVm.user.district){
+					wards = item;
+				}
+			});
+			_.forEach(wards, function(item, key){
+				userAddVm.wards.push({
+					$id: key,
+					text: item.text
+				});
+			});
 		};
 	}
 })();

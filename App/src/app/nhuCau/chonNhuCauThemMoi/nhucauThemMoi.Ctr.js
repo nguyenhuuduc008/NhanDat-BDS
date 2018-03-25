@@ -25,11 +25,6 @@
         var bdsKey;
         console.log('APPSETTING', appSettings);
         
-        nhuCauThemMoiVm.options = {
-            start: [20, 70],
-            range: {min: 0, max: 100}
-        };
-
         //Load data
         _.forEach(nhuCauThemMoiVm.cacKhoBDS, function(item, key) {
             if(key != 'khoDefault') {
@@ -191,6 +186,73 @@
                 toaster.error("Xoá Hình Ảnh / Video Không Thành Công!");
             });
         };
+
+        //Google map
+        function googleMapInit() {
+            nhuCauThemMoiVm.isMapInit = false;
+            var defLatitude = nhuCauThemMoiVm.model.lat || 56.162939;
+            var defLongitude = nhuCauThemMoiVm.model.lon || 10.203921;
+            $scope.map = {
+                center: {
+                    latitude: defLatitude,
+                    longitude: defLongitude
+                },
+                zoom: 14
+            };
+            $scope.options = {
+                scrollwheel: false
+            };
+            $scope.marker = {
+                id: 0,
+                coords: {
+                    latitude: defLatitude,
+                    longitude: defLongitude
+                },
+                options: {
+                    draggable: true
+                }
+            };
+        }
+        
+        function getLatLong(tinhThanh, quanHuyen, phuongXa, duongPho) {
+            tinhThanh = tinhThanh || '';
+            quanHuyen = quanHuyen || '';
+            phuongXa = phuongXa || '';
+            duongPho = duongPho || '';
+            
+            var geocoder =  new google.maps.Geocoder();
+            geocoder.geocode({
+                'address': tinhThanh + ',' + quanHuyen + ',' + phuongXa
+            }, function(result, status) {
+                console.log('GEOCODE', result);
+                var lat = result[0].geometry.location.lat();
+                var lon = result[0].geometry.location.lng();
+                $scope.map = {
+                    center: {
+                        latitude: lat,
+                        longitude: lon
+                    },
+                    zoom: 15
+                };
+                $scope.marker = {
+                    id: 0,
+                    coords: {
+                        latitude: lat,
+                        longitude: lon
+                    },
+                };
+                $scope.$apply();
+            });
+        }
+
+        $scope.$watchCollection("marker.coords", function (newVal, oldVal) {
+            if (_.isEqual(newVal, oldVal))
+                return;
+            console.log('COORRD', newVal);
+            nhuCauThemMoiVm.model.lat = newVal.latitude;
+            nhuCauThemMoiVm.model.lon = newVal.longitude;
+        });
+
       
         //function
         nhuCauThemMoiVm.changeCity = function () {
@@ -206,6 +268,16 @@
                     text: item.text
                 });
             });
+            if(nhuCauThemMoiVm.isMapInit) return;
+            nhuCauThemMoiVm.model.quanHuyen = null;
+            nhuCauThemMoiVm.model.phuongXa = null;
+            nhuCauThemMoiVm.model.duongPho = null;
+            var thanhPho = getTextByKey(nhuCauThemMoiVm.cities, nhuCauThemMoiVm.model.thanhPho);
+            var quanHuyen = getTextByKey(nhuCauThemMoiVm.districts, nhuCauThemMoiVm.model.quanHuyen);
+            var phuongXa = getTextByKey(nhuCauThemMoiVm.xaList, nhuCauThemMoiVm.model.phuongXa);
+            var duongPho = getTextByKey(nhuCauThemMoiVm.duongList, nhuCauThemMoiVm.model.duongPho);
+            
+            getLatLong(thanhPho, quanHuyen, phuongXa, duongPho);
         };
         
         nhuCauThemMoiVm.changeDistrict = function () {
@@ -215,7 +287,26 @@
             settingService.getListChildHanhChinh('duong', nhuCauThemMoiVm.model.quanHuyen).then(function(data) {
                 nhuCauThemMoiVm.duongList = data;
             });
-		};
+            if(nhuCauThemMoiVm.isMapInit) return;
+            nhuCauThemMoiVm.model.phuongXa = null;
+            nhuCauThemMoiVm.model.duongPho = null;
+            var thanhPho = getTextByKey(nhuCauThemMoiVm.cities, nhuCauThemMoiVm.model.thanhPho);
+            var quanHuyen = getTextByKey(nhuCauThemMoiVm.districts, nhuCauThemMoiVm.model.quanHuyen);
+            var phuongXa = getTextByKey(nhuCauThemMoiVm.xaList, nhuCauThemMoiVm.model.phuongXa);
+            var duongPho = getTextByKey(nhuCauThemMoiVm.duongList, nhuCauThemMoiVm.model.duongPho);
+            
+            getLatLong(thanhPho, quanHuyen, phuongXa, duongPho);
+        };
+        
+        nhuCauThemMoiVm.changeStreet = function () {
+            if(nhuCauThemMoiVm.isMapInit) return;
+            var thanhPho = getTextByKey(nhuCauThemMoiVm.cities, nhuCauThemMoiVm.model.thanhPho);
+            var quanHuyen = getTextByKey(nhuCauThemMoiVm.districts, nhuCauThemMoiVm.model.quanHuyen);
+            var phuongXa = getTextByKey(nhuCauThemMoiVm.xaList, nhuCauThemMoiVm.model.phuongXa);
+            var duongPho = getTextByKey(nhuCauThemMoiVm.duongList, nhuCauThemMoiVm.model.duongPho);
+            
+            getLatLong(thanhPho, quanHuyen, phuongXa, duongPho);
+        };
 
         //Function
         nhuCauThemMoiVm.changeForm = function (key) {
@@ -223,6 +314,7 @@
             switch (key) {
                 case 'ban':
                     createDropzone(nhuCauThemMoiVm.model.khoBDSKey, key);
+                    nhuCauThemMoiVm.isMapInit = true;
                     nhuCauThemMoiVm.formLink = './app/nhuCau/nhuCau-form/ban-form.tpl.html';
                     break;
                 case 'mua':
@@ -232,6 +324,7 @@
                     nhuCauThemMoiVm.formLink = './app/nhuCau/nhuCau-form/thue-form.tpl.html';
                     break;
                 case 'cho-thue':
+                    nhuCauThemMoiVm.isMapInit = true;
                     createDropzone(nhuCauThemMoiVm.model.khoBDSKey, key);
                     nhuCauThemMoiVm.formLink = './app/nhuCau/nhuCau-form/choThue-form.tpl.html';
                     break;
@@ -405,24 +498,38 @@
             $state.go('nhuCauListing');
         };
 
+        function getTextByKey(list, key) {
+            if(!!key) {
+                var result = _.find(list , ['$id', key]);
+                console.log('RESLACAPCHINH', result);
+                return result.text; 
+            }
+        }
+
         //set type of form 
         function setForm() {
             if($stateParams.isEdit) {
                 nhuCauThemMoiVm.model = $stateParams.item;
-                console.log('PARANS', nhuCauThemMoiVm.model);
+                nhuCauThemMoiVm.model.giaFrom = $stateParams.item.giaFrom || 100000000;
+                nhuCauThemMoiVm.model.giaTo = $stateParams.item.giaTo || 100000000;
                 nhuCauThemMoiVm.isEdit = $stateParams.isEdit;
                 nhuCauThemMoiVm.changeForm(nhuCauThemMoiVm.model.loaiNhuCauKey);
+                
                 if(nhuCauThemMoiVm.model.thanhPho) 
                     nhuCauThemMoiVm.changeCity(nhuCauThemMoiVm.model.thanhPho);
                 if(nhuCauThemMoiVm.model.quanHuyen) 
                     nhuCauThemMoiVm.changeDistrict(nhuCauThemMoiVm.model.quanHuyen);   
                     
                 loadMedia(nhuCauThemMoiVm.model.media);    
+                googleMapInit();
             } else {
                 nhuCauThemMoiVm.model = {};
+                nhuCauThemMoiVm.model.giaFrom = 100000000;
+                nhuCauThemMoiVm.model.giaTo = 100000000;
                 nhuCauThemMoiVm.model.loaiNhuCauKey = '0';
                 nhuCauThemMoiVm.model.media = {};
                 nhuCauThemMoiVm.model.khoBDSKey = !!nhuCauThemMoiVm.khoBDSDefault ? nhuCauThemMoiVm.khoBDSDefault: 'allKho';
+                googleMapInit();
             }
         }
 

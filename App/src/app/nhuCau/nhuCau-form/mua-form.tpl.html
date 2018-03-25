@@ -124,11 +124,12 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.diaChiBDS.$error.required)}">
-                                    <label class="control-label">Giá
-                                         
-                                    </label>
-                                    <input type="text" name="gia" placeholder="Giá" class="form-control" ng-model="nhuCauThemMoiVm.model.gia"
-                                    />
+                                    <label class="control-label">Giá Từ {{nhuCauThemMoiVm.model.giaFrom | currency: "": 0}} VNĐ đến {{nhuCauThemMoiVm.model.giaTo | currency: "": 0}} VNĐ</label>
+                                    <div class="col-md-12">
+                                        <input class="col-md-6" type="number" name="giaFrom" placeholder="Giá" class="form-control" ng-model="nhuCauThemMoiVm.model.giaFrom" />
+                                        <input class="col-md-6" type="number" name="giaTo" placeholder="Giá" class="form-control" ng-model="nhuCauThemMoiVm.model.giaTo" />
+                                    </div>
+                                    <div class="col-md-12" slider ng-from="nhuCauThemMoiVm.model.giaFrom"  ng-to="nhuCauThemMoiVm.model.giaTo" start=100000000 end=50000000000 step=10000></div>
                                 </div>
                             </div>
                             <div class="col-md-6">

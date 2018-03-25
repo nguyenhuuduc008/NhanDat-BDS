@@ -10,7 +10,7 @@
             addQuyTrinhPhapLy: addQuyTrinhPhapLy,
             updateQuyTrinhPhapLy: updateQuyTrinhPhapLy,
             removeQuyTrinhPhapLy: removeQuyTrinhPhapLy,
-            search: search
+            search: search            
         };
         //Ref
         
@@ -61,7 +61,7 @@
 
         function search(cri){
             return $firebaseArray(quyTrinhPhapLyRef).$loaded().then(function(data){
-                if(cri.thanhPho !== 'all'){
+                if(typeof(cri.thanhPho) !== 'undefined' && (cri.thanhPho !== 'all')){
                     data = _.filter(data, function(item){
                         return item.thanhPho === cri.thanhPho;
                     });
@@ -73,10 +73,10 @@
                 }
                 return $filter('filter')(data, function (item) {
                     for(var attr in item) {
-                    if (searchMatch(item[attr] + '', cri.keyword))
-                    {
-                        return true;
-                    }
+                        if (searchMatch(item[attr] + '', cri.keyword))
+                        {
+                            return true;
+                        }
                     }
                     return false;
                 });
@@ -89,5 +89,6 @@
             }
             return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
         }
+               
     }
 })();

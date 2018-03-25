@@ -114,7 +114,7 @@
                 appUtils.hideLoading();
                 $scope.showError = true;
                 // $scope.errMessage = error.message;
-                $scope.errMessage = "The password that you've entered is incorrect.";
+                $scope.errMessage = "Mật khẩu bạn nhập chưa chính xác!";
             });
         }
 
@@ -128,7 +128,7 @@
                 if(user && user.isDeleted){
                     $scope.$apply(function(){
                         $scope.showError = true;
-                        $scope.errMessage = "This user may have been deleted.";
+                        $scope.errMessage = "Người dùng này có thể đã bị xóa.";
                     });
                     appUtils.hideLoading();
                     authService.deleteAuthUser(uid);
@@ -137,7 +137,7 @@
                         $scope.$apply(function(){
                             appUtils.hideLoading();
                             $scope.showError = true;
-                            $scope.errMessage = "There are no permissions to access!";
+                            $scope.errMessage = "Không có quyền truy cập!";
                             authService.logout();
                         });
                     }else{
@@ -177,7 +177,7 @@
                     $scope.$apply(function(){
                         appUtils.hideLoading();
                         $scope.showError = true;
-                        $scope.errMessage = "Invalid user name/password";
+                        $scope.errMessage = "Tên đăng nhập hoặc mật khẩu chưa chính xác!";
                         authService.logout();
                     });
                 }   
@@ -272,7 +272,7 @@
 			}
 			authService.resetPasswordAuth($scope.email).then(function(){
 				$uibModalInstance.dismiss('cancel');
-				toaster.success("Reset Password Successfully!");
+				toaster.success("Yêu cầu lấy lại mật khẩu thành công!");
 			}, function(error) {
 			    $scope.showError = true;
 			  	$scope.errMessage = error.message;

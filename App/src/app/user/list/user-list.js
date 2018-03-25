@@ -193,6 +193,7 @@
                         var err = _.find(res, function(item){
                              return item.result === false;
                         });
+ 
                         if(err === undefined){
                             delete $rootScope.storage.usersList;
                              toaster.pop('success','Thành công', "Xóa thành công!");    

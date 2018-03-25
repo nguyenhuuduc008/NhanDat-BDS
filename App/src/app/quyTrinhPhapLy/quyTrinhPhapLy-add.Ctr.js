@@ -11,13 +11,23 @@
         var currentUser = $rootScope.storage.currentUser;
         var quyTrinhPhapLyAddVm = this;// jshint ignore:line
         quyTrinhPhapLyAddVm.showInvalid = false;
-        quyTrinhPhapLyAddVm.cities = appSettings.thanhPho;
+        quyTrinhPhapLyAddVm.cacLoaiHanhChinh = appSettings.cacLoaiHanhChinh;
+        quyTrinhPhapLyAddVm.cities = [];
+        quyTrinhPhapLyAddVm.districts = [];
+        var districts;
         quyTrinhPhapLyAddVm.model = {
             tenQuyTrinh: '',
             thanhPho: '',
             quanHuyen: '',
             noiDung: ''
         };
+        
+        _.forEach(quyTrinhPhapLyAddVm.cacLoaiHanhChinh.capTinh, function (item, key) {
+            quyTrinhPhapLyAddVm.cities.push({
+                $id: key,
+                text: item.text
+            });
+        });
 
         $scope.nameRegx = /^(a-z|A-Z|0-9)*[^!#$%^&*()'"\/\\;:@=+,?\[\]\/]*$/;
         $scope.options = {
@@ -38,10 +48,20 @@
             ]
         };
 
-        quyTrinhPhapLyAddVm.changeCity = function () {
-			var districts = appSettings.quanHuyen[quyTrinhPhapLyAddVm.model.thanhPho];
-			quyTrinhPhapLyAddVm.districts = districts;
-		};
+        quyTrinhPhapLyAddVm.changeCity = function(){                         
+            quyTrinhPhapLyAddVm.districts = [];
+            _.forEach(quyTrinhPhapLyAddVm.cacLoaiHanhChinh.capHuyen, function (item, key) {                     
+                if(key === quyTrinhPhapLyAddVm.model.thanhPho) {
+                    districts = item;
+                }
+            });
+            _.forEach(districts, function (item, key) {
+                quyTrinhPhapLyAddVm.districts.push({
+                    $id: key,
+                    text: item.text
+                });
+            });                  
+        };
         
         quyTrinhPhapLyAddVm.create=function(form){
             appUtils.showLoading();

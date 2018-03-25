@@ -107,6 +107,7 @@
 			
             return userRef.child(key).update({
 				isAuthorized: user.isAuthorized, 
+				userName: user.userName,
 				firstName: user.firstName,
 				lastName: user.lastName,
 				userRoles: user.userRoles || {},

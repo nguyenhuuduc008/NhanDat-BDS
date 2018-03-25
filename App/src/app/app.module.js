@@ -41,6 +41,7 @@
             'angularjs-autocomplete',
             'textAngular',
             'thatisuday.dropzone',
+            'nouislider',
 			/*
 			*	3rd modules
 			*/

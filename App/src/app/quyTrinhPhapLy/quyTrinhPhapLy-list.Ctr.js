@@ -1,3 +1,5 @@
+//import { debug } from "util";
+
 (function(){
     'use strict';
     angular.module('app.quytrinhphaply')
@@ -16,13 +18,20 @@
             appUtils.checkAllCheckBox(controlId,name);
         };
         
-        quyTrinhPhapLyListVm.cities = appSettings.thanhPho;
-
+        quyTrinhPhapLyListVm.cacLoaiHanhChinh = appSettings.cacLoaiHanhChinh;        
+        quyTrinhPhapLyListVm.cities = [];
+        quyTrinhPhapLyListVm.districts = [];
+        var districts;
+        
         quyTrinhPhapLyListVm.cri = {
-            keyword : '',
-            thanhPho: 'all',
-            quanHuyen: 'all'
+            keyword : ''            
         };
+        _.forEach(quyTrinhPhapLyListVm.cacLoaiHanhChinh.capTinh, function (item, key) {
+            quyTrinhPhapLyListVm.cities.push({
+                $id: key,
+                text: item.text
+            });
+        });
 
         quyTrinhPhapLyListVm.groupedItems = [];
         quyTrinhPhapLyListVm.filteredItems = [];
@@ -37,11 +46,11 @@
         quyTrinhPhapLyListVm.apply = function(chkName){
             appUtils.showLoading();
             var self = this;
-            var lstIds = [];
+            var lstIds = [];           
             $('input[name=' + chkName + ']').each(function () {
                 if (this.checked === true) {
                     lstIds.push($(this).val() + '');
-                }
+                }                
             });
             var removeIndex = quyTrinhPhapLyListVm.selectAction.indexOf('Xóa');
             if(removeIndex === -1){
@@ -74,24 +83,32 @@
         function getAllQuyTrinhPhapLy(){
             quyTrinhPhapLyService.getQuyTrinhPhapLy().$loaded().then(function(res){
                 quyTrinhPhapLyListVm.items = res;
+                //quyTrinhPhapLyListVm.pagedItems = res;
                 console.log(' quyTrinhPhapLyListVm.items');
                 console.log( quyTrinhPhapLyListVm.items);
             });
         }
-
-        quyTrinhPhapLyListVm.getThanhPhoName = function(key){
-            var thanhpho =_.find(appSettings.thanhPho, function(tp){
-                return tp.value === key;
-            });
-            return thanhpho !== undefined ? thanhpho.text : '';
+     
+        quyTrinhPhapLyListVm.getThanhPhoName = function(key) {           
+            var cityName;
+            if(quyTrinhPhapLyListVm.cacLoaiHanhChinh.capTinh.hasOwnProperty(key))
+            {
+                cityName = quyTrinhPhapLyListVm.cacLoaiHanhChinh.capTinh[key].text;                
+            }
+            return cityName;
         };
-        
-        quyTrinhPhapLyListVm.getQuanHuyenName = function(thanhPhoKey, quanHuyenKey){
-            var qhs = appSettings.quanHuyen[thanhPhoKey];
-            var quanhuyen =_.find(qhs, function(qh){
-                return qh.value === quanHuyenKey;
-            });
-            return quanhuyen !== undefined ? quanhuyen.text : '';
+  
+        quyTrinhPhapLyListVm.getQuanHuyenName = function(cityKey, districtKey){
+            var districtName;  
+            if(quyTrinhPhapLyListVm.cacLoaiHanhChinh.capHuyen.hasOwnProperty(cityKey))
+            {
+                var cityDistrict = quyTrinhPhapLyListVm.cacLoaiHanhChinh.capHuyen[cityKey];
+                if(cityDistrict.hasOwnProperty(districtKey))
+                {
+                    districtName = cityDistrict[districtKey].text;
+                }
+            }            
+            return districtName;
         };
 
         quyTrinhPhapLyListVm.groupToPages = function () {
@@ -116,7 +133,7 @@
         };
 
         quyTrinhPhapLyListVm.search = function (cri) {
-            appUtils.showLoading();
+            appUtils.showLoading();          
             quyTrinhPhapLyService.search(cri).then(function (result) {
                 appUtils.hideLoading();
                 quyTrinhPhapLyListVm.filteredItems = appUtils.sortArray(result,'timestampCreated');
@@ -128,11 +145,24 @@
         };
 
         quyTrinhPhapLyListVm.search(quyTrinhPhapLyListVm.cri);
-
-        quyTrinhPhapLyListVm.changeCity = function () {
-			var districts = appSettings.quanHuyen[quyTrinhPhapLyListVm.cri.thanhPho];
-            quyTrinhPhapLyListVm.districts = districts;
-            quyTrinhPhapLyListVm.cri.quanHuyen = 'all';
-		};
+        
+        quyTrinhPhapLyListVm.changeCity = function(){                         
+            quyTrinhPhapLyListVm.districts = [];
+            _.forEach(quyTrinhPhapLyListVm.cacLoaiHanhChinh.capHuyen, function (item, key) {                     
+                if(key === quyTrinhPhapLyListVm.cri.thanhPho) {
+                    districts = item;
+                }
+            });
+            _.forEach(districts, function (item, key) {
+                quyTrinhPhapLyListVm.districts.push({
+                    $id: key,
+                    text: item.text
+                });
+            });                  
+        };     
+        function init(){
+            quyTrinhPhapLyListVm.search(quyTrinhPhapLyListVm.cri);
+        }
+        init();  
     } 
 })();

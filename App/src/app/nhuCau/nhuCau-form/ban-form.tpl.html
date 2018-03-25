@@ -62,7 +62,7 @@
                                              
                                         </label>
                                         <!-- <input type="text" name="thanhPho" placeholder="Thành phố" class="form-control" ng-model="nhuCauThemMoiVm.model.thanhPho" /> -->
-                                        <select name="phuongXa" ng-model="nhuCauThemMoiVm.model.phuongXa" class="form-control" required>
+                                        <select name="phuongXa" ng-model="nhuCauThemMoiVm.model.phuongXa" class="form-control" ng-change="nhuCauThemMoiVm.changeStreet()" required>
                                             <option value="" disabled>Phường / Xã</option>
                                             <option ng-repeat="item in nhuCauThemMoiVm.xaList" value="{{item.$id}}" ng-selected="item.$id == nhuCauThemMoiVm.model.phuongXa">{{item.text}}</option>
                                         </select>
@@ -75,7 +75,7 @@
                                              
                                         </label>
                                         <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" ng-model="nhuCauThemMoiVm.model.quanHuyen"/> -->
-                                        <select name="duongPho" ng-model="nhuCauThemMoiVm.model.duongPho" class="form-control" required>
+                                        <select name="duongPho" ng-model="nhuCauThemMoiVm.model.duongPho" class="form-control" ng-change="nhuCauThemMoiVm.changeStreet()" required>
                                             <option value="" disabled>Đường / Phố</option>
                                             <option ng-repeat="item in nhuCauThemMoiVm.duongList" value="{{item.$id}}" ng-selected="item.$id == nhuCauThemMoiVm.model.duongPho">{{item.text}}</option>
                                         </select>
@@ -125,11 +125,12 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group  " ng-class="{'has-error': (nhuCauThemMoiVm.showInvalid && createForm.diaChiBDS.$error.required)}">
-                                        <label class="control-label">Giá
-                                             
-                                        </label>
-                                        <input type="text" name="gia" placeholder="Giá" class="form-control" ng-model="nhuCauThemMoiVm.model.gia"
-                                        />
+                                        <label class="control-label">Giá Từ {{nhuCauThemMoiVm.model.giaFrom | currency: "": 0}} VNĐ đến {{nhuCauThemMoiVm.model.giaTo | currency: "": 0}} VNĐ</label>
+                                        <div class="col-md-12">
+                                            <input class="col-md-6" type="number" name="giaFrom" placeholder="Giá" class="form-control" ng-model="nhuCauThemMoiVm.model.giaFrom" />
+                                            <input class="col-md-6" type="number" name="giaTo" placeholder="Giá" class="form-control" ng-model="nhuCauThemMoiVm.model.giaTo" />
+                                        </div>
+                                        <div class="col-md-12" slider ng-from="nhuCauThemMoiVm.model.giaFrom"  ng-to="nhuCauThemMoiVm.model.giaTo" start=100000000 end=50000000000 step=10000></div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -180,9 +181,11 @@
                         </div>
                     </div>
                     <div class="portlet-body form">
-                        <!-- BEGIN FORM-->
-                        <div class="form-body">
-                            ban do
+                        <div class="form-body map-google">
+                            <ui-gmap-google-map center="map.center" zoom="map.zoom" options="options">
+                                <ui-gmap-marker coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id">
+                                </ui-gmap-marker>
+                            </ui-gmap-google-map>
                         </div>
                         <!-- END FORM-->
                     </div>
@@ -222,7 +225,7 @@
                                         <tbody>
                                             <tr ng-repeat="item in nhuCauThemMoiVm.pagedItems[nhuCauThemMoiVm.paging.currentPage]">
                                                 <td colspan="2" style="vertical-align: middle; text-align: center;">
-                                                    <img class="lib-media-icon" src={{item.downloadUrl}} alt="media" style="width: 100%;">
+                                                    <img class="lib-media-icon" ng-src="{{item.downloadUrl}}" alt="media" style="width: 100%;">
                                                     <label>{{item.fileName}}</label>
                                                 </td>
                                                 <td class="text-center">
@@ -230,15 +233,15 @@
                                                 </td>
                                                 <td>
                                                     <textarea rows="5" name="desc" placeholder="Ghi Chú" ng-model="item.fileDescription" class="form-control"></textarea>
-                                                    <a href="#" title="Save" ng-click="nhuCauThemMoiVm.saveMedia(item)" class="padding-5 badge badge-success margin-top-5" style="float: right;">
+                                                    <a href="#" title="Lưu" ng-click="nhuCauThemMoiVm.saveMedia(item)" class="padding-5 badge badge-success margin-top-5" style="float: right;">
                                                         Lưu
                                                     </a>
                                                 </td>
                                                 <td align="center">
-                                                    <button class="btn padding-5 badge badge-warning" title="Copy Hes Link" ngclipboard data-clipboard-text="{{item.downloadUrl}}">
+                                                    <button class="btn padding-5 badge badge-warning" title="Sao Chép Đường Dẫn" ngclipboard data-clipboard-text="{{item.downloadUrl}}">
                                                         <i class="fa fa-link "></i>
                                                     </button>
-                                                    <a href="#" title="Delete" ng-click="nhuCauThemMoiVm.deleteMedia(item)" class="padding-5 badge badge-danger">
+                                                    <a href="#" title="Xoá" ng-click="nhuCauThemMoiVm.deleteMedia(item)" class="padding-5 badge badge-danger">
                                                         <i class="fa fa-trash"></i>
                                                     </a>
                                                 </td>

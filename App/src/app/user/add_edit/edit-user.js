@@ -18,6 +18,10 @@
 		userDetailVm.cities = appSettings.thanhPho;
 		userDetailVm.cacLoaiUser = appSettings.cacLoaiUser;
 		userDetailVm.adminRole = true;
+		userDetailVm.cacLoaiHanhChinh = appSettings.cacLoaiHanhChinh;
+		userDetailVm.cities = [];
+        userDetailVm.districts = [];
+        var districts;
 		// var adminRole = _.find(userDetailVm.currentUser.userRoles, function(o) { return o === "-KTlccaZaxPCGDaFPSc5"; });
 		// userDetailVm.adminRole = adminRole;
 		// console.log(adminRole);
@@ -39,6 +43,13 @@
 			roles = data;
 		});
 
+		_.forEach(userDetailVm.cacLoaiHanhChinh.capTinh, function (item, key) {
+            userDetailVm.cities.push({
+                $id: key,
+                text: item.text
+            });
+		});
+		
 		//Load Data
 		function loadUserDetails() {
 			appUtils.showLoading();
@@ -50,17 +61,41 @@
 				}
 			});
 		}
+
 		function setUser(result) {
 			userDetailVm.user = result;
 			userDetailVm.dataLetterPic = userDetailVm.user.firstName.charAt(0).toUpperCase() + userDetailVm.user.lastName.charAt(0).toUpperCase(); //userDetailVm.user.email.charAt(0).toUpperCase();// Handle avatar    
 			userPhone = userDetailVm.user.phoneNumber;
 			userDetailVm.Phone = userDetailVm.user.phoneNumber;
-
-			var districts = appSettings.quanHuyen[userDetailVm.user.city];
-			userDetailVm.districts = districts;
-			var wards = appSettings.phuongXa[userDetailVm.user.district];
-			userDetailVm.wards = wards;
-
+			
+			//Load districts
+			userDetailVm.districts = [];
+			_.forEach(userDetailVm.cacLoaiHanhChinh.capHuyen, function (item, key) {                     
+				if(key === userDetailVm.user.city) {
+					districts = item;
+				}
+			});
+			_.forEach(districts, function (item, key) {
+				userDetailVm.districts.push({
+					$id: key,
+					text: item.text
+				});
+			});
+			
+			//Load wards
+			var wards;
+			userDetailVm.wards = [];
+			_.forEach(userDetailVm.cacLoaiHanhChinh.capXa, function (item, key) {                     
+				if(key === userDetailVm.user.district) {
+					wards = item;
+				}
+			});
+			_.forEach(wards, function (item, key) {
+				userDetailVm.wards.push({
+					$id: key,
+					text: item.text
+				});
+			});						
 			//Get UserRole Info
 			loadRoles();
 		}
@@ -124,7 +159,7 @@
 			req.then(function (res) {
 				if (!res.result) {
 					appUtils.hideLoading();
-					$ngBootbox.alert(res.errorMsg.message);
+					$ngBootbox.alert(res.errorMsg);
 					return;
 				}
 				//Delete users List storage
@@ -138,8 +173,7 @@
 				if (userDetailVm.currentUser.$id == userDetailVm.user.$id) {
 					appUtils.transformObject(userDetailVm.currentUser, userDetailVm.user);
 				}
-			});
-			
+			});			
 		}
 
 		//Functions
@@ -194,14 +228,35 @@
 			/* jshint ignore:end */
 		};
 
-		userDetailVm.changeCity = function () {
-			var districts = appSettings.quanHuyen[userDetailVm.user.city];
-			userDetailVm.districts = districts;
+		userDetailVm.changeCity = function () {		
+			userDetailVm.districts = [];
+            _.forEach(userDetailVm.cacLoaiHanhChinh.capHuyen, function (item, key) {                     
+                if(key === userDetailVm.user.city) {
+                    districts = item;
+                }
+            });
+            _.forEach(districts, function (item, key) {
+                userDetailVm.districts.push({
+                    $id: key,
+                    text: item.text
+                });
+            });
 		};
 
-		userDetailVm.changeDistrict = function () {
-			var wards = appSettings.phuongXa[userDetailVm.user.district];
-			userDetailVm.wards = wards;
+		userDetailVm.changeDistrict = function () {		
+			var wards;
+			userDetailVm.wards = [];
+			_.forEach(userDetailVm.cacLoaiHanhChinh.capXa, function(item, key){
+				if(key === userDetailVm.user.district){
+					wards = item;
+				}
+			});
+			_.forEach(wards, function(item, key){
+				userDetailVm.wards.push({
+					$id: key,
+					text: item.text
+				});
+			});
 		};
 
 		angular.element(document).ready(function () {
@@ -289,7 +344,7 @@
 			req.then(function (res) {
 				if (!res.result) {
 					appUtils.hideLoading();
-					$ngBootbox.alert(res.errorMsg.message);
+					$ngBootbox.alert(res.errorMsg);
 					return;
 				}
 				//Delete users List storage

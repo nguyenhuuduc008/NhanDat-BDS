@@ -5,24 +5,24 @@
                 <div class="modal-header">
                     <div class="caption caption-md">
                         <i class="icon-globe theme-font hide"></i>
-                        <span class="caption-subject font-blue-madison bold uppercase">Reset Password</span>
+                        <span class="caption-subject font-blue-madison bold uppercase">Lấy lại mật khẩu</span>
                     </div>
                 </div>
                 <div class="modal-body" id="modal-body">
-                    <label> Enter your e-mail address below to reset your password. </label>
+                    <label> Nhập địa chỉ email của bạn dưới đây để lấy lại mật khẩu của bạn. </label>
                     <br ng-show="showInvalid && forgotPasswordForm.email.$error.required">
-                    <label class="control-label" ng-show="showInvalid && forgotPasswordForm.email.$error.required">* This field is required</label>
+                    <label class="control-label" ng-show="showInvalid && forgotPasswordForm.email.$error.required">* Bắt buộc nhập</label>
                     <br ng-show="forgotPasswordForm.email.$error.pattern || forgotPasswordForm.email.$error.email">
-                    <label class="control-label" ng-show="forgotPasswordForm.email.$error.pattern || forgotPasswordForm.email.$error.email">* This is not valid email</label>
+                    <label class="control-label" ng-show="forgotPasswordForm.email.$error.pattern || forgotPasswordForm.email.$error.email">* E-mail chưa chính xác!</label>
                     <label class="control-label" ng-show="showError">* {{errMessage}}</label>
-                    <input class="form-control placeholder-no-fix" type="email" autocomplete="off" placeholder="Email" name="email" ng-model="email" required ng-pattern="emailRegx"/>
+                    <input class="form-control placeholder-no-fix" type="email" autocomplete="off" placeholder="E-mail" name="email" ng-model="email" required ng-pattern="emailRegx"/>
                 </div>
             </div>
         </div>
         <div class="form-actions">
             <div class="modal-footer">
-                <button class="btn btn-primary" type="submit">Send</button>
-                <button class="btn btn-warning" type="button" ng-click="close()">Cancel</button>
+                <button class="btn btn-primary" type="submit">Gửi</button>
+                <button class="btn btn-warning" type="button" ng-click="close()">Hủy bỏ</button>
             </div>
         </div>
     </form>

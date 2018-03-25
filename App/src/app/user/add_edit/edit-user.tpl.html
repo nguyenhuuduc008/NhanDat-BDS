@@ -127,27 +127,32 @@
                                 <div class="tab-pane active row" id="tab_1_1">
                                      <a href="javascript:;" class="btn blue text-right" ng-click="userDetailVm.resetPassword()" style="float: right;"> Thay đổi mật khẩu </a>
                                     <form role="form" id="editUserForm" name="editUserForm" novalidate ng-submit="userDetailVm.saveEdit(editUserForm)" >
-                                            <div class="form-group col-md-12" ng-class="{'has-error': (editUserForm.phonenumber.$error.pattern||editUserForm.phonenumber.$error.required)}">
+                                        <div class="form-group col-md-12" ng-class="{'has-error': (userDetailVm.showInvalid && editUserForm.username.$error.required) || editUserForm.username.$error.pattern}">
+                                            <label class="control-label">Tên đăng nhập <span class="required-field">*</span></label>
+                                            <input type="text" name="username" placeholder="Tên đăng nhập" class="form-control" required ng-pattern="nameRegx" ng-model="userDetailVm.user.userName"/>                                            
+                                            <label class="control-label" ng-show="editUserForm.username.$error.pattern">* Không được nhập ký tự đăc biệt</label>
+                                        </div>
+                                        <div class="form-group col-md-12" ng-class="{'has-error': (editUserForm.phonenumber.$error.pattern||editUserForm.phonenumber.$error.required)}">
                                                 <label class="control-label" >Điện Thoại<span class="required-field"> *</span></label> 
                                                 <input type="text" maxlength="11" minlength="10"  required placeholder="Primary Phone" class="form-control" name="phonenumber" ng-keyup="userDetailVm.EnalblePhoneForm(editUserForm)" ng-model="userDetailVm.Phone" ng-pattern="phoneRegx" />
                                                 <label class="control-label" ng-show="editUserForm.phonenumber.$error.required">* Cần nhập Số Điện Thoại</label>
                                                 <label class="control-label" ng-show="editUserForm.phonenumber.$error.pattern">* Số Điện thoại chỉ được nhập số</label>
                                                 <label class="control-label font-green-sharp" ng-show="editUserForm.phonenumber.$error.minlength&&!editUserForm.phonenumber.$error.pattern">* Số Điện thoại quá ngắn</label>
                                                 <label class="control-label font-red-intense bold" ng-show="userDetailVm.existedPhone">* Số Điện thoại này đã tồn tại. Vui lòng nhập số khác!</label>
-                                            </div>
+                                            </div>                                            
                                         <div class="form-group col-md-12">
                                             <label class="control-label">E-mail</label>
-                                            <input type="email" disabled class="form-control" name="email" ng-model="userDetailVm.user.email" autocapitalize="off"/>
+                                            <input type="email" class="form-control" name="email" ng-model="userDetailVm.user.email" autocapitalize="off"/>
                                         </div>  
                                         <div class="form-group col-md-6" ng-class="{'has-error': (userDetailVm.showInvalid && editUserForm.firstname.$error.required) || editUserForm.firstname.$error.pattern}">
                                             <label class="control-label">Tên <span class="required-field">*</span></label>
-                                            <input type="text" name="firstname" placeholder="First Name" class="form-control" required ng-pattern="nameRegx" ng-model="userDetailVm.user.firstName"/>
+                                            <input type="text" name="firstname" placeholder="Tên" class="form-control" required ng-pattern="nameRegx" ng-model="userDetailVm.user.firstName"/>
                                             <!--<label class="control-label" ng-show="userDetailVm.showInvalid && editUserForm.firstname.$error.required">* This field is required</label>-->
                                             <label class="control-label" ng-show="editUserForm.firstname.$error.pattern">* Không được nhập ký tự đăc biệt</label>
                                         </div>
                                         <div class="form-group col-md-6" ng-class="{'has-error': (userDetailVm.showInvalid && editUserForm.lastname.$error.required) || editUserForm.lastname.$error.pattern}">
                                             <label class="control-label">Họ và Chữ lót <span class="required-field">*</span></label>
-                                            <input type="text" name="lastname" placeholder="Last Name" class="form-control"required ng-pattern="nameRegx" ng-model="userDetailVm.user.lastName"/>
+                                            <input type="text" name="lastname" placeholder="Họ và Chữ lót" class="form-control"required ng-pattern="nameRegx" ng-model="userDetailVm.user.lastName"/>
                                             <!--<label class="control-label" ng-show="userDetailVm.showInvalid && editUserForm.lastname.$error.required">* This field is required</label>-->
                                             <label class="control-label" ng-show="editUserForm.lastname.$error.pattern">* Không được nhập ký tự đăc biệt</label>
                                         </div>
@@ -159,26 +164,26 @@
                                             <label class="control-label" ng-show="editUserForm.address.$error.pattern">* Không được nhập ký tự đăc biệt</label>
                                         </div>
                                          <div class="form-group col-md-6" ng-class="{'has-error': userDetailVm.showInvalid && editUserForm.city.$error.required}">
-                                            <label class="control-label" >Thành Phố </label>
+                                            <label class="control-label" >Tỉnh / Thành phố </label>
                                             <select name="city" ng-model="userDetailVm.user.city" class="form-control" ng-change="userDetailVm.changeCity()">
-                                                <option value="" disabled >Chọn Thành Phố...</option>
-                                                <option ng-repeat="item in userDetailVm.cities" value="{{item.value}}" ng-selected="item.value == userDetailVm.user.city">{{item.text}}</option>
+                                                <option value="" disabled >Tỉnh / Thành phố</option>
+                                                <option ng-repeat="item in userDetailVm.cities" value="{{item.$id}}" ng-selected="item.$id == userDetailVm.user.city">{{item.text}}</option>
                                             </select>
                                             <!--<label class="control-label" ng-show="userDetailVm.showInvalid && editUserForm.state.$error.required">* This field is required</label>-->
                                         </div>
                                         <div class="form-group col-md-6" ng-class="{'has-error': userDetailVm.showInvalid && editUserForm.district.$error.required}">
-                                           <label class="control-label" >Quận </label>
+                                           <label class="control-label" >Quận / Huyện </label>
                                            <select name="district" ng-model="userDetailVm.user.district" class="form-control" ng-change="userDetailVm.changeDistrict()">
-                                               <option value="" disabled >Chọn Quận...</option>
-                                               <option ng-repeat="item in userDetailVm.districts" value="{{item.value}}" ng-selected="item.value == userDetailVm.user.district">{{item.text}}</option>
+                                               <option value="" disabled >Quận / Huyện</option>
+                                               <option ng-repeat="item in userDetailVm.districts" value="{{item.$id}}" ng-selected="item.$id == userDetailVm.user.district">{{item.text}}</option>
                                            </select>
                                            <!--<label class="control-label" ng-show="userDetailVm.showInvalid && editUserForm.state.$error.required">* This field is required</label>-->
                                        </div>
                                        <div class="form-group col-md-6" ng-class="{'has-error': userDetailVm.showInvalid && editUserForm.ward.$error.required}">
-                                          <label class="control-label" >Phường </label>
+                                          <label class="control-label" >Phường / Xã </label>
                                           <select name="ward" ng-model="userDetailVm.user.ward" class="form-control" >
-                                              <option value="" disabled >Chọn Phường...</option>
-                                              <option ng-repeat="item in userDetailVm.wards" value="{{item.value}}" ng-selected="item.value == userDetailVm.user.ward">{{item.text}}</option>
+                                              <option value="" disabled >Phường / Xã</option>
+                                              <option ng-repeat="item in userDetailVm.wards" value="{{item.$id}}" ng-selected="item.$id == userDetailVm.user.ward">{{item.text}}</option>
                                           </select>
                                           <!--<label class="control-label" ng-show="userDetailVm.showInvalid && editUserForm.state.$error.required">* This field is required</label>-->
                                       </div>

@@ -20,16 +20,16 @@
                                 <input type="text" name="name" placeholder="Tên Quy Trình" class="form-control" required ng-pattern="nameRegx" ng-model="quyTrinhPhapLyEditVm.model.tenQuyTrinh"
                                 />
                                 <!--<label class="control-label" ng-show="quyTrinhPhapLyEditVm.showInvalid && quyTrinhPhapLyForm.name.$error.required">* This field is required</label>-->
-                                <label class="control-label" ng-show="quyTrinhPhapLyForm.name.$error.pattern">* This field does not allow special characters</label>
+                                <label class="control-label" ng-show="quyTrinhPhapLyForm.name.$error.pattern">* Không cho phép nhập ký tự đặc biệt</label>
                             </div>
                             <div class="form-group  col-md-6" ng-class="{'has-error': (quyTrinhPhapLyEditVm.showInvalid && quyTrinhPhapLyForm.thanhPho.$error.required)}">
-                                <label class="control-label">Thành phố
+                                <label class="control-label">Tỉnh / Thành phố
                                     <span class="required-field">*</span>
                                 </label>
                                 <!-- <input type="text" name="thanhPho" placeholder="Thành phố" class="form-control" required ng-model="quyTrinhPhapLyEditVm.model.thanhPho" /> -->
                                 <select name="thanhPho" ng-model="quyTrinhPhapLyEditVm.model.thanhPho" class="form-control" ng-change="quyTrinhPhapLyEditVm.changeCity()" required>
-                                    <option value="" disabled>Thành phố</option>
-                                    <option ng-repeat="item in quyTrinhPhapLyEditVm.cities" value="{{item.value}}" ng-selected="item.value == quyTrinhPhapLyEditVm.model.thanhPho">{{item.text}}</option>
+                                    <option value="" disabled>Tỉnh / Thành phố</option>
+                                    <option ng-repeat="item in quyTrinhPhapLyEditVm.cities" value="{{item.$id}}" ng-selected="item.$id == quyTrinhPhapLyEditVm.model.thanhPho">{{item.text}}</option>
                                 </select>
                             </div>
                             <div class="form-group  col-md-6" ng-class="{'has-error': (quyTrinhPhapLyEditVm.showInvalid && quyTrinhPhapLyForm.quanHuyen.$error.required)}">
@@ -39,7 +39,7 @@
                                 <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" required ng-model="quyTrinhPhapLyEditVm.model.quanHuyen"/> -->
                                 <select name="quanHuyen" ng-model="quyTrinhPhapLyEditVm.model.quanHuyen" class="form-control" ng-change="quyTrinhPhapLyEditVm.changeDistrict()" required>
                                     <option value="" disabled>Quận / Huyện</option>
-                                    <option ng-repeat="item in quyTrinhPhapLyEditVm.districts" value="{{item.value}}" ng-selected="item.value == quyTrinhPhapLyEditVm.model.quanHuyen">{{item.text}}</option>
+                                    <option ng-repeat="item in quyTrinhPhapLyEditVm.districts" value="{{item.$id}}" ng-selected="item.$id == quyTrinhPhapLyEditVm.model.quanHuyen">{{item.text}}</option>
                                 </select>
                             </div>
                             <div class="form-group  col-md-12" ng-class="{'has-error': (quyTrinhPhapLyEditVm.showInvalid && quyTrinhPhapLyForm.quanHuyen.$error.required)}">

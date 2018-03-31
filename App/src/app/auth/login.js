@@ -184,7 +184,8 @@
             }).catch(function(error) {
                 appUtils.hideLoading();
                 $scope.showError = true;
-                $scope.errMessage = error.message;
+                console.log(error.code);
+                //$scope.errMessage = error.message;
                 authService.logout();
             });
         }
@@ -274,9 +275,20 @@
 				$uibModalInstance.dismiss('cancel');
 				toaster.success("Yêu cầu lấy lại mật khẩu thành công!");
 			}, function(error) {
-			    $scope.showError = true;
-			  	$scope.errMessage = error.message;
+                $scope.showError = true;
+               //handle error message to vietnamese language
+                $scope.errMessage = handleError(error);
 			});
-		};
+        };
+        
+        function handleError(error){  
+            console.log(error.message);          
+            if(typeof($scope.errors[error.code]) !== 'undefined'){
+                return $scope.errors[error.code];
+            }
+            else {
+                return error.message;
+            }
+        }
     }
 })();

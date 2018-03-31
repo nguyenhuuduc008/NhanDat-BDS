@@ -77,14 +77,14 @@
                  }]
             }
          })
-         .state('quyHoach-list',{
+         .state('loaiNoiThat-list',{
             parent: 'root',
-            url: '/setting/quyHoach-list',
-            templateUrl: 'app/setting/quyHoach/quyHoach-list.tpl.html',
-            controller: 'quyHoachListCtr',
-            controllerAs: 'quyHoachListVm',
+            url: '/setting/loaiNoiThat-list',
+            templateUrl: 'app/setting/loaiNoiThat/loaiNoiThat-list.tpl.html',
+            controller: 'loaiNoiThatListCtr',
+            controllerAs: 'loaiNoiThatListVm',
             data: {
-                pageTitle: 'Quản Lý Quy Hoạch',
+                pageTitle: 'Quản Lý Loại Nội Thất',
                 module: 'setting',
                 icon: 'icon-settings',
                 parent: 'settingList'
@@ -94,14 +94,14 @@
                     return authService.requireSignIn();
                  }]
             }
-         }).state('quyHoach-add',{
+         }).state('loaiNoiThat-add',{
             parent: 'root',
-            url: '/setting/quyHoach-add',
-            templateUrl: 'app/setting/quyHoach/quyHoach-add.tpl.html',
-            controller: 'quyHoachAddCtr',
-            controllerAs: 'quyHoachAddVm',
+            url: '/setting/loaiNoiThat-add',
+            templateUrl: 'app/setting/loaiNoiThat/loaiNoiThat-add.tpl.html',
+            controller: 'loaiNoiThatAddCtr',
+            controllerAs: 'loaiNoiThatAddVm',
             data: {
-                pageTitle: 'Thêm Loại Quy Hoạch',
+                pageTitle: 'Thêm Loại Nội Thất',
                 module: 'setting',
                 parent: 'settingList',
                 hide:true
@@ -111,14 +111,14 @@
                     return authService.requireSignIn();
                  }]
             }
-         }).state('quyHoach-edit',{
+         }).state('loaiNoiThat-edit',{
             parent: 'root',
-            url: '/setting/quyHoach-edit/:id',
-            templateUrl: 'app/setting/quyHoach/quyHoach-edit.tpl.html',
-            controller: 'quyHoachEditCtr',
-            controllerAs: 'quyHoachEditVm',
+            url: '/setting/loaiNoiThat-edit/:id',
+            templateUrl: 'app/setting/loaiNoiThat/loaiNoiThat-edit.tpl.html',
+            controller: 'loaiNoiThatEditCtr',
+            controllerAs: 'loaiNoiThatEditVm',
             data: {
-                pageTitle: 'Sửa Loại Quy Hoạch',
+                pageTitle: 'Sửa Loại Nội Thất',
                 module: 'setting',
                 parent: 'settingList',
                 hide:true

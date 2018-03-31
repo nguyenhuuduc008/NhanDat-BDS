@@ -82,10 +82,7 @@
 
         function getAllQuyTrinhPhapLy(){
             quyTrinhPhapLyService.getQuyTrinhPhapLy().$loaded().then(function(res){
-                quyTrinhPhapLyListVm.items = res;
-                //quyTrinhPhapLyListVm.pagedItems = res;
-                console.log(' quyTrinhPhapLyListVm.items');
-                console.log( quyTrinhPhapLyListVm.items);
+                quyTrinhPhapLyListVm.items = res;                
             });
         }
      
@@ -133,8 +130,14 @@
         };
 
         quyTrinhPhapLyListVm.search = function (cri) {
-            appUtils.showLoading();          
-            quyTrinhPhapLyService.search(cri).then(function (result) {
+            appUtils.showLoading();                        
+            if(typeof(quyTrinhPhapLyListVm.cri.thanhPho) !== 'undefined' && 
+                (typeof(quyTrinhPhapLyListVm.cri.quanHuyen) === 'undefined' || quyTrinhPhapLyListVm.cri.quanHuyen === null)){               
+                appUtils.hideLoading();
+                toaster.warning("Vui lòng chọn Quận / Huyện!");
+                return;
+            }    
+            quyTrinhPhapLyService.search(cri).then(function (result) {                
                 appUtils.hideLoading();
                 quyTrinhPhapLyListVm.filteredItems = appUtils.sortArray(result,'timestampCreated');
                 quyTrinhPhapLyListVm.paging.totalRecord = result.length; 

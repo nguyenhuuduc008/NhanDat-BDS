@@ -93,7 +93,7 @@
 							delete userAddVm.user.confirmPassword;
 			
 							userService.createUser(userAddVm.user,res.uid).then(function(res){
-								debugger;								
+								//debugger;								
 								if(!res.result){				
 									$ngBootbox.alert(res.errorMsg);
 									return;

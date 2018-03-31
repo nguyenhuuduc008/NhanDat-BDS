@@ -72,7 +72,8 @@
             'app.setting',
             'app.nhuCau',
             'app.lichSu',
-            'app.quytrinhphaply'
+            'app.quytrinhphaply',
+			'app.quanLyNhom'
         ])
         .config(config)
         .run(run)

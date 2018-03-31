@@ -2,26 +2,42 @@
     <div class="col-md-12">
         <!-- BEGIN PORTLET-->
         <div class="portlet light bordered">
-            <div class="portlet-body form">
+            <div class="portlet-body form" ng-controller="nhuCauThemMoiCtr as nhuCauThemMoiVm">
                 <!-- BEGIN FORM-->
                 <div class="form-body" ng-if="!nhuCauThemMoiVm.isEdit">
                     <div class="form-group col-md-12">
                         <label class="control-label">Chọn Loại Nhu Cầu </label>
-                        <select class="form-control" required id="idLoaiNhuCau" ng-model="nhuCauThemMoiVm.model.loaiNhuCauKey" ng-change="nhuCauThemMoiVm.changeForm(nhuCauThemMoiVm.model.loaiNhuCauKey)">
-                            <option value="0" >Chọn Loại Nhu Cầu...</option>
+                        <select class="form-control" required id="idLoaiNhuCau" ng-model="nhuCauThemMoiVm.loaiNhuCauKey" ng-change="nhuCauThemMoiVm.changeForm(nhuCauThemMoiVm.loaiNhuCauKey)">
+                            <option value="" disabled>Chọn Loại Nhu Cầu...</option>
                             <option ng-repeat="item in nhuCauThemMoiVm.cacLoaiNhuCau" value="{{item.value}}">{{item.text}}</option> 
                         </select>
                     </div>
                 </div>
-                <div ng-include="nhuCauThemMoiVm.formLink">
-                    FORM
+                <div ng-if="nhuCauThemMoiVm.isSelectedLoaiNhuCau">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption caption-md">
+                            <i class="icon-globe theme-font hide"></i>
+                            <h4><span class="caption-subject font-blue-madison bold uppercase">{{nhuCauThemMoiVm.formTitle}}</span></h4>
+                        </div>
+                        <ul class="nav nav-tabs">
+                            <li ng-class="{active: key == nhuCauThemMoiVm.activeTab}" ng-repeat="(key,tab) in nhuCauThemMoiVm.tab.tabs" ng-click="nhuCauThemMoiVm.loadTab(key)">
+                                <a data-toggle="tab">{{tab.title}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane fade" id="tabNC_{{key}}" ng-class="{'active in': key == nhuCauThemMoiVm.activeTab}" ng-repeat="(key,tab) in nhuCauThemMoiVm.tab.tabs">
+                                <div ng-include="tab.url" ng-if="key == nhuCauThemMoiVm.activeTab">
+                                    FORM
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-actions">
                     <div class="row">
                         <div class="col-md-6">
-                            <!-- <button type="submit" class="btn green" ng-click="nhuCauThemMoiVm.xacNhan('idLoaiNhuCau')">
-                                <i class="fa fa-check"></i> Xác Nhận
-                            </button> -->
                             <button type="button" class="btn default" ng-click="nhuCauThemMoiVm.cancel()">Quay Lại</button>
                         </div>
                     </div>

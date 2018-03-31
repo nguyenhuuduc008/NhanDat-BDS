@@ -4,11 +4,11 @@
     /** @ngInject **/
     function settingService($q, $filter, $firebaseObject, $firebaseArray, firebaseDataRef, appUtils){
         var service={
-            getCacLoaiQuyHoach:getCacLoaiQuyHoach,
-            getOnceLoaiQuyHoach:getOnceLoaiQuyHoach,
-            addLoaiQuyHoach:addLoaiQuyHoach,
-            removeLoaiQuyHoach:removeLoaiQuyHoach,
-            updateLoaiQuyHoach:updateLoaiQuyHoach,
+            getCacLoaiNoiThat:getCacLoaiNoiThat,
+            getOnceLoaiNoiThat:getOnceLoaiNoiThat,
+            addLoaiNoiThat:addLoaiNoiThat,
+            removeLoaiNoiThat:removeLoaiNoiThat,
+            updateLoaiNoiThat:updateLoaiNoiThat,
 
             getCacLoaiCapDo:getCacLoaiCapDo,
             getOnceLoaiCapDo:getOnceLoaiCapDo,
@@ -111,7 +111,7 @@
 
         };
         //Ref
-        var cacLoaiQuyHoachRef=firebaseDataRef.child('app-options/cacLoaiQuyHoach');
+        var cacLoaiNoiThatRef=firebaseDataRef.child('app-options/cacLoaiNoiThat');
         var cacLoaiCapDoRef=firebaseDataRef.child('app-options/cacLoaiCapDo');
         var cacLoaiTacNghiepRef=firebaseDataRef.child('app-options/cacLoaiTacNghiep');
         var cacLoaiViTriRef=firebaseDataRef.child('app-options/cacLoaiViTri');
@@ -131,19 +131,19 @@
         
         return service;
         //function cacLoaiQUyHoach
-        function getCacLoaiQuyHoach(){
-            return $firebaseArray(cacLoaiQuyHoachRef);
+        function getCacLoaiNoiThat(){
+            return $firebaseArray(cacLoaiNoiThatRef);
         }
-        function getOnceLoaiQuyHoach(id){
-            return $firebaseObject(cacLoaiQuyHoachRef.child(id)).$loaded().then(function(res){
+        function getOnceLoaiNoiThat(id){
+            return $firebaseObject(cacLoaiNoiThatRef.child(id)).$loaded().then(function(res){
                 return {result:true,data:res};
             }).catch(function(error){
                 return {result:false,errMsg:error};
             });
         }
-        function addLoaiQuyHoach(dataModel){
-            var key=cacLoaiQuyHoachRef.push().key;
-            return cacLoaiQuyHoachRef.child(key).update({
+        function addLoaiNoiThat(dataModel){
+            var key=cacLoaiNoiThatRef.push().key;
+            return cacLoaiNoiThatRef.child(key).update({
                 text:dataModel.text,
                 value:key
             }).then(function(res){
@@ -152,15 +152,15 @@
                 return {result:false,errMsg:error};
             });
         }
-        function removeLoaiQuyHoach(idLoai){
-            return cacLoaiQuyHoachRef.child(idLoai).remove().then(function(){
+        function removeLoaiNoiThat(idLoai){
+            return cacLoaiNoiThatRef.child(idLoai).remove().then(function(){
                 return {result: true , errorMsg: ""};
             }).catch(function(error){
                 return {result: false , errorMsg: error};
             });
         }
-        function updateLoaiQuyHoach(idLoai,dataModel){
-            return cacLoaiQuyHoachRef.child(idLoai).update({
+        function updateLoaiNoiThat(idLoai,dataModel){
+            return cacLoaiNoiThatRef.child(idLoai).update({
                 text:dataModel.text,
             }).then(function(res){
                 return {result:true,data:idLoai};

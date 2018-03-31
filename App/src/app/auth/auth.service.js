@@ -26,6 +26,15 @@
 				getUserInfo : getUserInfo
 			};
 
+			//transate error messages from english to vietnamese language
+			//link error code in firebase auth
+			//https://firebase.google.com/docs/auth/admin/errors
+			$rootScope.errors = {
+				//Continue handle error code ...
+				'auth/invalid-email': 'Địa chỉ e-mail không hợp lệ.',
+				'auth/invalid-email-verified': 'Địa chỉ e-mail không hợp lệ. Nó phải là dạng boolean.'				
+			};
+
 			return service;
 
 			function login(user) {
@@ -96,7 +105,7 @@
 				return auth.$updatePassword(newPass);
 			}
 
-			function resetPasswordAuth(email) {
+			function resetPasswordAuth(email) {				
 				return auth.$sendPasswordResetEmail(email);
 			}
 

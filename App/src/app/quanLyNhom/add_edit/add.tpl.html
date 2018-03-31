@@ -1,0 +1,178 @@
+<style>
+    .group-user-list {
+        border: 1px solid #c2cad8;
+        padding: 10px;
+        border-radius: 4px;
+        max-height: 300px;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+        .group-user-list ul {
+            padding: 0px !important;
+        }
+
+            .group-user-list ul li {
+                list-style: none;
+                border-bottom:1px dotted #dfdfdf;
+                height:38px;
+
+            }
+                .group-user-list-btn {
+                    padding-top: 2px !important;
+                    padding-bottom: 2px !important;;
+                    margin: 5px !important;;
+                    width: 147px !important;;
+                }
+</style>
+
+<div class="row" id="permission">
+    <div class="col-md-12">
+        <!-- BEGIN PORTLET-->
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <h1>
+                    <span class="ng-binding">{{pageTitle}}</span>
+
+                </h1>
+            </div>
+            <div class="portlet-body form">
+                <!-- BEGIN FORM-->
+                <form ng-submit="btnSave_Click(thisForm)" role="form" id="thisForm" name="thisForm" novalidate>
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="form-group col-md-12" ng-class="{'has-error': (thisForm.tenNhom.$error.required)&&thisForm.tenNhom.$touched}">
+                                <label class="control-label">Tên nhóm </label>
+                                <input name="text" type="text" placeholder="Tên nhóm" ng-model="model.tenNhom" class="form-control" />
+                                <label class="control-label" ng-show="thisForm.tenNhom.$error.required">* Vui lòng nhập tên nhóm</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-12" ng-class="{'has-error': thisForm.moTa.$error.required&&thisForm.moTa.$touched}">
+                                <label class="control-label">Mô Tả</label>
+                                <textarea name="moTa" type="text" placeholder="Mô tả" ng-model="model.moTa" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                <label class="control-label">Tỉnh/Thành</label>
+                                <select name="text" type="text" ng-model="model.tinhThanh" class="form-control" ng-change="changeCity()">
+                                    <option ng-repeat="x in Cities" value="{{x.$id}}">{{x.text}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label class="control-label">Quận/Huyện</label>
+                                <select name="quanHuyen" ng-model="model.quanHuyen" class="form-control" ng-change="changeDistrict()">
+                                    <option ng-repeat="item in Districts" value="{{item.$id}}">{{item.text}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label class="control-label">Giá từ (VND) </label>
+                                <input name="text" type="number" ng-model="model.giaTu" class="form-control" />
+                                <label class="control-label" ng-show="thisForm.giaTu.$error.required">* Vui lòng nhập giá bđs</label>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label class="control-label">Giá đến (VND) </label>
+                                <input name="text" type="number" ng-model="model.giaDen" class="form-control" />
+                                <label class="control-label" ng-show="thisForm.giaDen.$error.required">* Vui lòng nhập giá bđs</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12 col-xs-12 col-sm-12">
+                                <div class="portlet light bordered">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="icon-equalizer font-dark hide"></i>
+                                            <span class="caption-subject font-dark bold uppercase">Thêm thành viên</span>
+                                        </div>
+                                        <div class="tools">
+                                            <a href="" class="collapse" data-original-title="" title=""> </a>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body" style="display: block;">
+                                        <div class="row">
+                                            <div class="form-group col-md-12">
+                                                <div class="input-group select2-bootstrap-append">
+                                                    <input ng-model="phoneNumber" placeholder="Nhập số điện thoại" class="form-control" tabindex="-1" aria-hidden="true" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" data-select2-open="single-append-text" ng-click="btnSearchUser_Click(phoneNumber)">
+                                                            <span class="glyphicon glyphicon-search"></span>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-12" ng-show="Users.length>1">
+                                                <label class="control-label" ng-show="Users.length<1">Không có kết quả nào tìm thấy</label>
+                                                <label class="control-label" ng-show="Users.length>0">Có kết quả <b>{{Users.length}}</b> được tìm thấy</label>
+                                                <span ng-show="Users.length>1"><br><input type="checkbox" ng-click="chkSelectAll_Click('users')" /> Chọn hết<br></span>
+                                                <div class="group-user-list">
+                                                    <ul>
+                                                        <li ng-repeat="x in Users">
+                                                            <input type="checkbox" ng-true-value="true" ng-false-value="false" ng-model="x.Selected" />
+                                                            {{x.firstName}} {{x.lastName}}
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <button type="button" style="margin-top: 10px;" class="btn green" ng-click="btnAddToMembers_Click()">Thêm vào nhóm</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12 col-xs-12 col-sm-12">
+                                <div class="portlet light bordered">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="icon-equalizer font-dark hide"></i>
+                                            <span class="caption-subject font-dark bold uppercase">Có <b>{{model.Members.length}}</b> thành viên trong nhóm</span>
+                                        </div>
+                                        <div class="tools">
+                                            <a href="" class="collapse" data-original-title="" title=""> </a>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body" style="display: block;">
+                                        <div class="row">
+                                            <div class="form-group col-md-12">
+                                                <div class="group-user-list">
+                                                    <ul>
+                                                        <li ng-repeat="x in model.Members">
+                                                            <div class="col-md-8" style="padding-top:8px">
+                                                               <span>{{x.fullName}}</span> <span ng-show="x.isAdmin" style="color:#0094ff">(admin)</span>
+                                                            </div>
+                                                            <div class="col-md-4" ng-show="CurrentUser.isAdmin" style="text-align:right">
+                                                                <button type="button" class="btn red group-user-list-btn" ng-click="btnRemoveMenber_Click(x.Id)">Rời khỏi nhóm</button>
+                                                                <button ng-disabled="model.Members.length==1 && CurrentUser.isAuthor" ng-show="!x.isAdmin" type="button" class="btn blue group-user-list-btn" ng-click="x.isAdmin=true">Chọn làm Admin</button>
+                                                                <button ng-disabled="model.Members.length==1" ng-show="x.isAdmin" type="button" class="btn organ group-user-list-btn" ng-click="x.isAdmin=false">Hủy admin</button>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button type="submit" class="btn green" ng-disabled="thisForm.$invalid">
+                                    <i class="fa fa-check"></i> Lưu
+                                </button>
+                                <button type="button" class="btn default" ng-click="btnCancel_Click()">Quay lại</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- END FORM-->
+            </div>
+        </div>
+    </div>
+</div>

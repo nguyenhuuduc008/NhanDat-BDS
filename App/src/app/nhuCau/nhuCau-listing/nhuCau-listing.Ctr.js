@@ -10,7 +10,7 @@
         var appSettings = $rootScope.storage.appSettings;    
         var currentUser = $rootScope.storage.currentUser;
         var vm =this;// jshint ignore:line
-        //
+
         vm.item = {};
         vm.cacKhoBDS = appSettings.cacKhoBDS;
         vm.cacLoaiNhuCau = appSettings.cacLoaiNhuCau;
@@ -129,7 +129,7 @@
            
         };
         vm.chiTietnhuCau = function (item) {
-            $state.go('nhuCauEdit', { item: item, isEdit: true });
+            $state.go('nhuCauEdit', { editItem: item});
         };
         
     } 

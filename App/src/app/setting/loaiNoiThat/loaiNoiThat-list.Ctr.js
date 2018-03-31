@@ -1,23 +1,22 @@
-
 (function(){
     'use strict';
     angular.module('app.setting')
-    .controller('capDoListCtr', capDoListCtr);
+    .controller('loaiNoiThatListCtr', loaiNoiThatListCtr);
     	/** @ngInject */
-    function capDoListCtr($rootScope, $scope, $state,$q,settingService,appUtils,$ngBootbox,toaster){
+    function loaiNoiThatListCtr($rootScope, $scope, $state,$q,settingService,appUtils,$ngBootbox,toaster){
         $rootScope.settings.layout.showSmartphone = false;
         $rootScope.settings.layout.showBreadcrumb = false;
         $rootScope.settings.layout.guestPage = false;
-            
+        var appSettings = $rootScope.storage.appSettings;    
         var currentUser = $rootScope.storage.currentUser;
-        var capDoListVm =this;// jshint ignore:line
-        capDoListVm.items=[];
-        capDoListVm.selectAction = 'Bulk Actions';
+        var loaiNoiThatListVm =this;// jshint ignore:line
+        loaiNoiThatListVm.items=[];
+        loaiNoiThatListVm.selectAction = 'Chọn';
 
-        capDoListVm.selectAll = function(controlId, name){
+        loaiNoiThatListVm.selectAll = function(controlId, name){
             appUtils.checkAllCheckBox(controlId,name);
         };
-        capDoListVm.apply = function(chkName){
+        loaiNoiThatListVm.apply = function(chkName){
             appUtils.showLoading();
             var self = this;
             var lstIds = [];
@@ -26,28 +25,28 @@
                     lstIds.push($(this).val() + '');
                 }
             });
-            var removeIndex = capDoListVm.selectAction.indexOf('Delete');
+            var removeIndex = loaiNoiThatListVm.selectAction.indexOf('Xóa');
             if(removeIndex === -1){
                 appUtils.hideLoading();
-                toaster.warning("Please choose action to execute!");
+                toaster.warning("Vui lòng chọn thao tác!");
                 return;
             } 
             if(lstIds.length <= 0){
                 appUtils.hideLoading();
-                toaster.warning("Please choose some items to execute action!");
+                toaster.warning("Vui lòng chọn dòng cần thao tác!");
                 return;
             }
-            $ngBootbox.confirm('Are you sure want to apply ' + capDoListVm.selectAction + ' action as selected?')
+            $ngBootbox.confirm('Bạn có chắc muốn thực hiện thao tác ' + loaiNoiThatListVm.selectAction + ' ?')
             .then(function() {
                 console.log('lstIds');
                 console.log(lstIds);
                 var removePromise=[];
                 _.forEach(lstIds, function(id){
-                    removePromise.push(settingService.removeLoaiCapDo(id));
+                    removePromise.push(settingService.removeLoaiNoiThat(id));
                 });
                 $q.all(removePromise).then(function(rs){
                     appUtils.hideLoading();
-                    toaster.success("Delete success!");
+                    toaster.success("Xóa thành công!");
                     init();
                 });
             }, function() {
@@ -55,18 +54,15 @@
             });
 
         };
-        console.log('capDoListCtr');
-        function getCacLoaiCapDo(){
-            settingService.getCacLoaiCapDo().$loaded().then(function(res){
-                capDoListVm.items=res;
-                console.log(' capDoListVm.items');
-                console.log( capDoListVm.items);
+        
+        function getCacLoaiNoiThat(){
+            settingService.getCacLoaiNoiThat().$loaded().then(function(res){
+                loaiNoiThatListVm.items=res;                
             });
         }
         function init(){
-            getCacLoaiCapDo();
+            getCacLoaiNoiThat();
         }
         init();
-    }
-    
+    } 
 })();

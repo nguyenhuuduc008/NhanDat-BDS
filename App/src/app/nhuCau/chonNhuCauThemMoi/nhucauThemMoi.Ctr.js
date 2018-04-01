@@ -11,6 +11,7 @@
         var currentUser = $rootScope.storage.currentUser;
 
         var nhuCauThemMoiVm =this;// jshint ignore:line
+        console.log('NEW PARAM S', $stateParams);
         //
 
         //Function
@@ -32,57 +33,73 @@
             }
 
         function tabInit() {
-            nhuCauThemMoiVm.tab = {
-                tabs: {
-                    thongTin: {
-                        title: 'Thông Tin',
-                        url: './app/nhuCau/nhuCau-form/thongTin-tab.tpl.html'
-                    },
-                    tacNghiep: {
-                        title: 'Tác Nghiệp',
-                        url: './app/nhuCau/nhuCau-form/tacNghiep-tab.tpl.html'
-                    },
-                    lienKetUsers: {
-                        title: 'Liên Kết Users',
-                        url: './app/nhuCau/nhuCau-form/lienKetUsers-tab.tpl.html'
-                    },
-                    giamGia: {
-                        title: 'Giảm Giá',
-                        url: './app/nhuCau/nhuCau-form/giamGia-tab.tpl.html'
-                    },
-                    yeuToTangGiamGia: {
-                        title: 'Yếu Tố Tăng Giảm Giá',
-                        url: './app/nhuCau/nhuCau-form/yeuToTangGiamGia-tab.tpl.html'
-                    },
-                    thuocQuyHoach: {
-                        title: 'Thuộc Quy Hoạch',
-                        url: './app/nhuCau/nhuCau-form/thuocQuyHoach-tab.tpl.html'
-                    },
-                    lichSuChuyenQuyen: {
-                        title: 'Lịch Sử Chuyển Quyền',
-                        url: './app/nhuCau/nhuCau-form/lichSuChuyenQuyen-tab.tpl.html'
-                    },
-                    lichSuGiaoDich: {
-                        title: 'Lịch Sử Giao Dịch',
-                        url: './app/nhuCau/nhuCau-form/lichSuGiaoDich-tab.tpl.html'
-                    },
-                    capDo: {
-                        title: 'Cấp Độ',
-                        url: './app/nhuCau/nhuCau-form/capDo-tab.tpl.html'
-                    },
-                    lichSuGia: {
-                        title: 'Lịch Sử Giá',
-                        url: './app/nhuCau/nhuCau-form/lichSuGia-tab.tpl.html'
-                    },
-                }
-            };
+            if($stateParams.bdsId === undefined || $stateParams.bdsId === null) {
+                nhuCauThemMoiVm.tab = {
+                    tabs: {
+                        thongTin: {
+                            title: 'Thông Tin',
+                            url: './app/nhuCau/nhuCau-form/thongTin-tab.tpl.html'
+                        }
+                    }
+                };
+            } 
+            else {
+                nhuCauThemMoiVm.tab = {
+                    tabs: {
+                        thongTin: {
+                            title: 'Thông Tin',
+                            url: './app/nhuCau/nhuCau-form/thongTin-tab.tpl.html'
+                        },
+                        tacNghiep: {
+                            title: 'Tác Nghiệp',
+                            url: './app/nhuCau/nhuCau-form/tacNghiep-tab.tpl.html'
+                        },
+                        lienKetUsers: {
+                            title: 'Liên Kết Users',
+                            url: './app/nhuCau/nhuCau-form/lienKetUsers-tab.tpl.html'
+                        },
+                        lienKetBDS: {
+                            title: 'Liên Kết BDS',
+                            url: './app/nhuCau/nhuCau-form/lienKetBDS-tab.tpl.html'
+                        },
+                        lienKet: {
+                            title: 'Liên Kết Nhu Cầu',
+                            url: './app/nhuCau/nhuCau-form/lienKet-tab.tpl.html'
+                        },
+                        yeuToTangGiamGia: {
+                            title: 'Yếu Tố Tăng Giảm Giá',
+                            url: './app/nhuCau/nhuCau-form/yeuToTangGiamGia-tab.tpl.html'
+                        },
+                        thuocQuyHoach: {
+                            title: 'Thuộc Quy Hoạch',
+                            url: './app/nhuCau/nhuCau-form/thuocQuyHoach-tab.tpl.html'
+                        },
+                        lichSuChuyenQuyen: {
+                            title: 'Lịch Sử Chuyển Quyền',
+                            url: './app/nhuCau/nhuCau-form/lichSuChuyenQuyen-tab.tpl.html'
+                        },
+                        lichSuGiaoDich: {
+                            title: 'Lịch Sử Giao Dịch',
+                            url: './app/nhuCau/nhuCau-form/lichSuGiaoDich-tab.tpl.html'
+                        },
+                        capDo: {
+                            title: 'Cấp Độ',
+                            url: './app/nhuCau/nhuCau-form/capDo-tab.tpl.html'
+                        },
+                        lichSuGia: {
+                            title: 'Lịch Sử Giá',
+                            url: './app/nhuCau/nhuCau-form/lichSuGia-tab.tpl.html'
+                        },
+                    }
+                };   
+            }
         }
 
 
         nhuCauThemMoiVm.loadTab = function(tab) {
             nhuCauThemMoiVm.item.activeTab = tab;
             console.log('BDS ID ID', nhuCauThemMoiVm.item);
-            $state.go(tab + 'NhuCau', {item: nhuCauThemMoiVm.item, bdsId: nhuCauThemMoiVm.item.bdsKey || ''});
+            $state.go(tab + 'NhuCau', {item: nhuCauThemMoiVm.item, bdsKho: nhuCauThemMoiVm.item.khoBDSKey || '', nhuCauId: nhuCauThemMoiVm.item.loaiNhuCauKey || '', bdsId: nhuCauThemMoiVm.item.bdsKey || ''});
         };
 
         nhuCauThemMoiVm.changeForm = function (key) {

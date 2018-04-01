@@ -2,7 +2,7 @@
     'use strict';
     angular.module('app.nhuCau').factory('nhuCauService', nhuCauService);
     /** @ngInject **/
-    function nhuCauService($q, $filter, $firebaseObject, $firebaseArray, firebaseDataRef, appUtils,toaster,$ngBootbox, storageRef){
+    function nhuCauService($q, $filter, $firebaseObject, $firebaseArray, firebaseDataRef, appUtils,toaster,$ngBootbox, storageRef, DataUtils){
         var service={
             addNhuCauBan:addNhuCauBan,
             getNhuCauBan:getNhuCauBan,
@@ -16,7 +16,11 @@
             getNhuCauMuaById: getNhuCauMuaById,
             updateMediaData: updateMediaData,
             deleteMediaStorage: deleteMediaStorage,
-            deleteMediaData: deleteMediaData
+            deleteMediaData: deleteMediaData,
+            updateTabNhuCauMua: updateTabNhuCauMua,
+            updateTabNhuCauBan: updateTabNhuCauBan,
+            getTabNhuCauMua: getTabNhuCauMua,
+            getTabNhuCauBan: getTabNhuCauBan
         };
         //Ref
         var nhuCauRef=firebaseDataRef.child('nhuCau');
@@ -91,6 +95,42 @@
             }).catch(function(err){
                 return {result:true,errMsg:err};
             });
+        }
+
+        function updateTabNhuCauMua(khoBDSId, bdsTab, bdsModel, bdsKey){
+            var ref = nhuCauRef.child(khoBDSId + "/" + bdsTab + "/" + bdsKey);
+            var refPath = "nhuCau/" + khoBDSId + "/" + bdsTab + "/" + bdsKey;
+            delete bdsModel.bdsKey;
+
+            return ref.child(bdsKey).update(bdsModel).then(function(res){
+                DataUtils.updateTimeStampModifiedNode(refPath);
+                return {result:true,key:bdsKey};
+            }).catch(function(err){
+                return {result:true,errMsg:err};
+            });
+        }
+
+        function updateTabNhuCauBan(khoBDSId, bdsTab, bdsModel, bdsKey){
+            var ref = bdsRef.child(khoBDSId + "/" + bdsTab + "/" + bdsKey);
+            var refPath = "bds/" + khoBDSId + "/" + bdsTab + "/" + bdsKey;
+            delete bdsModel.bdsKey;
+
+            return ref.update(bdsModel).then(function(res){
+                DataUtils.updateTimeStampModifiedNode(refPath);
+                return {result:true,key:bdsKey};
+            }).catch(function(err){
+                return {result:true,errMsg:err};
+            });
+        }
+
+        function getTabNhuCauMua(khoBDSId, bdsTab, bdsKey) {
+            var refPath = "nhuCau/" + khoBDSId + "/" + bdsTab + "/" + bdsKey;
+            return DataUtils.getDataFirebaseLoadOnce(refPath);
+        }
+
+        function getTabNhuCauBan(khoBDSId, bdsTab, bdsKey) {
+            var refPath = "bds/" + khoBDSId + "/" + bdsTab + "/" + bdsKey;
+            return DataUtils.getDataFirebaseLoadOnce(refPath);
         }
 
         function addNhuCauBan(khoBDSId, loaiNhuCauId, bdsModel){

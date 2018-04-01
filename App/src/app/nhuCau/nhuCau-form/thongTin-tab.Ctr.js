@@ -97,7 +97,7 @@
                         "fullPath": snapshot.thumb ? snapshot.thumb.metadata.fullPath : ''
                     },
                 };
-                console.log('MD5', metadata.md5Hash);
+                console.log('MD5', metadata);
                 nhuCauThongTinVm.model.media[metadata.generation] = mediaData;
                 nhuCauService.updateNhuCauBan(nhuCauThongTinVm.model.khoBDSKey, nhuCauThongTinVm.model.loaiNhuCauKey, nhuCauThongTinVm.model, bdsKey);
             },
@@ -574,6 +574,7 @@
                     nhuCauThongTinVm.model.giaTo = $stateParams.item.giaTo || 100000000;
                     nhuCauThongTinVm.model.dienTichFrom = $stateParams.item.giaFrom || 50;
                     nhuCauThongTinVm.model.dienTichTo = $stateParams.item.giaTo || 50;
+                    nhuCauThongTinVm.model.media = {};
                     nhuCauThongTinVm.isEdit = $stateParams.item.isEdit;
                     nhuCauThongTinVm.model.loaiNhuCauKey = $stateParams.item.loaiNhuCauKey;
                     changeForm(nhuCauThongTinVm.model.loaiNhuCauKey);

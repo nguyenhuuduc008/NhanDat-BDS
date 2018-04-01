@@ -14,6 +14,7 @@
         vm.item = {};
         vm.cacKhoBDS = appSettings.cacKhoBDS;
         vm.cacLoaiNhuCau = appSettings.cacLoaiNhuCau;
+        vm.cacLoaiCapDo = appSettings.cacLoaiCapDo;
         vm.khoBDSList = [];
         console.log(vm.cacKhoBDS);
         vm.item.nhuCauKey ='allTrangThai';
@@ -78,6 +79,15 @@
                     _.forEach(res, function(item, key) {
                         if(_.isObject(item)) {
                             item.bdsKey = key;
+                            nhuCauService.getTabNhuCauBan(idDanhMuc, 'capDo', item.bdsKey).then(function(capDoRs) {
+                                if(capDoRs !== null) {
+                                    var find = _.find(vm.cacLoaiCapDo, function(o) {
+                                        return o.value == capDoRs.capDo;
+                                    });
+                                    item.capDoColor = {'color': find.color};
+                                    $scope.$apply();
+                                }
+                            });
                             result.push(item);
                         }
                     });

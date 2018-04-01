@@ -58,6 +58,7 @@
 				var listTimeModifiedRef = ref.child('timestampModified');
 				return firebaseLoadOnce(listTimeModifiedRef, false).then(function(timeStamp){
 					if(storageData.timestampModified < timeStamp){
+						console.log('get from firebase storageData expired');
 						return _getData(ref);
 					}
 					return storageData;

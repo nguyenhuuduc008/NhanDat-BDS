@@ -29,22 +29,35 @@
     --> 
     </div>
     <div class="portlet-title">
-        <div class="caption width70 row">
-            <div class="col-md-3 no-padding-right">
-                <select class="bs-select form-control" id="idLuaChon">
-                    <option value="0">Lựa Chọn</option>
-                    <option value="delete">Xóa</option>
-                </select>
+        <div class="caption width70 col-md-12 row">
+            <div class="col-md-6 no-padding-right">
+                <div class="col-xs-6 no-padding-left">
+                    <select class="bs-select form-control" id="idLuaChon" style="max-width: 240px;">
+                        <option value="0">Lựa Chọn</option>
+                        <option value="delete">Xóa</option>
+                    </select>
+                </div>
+                <div class="col-xs-6">
+                    <button type="button" class="btn green col-md-12 " ng-click="vm.appDungLuaChon('select-checkBox','idLuaChon')">Áp Dụng</button>
+                </div>
             </div>
-            <div class="col-md-1 no-padding-left">
-                <button type="button" class="btn green" ng-click="vm.appDungLuaChon('select-checkBox','idLuaChon')">Áp Dụng</button>
+            <div class="col-md-6 no-padding-right">
+                <div class="col-xs-6 no-padding-left">
+                    <a type="button" href="#/nhuCau/chonNhuCauThemMoi" class="btn blue">Thêm Mới</a>
+                </div>
+                <div class="col-xs-6">
+                    <a type="button" href="#" class="btn blue">Duplicate</a>
+                </div>
+            </div>
+            <!-- <div class="col-md-2 no-padding-left no-padding-right">
+                <button type="button" class="btn green col-md-12 " ng-click="vm.appDungLuaChon('select-checkBox','idLuaChon')">Áp Dụng</button>
             </div>
             <div class="col-md-3 text-center">
                 <a type="button" href="#/nhuCau/chonNhuCauThemMoi" class="btn blue">Thêm Mới</a>
             </div>
-            <div class="col-md-3 text-center" style="padding-left:5px;">
+            <div class="col-md-3 text-center">
                 <a type="button" href="#" class="btn blue">Duplicate</a>
-            </div>
+            </div> -->
         </div>
         
         <div class="actions">
@@ -76,7 +89,7 @@
                         </label>
                     </td>
                     <td>
-                        <a class="primary-link" href="#" ng-click="vm.chiTietnhuCau(item)"  style="word-break: break-all;">
+                        <a class="primary-link" href="#" ng-click="vm.chiTietnhuCau(item)"  style="word-break: break-all;" ng-style="item.capDoColor">
                             {{item.tieuDe}}
                         </a>
                     </td>

@@ -1,12 +1,12 @@
 <div class="row">
-    <form role="form" id="createForm" name="createForm" novalidate ng-submit="vm.save(createForm)">
-        <div class="form-group col-md-12" ng-class="{'has-error': (vm.showInvalid && createForm.capDo.$error.required)}">
+    <form role="form" id="createForm" name="createForm" novalidate ng-submit="nhuCauCapDoVm.save(createForm)">
+        <div class="form-group col-md-12" ng-class="{'has-error': (nhuCauCapDoVm.showInvalid && createForm.capDo.$error.required)}">
             <label class="control-label">Thuộc cấp độ
                 <span class="required-field">*</span>
             </label>
-            <select name="capDo" ng-model="vm.model.capDo" class="form-control" required>
+            <select name="capDo" ng-model="nhuCauCapDoVm.model.capDo" class="form-control" required>
                 <option value="" disabled>Chọn Cấp Độ</option>
-                <option ng-repeat="item in vm.cacLoaiCapDo" value="{{item.value}}" ng-selected="item.value == vm.capDo">{{item.text}}</option>
+                <option ng-repeat="item in nhuCauCapDoVm.cacLoaiCapDo" value="{{item.value}}" ng-selected="item.value == nhuCauCapDoVm.capDo">{{item.text}}</option>
             </select>
         </div>
         <div class=" col-md-12">
@@ -14,7 +14,7 @@
                 <button class="btn green grreen-haze" type="submit" ng-disabled="createForm.$invalid">
                     Save
                 </button>
-                <button class="btn default" type="button" ng-click="vm.cancel()">
+                <button class="btn default" type="button" ng-click="nhuCauCapDoVm.cancel()">
                     Cancel
                 </button>
             </div>

@@ -26,7 +26,7 @@
             url: '/nhuCau/chonNhuCauThemMoi',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
             data: {
-                pageTitle: 'Lựa Chọn Nhu Sẽ Thêm Mới',
+                pageTitle: 'Lựa Chọn Nhu Cầu Sẽ Thêm Mới',
                 module: 'nhuCau',
                 parent: 'nhuCauListing',
                 hide:true
@@ -63,7 +63,7 @@
             }
         }).state('thongTinNhuCau',{
             parent: 'root',
-            url: '/nhuCau/nhuCauThongTin?bdsId&id',
+            url: '/nhuCau/nhuCauThongTin?bdsKho&khoId?loaNC&nhuCauId?bdsId&id',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
             controller: 'nhuCauThongTinCtr',
             controllerAs: 'nhuCauThongTinVm',
@@ -86,7 +86,7 @@
             }
         }).state('tacNghiepNhuCau',{
             parent: 'root',
-            url: '/nhuCau/nhuCauTacNghiep?bdsId&id',
+            url: '/nhuCau/nhuCauTacNghiep?bdsKho&khoId?loaiNC&nhuCauId?bdsId&id',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
             controller: 'nhuCauTacNghiepCtr',
             controllerAs: 'nhuCauTacNghiepVm',
@@ -109,7 +109,7 @@
             }
         }).state('lienKetUsersNhuCau',{
             parent: 'root',
-            url: '/nhuCau/nhuCauLienKetUsers?bdsId&id',
+            url: '/nhuCau/nhuCauLienKetUsers?bdsKho&khoId?loaiNC&nhuCauId?bdsId&id',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
             controller: 'nhuCauLienKetUsersCtr',
             controllerAs: 'nhuCauLienKetUsersVm',
@@ -126,15 +126,23 @@
             resolve:{
                 "currentAuth": ["authService", function(authService) {
                     return authService.requireSignIn();
-                 }]
-                 
+                 }],
+                 deps: ['$ocLazyLoad', function($ocLazyLoad){
+					return $ocLazyLoad.load({
+						cache: true,
+						name: 'app.user',
+						files: [
+							'./app/user/user.service.js'
+						]
+					});
+				}]
             }
         }).state('yeuToTangGiamGiaNhuCau',{
             parent: 'root',
-            url: '/nhuCau/nhuCauYeuToTangGiamGia?bdsId&id',
+            url: '/nhuCau/nhuCauYeuToTangGiamGia?bdsKho&khoId?loaiNC&nhuCauId?bdsId&id',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
             controller: 'nhuCauYeuToTangGiamGiaCtr',
-            controllerAs: 'nhuCauYeuToTangGiamGiaVm',
+            controllerAs: 'nhuCauYeuToGiaVm',
             data: {
                 pageTitle: 'Chi Tiết Nhu Cầu',
                 module: 'nhuCau',
@@ -153,7 +161,7 @@
             }
         }).state('thuocQuyHoachNhuCau',{
             parent: 'root',
-            url: '/nhuCau/nhuCauThuocQuyHoach?bdsId&id',
+            url: '/nhuCau/nhuCauThuocQuyHoach?bdsKho&khoId?loaiNC&nhuCauId?bdsId&id',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
             controller: 'nhuCauThuocQuyHoachCtr',
             controllerAs: 'nhuCauThuocQuyHoachVm',
@@ -175,7 +183,7 @@
             }
         }).state('lichSuChuyenQuyenNhuCau',{
             parent: 'root',
-            url: '/nhuCau/nhuCauLichSuChuyenQuyen?bdsId&id',
+            url: '/nhuCau/nhuCauLichSuChuyenQuyen?bdsKho&khoId?loaiNC&nhuCauId?bdsId&id',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
             controller: 'nhuCauLichSuChuyenQuyenCtr',
             controllerAs: 'nhuCauLichSuChuyenQuyenVm',
@@ -197,7 +205,7 @@
             }
         }).state('lichSuGiaoDichNhuCau',{
             parent: 'root',
-            url: '/nhuCau/nhuCauLichSuGiaoDich?bdsId&id',
+            url: '/nhuCau/nhuCauLichSuGiaoDich?bdsKho&khoId?loaiNC&nhuCauId?bdsId&id',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
             controller: 'nhuCauLichSuGiaoDichCtr',
             controllerAs: 'nhuCauLichSuGiaoDichVm',
@@ -219,7 +227,7 @@
             }
         }).state('capDoNhuCau',{
             parent: 'root',
-            url: '/nhuCau/nhuCauCapDo?bdsId&id',
+            url: '/nhuCau/nhuCauCapDo?bdsKho&khoId?loaiNC&nhuCauId?bdsId&id',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
             controller: 'nhuCauCapDoCtr',
             controllerAs: 'nhuCauCapDoVm',
@@ -241,7 +249,7 @@
             }
         }).state('lichSuGiaNhuCau',{
             parent: 'root',
-            url: '/nhuCau/nhuCauLichSuGia?bdsId&id',
+            url: '/nhuCau/nhuCauLichSuGia?bdsKho&khoId?loaiNC&nhuCauId?bdsId&id',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
             controller: 'nhuCauLichSuGiaCtr',
             controllerAs: 'nhuCauLichSuGiaVm',
@@ -261,12 +269,34 @@
                  }]
                  
             }
-        }).state('giamGiaNhuCau',{
+        }).state('lienKetBDSNhuCau',{
             parent: 'root',
-            url: '/nhuCau/nhuGiamGia?bdsId&id',
+            url: '/nhuCau/nhuCaulienKetBDS?bdsKho&khoId?loaiNC&nhuCauId?bdsId&id',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
-            controller: 'nhuCauGiamGiaCtr',
-            controllerAs: 'nhuCauGiamGiaVm',
+            controller: 'nhuCaulienKetBDSCtr',
+            controllerAs: 'nhuCaulienKetBDSVm',
+            data: {
+                pageTitle: 'Chi Tiết Nhu Cầu',
+                module: 'nhuCau',
+                parent: 'nhuCauListing',
+                hide:true
+            },
+            params: {
+                item: null,
+                isEdit: null
+            },
+            resolve:{
+                "currentAuth": ["authService", function(authService) {
+                    return authService.requireSignIn();
+                 }]
+                 
+            }
+        }).state('lienKetNhuCau',{
+            parent: 'root',
+            url: '/nhuCau/nhuCaulienKet?bdsKho&khoId?loaiNC&nhuCauId?bdsId&id',
+            templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
+            controller: 'nhuCaulienKetCtr',
+            controllerAs: 'nhuCaulienKetVm',
             data: {
                 pageTitle: 'Chi Tiết Nhu Cầu',
                 module: 'nhuCau',

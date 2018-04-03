@@ -2,9 +2,9 @@
     <div class="portlet-title">
         <div class="caption caption-md" style="min-width: 275px;">
             <select name="bdsCate" ng-model="vm.bdsCate" class="form-control" required ng-change="vm.executeSearchItems(vm.keyword)">
-                <option value="" disabled>Chọn Danh Mục</option>
-                <option value="-1">Tất Cả Danh Mục</option>
-                <option ng-repeat="item in vm.cacDanhMucBDS" value="{{item.value}}" ng-selected="item.value == vm.bdsCate">{{item.text}}</option>
+                <option value="" disabled>Chọn Kho</option>
+                <option value="-1">Tất Cả Kho</option>
+                <option ng-repeat="item in vm.khoBDSList" value="{{item.value}}" ng-selected="item.value == vm.bdsCate">{{item.text}}</option>
             </select>
         </div>
         <div class="inputs">
@@ -70,10 +70,10 @@
                     <td>
                         Ngang: <span class="font-green-sharp bold">{{item.ngang|number:1}} m</span> <br>
                         Dài: <span class="font-green-sharp bold">{{item.dai|number:1}} m</span> <br>
-                        Diện tích: <span class="font-green-sharp bold">{{item.dienTichKhuonVien|number:1}} m<sup>2</sup></span>
+                        Diện tích: <span class="font-green-sharp bold">{{item.dienTich|number:1}} m<sup>2</sup></span>
                     </td>
                     <td>
-                        Đơn giá: <span class="font-red-intense bold">{{item.donGia| currency:'':0}} VNĐ</span><br>
+                        Đơn giá: <span class="font-red-intense bold">{{item.gia| currency:'':0}} VNĐ</span><br>
                         Tổng giá: <span class="font-red-intense bold">{{item.tongGia| currency:'':0}} VNĐ</span>
                     </td>
                     <td> {{item.huong}}<span></span> </td>

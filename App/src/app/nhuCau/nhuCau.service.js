@@ -20,7 +20,10 @@
             updateTabNhuCauMua: updateTabNhuCauMua,
             updateTabNhuCauBan: updateTabNhuCauBan,
             getTabNhuCauMua: getTabNhuCauMua,
-            getTabNhuCauBan: getTabNhuCauBan
+            getTabNhuCauBan: getTabNhuCauBan,
+            updateTabLienKetNhuCauMua: updateTabLienKetNhuCauMua,
+            updateTabLienKetNhuCauBan: updateTabLienKetNhuCauBan,
+            removeTabLienKetNhuCau: removeTabLienKetNhuCau,
         };
         //Ref
         var nhuCauRef=firebaseDataRef.child('nhuCau');
@@ -102,7 +105,7 @@
             var refPath = "nhuCau/" + khoBDSId + "/" + bdsTab + "/" + bdsKey;
             delete bdsModel.bdsKey;
 
-            return ref.child(bdsKey).update(bdsModel).then(function(res){
+            return ref.update(bdsModel).then(function(res){
                 DataUtils.updateTimeStampModifiedNode(refPath);
                 return {result:true,key:bdsKey};
             }).catch(function(err){
@@ -123,8 +126,50 @@
             });
         }
 
-        function getTabNhuCauMua(khoBDSId, bdsTab, bdsKey) {
+        function updateTabLienKetNhuCauMua(bdsTab, bdsModel, bdsKey){
+            var ref = nhuCauRef.child("tabs/" + bdsTab + "/" + bdsKey);
+            var key = ref.push().key;
+            var refPath = "nhuCau/" + "tabs/" + bdsTab + "/" + bdsKey;
+            bdsModel.lienKetKey = key;
+            delete bdsModel.bdsKey;
+
+            return ref.child(key).update(bdsModel).then(function(res){
+                DataUtils.updateTimeStampModifiedNode(refPath);
+                return {result:true,key:key};
+            }).catch(function(err){
+                return {result:true,errMsg:err};
+            });
+        }
+
+        function updateTabLienKetNhuCauBan(khoBDSId, bdsTab, bdsModel, bdsKey){
+            var ref = bdsRef.child(khoBDSId + "/" + bdsTab + "/" + bdsKey);
+            var key = ref.push().key;
+            var refPath = "bds/" + khoBDSId + "/" + bdsTab + "/" + bdsKey;
+            delete bdsModel.bdsKey;
+            bdsModel.lienKetKey = key;
+
+            return ref.child(key).update(bdsModel).then(function(res){
+                DataUtils.updateTimeStampModifiedNode(refPath);
+                return {result:true,key:key};
+            }).catch(function(err){
+                return {result:true,errMsg:err};
+            });
+        }
+
+        function removeTabLienKetNhuCau(khoBDSId, bdsTab, bdsKey, key){
+            var ref = nhuCauRef.child(khoBDSId + "/" + bdsTab + "/" + bdsKey);
             var refPath = "nhuCau/" + khoBDSId + "/" + bdsTab + "/" + bdsKey;
+
+            return ref.child(key).remove().then(function(res){
+                DataUtils.updateTimeStampModifiedNode(refPath);
+                return {result:true,key:bdsKey};
+            }).catch(function(err){
+                return {result:true,errMsg:err};
+            });
+        }
+
+        function getTabNhuCauMua(bdsTab, bdsKey) {
+            var refPath = "nhuCau/tabs/" + bdsTab + "/" + bdsKey;
             return DataUtils.getDataFirebaseLoadOnce(refPath);
         }
 
@@ -133,9 +178,8 @@
             return DataUtils.getDataFirebaseLoadOnce(refPath);
         }
 
-        function addNhuCauBan(khoBDSId, loaiNhuCauId, bdsModel){
-            var ref = bdsRef.child(khoBDSId + "/" + loaiNhuCauId);
-            var bdsKey = ref.push().key;
+        function addNhuCauBan(khoBDSId, bdsModel, bdsKey){
+            var ref = bdsRef.child(khoBDSId);
             bdsModel.timestampCreated = Date.now();
 
             return ref.child(bdsKey).set(bdsModel).then(function(res){

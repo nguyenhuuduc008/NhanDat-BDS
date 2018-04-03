@@ -79,9 +79,17 @@
                 isEdit: null
             },
             resolve:{
-                "currentAuth": ["authService", function(authService) {
+                "currentAuth": ["authService", function (authService) {
                     return authService.requireSignIn();
-                 }]
+                }],
+                deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        cache: true,
+                        files: [
+                            './app/bds/bds.service.js'
+                        ]
+                    });
+                }]
                  
             }
         }).state('tacNghiepNhuCau',{

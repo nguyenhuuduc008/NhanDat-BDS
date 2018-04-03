@@ -73,7 +73,9 @@
             'app.nhuCau',
             'app.lichSu',
             'app.quytrinhphaply',
-			'app.quanLyNhom'
+            'app.quanLyNhom',
+            'app.timKiem',
+            'app.baoCaoThongKe'
         ])
         .config(config)
         .run(run)

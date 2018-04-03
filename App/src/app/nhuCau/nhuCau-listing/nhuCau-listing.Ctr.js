@@ -20,14 +20,15 @@
         vm.item.nhuCauKey ='allTrangThai';
 
         //Load data
-        vm.item.khoBDSKey = "allDanhMuc";
         _.forEach(vm.cacKhoBDS, function(item, key) {
             if(key != 'khoDefault') {
                 vm.khoBDSList.push({
                     $id: key,
                     text: item.text
                 });
-            } 
+            } else {
+                vm.item.khoBDSKey = item;
+            }
         });
             // vm.khoBDSDefault = _.find(data, ['$id', 'khoDefault']);
             // vm.item.khoBDSKey = !!vm.khoBDSDefault ? vm.khoBDSDefault.$value : 'allDanhMuc';
@@ -59,73 +60,48 @@
         vm.selectAllItem = function(controlId, name){
             appUtils.checkAllCheckBox(controlId,name);
         };
-        vm.appDung=function(idDanhMuc,idTrangThai){
+        vm.appDung = function (idDanhMuc, idTrangThai) {
             //check valid
-            if(idTrangThai=='allTrangThai'){
+            if (idTrangThai == 'allTrangThai') {
                 toaster.warning("Bạn cần lựa chọn Trạng Thái!");
                 return;
             }
-            if(idDanhMuc =='allDanhMuc'){
+            if (idDanhMuc == 'allDanhMuc') {
                 toaster.warning("Bạn cần lựa chọn Danh Mục!");
                 return;
             }
             // get data
-            if(idTrangThai == 'ban' || idTrangThai == 'cho-thue' ) {
-                nhuCauService.getNhuCauBanById(idDanhMuc).$loaded().then(function(data){
-                    var res = _.find(data, function(o) {
-                        return o.$id == idTrangThai;
-                    });
-                    var result = [];
-                    _.forEach(res, function(item, key) {
-                        if(_.isObject(item)) {
-                            item.bdsKey = key;
-                            nhuCauService.getTabNhuCauBan(idDanhMuc, 'capDo', item.bdsKey).then(function(capDoRs) {
-                                if(capDoRs !== null) {
-                                    var find = _.find(vm.cacLoaiCapDo, function(o) {
-                                        return o.value == capDoRs.capDo;
-                                    });
-                                    item.capDoColor = {'color': find.color};
-                                    $scope.$apply();
-                                }
-                            });
-                            result.push(item);
-                        }
-                    });
-                    console.log('NOTRIGHTHERA', result);
-                    vm.filteredItems = appUtils.sortArray(result, 'timestampCreated');
-                    console.log('vm.filteredItems');
-                    console.log(vm.filteredItems);
-                    vm.paging.totalRecord = result.length;
-                    vm.paging.currentPage = 0;
-                    //group by pages
-                    vm.groupToPages();
-                }).catch(function(err){
-                    toaster.warning(err);
+            nhuCauService.getNhuCauMuaById(idDanhMuc).$loaded().then(function (data) {
+                var res = _.find(data, function (o) {
+                    return o.$id == idTrangThai;
                 });
-            } else {
-                nhuCauService.getNhuCauMuaById(idDanhMuc).$loaded().then(function(data){
-                    var res = _.find(data, function(o) {
-                        return o.$id == idTrangThai;
-                    });
-                    var result = [];
-                    _.forEach(res, function(item, key) {
-                        if(_.isObject(item)) {
-                            item.bdsKey = key;
-                            result.push(item);
-                        }
-                    });
-                    console.log('NOTRIGHTHERA', result);
-                    vm.filteredItems = appUtils.sortArray(result, 'timestampCreated');
-                    console.log('vm.filteredItems');
-                    console.log(vm.filteredItems);
-                    vm.paging.totalRecord = result.length;
-                    vm.paging.currentPage = 0;
-                    //group by pages
-                    vm.groupToPages();
-                }).catch(function(err){
-                    toaster.warning(err);
+                var result = [];
+                _.forEach(res, function (item, key) {
+                    if (_.isObject(item)) {
+                        item.bdsKey = key;
+                        nhuCauService.getTabNhuCauMua(idDanhMuc, 'capDo', item.bdsKey).then(function (capDoRs) {
+                            if (capDoRs !== null) {
+                                var find = _.find(vm.cacLoaiCapDo, function (o) {
+                                    return o.value == capDoRs.capDo;
+                                });
+                                item.capDoColor = { 'color': find.color };
+                                $scope.$apply();
+                            }
+                        });
+                        result.push(item);
+                    }
                 });
-            }
+                console.log('NOTRIGHTHERA', result);
+                vm.filteredItems = appUtils.sortArray(result, 'timestampCreated');
+                console.log('vm.filteredItems');
+                console.log(vm.filteredItems);
+                vm.paging.totalRecord = result.length;
+                vm.paging.currentPage = 0;
+                //group by pages
+                vm.groupToPages();
+            }).catch(function (err) {
+                toaster.warning(err);
+            });
         };
         //xoa nhu cau
         vm.appDungLuaChon=function(selectedCheckBox,idLuaChon){

@@ -895,6 +895,7 @@
                 pageTitle: 'Thêm Loại Nhu Cầu',
                 module: 'setting',
                 parent: 'settingList',
+                icon: 'icon-settings',
                 hide:true
             },
             resolve:{
@@ -921,6 +922,35 @@
                 "currentAuth": ["authService", function(authService) {
                     return authService.requireSignIn();
                  }]
+            }
+         }).state('duLieuTho',{
+            parent: 'root',
+            url: '/duLieuTho',
+            templateUrl: 'app/setting/duLieuTho/duLieuTho.tpl.html',
+            controller: 'duLieuThoCtr',
+            controllerAs: 'duLieuThoVm',
+            data: {
+                pageTitle: 'Dữ Liệu Thô',
+                module: 'setting',
+                parent: 'settingList',
+                hide:false
+            },
+            params: {
+                item: null,
+            },
+            resolve:{
+                "currentAuth": ["authService", function(authService) {
+                    return authService.requireSignIn();
+                 }],
+                 deps: ['$ocLazyLoad', function($ocLazyLoad){
+					return $ocLazyLoad.load({
+						cache: true,
+						name: 'app.user',
+						files: [
+							'./app/user/user.service.js'
+						]
+					});
+				}]
             }
          })
          ;

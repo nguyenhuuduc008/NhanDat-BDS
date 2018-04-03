@@ -52,7 +52,7 @@
         }
 
         function editBDSBan() {
-            nhuCauService.updateTabNhuCauBan(nhuCauCapDoVm.model.khoBDSKey, 'capDo', nhuCauCapDoVm.model, nhuCauCapDoVm.model.bdsKey).then(function (res) {
+            nhuCauService.updateTabNhuCauMua(nhuCauCapDoVm.model.khoBDSKey, 'capDo', nhuCauCapDoVm.model, nhuCauCapDoVm.model.bdsKey).then(function (res) {
                 if (res.result) {
                     appUtils.hideLoading();
                     $scope.$apply(function () {
@@ -70,12 +70,14 @@
             //$stateParams.item ---> chứa dữ liệu của bds được truyền từ NhuCau List page
             //$stateParams.item.loaiNhuCauKey  --> //key loại nhu cầu dung để lưu dữ liệu
             ///xét trường hợp vào trang vào trang edit
+            console.log('PARMS DIDS', stateParams);
             nhuCauCapDoVm.isEdit = true;
             nhuCauCapDoVm.model.loaiNhuCauKey = $stateParams.nhuCauId;
             nhuCauCapDoVm.model.khoBDSKey = $stateParams.bdsKho;
             nhuCauCapDoVm.model.bdsKey = $stateParams.bdsId;
             if (nhuCauCapDoVm.model.loaiNhuCauKey === 'ban' || nhuCauCapDoVm.model.loaiNhuCauKey === 'cho-thue') {
-                nhuCauService.getTabNhuCauBan(nhuCauCapDoVm.model.khoBDSKey, 'capDo', nhuCauCapDoVm.model.bdsKey).then(function (result) {
+                nhuCauService.getTabNhuCauMua('capDo', nhuCauCapDoVm.model.bdsKey).then(function (result) {
+                    console.log('FINAL RESUAL CAPTDO', result);
                     nhuCauCapDoVm.model = result;
                     if(!!nhuCauCapDoVm.model)
                         delete nhuCauCapDoVm.model.$id;
@@ -87,7 +89,7 @@
                     console.log('PRAMS CAP DO', nhuCauCapDoVm.model);
                 });
             } else {
-                nhuCauService.getTabNhuCauMua(nhuCauCapDoVm.model.khoBDSKey, 'capDo', nhuCauCapDoVm.model.bdsKey).then(function (result) {
+                nhuCauService.getTabNhuCauMua('capDo', nhuCauCapDoVm.model.bdsKey).then(function (result) {
                     nhuCauCapDoVm.model = result;
                     if(!!nhuCauCapDoVm.model)
                         delete nhuCauCapDoVm.model.$id;

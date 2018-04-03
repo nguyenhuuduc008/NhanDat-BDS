@@ -2,7 +2,6 @@
     <div class="portlet-title">
         <div class="caption caption-md" style="min-width: 275px;">
             <select class="form-control" required id="idDanhMuc" ng-model="vm.item.khoBDSKey">
-                <option value="allDanhMuc" selected>Tất Cả Kho</option>
                 <option ng-repeat="item in vm.khoBDSList" value="{{item.$id}}">{{item.text}}</option>
             </select>
         </div>

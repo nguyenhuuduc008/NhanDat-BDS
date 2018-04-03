@@ -30,7 +30,17 @@
             totalRecord: 0
         };
 
-        vm.cacDanhMucBDS = appSettings.cacDanhMucBDS;
+        vm.khoBDSList = [];
+        vm.cacKhoBDS = appSettings.cacKhoBDS;
+        _.forEach(vm.cacKhoBDS, function(item, key) {
+            if(key != 'khoDefault') {
+                vm.khoBDSList.push({
+                    value: key,
+                    text: item.text
+                });
+            } else 
+                vm.khoBDSDefault = item;
+        });
 
         /*=============================================================*/
 
@@ -80,7 +90,7 @@
         vm.searchAllItems = function (keyword) {
             var self = this;
             appUtils.showLoading();
-            bdsService.searchAll(vm.cacDanhMucBDS, keyword).then(function (rs) {
+            bdsService.searchAll(vm.khoBDSList, keyword).then(function (rs) {
                 appUtils.hideLoading();
                 var result = rs.data;
                 vm.filteredItems = appUtils.sortArray(result, 'timestampCreated');

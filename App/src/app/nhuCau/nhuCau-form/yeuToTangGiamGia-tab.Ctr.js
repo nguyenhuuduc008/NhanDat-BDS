@@ -53,7 +53,7 @@
         }
 
         function editBDSBan() {
-            nhuCauService.updateTabNhuCauBan(nhuCauYeuToGiaVm.model.khoBDSKey, 'yeuToTangGiamGia', nhuCauYeuToGiaVm.model, nhuCauYeuToGiaVm.model.bdsKey).then(function(res) {
+            nhuCauService.updateTabNhuCauMua(nhuCauYeuToGiaVm.model.khoBDSKey, 'yeuToTangGiamGia', nhuCauYeuToGiaVm.model, nhuCauYeuToGiaVm.model.bdsKey).then(function(res) {
                 if(res.result) {
                     appUtils.hideLoading();
                     $scope.$apply(function() {
@@ -75,7 +75,7 @@
             nhuCauYeuToGiaVm.model.khoBDSKey = $stateParams.bdsKho;
             nhuCauYeuToGiaVm.model.bdsKey = $stateParams.bdsId;
             if (nhuCauYeuToGiaVm.model.loaiNhuCauKey === 'ban' || nhuCauYeuToGiaVm.model.loaiNhuCauKey === 'cho-thue') {
-                nhuCauService.getTabNhuCauBan(nhuCauYeuToGiaVm.model.khoBDSKey, 'yeuToTangGiamGia', nhuCauYeuToGiaVm.model.bdsKey).then(function (result) {
+                nhuCauService.getTabNhuCauMua(nhuCauYeuToGiaVm.model.khoBDSKey, 'yeuToTangGiamGia', nhuCauYeuToGiaVm.model.bdsKey).then(function (result) {
                     nhuCauYeuToGiaVm.model = result;
                     if(!!nhuCauYeuToGiaVm.model)
                         delete nhuCauYeuToGiaVm.model.$id;

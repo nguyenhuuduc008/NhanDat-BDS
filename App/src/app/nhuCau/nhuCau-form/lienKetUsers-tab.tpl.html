@@ -12,43 +12,27 @@
             <table class="table table-hover table-light">
                 <thead class="flip-content">
                     <tr class="uppercase">
-                        <th class="width5"> Image </th>
-                        <th class=""> Email </th>
-                        <th class=""> Full Name </th>
-                        <th class="hidden-sm text-center width15"> Phone </th>
-                        <th class=""> Type </th>
-                        <th class="hidden-sm"> Role </th>
-                        <th class="hidden-sm text-center width5"> Status </th>
-                        <th class="text-center"> </th>
+                        <th class=""> Tên </th>
+                        <th class=""> Số Điện Thoại</th>
+                        <th class=""> Loại User </th>
+                        <th class=""> Thời gian </th>
+                        <th class=""> </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="item in nhuCauLienKetUsersVm.allLinkedUser">
-                        <td class="fit">
-                            <p ng-if="item.photoURL ===''" class="img-responsive user-pic" data-letters="{{nhuCauLienKetUsersVm.dataLetterPic(item)}}"></p>
-                            <img ng-if="item.photoURL !==''" ng-src="{{item.photoURL}}" class="user-pic" class="" alt="profile-image">
+                    <tr ng-repeat="item in nhuCauLienKetUsersVm.lienKetUserList">
+                        <td>
+                            <a class="primary-link" href="#" ng-click="nhuCauLienKetUsersVm.edit(item.$id)" style="word-break: break-all;">{{item.userName}}</a>
                         </td>
                         <td>
-                            <a class="primary-link" href="#" ng-click="nhuCauLienKetUsersVm.edit(item.$id)" style="word-break: break-all;">{{item.email}}</a>
+                            <a class="primary-link" href="#">{{item.phone}}</a>
                         </td>
-                        <td>
-                            <a class="primary-link" href="#">{{item.firstName + ' ' + item.lastName}}</a>
-                        </td>
-                        <td class="hidden-sm text-center">{{item.phoneNumber | tel}}</td>
                         <td class="">
-                            <p>
-                                {{nhuCauLienKetUsersVm.displayLoaiLienKetUser(item.loaiLienKetUser)}}
-                            </p>
+                            {{nhuCauLienKetUsersVm.displayLoaiLienKet(item.loaiLienKetUser)}}
                         </td>
-                        <td class="hidden-sm" ng-bind-html="nhuCauLienKetUsersVm.deserializeRole(item.userRoles)"></td>
-                        <td class="hidden-sm text-center" ng-if="item.isAuthorized">
-                            <i class="fa fa-check font-green-jungle"></i>
-                        </td>
-                        <td class="hidden-sm text-center" ng-if="!item.isAuthorized">
-                            <i class="fa fa-ban font-red"></i>
-                        </td>
-                        <td class="text-center">
-                            <a href="javascript:;" ng-click="nhuCauLienKetUsersVm.removeLinkedUser(item.loaiLienKetId, item.$id)">
+                        <td class="">{{item.timeCreated}}</td>
+                        <td class="" ng-if="item.loaiLienKetUser !== 'createUserUniq'">
+                            <a href="javascript:;" ng-click="nhuCauLienKetUsersVm.removeLinkedUser(item.lienKetKey)">
                                 <i class="fa fa-trash"></i>
                             </a>
                             <!-- <a href="javascript:;" ng-if="!nhuCauLienKetUsersVm.getLinkedRs(item.$id)"> -->
@@ -61,7 +45,7 @@
         </div>
     </div>
 
-    <div class="portlet light bordered tasks-widget" id="users">
+    <div class="portlet light bordered tasks-widget" >
         <div class="portlet-title">
             <div class="caption caption-md">
                 <h5>Thông tin Users</h5>
@@ -77,81 +61,50 @@
                         <span class="caption-helper">{{nhuCauLienKetUsersVm.adminUser}}</span> -->
             </div>
             <div class="inputs">
+                <label>Số Điện Thoại</label> &nbsp;
                 <div class="portlet-input input-inline">
                     <div class="input-icon right">
-                        <i class="icon-magnifier"></i>
-                        <input type="text" class="form-control form-control-solid" ng-model="nhuCauLienKetUsersVm.keyword" placeholder="search..."
-                            ng-change="nhuCauLienKetUsersVm.searchUser(nhuCauLienKetUsersVm.keyword)">
+                        <i class="icon-magnifier" ng-click="nhuCauLienKetUsersVm.searchUserByPhone()"></i>
+                        <input type="text" class="form-control form-control-solid" ng-model="nhuCauLienKetUsersVm.keyword" placeholder="Tìm kiếm ...">
                     </div>
                 </div>
             </div>
-        
         </div>
-        <div class="table-scrollable table-scrollable-borderless">
-            <form role="form" id="userForm" name="userForm" novalidate>
+        <div class="table-scrollable table-scrollable-borderless" ng-if="nhuCauLienKetUsersVm.isUserExit">
+            <form role="form" id="userForm" name="userForm" ng-submit="nhuCauLienKetUsersVm.save(userForm)" novalidate>
+                <div class="form-group col-md-12">
+                    <label class="control-label">Sô Điện Thoại </label>
+                    <input type="email" disabled class="form-control" name="text" ng-model="nhuCauLienKetUsersVm.model.phone" autocapitalize="off" />
+                </div>
                 <div class="form-group col-md-12">
                     <label class="control-label">Email</label>
-                    <input type="email" disabled class="form-control" name="email" ng-model="vm.user.email" autocapitalize="off" />
+                    <input type="email" disabled class="form-control" name="email" ng-model="nhuCauLienKetUsersVm.userEmail" autocapitalize="off" />
                 </div>
-                <div class="form-group col-md-6" ng-class="{'has-error': (vm.showInvalid && userForm.firstname.$error.required) || userForm.firstname.$error.pattern}">
-                    <label class="control-label">First Name
-                        <span class="required-field">*</span>
+                <div class="form-group col-md-12" >
+                    <label class="control-label">Họ và Tên
                     </label>
-                    <input type="text" name="firstname" disabled placeholder="First Name" class="form-control" required ng-pattern="nameRegx"
-                        ng-model="vm.user.firstName" />
-                    <label class="control-label" ng-show="userForm.firstname.$error.pattern">* This field does not allow special characters</label>
+                    <input type="text" name="firstname" disabled placeholder="Họ và Tên" class="form-control" required ng-pattern="nameRegx"
+                        ng-model="nhuCauLienKetUsersVm.userName" />
                 </div>
-                <div class="form-group col-md-6" ng-class="{'has-error': (vm.showInvalid && userForm.lastname.$error.required) || userForm.lastname.$error.pattern}">
-                    <label class="control-label">Last Name
-                        <span class="required-field">*</span>
-                    </label>
-                    <input type="text" name="lastname" disabled placeholder="Last Name" class="form-control" required ng-pattern="nameRegx" ng-model="vm.user.lastName"
-                    />
-                    <label class="control-label" ng-show="userForm.lastname.$error.pattern">* This field does not allow special characters</label>
+                <div class="form-group col-md-12" >
+                    <label class="control-label">Địa Chỉ </label>
+                    <input name="address" type="text" disabled placeholder="Địa Chỉ" ng-model="nhuCauLienKetUsersVm.address" class="form-control" />
                 </div>
-                <div class="form-group col-md-6" ng-class="{'has-error': userForm.phonenumber.$error.server}">
-                    <label class="control-label">Primary Phone</label>
-                    <input type="tel" uiMaskPlaceholder type="phone" disabled placeholder="Primary Phone" class="form-control" name="phonenumber"
-                        ng-keyup="vm.EnalblePhoneForm(userForm)" ng-model="vm.Phone" ui-mask="999-999-9999" />
-                    <br ng-if="userForm.phonenumber.$error.server">
-                    <label class="control-label" ng-if="userForm.phonenumber.$error.server">* {{vm.e_msges.phonenumber}}</label>
-                </div>
-                <div class="form-group col-md-6" ng-class="{'has-error': (vm.showInvalid && userForm.address.$error.required)}">
-                    <label class="control-label">Address </label>
-                    <input name="address" type="text" disabled placeholder="Address" ng-model="vm.user.address" class="form-control" />
-                    <label class="control-label" ng-show="userForm.address.$error.pattern">* This field does not allow special characters</label>
-                </div>
-                <div class="form-group col-md-6" ng-class="{'has-error': (vm.showInvalid && userForm.city.$error.required)}">
-                    <label class="control-label">City </label>
-                    <input name="city" type="text" disabled placeholder="City" ng-model="vm.user.city" class="form-control" />
-                </div>
-                <div class="form-group col-md-3" ng-class="{'has-error': vm.showInvalid && userForm.state.$error.required}">
-                    <label class="control-label">State </label>
-                    <select name="state" disabled ng-model="vm.user.state" class="form-control">
-                        <option value="" disabled>Please Choose State</option>
-                        <option ng-repeat="state in vm.states" value="{{state.value}}" ng-selected="state.value == vm.user.state">{{state.text}}</option>
-                    </select>
-                </div>
-                <div class="form-group col-md-3" ng-class="{'has-error': (vm.showInvalid && userForm.zipCode.$error.required) || userForm.zipCode.$error.pattern}">
-                    <label class="control-label">Zip</label>
-                    <input name="zipCode" type="text" disabled placeholder="Zip Code" ng-model="vm.user.zipCode" maxlength="5" ng-pattern="zipcodeRegx"
-                        ng-maxlength="5" class="form-control" />
-                </div>
-                <div class="form-group col-md-12">
-                    <label class="mt-checkbox mt-checkbox-outline">
-                        <input id="isAuthorized" disabled type="checkbox" name="isauthorized" ng-model="vm.user.isAuthorized" />
-                        <span></span>
-                    </label>
-                    <label for="isAuthorized">IsAuthorized</label>
-                </div>
-                <div class="form-group col-md-12" ng-class="{'has-error': vm.showInvalid && userForm.state.$error.required}">
+                <div class="form-group col-md-12" ng-class="{'has-error': nhuCauLienKetUsersVm.showInvalid && userForm.state.$error.required}">
                     <label class="control-label">Loại User
                         <span class="required-field">*</span>
                     </label>
-                    <select name="loaiLienKet" ng-model="vm.model.loaiLienKetUser" required class="form-control">
-                        <option value="" disabled>Please Choose Users</option>
-                        <option ng-repeat="item in vm.cacLoaiLienKetUser" value="{{item.value}}" ng-selected="item.value == vm.model.loaiLienKetUser">{{item.text}}</option>
+                    <select name="loaiLienKet" ng-model="nhuCauLienKetUsersVm.model.loaiLienKetUser" required class="form-control">
+                        <option value="" disabled>Chọn Loại User</option>
+                        <option ng-repeat="item in nhuCauLienKetUsersVm.cacLoaiLienKetUser" value="{{item.value}}" ng-selected="item.value == nhuCauLienKetUsersVm.model.loaiLienKetUser">{{item.text}}</option>
                     </select>
+                </div>
+                <div class=" col-md-12">
+                    <div class="margin-top-20 pull-right" >
+                        <button class="btn green grreen-haze" type="submit" ng-disabled="!nhuCauLienKetUsersVm.model.loaiLienKetUser">
+                            Liên Kết
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>

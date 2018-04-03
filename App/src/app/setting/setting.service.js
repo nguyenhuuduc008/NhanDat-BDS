@@ -107,8 +107,10 @@
             addChildHanhChinh: addChildHanhChinh,
             updateLoaiHanhChinh: updateLoaiHanhChinh,
             updateChildHanhChinh: updateChildHanhChinh,
-            deleteLoaiHanhChinh: deleteLoaiHanhChinh
+            deleteLoaiHanhChinh: deleteLoaiHanhChinh,
 
+            getAllHanhChinh: getAllHanhChinh,
+            getDuLieuTho:getDuLieuTho 
         };
         //Ref
         var cacLoaiNoiThatRef=firebaseDataRef.child('app-options/cacLoaiNoiThat');
@@ -128,6 +130,7 @@
         var cacLoaiDanhMucBDSRef=firebaseDataRef.child('app-options/cacKhoBDS');
         var cacLoaiNhuCauRef=firebaseDataRef.child('app-options/cacLoaiNhuCau');
         var cacLoaiHanhChinhRef=firebaseDataRef.child('app-options/cacLoaiHanhChinh');
+        var duLieuThoRef = firebaseDataRef.child('duLieuTho');
         
         return service;
         //function cacLoaiQUyHoach
@@ -802,6 +805,12 @@
                 return {result:false,errMsg:error};
             });            
         }
-        //---
+        //---Dữ Liêu Thô
+        function getDuLieuTho() {
+            return duLieuThoRef.once('value');
+        }
+        function getAllHanhChinh() {
+            return cacLoaiHanhChinhRef.once('value');
+        }
     }
 })();

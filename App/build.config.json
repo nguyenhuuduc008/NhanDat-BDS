@@ -113,7 +113,9 @@
         "summernote/dist/**/*.*",
         "angular-summernote/dist/*.*",
         
-        "angulargrid/angulargrid.min.js"
+        "angulargrid/angulargrid.min.js",
+        "nouislider/distribute/*.*"
+        
     ],
     "vendor3rd_files": [
         "metronic/theme/assets/global/scripts/app.min.js",
@@ -131,8 +133,11 @@
         "metronic/theme/assets/pages/scripts/components-date-time-pickers.js",
         "metronic/theme/assets/global/plugins/cubeportfolio/js/jquery.cubeportfolio.min.js",
         "angular-ui-mask/dist/mask.min.js",
-        "bootstrap-fileinput/*.*"
-    ],
+        "bootstrap-fileinput/*.*",
+		"metronic/theme/assets/global/plugins/amcharts/amcharts/amcharts.js",
+		"metronic/theme/assets/global/plugins/amcharts/amcharts/serial.js",
+		"metronic/theme/assets/global/plugins/amcharts/amcharts/pie.js"
+		    ],
     "inject_css_files": [
     ],
     "inject_vendor_css_files":[
@@ -234,11 +239,13 @@
         "vendor/summernote/dist/summernote.js",
         "vendor/angular-summernote/dist/angular-summernote.min.js",
         
-        "vendor/angulargrid/angulargrid.min.js"
+        "vendor/angulargrid/angulargrid.min.js",
+        "vendor/nouislider/distribute/nouislider.min.js"
+        
     ],
     "inject_app_files": [
         "src/app/*.js",
-        "src/app/*(core|auth|common|layout|menus|registrations|role|settings|themes|permission|setting|nhuCau|lichSu|quyTrinhPhapLy|quanLyNhom|timKiem|baoCaoThongKe|common|dRemote)/*(*module|*route).js",
+        "src/app/*(core|auth|common|layout|menus|registrations|role|settings|themes|permission|setting|nhuCau|lichSu|quyTrinhPhapLy|quangCao|common|dRemote)/*(*module|*route).js",
         "src/app/*(home)/*(*module|*route).js",
         "src/app/common/utils/*(*module|*route).js",
         "src/app/core/**/*.js",
@@ -301,11 +308,10 @@
         "src/app/setting/**/*.js",
         "src/app/nhuCau/**/*.js",
         "src/app/lichSu/**/*.js",
+        "src/app/quangCao/**/*.js",
         "src/app/quyTrinhPhapLy/**/*.js",
-        "src/app/quanLyNhom/**/*.js",
-        "src/app/timKiem/**/*.js",
-        "src/app/baoCaoThongKe/**/*.js"
-        
-
+		"src/app/baoCaoThongKe/**/*.js",
+		"src/app/timKiem/**/*.js",
+		"src/app/quanLyNhom/**/*.js"
     ]
 }

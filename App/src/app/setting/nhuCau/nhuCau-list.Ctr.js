@@ -1,9 +1,9 @@
 (function(){
     'use strict';
     angular.module('app.setting')
-    .controller('nhuCauListCtr', nhuCauListCtr);
+    .controller('settingNhuCauListCtr', settingNhuCauListCtr);
     	/** @ngInject */
-    function nhuCauListCtr($rootScope, $scope, $state,$q,settingService,appUtils,$ngBootbox,toaster){
+    function settingNhuCauListCtr($rootScope, $scope, $state,$q,settingService,appUtils,$ngBootbox,toaster){
         $rootScope.settings.layout.showSmartphone = false;
         $rootScope.settings.layout.showBreadcrumb = false;
         $rootScope.settings.layout.guestPage = false;
@@ -11,7 +11,7 @@
         var currentNhuCau = $rootScope.storage.currentNhuCau;
         var nhuCauListVm =this;// jshint ignore:line
         nhuCauListVm.items=[];
-        nhuCauListVm.selectAction = 'Bulk Actions';
+        nhuCauListVm.selectAction = 'Chọn';
 
         nhuCauListVm.selectAll = function(controlId, name){
             appUtils.checkAllCheckBox(controlId,name);
@@ -41,18 +41,18 @@
                     lstIds.push($(this).val() + '');
                 }
             });
-            var removeIndex = nhuCauListVm.selectAction.indexOf('Delete');
+            var removeIndex = nhuCauListVm.selectAction.indexOf('Xóa');
             if(removeIndex === -1){
                 appUtils.hideLoading();
-                toaster.warning("Please choose action to execute!");
+                toaster.warning("Vui lòng chọn thao tác!");
                 return;
             } 
             if(lstIds.length <= 0){
                 appUtils.hideLoading();
-                toaster.warning("Please choose some items to execute action!");
+                toaster.warning("Vui lòng chọn dòng cần thao tác!");
                 return;
             }
-            $ngBootbox.confirm('Are you sure want to apply ' + nhuCauListVm.selectAction + ' action as selected?')
+            $ngBootbox.confirm('Bạn có chắc muốn chọn thao tác ' + nhuCauListVm.selectAction + ' ?')
             .then(function() {
                 var removePromise=[];
                 _.forEach(lstIds, function(id){
@@ -60,7 +60,7 @@
                 });
                 $q.all(removePromise).then(function(rs){
                     appUtils.hideLoading();
-                    toaster.success("Delete success!");
+                    toaster.success("Xóa thành công!");
                     init();
                 });
             }, function() {

@@ -11,7 +11,7 @@
         var currentUser = $rootScope.storage.currentUser;
         var nguonBDSListVm =this;// jshint ignore:line
         nguonBDSListVm.items=[];
-        nguonBDSListVm.selectAction = 'Bulk Actions';
+        nguonBDSListVm.selectAction = 'Chọn';
 
         nguonBDSListVm.selectAll = function(controlId, name){
             appUtils.checkAllCheckBox(controlId,name);
@@ -25,18 +25,18 @@
                     lstIds.push($(this).val() + '');
                 }
             });
-            var removeIndex = nguonBDSListVm.selectAction.indexOf('Delete');
+            var removeIndex = nguonBDSListVm.selectAction.indexOf('Xóa');
             if(removeIndex === -1){
                 appUtils.hideLoading();
-                toaster.warning("Please choose action to execute!");
+                toaster.warning("Vui lòng chọn thao tác!");
                 return;
             } 
             if(lstIds.length <= 0){
                 appUtils.hideLoading();
-                toaster.warning("Please choose some items to execute action!");
+                toaster.warning("Vui lòng chọn dòng cần thao tác!");
                 return;
             }
-            $ngBootbox.confirm('Are you sure want to apply ' + nguonBDSListVm.selectAction + ' action as selected?')
+            $ngBootbox.confirm('Bạn có chắc muốn chọn thao tác ' + nguonBDSListVm.selectAction + ' ?')
             .then(function() {
                 console.log('lstIds');
                 console.log(lstIds);
@@ -46,7 +46,7 @@
                 });
                 $q.all(removePromise).then(function(rs){
                     appUtils.hideLoading();
-                    toaster.success("Delete success!");
+                    toaster.success("Xóa thành công!");
                     init();
                 });
             }, function() {

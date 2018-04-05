@@ -46,12 +46,12 @@
             settingService.addLoaiNguonBDS(nguonBDSModVm.item).then(function(res){
                 if(res.result){
                     appUtils.hideLoading();
-                    toaster.success("Thêm Loai Nguồn BDS mới thành công!");
+                    toaster.success("Thêm Loại Nguồn BDS mới thành công!");
                     $state.go('nguonBDS-list');
                 }
             }).catch(function(){
                 appUtils.hideLoading();
-                toaster.warning("Thêm Loai Nguồn BDS mới không thành công!");
+                toaster.warning("Thêm Loại Nguồn BDS mới không thành công!");
             });
             
         };

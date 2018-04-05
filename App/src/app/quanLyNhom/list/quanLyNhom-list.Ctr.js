@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
     'use strict';
 
     angular.module('app.quanLyNhom')
@@ -10,54 +10,83 @@
         $rootScope.settings.layout.showPageHead = true;
         $rootScope.settings.layout.guestPage = false;
         var currentUser = $rootScope.storage.currentUser;
-
-
         var appSettings = $rootScope.storage.appSettings;
 
-        //$scope.quanLyNhom = this; // jshint ignore:line
-        //$scope.quanLyNhom.keyword = '';
-        //$scope.quanLyNhom.bdsCate = '-1';
-        //$scope.groupedItems = [];
-        //$scope.quanLyNhom.filteredItems = [];
-        //$scope.quanLyNhom.pagedItems = [];
-        //$scope.quanLyNhom.paging = {
-        //    pageSize: 25,
-        //    currentPage: 0,
-        //    totalPage: 0,
-        //    totalRecord: 0
-        //};
+        initData(currentUser.phoneNumber);
+        // da kiem tra
+        function initData(userId) {
+            appUtils.showLoading();
+            $scope.Groups = [];
+            quanLyNhomService.getByUserId(userId).then(function (groups) {
+                $scope.Groups = groups.data;
+                $.each($scope.Groups, function () {
+                    console.log(this.author);
+                    console.log(userId);
+                    if (this.author == currentUser.$id) {
+                        this.IsAuthor = true;
+                    } else {
+                        this.IsAuthor = false;
+                    }
+                });
+                appUtils.hideLoading();
+            });
+        }
+
+        // da kiem tra
+        $scope.btnRemoveMember_Click = function (key) {
+            if (!confirm("Chọn 'OK' để rời khỏi nhóm.")) {
+                return;
+            }
+
+            quanLyNhomService.removeMember(currentUser.phoneNumber, key).then(function (res) {
+                if (!res.result) {
+                    toaster.warning(res.errMsg);
+                    appUtils.hideLoading();
+                    return;
+                }
+
+                var temps = [];
+                angular.copy($scope.Groups, temps);
+                $.each(temps, function (i) {
+                    if (this.$id == key) {
+                        $scope.Groups.splice(i, 1);
+                        return;
+                    }
+                });
+                appUtils.hideLoading();
+            });
+        };
+
+        // da kiem tra
+        $scope.btnDeleteGroup_Click = function (key) {
+            if (!confirm("Chọn 'OK' để hủy nhóm.")) {
+                return;
+            }
+            appUtils.showLoading();
+            quanLyNhomService.del(key).then(function (res) {
+                if (!res.result) {
+                    toaster.warning(res.errMsg);
+                    appUtils.hideLoading();
+                    return;
+                }
+
+                toaster.success("Hủy nhóm thành công.");
+                var temps = [];
+                angular.copy($scope.Groups, temps);
+                $.each(temps, function (i) {
+                    if (this.$id == key) {
+                        $scope.Groups.splice(i, 1);
+                        return;
+                    }
+                });
+                appUtils.hideLoading();
+            });
+        };
 
         // da kiem tra
         $scope.btnAddNew_Click = function () {
             $rootScope.reProcessSideBar = true;
             $state.go('quanLyNhom.detail');
         };
-
-
-
-        GetGroup();
-        function GetGroup() {
-            $scope.Groups = [];
-            quanLyNhomService.getAll().$loaded().then(function (groups) {
-                $scope.Groups = groups;
-            });
-        }
-
-        //quanLyNhom.groupToPages = function () {
-        //    quanLyNhom.pagedItems = [];
-        //    for (var i = 0; i < quanLyNhom.filteredItems.length; i++) {
-        //        if (i % quanLyNhom.paging.pageSize === 0) {
-        //            quanLyNhom.pagedItems[Math.floor(i / quanLyNhom.paging.pageSize)] = [quanLyNhom.filteredItems[i]];
-        //        } else {
-        //            quanLyNhom.pagedItems[Math.floor(i / quanLyNhom.paging.pageSize)].push(quanLyNhom.filteredItems[i]);
-        //        }
-        //    }
-        //    if (quanLyNhom.filteredItems.length % quanLyNhom.paging.pageSize === 0) {
-        //        quanLyNhom.paging.totalPage = quanLyNhom.filteredItems.length / quanLyNhom.paging.pageSize;
-        //    } else {
-        //        quanLyNhom.paging.totalPage = Math.floor(quanLyNhom.filteredItems.length / quanLyNhom.paging.pageSize) + 1;
-        //    }
-
-        //};
     }
 })();

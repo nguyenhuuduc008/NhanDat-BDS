@@ -47,7 +47,7 @@
                 return;
             } 
             appUtils.hideLoading();
-            toaster.warning('Form loại nhu cầu đã tồn tại!');
+            toaster.warning('Mẫu loại nhu cầu đã tồn tại!');
         };
         nhuCauModVm.cancel=function(){
             $state.go('nhuCau-list');
@@ -62,17 +62,17 @@
                 settingService.updateLoaiNhuCau(nhuCauModVm.item.form, nhuCauModVm.item).then(function(res){
                     if(res.result){
                         appUtils.hideLoading();
-                        toaster.success("Thêm Loai Nhu Cầu mới thành công!");
+                        toaster.success("Thêm loại Nhu Cầu mới thành công!");
                         $state.go('nhuCau-list');
                     }
                 }).catch(function(){
                     appUtils.hideLoading();
-                    toaster.warning("Thêm Loai Nhu Cầu mới không thành công!");
+                    toaster.warning("Thêm loại Nhu Cầu mới không thành công!");
                 });    
                 return;            
             }
             appUtils.hideLoading();
-            toaster.warning('Form loại nhu cầu đã tồn tại!');
+            toaster.warning('Mẫu loại nhu cầu đã tồn tại!');
         };
 
         function init(){

@@ -6,18 +6,18 @@
                 <div class="caption">
                     <div class="col-md-10 no-padding-right">
                         <select class="bs-select form-control" id="action-list" ng-model="huongListVm.selectAction">
-                            <option>Bulk Actions</option>
-                            <option>Delete</option>
+                            <option>Chọn</option>
+                            <option>Xóa</option>
                         </select>
                     </div>
                     <div class="col-md-2 no-padding-left">
-                        <button type="button" class="btn green" ng-click="huongListVm.apply('select-checkBox')">Apply</button>
+                        <button type="button" class="btn green" ng-click="huongListVm.apply('select-checkBox')">Áp dụng</button>
                     </div>
                 </div>
                 <div class="actions">
                     <div class="btn-group btn-group-devided">
                         <div class="col-md-1">
-                            <a href="#/setting/huong-mod" class="btn blue">Add New</a>
+                            <a href="#/setting/huong-mod" class="btn blue">Thêm mới</a>
                         </div>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                     <table class="table table-hover table-light">
                         <thead>
                             <tr class="uppercase">
-                                <th class="width5">
+                                <th class="width2">
                                     <label class="mt-checkbox mt-checkbox-outline">
                                         <input type="checkbox" id="select-all-checkBox" ng-click="huongListVm.selectAll('select-all-checkBox','select-checkBox')"/>
                                         <span></span>
@@ -38,7 +38,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in huongListVm.items">
-                                <td class="width5">
+                                <td class="width2">
                                     <label class="mt-checkbox mt-checkbox-outline">
                                         <input type="checkbox" name="select-checkBox" value="{{item.$id}}"/>
                                         <span></span>

@@ -48,8 +48,8 @@
             return $firebaseObject(nhuCauRef.child(loaiNhuCauId).child(id));
         }
 
-        function updateMediaData(khoBDSId, loaiNhuCauId, bdsKey, bdsModel, mediaKey) {
-            var ref = bdsRef.child(khoBDSId + "/" + loaiNhuCauId + "/" + bdsKey + "/media");
+        function updateMediaData(khoBDSId, bdsKey, bdsModel, mediaKey) {
+            var ref = bdsRef.child(khoBDSId + "/" + bdsKey + "/media");
 
             return ref.child(mediaKey).update(bdsModel).then(function(res){
                 return {result:true,key:mediaKey};
@@ -58,8 +58,8 @@
             });
         } 
 
-        function deleteMediaData(khoBDSId, loaiNhuCauId, bdsKey, mediaKey) {
-            var ref = bdsRef.child(khoBDSId + "/" + loaiNhuCauId + "/" + bdsKey + "/media");
+        function deleteMediaData(khoBDSId, bdsKey, mediaKey) {
+            var ref = bdsRef.child(khoBDSId + "/" + bdsKey + "/media");
 
             return ref.child(mediaKey).remove().then(function(res){
                 return {result:true,key:mediaKey};
@@ -82,8 +82,8 @@
             });
         }
 
-        function updateNhuCauBan(khoBDSId, loaiNhuCauId, bdsModel, bdsKey) {
-            var ref = bdsRef.child(khoBDSId + "/" + loaiNhuCauId);
+        function updateNhuCauBan(khoBDSId, bdsModel, bdsKey) {
+            var ref = bdsRef.child(khoBDSId);
             bdsModel.timestampModified= Date.now();
             
             delete bdsModel.$$hashKey;
@@ -101,12 +101,12 @@
         }
 
         function updateTabNhuCauMua(khoBDSId, bdsTab, bdsModel, bdsKey){
-            var ref = nhuCauRef.child(khoBDSId + "/" + bdsTab + "/" + bdsKey);
-            var refPath = "nhuCau/" + khoBDSId + "/" + bdsTab + "/" + bdsKey;
+            var ref = nhuCauRef.child("tabs/" + bdsTab + "/" + bdsKey);
+            var refPath = "nhuCau/" + "tabs/" + bdsTab + "/" + bdsKey;
             delete bdsModel.bdsKey;
+            bdsModel.timestampModified = Date.now();
 
             return ref.update(bdsModel).then(function(res){
-                DataUtils.updateTimeStampModifiedNode(refPath);
                 return {result:true,key:bdsKey};
             }).catch(function(err){
                 return {result:true,errMsg:err};
@@ -114,12 +114,12 @@
         }
 
         function updateTabNhuCauBan(khoBDSId, bdsTab, bdsModel, bdsKey){
-            var ref = bdsRef.child(khoBDSId + "/" + bdsTab + "/" + bdsKey);
-            var refPath = "bds/" + khoBDSId + "/" + bdsTab + "/" + bdsKey;
+            var ref = bdsRef.child("tabs/" + bdsTab + "/" + bdsKey);
+            var refPath = "bds/" + "tabs/" + bdsTab + "/" + bdsKey;
             delete bdsModel.bdsKey;
+            bdsModel.timestampModified = Date.now();
 
             return ref.update(bdsModel).then(function(res){
-                DataUtils.updateTimeStampModifiedNode(refPath);
                 return {result:true,key:bdsKey};
             }).catch(function(err){
                 return {result:true,errMsg:err};
@@ -141,10 +141,10 @@
             });
         }
 
-        function updateTabLienKetNhuCauBan(khoBDSId, bdsTab, bdsModel, bdsKey){
-            var ref = bdsRef.child(khoBDSId + "/" + bdsTab + "/" + bdsKey);
+        function updateTabLienKetNhuCauBan(bdsTab, bdsModel, bdsKey){
+            var ref = bdsRef.child("tabs/" + bdsTab + "/" + bdsKey);
             var key = ref.push().key;
-            var refPath = "bds/" + khoBDSId + "/" + bdsTab + "/" + bdsKey;
+            var refPath = "bds/" + "tabs/" + bdsTab + "/" + bdsKey;
             delete bdsModel.bdsKey;
             bdsModel.lienKetKey = key;
 
@@ -180,7 +180,7 @@
 
         function addNhuCauBan(khoBDSId, bdsModel, bdsKey){
             var ref = bdsRef.child(khoBDSId);
-            bdsModel.timestampCreated = Date.now();
+            bdsModel.timestampModified = Date.now();
 
             return ref.child(bdsKey).set(bdsModel).then(function(res){
                 return {result:true,key:bdsKey};
@@ -193,7 +193,7 @@
         function addNhuCauMua(khoBDSId, loaiNhuCauId, bdsModel){
             var ref = nhuCauRef.child(khoBDSId + "/" + loaiNhuCauId);
             var bdsKey = ref.push().key;
-            bdsModel.timestampCreated = Date.now();
+            bdsModel.timestampModified = Date.now();
   
             return ref.child(bdsKey).set(bdsModel).then(function(res){
                 return {result:true,key:bdsKey};

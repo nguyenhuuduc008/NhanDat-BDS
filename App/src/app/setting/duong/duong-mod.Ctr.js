@@ -46,12 +46,12 @@
             settingService.addLoaiDuong(duongModVm.item).then(function(res){
                 if(res.result){
                     appUtils.hideLoading();
-                    toaster.success("Thêm Loai Đường mới thành công!");
+                    toaster.success("Thêm Loại Đường mới thành công!");
                     $state.go('duong-list');
                 }
             }).catch(function(){
                 appUtils.hideLoading();
-                toaster.warning("Thêm Loai Đường mới không thành công!");
+                toaster.warning("Thêm Loại Đường mới không thành công!");
             });
             
         };

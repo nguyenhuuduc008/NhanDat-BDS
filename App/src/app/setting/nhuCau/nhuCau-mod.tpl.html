@@ -19,9 +19,9 @@
                             <!-- <label class="control-label" ng-show="thisForm.text.$error.pattern">* This field does not allow special characters</label> -->
                         </div>
                         <div class="form-group col-md-6" ng-class="{'has-error': (thisForm.formLoai.$error.required)&&thisForm.formLoai.$touched}">
-                            <label class="control-label">Form Loại Nhu Cầu </label>
-                            <select name="formLoai" class="bs-select form-control" placehoder="Chọn form loại nhu cầu" ng-model="nhuCauModVm.item.form" required>
-                                <option value="" disabled>Chọn Form Loại Nhu Cầu </option>
+                            <label class="control-label">Mẫu Loại Nhu Cầu </label>
+                            <select name="formLoai" class="bs-select form-control" placehoder="Chọn mẫu loại nhu cầu" ng-model="nhuCauModVm.item.form" required>
+                                <option value="" disabled>Chọn mẫu Loại Nhu Cầu </option>
                                 <option value="ban">Bán</option>
                                 <option value="mua">Mua</option>
                                 <option value="thue">Thuê</option>
@@ -33,9 +33,9 @@
                         <div class="row">
                             <div class="padding-left-30 col-md-12">
                                 <button type="submit" class="btn green"ng-disabled="thisForm.$invalid">
-                                    <i class="fa fa-check"></i> Save
+                                    <i class="fa fa-check"></i> Lưu lại
                                 </button>
-                                <button type="button" class="btn default" ng-click="nhuCauModVm.cancel()">Cancel</button>
+                                <button type="button" class="btn default" ng-click="nhuCauModVm.cancel()">Hủy bỏ</button>
                             </div>
                         </div>
                     </div>

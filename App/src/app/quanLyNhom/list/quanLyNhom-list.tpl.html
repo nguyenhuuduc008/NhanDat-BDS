@@ -1,16 +1,18 @@
-﻿<div class="portlet light bordered tasks-widget">
-
+﻿<style>
+    .group-user-list-btn {
+        padding-top: 2px !important;
+        padding-bottom: 2px !important;
+        margin: 5px !important;
+        width: 147px !important;
+    }
+</style>
+<div class="portlet light bordered tasks-widget">
     <div class="portlet-title">
         <div class="caption row">
             <div class="col-md-3 text-center">
                 <a type="button" href="#" ng-click="btnAddNew_Click()" class="btn blue">Thêm mới</a>
             </div>
         </div>
-        <!--<div class="actions">
-            <div class="padding-top-2">
-                <list-paging ng-model="vm.paging" change-page="vm.changePage"></list-paging>
-            </div>
-        </div>-->
     </div>
     <div class="table-scrollable table-scrollable-borderless">
         <table class="table table-hover table-light">
@@ -19,13 +21,21 @@
                     <th style="text-align:center"> Tên nhóm </th>
                     <th style="text-align:center"> Số thành viên </th>
                     <th style="text-align:center"> Ngày tạo </th>
+                    <th style="text-align:center">#</th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in Groups">
-                    <td><a href="#/quanLyNhom/detail/{{item.$id}}">{{item.tenNhom}}</a></td>
-                    <td style="text-align:center">{{item.Members.length}}</td>
-                    <td style="text-align:center">{{item.timestampCreated | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                <tr ng-repeat="x in Groups | orderBy : 'IsAuthor'">
+                    <td>
+                        <a href="#/quanLyNhom/detail/{{x.$id}}" ng-show="x.IsAuthor">{{x.tenNhom}}</a>
+                        <span ng-show="!x.IsAuthor">{{x.tenNhom}}</span>
+                    </td>
+                    <td style="text-align:center">{{x.nMembers}}</td>
+                    <td style="text-align:center">{{x.timestampCreateds | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                    <td style="text-align:center">
+                        <button ng-show="!x.IsAuthor" type="button" class="btn red group-user-list-btn" ng-click="btnRemoveMember_Click(x.$id)">Ra khỏi nhóm</button>
+                        <button ng-show="x.IsAuthor" type="button" class="btn blue group-user-list-btn" ng-click="btnDeleteGroup_Click(x.$id)">Hủy nhóm</button>
+                    </td>
                 </tr>
             </tbody>
         </table>

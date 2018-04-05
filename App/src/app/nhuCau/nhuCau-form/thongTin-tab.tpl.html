@@ -73,8 +73,8 @@
                                     <!-- <select name="loaiBDS" ng-model="nhuCauThongTinVm.model.loaiBDS" class="form-control" ng-change="nhuCauThongTinVm.changeLoaiBDS(nhuCauThongTinVm.model.loaiBDS)">
                                             <option ng-repeat="item in nhuCauThongTinVm.loaiBDSList" value="{{item.value}}" ng-selected="item.$id == nhuCauThongTinVm.model.loaiBDS">{{item.text}}</option>
                                         </select> -->
-                                    <select class="form-control" ng-model="nhuCauThongTinVm.model.loaiBDS" ng-options="item.value as item.text for item in nhuCauThongTinVm.loaiBDSList"
-                                        ng-change="nhuCauThongTinVm.changeLoaiBDS(nhuCauThongTinVm.model.loaiBDS)"></select>
+                                    <select class="form-control" ng-model="nhuCauThongTinVm.bds.loaiBDS" ng-options="item.value as item.text for item in nhuCauThongTinVm.loaiBDSList"
+                                        ng-change="nhuCauThongTinVm.changeLoaiBDS(nhuCauThongTinVm.bds.loaiBDS)"></select>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -83,9 +83,9 @@
 
                                     </label>
                                     <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" ng-model="nhuCauThongTinVm.bds.quanHuyen"/> -->
-                                    <select name="loaiViTri" ng-model="nhuCauThongTinVm.model.loaiViTri" class="form-control">
+                                    <select name="loaiViTri" ng-model="nhuCauThongTinVm.bds.loaiViTri" class="form-control">
                                         <option value="notSelect">--Loại Vị Trí</option>
-                                        <option ng-repeat="item in nhuCauThongTinVm.cacLoaiViTri" value="{{item.value}}" ng-selected="item.value == nhuCauThongTinVm.model.loaiViTri">{{item.text}}</option>
+                                        <option ng-repeat="item in nhuCauThongTinVm.cacLoaiViTri" value="{{item.value}}" ng-selected="item.value == nhuCauThongTinVm.bds.loaiViTri">{{item.text}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -100,7 +100,7 @@
                                 <div class="form-group">
                                     <label class="control-label">Khối / Khu
                                     </label>
-                                    <input type="text" name="khoiKhu" placeholder="Khối / Khu" class="form-control" ng-model="nhuCauThongTinVm.model.khoiKhu"
+                                    <input type="text" name="khoiKhu" placeholder="Khối / Khu" class="form-control" ng-model="nhuCauThongTinVm.bds.khoiKhu"
                                     />
                                 </div>
                             </div>
@@ -108,7 +108,7 @@
                                 <div class="form-group">
                                     <label class="control-label">Tòa Nhà / Lô
                                     </label>
-                                    <input type="text" name="toaNhaLo" placeholder="Tòa Nhà / Lô" class="form-control" ng-model="nhuCauThongTinVm.model.toaNhaLo"
+                                    <input type="text" name="toaNhaLo" placeholder="Tòa Nhà / Lô" class="form-control" ng-model="nhuCauThongTinVm.bds.toaNhaLo"
                                     />
                                 </div>
                             </div>
@@ -116,14 +116,14 @@
                                 <div class="form-group">
                                     <label class="control-label">Tầng
                                     </label>
-                                    <input type="text" name="tang" placeholder="Tầng" class="form-control" ng-model="nhuCauThongTinVm.model.tang" />
+                                    <input type="text" name="tang" placeholder="Tầng" class="form-control" ng-model="nhuCauThongTinVm.bds.tang" />
                                 </div>
                             </div>
                             <div class="col-md-6" ng-if="nhuCauThongTinVm.loaiBDSForm == 'form2'">
                                 <div class="form-group">
                                     <label class="control-label">Số Căn Hộ
                                     </label>
-                                    <input type="text" name="soCanHo" placeholder="Số Căn Hộ" class="form-control" ng-model="nhuCauThongTinVm.model.soCanHo"
+                                    <input type="text" name="soCanHo" placeholder="Số Căn Hộ" class="form-control" ng-model="nhuCauThongTinVm.bds.soCanHo"
                                     />
                                 </div>
                             </div>
@@ -131,14 +131,14 @@
                                 <div class="form-group">
                                     <label class="control-label">Lô
                                     </label>
-                                    <input type="text" name="lo" placeholder="Lô" class="form-control" ng-model="nhuCauThongTinVm.model.lo" />
+                                    <input type="text" name="lo" placeholder="Lô" class="form-control" ng-model="nhuCauThongTinVm.bds.lo" />
                                 </div>
                             </div>
                             <div class="col-md-6" ng-if="nhuCauThongTinVm.loaiBDSForm == 'form3'">
                                 <div class="form-group">
                                     <label class="control-label">Đường
                                     </label>
-                                    <input type="text" name="loaiDuong" placeholder="Đường" class="form-control" ng-model="nhuCauThongTinVm.model.loaiDuong"
+                                    <input type="text" name="loaiDuong" placeholder="Đường" class="form-control" ng-model="nhuCauThongTinVm.bds.loaiDuong"
                                     />
                                 </div>
                             </div>
@@ -146,7 +146,7 @@
                                 <div class="form-group">
                                     <label class="control-label">Số Nền
                                     </label>
-                                    <input type="text" name="soNen" placeholder="Số Nền" class="form-control" ng-model="nhuCauThongTinVm.model.soNen" />
+                                    <input type="text" name="soNen" placeholder="Số Nền" class="form-control" ng-model="nhuCauThongTinVm.bds.soNen" />
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -155,9 +155,9 @@
 
                                     </label>
                                     <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" ng-model="nhuCauThongTinVm.bds.quanHuyen"/> -->
-                                    <select name="duAn" ng-model="nhuCauThongTinVm.model.duAn" class="form-control">
+                                    <select name="duAn" ng-model="nhuCauThongTinVm.bds.duAn" class="form-control">
                                         <option value="notSelect">--Dự Án</option>
-                                        <option ng-repeat="item in nhuCauThongTinVm.cacDuAn" value="{{item.value}}" ng-selected="item.value == nhuCauThongTinVm.model.duAn">{{item.text}}</option>
+                                        <option ng-repeat="item in nhuCauThongTinVm.cacDuAn" value="{{item.value}}" ng-selected="item.value == nhuCauThongTinVm.bds.duAn">{{item.text}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -272,7 +272,9 @@
                 <div class="portlet-title">
                     <div class="caption">
                         <i class="icon-equalizer font-blue-hoki"></i>
-                        <span class="caption-subject font-blue-hoki bold uppercase">Bản Đồ</span>
+                        <span class="caption-subject font-blue-hoki bold uppercase">Bản Đồ</span> &nbsp; &nbsp;
+                        <span class="bold uppercase"><button type="button" class="btn default" ng-click="nhuCauThongTinVm.getToaDo()">Lấy Tọa Độ Địa Chỉ</button></span>
+                        <span class="bold uppercase"><button type="button" class="btn default" ng-click="nhuCauThongTinVm.getGPS()">Lấy Tọa Độ GPS</button></span>
                     </div>
                     <div class="tools">
                         <a href="" class="collapse"> </a>
@@ -372,7 +374,7 @@
                                     <label class="control-label">Ngang
 
                                     </label>
-                                    <input type="text" name="ngang" placeholder="Ngang" class="form-control" ng-model="nhuCauThongTinVm.model.ngang" />
+                                    <input type="text" name="ngang" placeholder="Ngang" class="form-control" ng-model="nhuCauThongTinVm.bds.ngang" />
                                 </div>
                             </div>
                             <!--/span-->
@@ -381,7 +383,7 @@
                                     <label class="control-label">Dài
 
                                     </label>
-                                    <input type="text" name="dai" placeholder="Dài" class="form-control" ng-model="nhuCauThongTinVm.model.dai" />
+                                    <input type="text" name="dai" placeholder="Dài" class="form-control" ng-model="nhuCauThongTinVm.bds.dai" />
                                 </div>
                             </div>
                             <!--/span-->
@@ -392,18 +394,18 @@
                                 <div class="form-group">
                                     <label class="control-label">Hướng Nhà
                                     </label>
-                                    <select name="huongNha" ng-model="nhuCauThongTinVm.model.huongNha" class="form-control">
+                                    <select name="huongNha" ng-model="nhuCauThongTinVm.bds.huongNha" class="form-control">
                                         <option value="">--KXD</option>
-                                        <option ng-repeat="item in nhuCauThongTinVm.cacLoaiHuong " value="{{item.value}}" ng-selected="item.value == nhuCauThongTinVm.model.huongNha">{{item.text}}</option>
+                                        <option ng-repeat="item in nhuCauThongTinVm.cacLoaiHuong " value="{{item.value}}" ng-selected="item.value == nhuCauThongTinVm.bds.huongNha">{{item.text}}</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group" ng-class="{'has-error': (nhuCauThongTinVm.showInvalid && createForm.soTang.$error.required) || (createForm.soTang.$error.pattern)}">
+                                <div class="form-group" >
                                     <label class="control-label">Số Tầng
 
                                     </label>
-                                    <input type="number" name="soTang" placeholder="--Số Tầng" class="form-control" ng-model="nhuCauThongTinVm.model.soTang"
+                                    <input type="number" name="soTang" placeholder="--Số Tầng" class="form-control" ng-model="nhuCauThongTinVm.bds.soTang"
                                     />
                                 </div>
                             </div>
@@ -411,21 +413,21 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group" ng-class="{'has-error': (nhuCauThongTinVm.showInvalid && createForm.soPhongNgu.$error.required) || createForm.soPhongNgu.$error.pattern}">
+                                <div class="form-group" >
                                     <label class="control-label">Số Phòng Ngủ
 
                                     </label>
-                                    <input type="text" name="soPhongNgu" placeholder="Số Phòng Ngủ" class="form-control" ng-model="nhuCauThongTinVm.model.soPhongNgu"
+                                    <input type="text" name="soPhongNgu" placeholder="Số Phòng Ngủ" class="form-control" ng-model="nhuCauThongTinVm.bds.soPhongNgu"
                                         ng-pattern="numberRegx" />
                                 </div>
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
-                                <div class="form-group" ng-class="{'has-error': (nhuCauThongTinVm.showInvalid && createForm.soWC.$error.required)}">
+                                <div class="form-group" >
                                     <label class="control-label">Số WC
 
                                     </label>
-                                    <input type="text" name="soWC" placeholder="Số WC" class="form-control" ng-model="nhuCauThongTinVm.model.soWC" />
+                                    <input type="text" name="soWC" placeholder="Số WC" class="form-control" ng-model="nhuCauThongTinVm.bds.soWC" />
                                 </div>
                             </div>
                             <!--/span-->
@@ -436,7 +438,7 @@
                                     <label class="control-label">Nội Thất
                                         <!--   -->
                                     </label>
-                                    <textarea rows="5" type="text" name="noiThat" placeholder="Thông Tin Nội Thất" class="form-control" ng-model="nhuCauThongTinVm.model.noiThat"
+                                    <textarea rows="5" type="text" name="noiThat" placeholder="Thông Tin Nội Thất" class="form-control" ng-model="nhuCauThongTinVm.bds.noiThat"
                                     />
                                 </div>
                             </div>

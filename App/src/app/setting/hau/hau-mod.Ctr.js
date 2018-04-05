@@ -46,12 +46,12 @@
             settingService.addLoaiHau(hauModVm.item).then(function(res){
                 if(res.result){
                     appUtils.hideLoading();
-                    toaster.success("Thêm Loai Hậu mới thành công!");
+                    toaster.success("Thêm Loại Hậu mới thành công!");
                     $state.go('hau-list');
                 }
             }).catch(function(){
                 appUtils.hideLoading();
-                toaster.warning("Thêm Loai Hậu mới không thành công!");
+                toaster.warning("Thêm Loại Hậu mới không thành công!");
             });
             
         };

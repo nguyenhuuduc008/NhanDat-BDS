@@ -5,7 +5,7 @@
 		.factory('bdsService', bdsService);
 
 	/** @ngInject **/
-	function bdsService(firebaseDataRef, $firebaseObject, appUtils, $q, storageRef, $firebaseArray, $rootScope, $filter) {
+	function bdsService(firebaseDataRef, $firebaseObject, appUtils, $q, storageRef, $firebaseArray, $rootScope, $filter, DataUtils) {
 		var service = {
 			getAll: getAll,
 			get: get,
@@ -23,9 +23,11 @@
 			getThuocQuyHoach: getThuocQuyHoach,
 			updateCapDo: updateCapDo,
 			getCapDo: getCapDo,
-			checkAddressExist: checkAddressExist
+			checkAddressExist: checkAddressExist,
+			getBDS: getBDS
 		};
 
+		var bdsPath = 'bds';
 		var bdsRef = firebaseDataRef.child('bds');
 		var bdsCategoryRef = firebaseDataRef.child('bds-danh-muc');
 		var tacNghiepRef = firebaseDataRef.child('bds-tac-nghiep');
@@ -47,6 +49,11 @@
 		function get(danhMucId, id) {
 			var ref = bdsRef.child(danhMucId + '/' + id);
 			return $firebaseObject(ref);
+		}
+
+		function getBDS(khoKey, key) {
+			var refPath = bdsPath + "/" + khoKey + "/" + key;
+			return DataUtils.getDataFirebaseLoadOnce(refPath);
 		}
 
 		function create(danhMucBDS, obj) {

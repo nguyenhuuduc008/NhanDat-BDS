@@ -107,7 +107,7 @@
                                             <div class="form-group col-md-12" ng-show="Users.length>1">
                                                 <label class="control-label" ng-show="Users.length<1">Không có kết quả nào tìm thấy</label>
                                                 <label class="control-label" ng-show="Users.length>0">Có kết quả <b>{{Users.length}}</b> được tìm thấy</label>
-                                                <span ng-show="Users.length>1"><br><input type="checkbox" ng-click="chkSelectAll_Click('users')" /> Chọn hết<br></span>
+                                                <!--<span ng-show="Users.length>1"><br><input type="checkbox" ng-click="chkSelectAll_Click('users')" /> Chọn hết<br></span>-->
                                                 <div class="group-user-list">
                                                     <ul>
                                                         <li ng-repeat="x in Users">
@@ -143,12 +143,10 @@
                                                     <ul>
                                                         <li ng-repeat="x in model.Members">
                                                             <div class="col-md-8" style="padding-top:8px">
-                                                               <span>{{x.fullName}}</span> <span ng-show="x.isAdmin" style="color:#0094ff">(admin)</span>
+                                                               <span>{{x.fullName}}</span>
                                                             </div>
-                                                            <div class="col-md-4" ng-show="CurrentUser.isAdmin" style="text-align:right">
-                                                                <button type="button" class="btn red group-user-list-btn" ng-click="btnRemoveMenber_Click(x.Id)">Rời khỏi nhóm</button>
-                                                                <button ng-disabled="model.Members.length==1 && CurrentUser.isAuthor" ng-show="!x.isAdmin" type="button" class="btn blue group-user-list-btn" ng-click="x.isAdmin=true">Chọn làm Admin</button>
-                                                                <button ng-disabled="model.Members.length==1" ng-show="x.isAdmin" type="button" class="btn organ group-user-list-btn" ng-click="x.isAdmin=false">Hủy admin</button>
+                                                            <div class="col-md-4" ng-show="!x.isAdmin" style="text-align:right">
+                                                                <button type="button" class="btn red group-user-list-btn" ng-click="btnRemoveMenber_Click(x.phoneNumber)">Rời khỏi nhóm</button>
                                                             </div>
                                                         </li>
                                                     </ul>

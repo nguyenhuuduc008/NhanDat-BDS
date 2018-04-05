@@ -5,19 +5,19 @@
 		.controller("addCtr", addCtr);
     /** @ngInject **/
     function addCtr($rootScope, $stateParams, $q, $scope, $state, $ngBootbox, authService, currentAuth, appUtils, toaster, settingService, userService, quanLyNhomService) {
-
         $rootScope.settings.layout.showSmartphone = false;
         $rootScope.settings.layout.showBreadcrumb = false;
         $rootScope.settings.layout.guestPage = false;
         var appSettings = $rootScope.storage.appSettings;
-
         var currentUser = $rootScope.storage.currentUser;
-        //var vm = this; // jshint ignore:line
 
         $scope.model = {
             id: $stateParams.id == "" ? -1 : $stateParams.id,
             Members: []
         };
+
+        var addMembers = [];
+        var deleteMembers = [];
 
         if ($scope.model.id == -1) {
             $scope.pageTitle = "Tạo mới nhóm";
@@ -81,21 +81,19 @@
                     id: currentUser.$id,
                     fullName: currentUser.firstName + " " + currentUser.lastName,
                     phoneNumber: currentUser.phoneNumber,
-                    isAuthor: true,
                     isAdmin: true
                 }];
-
                 $scope.CurrentUser.isAdmin = true;
-                $scope.CurrentUser.isAuthor = true;
                 return;
             }
 
             quanLyNhomService.getById(groupId).then(function (group) {
                 if (group.result) {
-                    $scope.model.Members = group.data.Members;
+                    $scope.model = group.data;
+                    $scope.model.id = $stateParams.id == "" ? -1 : $stateParams.id;
+
                     $.each($scope.model.Members, function () {
                         if (this.id == currentUser.$id) {
-                            $scope.CurrentUser.isAuthor = this.isAuthor;
                             $scope.CurrentUser.isAdmin = this.isAdmin;
                         }
                     });
@@ -106,6 +104,7 @@
         // da kiem tra
         function doInsert() {
             appUtils.showLoading();
+            $scope.model.Author = currentUser.$id;
             $scope.model.Members = JSON.parse(angular.toJson($scope.model.Members));
             quanLyNhomService.create($scope.model).then(function (res) {
                 if (res.result) {
@@ -123,16 +122,36 @@
         function doUpdate() {
             appUtils.showLoading();
             $scope.model.Members = JSON.parse(angular.toJson($scope.model.Members));
-            alert(JSON.stringify($scope.model.Members));
-            quanLyNhomService.update($scope.model.id, $scope.model).then(function (res) {
+            quanLyNhomService.update($scope.model).then(function (res) {
                 if (res.result) {
                     appUtils.hideLoading();
-                    toaster.success("Cập nhật Loại nhóm  thành công!");
+                    doSync($scope.model);
+                    toaster.success("Cập nhật Loại nhóm thành công!");
                 }
             }).catch(function () {
                 appUtils.hideLoading();
                 toaster.warning("Cập nhật Loại nhóm không thành công!");
             });
+        }
+
+        // da kiem tra
+        function doSync(dataModel) {
+            if ($scope.model.id == -1) {
+                return;
+            }
+
+            quanLyNhomService.addMembers(dataModel, $scope.model.id);
+
+            $.each(deleteMembers, function () {
+                quanLyNhomService.removeMember(this.phoneNumber, $scope.model.id);
+            });
+
+            $.each(addMembers, function () {
+                quanLyNhomService.addMember(this.phoneNumber, $scope.model, $scope.model.id);
+            });
+
+            addMembers = [];
+            deleteMembers = [];
         }
 
         // da kiem tra
@@ -186,11 +205,10 @@
                         id: this.$id,
                         fullName: this.firstName + " " + this.lastName,
                         phoneNumber: this.phoneNumber,
-                        isAuthor: false,
                         isAdmin: false
                     };
-
                     $scope.model.Members.splice(1, 0, obj);
+                    addMembers.push(obj);
                 }
             });
         };
@@ -201,9 +219,13 @@
                 return;
             }
 
-            $.each($scope.model.Members, function (i) {
-                if (this.$id == key) {
+            var temps = [];
+            angular.copy($scope.model.Members, temps);
+            $.each(temps, function (i) {
+                if (this.phoneNumber == key) {
                     $scope.model.Members.splice(i, 1);
+                    deleteMembers.push(this);
+                    console.log(deleteMembers);
                     return;
                 }
             });

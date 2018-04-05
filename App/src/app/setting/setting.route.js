@@ -767,7 +767,7 @@
             parent: 'root',
             url: '/setting/user-list',
             templateUrl: 'app/setting/user/user-list.tpl.html',
-            controller: 'userListCtr',
+            controller: 'settingUserListCtr',
             controllerAs: 'userListVm',
             data: {
                 pageTitle: 'Quản Lý Loại User',
@@ -872,7 +872,7 @@
             parent: 'root',
             url: '/setting/nhuCau-list',
             templateUrl: 'app/setting/nhuCau/nhuCau-list.tpl.html',
-            controller: 'nhuCauListCtr',
+            controller: 'settingNhuCauListCtr',
             controllerAs: 'nhuCauListVm',
             data: {
                 pageTitle: 'Quản Lý Loại Nhu Cầu',

@@ -46,12 +46,12 @@
             settingService.addLoaiUser(userModVm.item).then(function(res){
                 if(res.result){
                     appUtils.hideLoading();
-                    toaster.success("Thêm Loai User mới thành công!");
+                    toaster.success("Thêm Loại User mới thành công!");
                     $state.go('user-list');
                 }
             }).catch(function(){
                 appUtils.hideLoading();
-                toaster.warning("Thêm Loai User mới không thành công!");
+                toaster.warning("Thêm Loại User mới không thành công!");
             });
             
         };

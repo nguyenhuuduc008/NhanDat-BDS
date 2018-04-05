@@ -110,7 +110,9 @@
             deleteLoaiHanhChinh: deleteLoaiHanhChinh,
 
             getAllHanhChinh: getAllHanhChinh,
-            getDuLieuTho:getDuLieuTho 
+            getDuLieuTho: getDuLieuTho,
+            getAllNhuCauTheoLoai: getAllNhuCauTheoLoai,
+            removeNhuCau: removeNhuCau
         };
         //Ref
         var cacLoaiNoiThatRef=firebaseDataRef.child('app-options/cacLoaiNoiThat');
@@ -131,6 +133,7 @@
         var cacLoaiNhuCauRef=firebaseDataRef.child('app-options/cacLoaiNhuCau');
         var cacLoaiHanhChinhRef=firebaseDataRef.child('app-options/cacLoaiHanhChinh');
         var duLieuThoRef = firebaseDataRef.child('duLieuTho');
+        var nhuCauRef = firebaseDataRef.child('nhuCau');
         
         return service;
         //function cacLoaiQUyHoach
@@ -811,6 +814,13 @@
         }
         function getAllHanhChinh() {
             return cacLoaiHanhChinhRef.once('value');
+        }
+        function getAllNhuCauTheoLoai(childRef) {
+            return nhuCauRef.child(childRef).once('value');
+        }
+        
+        function removeNhuCau(childRef) {
+            return nhuCauRef.child(childRef).remove();
         }
     }
 })();

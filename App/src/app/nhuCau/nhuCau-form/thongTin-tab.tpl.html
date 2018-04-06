@@ -161,7 +161,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6" ng-if="nhuCauThongTinVm.noMapImg">
+                            <div class="col-md-6" ng-if="!nhuCauThongTinVm.showMapMedia">
                                 <div class="form-group">
                                     <label class="control-label">Đơn {{ nhuCauThongTinVm.donGiaSlider() }}</label>
                                     <div class="col-md-12">
@@ -174,7 +174,7 @@
                                         end=10000000000 step=10000></div>
                                 </div>
                             </div>
-                            <div class="col-md-6" ng-if="nhuCauThongTinVm.noMapImg">
+                            <div class="col-md-6" ng-if="!nhuCauThongTinVm.showMapMedia">
                                 <div class="form-group">
                                     <label class="control-label">{{nhuCauThongTinVm.dienTichSlider()}} m
                                         <sup>2</sup>
@@ -189,7 +189,7 @@
                                         end=500 step=1></div>
                                 </div>
                             </div>
-                            <div class="col-md-6" ng-if="nhuCauThongTinVm.noMapImg">
+                            <div class="col-md-6" ng-if="!nhuCauThongTinVm.showMapMedia">
                                 <div class="form-group">
                                     <label class="control-label">Tổng {{ nhuCauThongTinVm.tongGiaSlider() }}</label>
                                     <div class="col-md-12">
@@ -202,13 +202,13 @@
                                         end=10000000000 step=10000></div>
                                 </div>
                             </div>
-                            <div class="col-md-4" ng-if="!nhuCauThongTinVm.noMapImg">
+                            <div class="col-md-4" ng-if="nhuCauThongTinVm.showMapMedia">
                                 <div class="form-group">
                                     <label class="control-label">Đơn Giá</label>
                                     <input type="number" name="donGia" placeholder="Đơn Giá" class="form-control" ng-model="nhuCauThongTinVm.model.donGia" ng-disabled="nhuCauThongTinVm.model.donViDonGia === 'deal'"/>
                                 </div>
                             </div>
-                            <div class="col-md-2" ng-if="!nhuCauThongTinVm.noMapImg">
+                            <div class="col-md-2" ng-if="nhuCauThongTinVm.showMapMedia">
                                 <div class="form-group">
                                     <label class="control-label">Đơn vị (VNĐ) </label>
                                     <select name="donViDonGia" ng-model="nhuCauThongTinVm.model.donViDonGia" class="form-control" ng-change="nhuCauThongTinVm.selectDonvi(nhuCauThongTinVm.model.donViDonGia, 'donGia')">
@@ -218,7 +218,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6" ng-if="!nhuCauThongTinVm.noMapImg">
+                            <div class="col-md-6" ng-if="nhuCauThongTinVm.showMapMedia">
                                 <div class="form-group" ng-class="{'has-error': (nhuCauThongTinVm.showInvalid && createForm.dienTich.$error.required)}">
                                     <label class="control-label">Diện Tích &nbsp; {{nhuCauThongTinVm.bds.dienTich | currency: "": 0}} m
                                         <sup>2</sup>
@@ -228,13 +228,13 @@
                                     />
                                 </div>
                             </div>
-                            <div class="col-md-4" ng-if="!nhuCauThongTinVm.noMapImg">
+                            <div class="col-md-4" ng-if="nhuCauThongTinVm.showMapMedia">
                                 <div class="form-group">
                                     <label class="control-label">Tổng Giá</label>
                                     <input type="number" name="tongGia" placeholder="Tổng Giá" class="form-control" ng-model="nhuCauThongTinVm.model.tongGia" ng-disabled="nhuCauThongTinVm.model.donViTongGia === 'deal'"/>
                                 </div>
                             </div>
-                            <div class="col-md-2" ng-if="!nhuCauThongTinVm.noMapImg">
+                            <div class="col-md-2" ng-if="nhuCauThongTinVm.showMapMedia">
                                 <div class="form-group">
                                     <label class="control-label">Đơn vị (VNĐ)  </label>
                                     <select name="donViTongGia" ng-model="nhuCauThongTinVm.model.donViTongGia" class="form-control" ng-change="nhuCauThongTinVm.selectDonvi(nhuCauThongTinVm.model.donViTongGia, 'tongGia')">
@@ -268,7 +268,7 @@
                 <!--Thông Tin Chung-->
             </div>
             <!--Ban Do-->
-            <div class="portlet light bordered" ng-if="!nhuCauThongTinVm.noMapImg">
+            <div class="portlet light bordered" ng-if="nhuCauThongTinVm.showMapMedia">
                 <div class="portlet-title">
                     <div class="caption">
                         <i class="icon-equalizer font-blue-hoki"></i>
@@ -291,7 +291,7 @@
                 </div>
             </div>
             <!--Hinh Anh-->
-            <div class="portlet light bordered" ng-if="!nhuCauThongTinVm.noMapImg">
+            <div class="portlet light bordered" ng-if="nhuCauThongTinVm.showMapMedia">
                 <div class="portlet-title">
                     <div class="caption">
                         <i class="icon-equalizer font-blue-hoki"></i>

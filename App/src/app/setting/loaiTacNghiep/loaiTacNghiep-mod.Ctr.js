@@ -46,15 +46,15 @@
             settingService.addLoaiTacNghiep(loaiTacNghiepModVm.item).then(function(res){
                 if(res.result){
                     appUtils.hideLoading();
-                    toaster.success("Thêm Loai Tác Nghiệp mới thành công!");
+                    toaster.success("Thêm Loại Tác Nghiệp mới thành công!");
                     $state.go('loaiTacNghiep-list');
                 }
             }).catch(function(){
                 appUtils.hideLoading();
-                toaster.warning("Thêm Loai Tác Nghiệp mới không thành công!");
+                toaster.warning("Thêm Loại Tác Nghiệp mới không thành công!");
             });
             
-        };
+        };      
 
         function init(){
             if(loaiTacNghiepModVm.idLoai){

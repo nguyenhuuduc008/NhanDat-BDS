@@ -230,7 +230,8 @@
             return cacLoaiTacNghiepRef.child(key).update({
                 text:dataModel.text,
                 value: key,
-                cus_key: dataModel.cus_key
+                cus_key: dataModel.cus_key,
+                flagTacNghiepHeThong: dataModel.flagTacNghiepHeThong
             }).then(function(res){
                 return {result:true,data:key};
             }).catch(function(error){
@@ -247,7 +248,8 @@
         function updateLoaiTacNghiep(idLoai,dataModel){
             return cacLoaiTacNghiepRef.child(idLoai).update({
                 text: dataModel.text,
-                cus_key: dataModel.cus_key
+                cus_key: dataModel.cus_key,
+                flagTacNghiepHeThong: dataModel.flagTacNghiepHeThong
             }).then(function(res){
                 return {result:true,data:idLoai};
             }).catch(function(error){

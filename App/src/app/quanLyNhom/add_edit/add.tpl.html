@@ -14,16 +14,16 @@
 
             .group-user-list ul li {
                 list-style: none;
-                border-bottom:1px dotted #dfdfdf;
-                height:38px;
-
+                border-bottom: 1px dotted #dfdfdf;
+                height: 38px;
             }
-                .group-user-list-btn {
-                    padding-top: 2px !important;
-                    padding-bottom: 2px !important;;
-                    margin: 5px !important;;
-                    width: 147px !important;;
-                }
+
+    .group-user-list-btn {
+        padding-top: 0px !important;
+        padding-bottom: 2px !important;
+        margin: 5px !important;
+        width: 120px !important;
+    }
 </style>
 
 <div class="row" id="permission">
@@ -56,27 +56,44 @@
                         </div>
 
                         <div class="row">
-                            <div class="form-group col-md-3">
-                                <label class="control-label">Tỉnh/Thành</label>
-                                <select name="text" type="text" ng-model="model.tinhThanh" class="form-control" ng-change="changeCity()">
-                                    <option ng-repeat="x in Cities" value="{{x.$id}}">{{x.text}}</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label class="control-label">Quận/Huyện</label>
-                                <select name="quanHuyen" ng-model="model.quanHuyen" class="form-control" ng-change="changeDistrict()">
-                                    <option ng-repeat="item in Districts" value="{{item.$id}}">{{item.text}}</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label class="control-label">Giá từ (VND) </label>
-                                <input name="text" type="number" ng-model="model.giaTu" class="form-control" />
-                                <label class="control-label" ng-show="thisForm.giaTu.$error.required">* Vui lòng nhập giá bđs</label>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label class="control-label">Giá đến (VND) </label>
-                                <input name="text" type="number" ng-model="model.giaDen" class="form-control" />
-                                <label class="control-label" ng-show="thisForm.giaDen.$error.required">* Vui lòng nhập giá bđs</label>
+                            <div class="col-lg-12 col-xs-12 col-sm-12">
+                                <div class="portlet light bordered">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="icon-equalizer font-dark hide"></i>
+                                            <span class="caption-subject font-dark bold uppercase">Điều kiện</span>
+                                        </div>
+                                        <div class="tools">
+                                            <a href="" class="collapse" data-original-title="" title=""> </a>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body" style="display: block;">
+                                        <div class="row">
+                                            <div class="form-group col-md-3">
+                                                <label class="control-label">Tỉnh/Thành</label>
+                                                <select name="text" type="text" ng-model="model.tinhThanh" class="form-control" ng-change="changeCity()">
+                                                    <option ng-repeat="x in Cities" value="{{x.$id}}">{{x.text}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label class="control-label">Quận/Huyện</label>
+                                                <select name="quanHuyen" ng-model="model.quanHuyen" class="form-control" ng-change="changeDistrict()">
+                                                    <option ng-repeat="item in Districts" value="{{item.$id}}">{{item.text}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label class="control-label">Giá từ (VND) </label>
+                                                <input name="text" type="number" ng-model="model.giaTu" class="form-control" />
+                                                <label class="control-label" ng-show="thisForm.giaTu.$error.required">* Vui lòng nhập giá bđs</label>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label class="control-label">Giá đến (VND) </label>
+                                                <input name="text" type="number" ng-model="model.giaDen" class="form-control" />
+                                                <label class="control-label" ng-show="thisForm.giaDen.$error.required">* Vui lòng nhập giá bđs</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -142,11 +159,9 @@
                                                 <div class="group-user-list">
                                                     <ul>
                                                         <li ng-repeat="x in model.Members">
-                                                            <div class="col-md-8" style="padding-top:8px">
-                                                               <span>{{x.fullName}}</span>
-                                                            </div>
-                                                            <div class="col-md-4" ng-show="!x.isAdmin" style="text-align:right">
-                                                                <button type="button" class="btn red group-user-list-btn" ng-click="btnRemoveMenber_Click(x.phoneNumber)">Rời khỏi nhóm</button>
+                                                            <div class="col-md-12 col-sm-12" style="padding-top:3px">
+                                                                <span style="padding-top:5px">{{x.fullName}}</span>
+                                                                <button ng-show="!x.isAdmin" type="button" class="btn red group-user-list-btn" style="float:right" ng-click="btnRemoveMenber_Click(x.phoneNumber)">Rời khỏi nhóm</button>
                                                             </div>
                                                         </li>
                                                     </ul>

@@ -44,8 +44,8 @@
             parent: 'root',
             url: '/nhuCau/nhuCauEdit',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
-            controller: 'nhuCauThemMoiCtr',
-            controllerAs: 'nhuCauThemMoiVm',
+            // controller: 'nhuCauThemMoiCtr',
+            // controllerAs: 'nhuCauThemMoiVm',
             data: {
                 pageTitle: 'Sửa Nhu Cầu',
                 module: 'nhuCau',
@@ -53,7 +53,7 @@
                 hide:true
             },
             params: {
-                editItem: null,
+                item: null,
             },
             resolve:{
                 "currentAuth": ["authService", function(authService) {
@@ -63,7 +63,7 @@
             }
         }).state('thongTinNhuCau',{
             parent: 'root',
-            url: '/nhuCau/nhuCauThongTin?bdsKho&khoId?loaNC&nhuCauId?bdsId&id',
+            url: '/nhuCau/nhuCauThongTin?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
             controller: 'nhuCauThongTinCtr',
             controllerAs: 'nhuCauThongTinVm',
@@ -74,9 +74,7 @@
                 hide:true
             },
             params: {
-                loaiNhuCauKey: null,
                 item: null,
-                isEdit: null
             },
             resolve:{
                 "currentAuth": ["authService", function (authService) {

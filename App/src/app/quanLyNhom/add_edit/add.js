@@ -21,8 +21,10 @@
 
         if ($scope.model.id == -1) {
             $scope.pageTitle = "Tạo mới nhóm";
+            $scope.isAdmin = true;
         } else {
             $scope.pageTitle = "Cập nhật thông tin nhóm";
+            $scope.isAdmin = false;
         }
 
         initData();
@@ -95,8 +97,21 @@
                     $.each($scope.model.Members, function () {
                         if (this.id == currentUser.$id) {
                             $scope.CurrentUser.isAdmin = this.isAdmin;
+                            $scope.isAdmin = true;
                         }
                     });
+                }
+
+                $.each($rootScope.storage.currentUser.userRoles, function () {
+                    console.log(this);
+                    if (this == '-L88BRKv7sbA7-Or5KOi') {
+                        $scope.CurrentUser.isAdmin = true;
+                        $scope.isAdmin = true;
+                    }
+                });
+
+                if ($scope.isAdmin == false) {
+                    $state.go('quanLyNhom');
                 }
             });
         }

@@ -20,8 +20,6 @@
             quanLyNhomService.getByUserId(userId).then(function (groups) {
                 $scope.Groups = groups.data;
                 $.each($scope.Groups, function () {
-                    console.log(this.author);
-                    console.log(userId);
                     if (this.author == currentUser.$id) {
                         this.IsAuthor = true;
                     } else {

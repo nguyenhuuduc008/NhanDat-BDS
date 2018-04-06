@@ -34,7 +34,8 @@
                                     </label>
                                 </th>
                                 <th class="width25"> Loại Tác Nghiệp </th>
-								<th class="width25"> Khóa </th>
+                                <th class="width25"> Khóa </th>
+                                <th class="width25"> Tác nghiệp hệ thống </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -46,7 +47,10 @@
                                     </label>
                                 </td>
                                 <td class="width25"><a href="#/setting/loaiTacNghiep-mod/{{item.$id}}"> {{item.text}} </a></td>
-								 <td class="width25"><a href="#/setting/danhMucBDS-mod/{{item.$id}}"> {{item.cus_key}} </a></td>
+                                <td class="width25"><a href="#/setting/danhMucBDS-mod/{{item.$id}}"> {{item.cus_key}} </a></td>
+                                <td class="width25">
+                                    <i ng-if="loaiTacNghiepListVm.checkFlag(item.flagTacNghiepHeThong)" class="fa fa-check font-green-dark "></i>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

@@ -71,23 +71,20 @@
                 return;
             }
             // get data
-            nhuCauService.getNhuCauMuaById(idDanhMuc).$loaded().then(function (data) {
-                var res = _.find(data, function (o) {
-                    return o.$id == idTrangThai;
-                });
+            nhuCauService.getNhuCauByKhoLoai(idDanhMuc, idTrangThai).then(function (data) {
                 var result = [];
-                _.forEach(res, function (item, key) {
+                _.forEach(data, function (item, key) {
                     if (_.isObject(item)) {
-                        item.bdsKey = key;
-                        nhuCauService.getTabNhuCauMua(idDanhMuc, 'capDo', item.bdsKey).then(function (capDoRs) {
-                            if (capDoRs !== null) {
-                                var find = _.find(vm.cacLoaiCapDo, function (o) {
-                                    return o.value == capDoRs.capDo;
-                                });
-                                item.capDoColor = { 'color': find.color };
-                                $scope.$apply();
-                            }
-                        });
+                        // item.bdsKey = key;
+                        // nhuCauService.getTabNhuCauMua(idDanhMuc, 'capDo', item.bdsKey).then(function (capDoRs) {
+                        //     if (capDoRs !== null) {
+                        //         var find = _.find(vm.cacLoaiCapDo, function (o) {
+                        //             return o.value == capDoRs.capDo;
+                        //         });
+                        //         item.capDoColor = { 'color': find.color };
+                        //         $scope.$apply();
+                        //     }
+                        // });
                         result.push(item);
                     }
                 });
@@ -115,7 +112,7 @@
            
         };
         vm.chiTietnhuCau = function (item) {
-            $state.go('nhuCauEdit', { editItem: item});
+            $state.go('nhuCauEdit', { item: item});
         };
         
     } 

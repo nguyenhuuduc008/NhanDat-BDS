@@ -4,26 +4,24 @@
     /** @ngInject **/
     function nhuCauService($q, $filter, $firebaseObject, $firebaseArray, firebaseDataRef, appUtils,toaster,$ngBootbox, storageRef, DataUtils){
         var service={
-            addNhuCauBan:addNhuCauBan,
             getNhuCauBan:getNhuCauBan,
-            getNhuCauMua:getNhuCauMua,
+            getNhuCau:getNhuCau,
             getOnceNhuCau:getOnceNhuCau,
-            addNhuCauMua: addNhuCauMua,
+            addNhuCau: addNhuCau,
             uploadMediaStorage: uploadMediaStorage,
-            updateNhuCauMua: updateNhuCauMua,
-            updateNhuCauBan: updateNhuCauBan,
+            updateNhuCau: updateNhuCau,
             getNhuCauBanById: getNhuCauBanById,
-            getNhuCauMuaById: getNhuCauMuaById,
+            getNhuCauByKhoLoai: getNhuCauByKhoLoai,
             updateMediaData: updateMediaData,
             deleteMediaStorage: deleteMediaStorage,
             deleteMediaData: deleteMediaData,
-            updateTabNhuCauMua: updateTabNhuCauMua,
-            updateTabNhuCauBan: updateTabNhuCauBan,
-            getTabNhuCauMua: getTabNhuCauMua,
-            getTabNhuCauBan: getTabNhuCauBan,
-            updateTabLienKetNhuCauMua: updateTabLienKetNhuCauMua,
+            updateTabNhuCau: updateTabNhuCau,
+            getTabNhuCau: getTabNhuCau,
+            updateTabLienKetNhuCau: updateTabLienKetNhuCau,
             updateTabLienKetNhuCauBan: updateTabLienKetNhuCauBan,
             removeTabLienKetNhuCau: removeTabLienKetNhuCau,
+            addNhuCauWithBDS: addNhuCauWithBDS,
+            updateNhuCauWithBDS: updateNhuCauWithBDS
         };
         //Ref
         var nhuCauRef=firebaseDataRef.child('nhuCau');
@@ -34,15 +32,16 @@
         function getNhuCauBan(){
             return $firebaseArray(bdsRef);
         }
-        function getNhuCauMua(){
+        function getNhuCau(){
             return $firebaseArray(nhuCauRef);
         }
         function getNhuCauBanById(loaiKhoId){
             var ref = bdsRef.child(loaiKhoId);
             return $firebaseArray(ref);
         }
-        function getNhuCauMuaById(loaiKhoId){
-            return $firebaseArray(nhuCauRef.child(loaiKhoId));
+        function getNhuCauByKhoLoai(khoBDSId, loaiNhuCauId){
+            var refPath = "nhuCau/" + khoBDSId + "/" + loaiNhuCauId;
+            return DataUtils.getListDataFirebaseLoadOnce(refPath);
         }
         function getOnceNhuCau(loaiNhuCauId,id){
             return $firebaseObject(nhuCauRef.child(loaiNhuCauId).child(id));
@@ -68,39 +67,23 @@
             });
         } 
 
-        function updateNhuCauMua(khoBDSId, loaiNhuCauId, bdsModel, bdsKey){
+        function updateNhuCau(khoBDSId, loaiNhuCauId, nhuCauModel, nhuCauKey){
+            var refPath = "nhuCau/" + khoBDSId + "/" + loaiNhuCauId;
             var ref = nhuCauRef.child(khoBDSId + "/" + loaiNhuCauId);
-            bdsModel.timestampModified= Date.now();
+            nhuCauModel.timestampModified= Date.now();
 
-            delete bdsModel.$$hashKey;
-            delete bdsModel.bdsKey;
+            delete nhuCauModel.$$hashKey;
+            delete nhuCauModel.bdsKey;
 
-            return ref.child(bdsKey).update(bdsModel).then(function(res){
+            return ref.child(nhuCauKey).update(nhuCauModel).then(function(res){
+                DataUtils.updateTimeStampModifiedNode(refPath);
                 return {result:true,key:bdsKey};
             }).catch(function(err){
                 return {result:true,errMsg:err};
             });
         }
 
-        function updateNhuCauBan(khoBDSId, bdsModel, bdsKey) {
-            var ref = bdsRef.child(khoBDSId);
-            bdsModel.timestampModified= Date.now();
-            
-            delete bdsModel.$$hashKey;
-            delete bdsModel.bdsKey;
-
-            _.forEach(bdsModel.media, function(item, key) {
-                delete item.$$hashKey;
-            });
-  
-            return ref.child(bdsKey).update(bdsModel).then(function(res){
-                return {result:true,key:bdsKey};
-            }).catch(function(err){
-                return {result:true,errMsg:err};
-            });
-        }
-
-        function updateTabNhuCauMua(khoBDSId, bdsTab, bdsModel, bdsKey){
+        function updateTabNhuCau(khoBDSId, bdsTab, bdsModel, bdsKey){
             var ref = nhuCauRef.child("tabs/" + bdsTab + "/" + bdsKey);
             var refPath = "nhuCau/" + "tabs/" + bdsTab + "/" + bdsKey;
             delete bdsModel.bdsKey;
@@ -113,20 +96,7 @@
             });
         }
 
-        function updateTabNhuCauBan(khoBDSId, bdsTab, bdsModel, bdsKey){
-            var ref = bdsRef.child("tabs/" + bdsTab + "/" + bdsKey);
-            var refPath = "bds/" + "tabs/" + bdsTab + "/" + bdsKey;
-            delete bdsModel.bdsKey;
-            bdsModel.timestampModified = Date.now();
-
-            return ref.update(bdsModel).then(function(res){
-                return {result:true,key:bdsKey};
-            }).catch(function(err){
-                return {result:true,errMsg:err};
-            });
-        }
-
-        function updateTabLienKetNhuCauMua(bdsTab, bdsModel, bdsKey){
+        function updateTabLienKetNhuCau(bdsTab, bdsModel, bdsKey){
             var ref = nhuCauRef.child("tabs/" + bdsTab + "/" + bdsKey);
             var key = ref.push().key;
             var refPath = "nhuCau/" + "tabs/" + bdsTab + "/" + bdsKey;
@@ -168,39 +138,62 @@
             });
         }
 
-        function getTabNhuCauMua(bdsTab, bdsKey) {
+        function getTabNhuCau(bdsTab, bdsKey) {
             var refPath = "nhuCau/tabs/" + bdsTab + "/" + bdsKey;
             return DataUtils.getDataFirebaseLoadOnce(refPath);
         }
 
-        function getTabNhuCauBan(khoBDSId, bdsTab, bdsKey) {
-            var refPath = "bds/" + khoBDSId + "/" + bdsTab + "/" + bdsKey;
-            return DataUtils.getDataFirebaseLoadOnce(refPath);
-        }
-
-        function addNhuCauBan(khoBDSId, bdsModel, bdsKey){
-            var ref = bdsRef.child(khoBDSId);
-            bdsModel.timestampModified = Date.now();
-
-            return ref.child(bdsKey).set(bdsModel).then(function(res){
-                return {result:true,key:bdsKey};
-            }).catch(function(err){
-                return {result:true,errMsg:err};
-            });
-            
-        }
-
-        function addNhuCauMua(khoBDSId, loaiNhuCauId, bdsModel){
+        function addNhuCau(khoBDSId, loaiNhuCauId, nhuCauModel){
+            var refPath = "nhuCau/" + khoBDSId + "/" + loaiNhuCauId;
+            console.log('NHU CAU OPATH', refPath);
             var ref = nhuCauRef.child(khoBDSId + "/" + loaiNhuCauId);
-            var bdsKey = ref.push().key;
-            bdsModel.timestampModified = Date.now();
-  
-            return ref.child(bdsKey).set(bdsModel).then(function(res){
-                return {result:true,key:bdsKey};
+            var nhuCauKey = ref.push().key;
+            nhuCauModel.timestampModified = Date.now();
+            return ref.child(nhuCauKey).set(nhuCauModel).then(function(res){
+                DataUtils.updateTimeStampModifiedNode(refPath);
+                return {result:true,key:nhuCauKey};
             }).catch(function(err){
-                return {result:true,errMsg:err};
+                return {result:false,errMsg:err};
             });
-            
+        }
+
+        function addNhuCauWithBDS(khoBDSId, loaiNhuCauId, nhuCauModel, bdsModel) {
+            var refPath = "nhuCau/" + khoBDSId + "/" + loaiNhuCauId;
+            var ref = nhuCauRef.child(khoBDSId + "/" + loaiNhuCauId);
+            var nhuCauKey = ref.push().key;
+            var bdsKey = bdsRef.child(khoBDSId).push().key;
+            nhuCauModel.bdsKey = bdsKey;
+            nhuCauModel.timestampModified = Date.now();
+            bdsModel.listNhuCauKey = [];
+            bdsModel.listNhuCauKey.push(nhuCauKey);
+            bdsModel.timestampModified = Date.now();
+
+            return ref.child(nhuCauKey).set(nhuCauModel).then(function() {
+                DataUtils.updateTimeStampModifiedNode(refPath);
+                return bdsRef.child(khoBDSId).child(bdsKey).set(bdsModel).then(function() {
+                    return {result:true, nhuCaukey:nhuCauKey, bdsKey: bdsKey};
+                });
+            }).catch(function(err){
+                return {result:false,errMsg:err};
+            });
+        }
+
+        function updateNhuCauWithBDS(khoBDSId, loaiNhuCauId, nhuCauModel, bdsModel, nhuCauKey){
+            var refPath = "nhuCau/" + khoBDSId + "/" + loaiNhuCauId;
+            var ref = nhuCauRef.child(khoBDSId + "/" + loaiNhuCauId);
+            nhuCauModel.timestampModified = Date.now();
+            bdsModel.listNhuCauKey = [];
+            bdsModel.listNhuCauKey.push(nhuCauKey);
+            bdsModel.timestampModified = Date.now();
+
+            return ref.child(nhuCauKey).update(nhuCauModel).then(function() {
+                DataUtils.updateTimeStampModifiedNode(refPath);
+                return bdsRef.child(khoBDSId).child(nhuCauModel.bdsKey).update(bdsModel).then(function() {
+                    return {result:true, nhuCaukey:nhuCauKey, bdsKey: nhuCauModel.bdsKey};
+                });
+            }).catch(function(err){
+                return {result:false,errMsg:err};
+            });
         }
 
 		function uploadMediaStorage(folderPath, file, metadata){

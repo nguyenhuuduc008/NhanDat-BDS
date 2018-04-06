@@ -96,7 +96,7 @@
                     },
                 };
                 nhuCauThongTinVm.bds.media[metadata.generation] = mediaData;
-                nhuCauService.updateNhuCauBan(nhuCauThongTinVm.model.khoBDSKey, nhuCauThongTinVm.bds, bdsKey);
+                nhuCauService.updateMediaData(nhuCauThongTinVm.model.khoBDSKey, bdsKey, mediaData, metadata.generation);
             },
             'error': function (file, err) {
                 console.log('upload img error');
@@ -190,7 +190,6 @@
 
         //Google map
         function googleMapInit() {
-            nhuCauThongTinVm.isMapInit = false;
             var defLatitude = 56.162939;
             var defLongitude = 10.203921;
             console.log('TEST LONGTIDUE', defLongitude);
@@ -215,6 +214,24 @@
                 }
             };
         }
+
+        function setLatLong(lat, lon) {
+            $scope.map = {
+                center: {
+                    latitude: lat,
+                    longitude: lon
+                },
+                zoom: 15
+            };
+            $scope.marker = {
+                id: 0,
+                coords: {
+                    latitude: lat,
+                    longitude: lon
+                },
+            };
+            $scope.$apply();
+        }
         
         function getLatLong(tinhThanh, quanHuyen, phuongXa, duongPho) {
             tinhThanh = tinhThanh || '';
@@ -233,40 +250,8 @@
             }, function(result, status) {
                 var lat = result[0].geometry.location.lat();
                 var lon = result[0].geometry.location.lng();
-                $scope.map = {
-                    center: {
-                        latitude: lat,
-                        longitude: lon
-                    },
-                    zoom: 15
-                };
-                $scope.marker = {
-                    id: 0,
-                    coords: {
-                        latitude: lat,
-                        longitude: lon
-                    },
-                };
-                $scope.$apply();
+                setLatLong(lat, lon);
             });
-        }
-
-        function setLatLong(lat, lon) {
-            $scope.map = {
-                center: {
-                    latitude: lat,
-                    longitude: lon
-                },
-                zoom: 15
-            };
-            $scope.marker = {
-                id: 0,
-                coords: {
-                    latitude: lat,
-                    longitude: lon
-                },
-            };
-            $scope.$apply();
         }
 
         $scope.$watchCollection("marker.coords", function (newVal, oldVal) {
@@ -286,22 +271,43 @@
             getLatLong(thanhPho, quanHuyen, phuongXa, duongPho);
         };
 
-        nhuCauThongTinVm.getGPS = function() {
-            console.log('getgps');
-            var geocoder =  new google.maps.Geocoder();
-            geocoder.getCurrentPosition(function(location){
-                console.log('KAT SDLSADISAD', location);
-            });
+        var options = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0
+        };
+
+        function success(pos) {
+            var crd = pos.coords;
+
+            setLatLong(crd.latitude, crd.longitude);
+            console.log(`Latitude : ${crd.latitude}`);
+            console.log(`Longitude: ${crd.longitude}`);
+            console.log(`More or less ${crd.accuracy} meters.`);
+        }
+
+        function error(err) {
+            console.warn(`ERROR(${err.code}): ${err.message}`);
+        }
+
+        nhuCauThongTinVm.getGPS = function () {
+            navigator.geolocation.getCurrentPosition(success, error, options);
         };
       
         //function
-        nhuCauThongTinVm.changeCity = function () {
+        nhuCauThongTinVm.changeCity = function (quanHuyen, phuongXa, duongPho) {
             nhuCauThongTinVm.xaList = [];
             nhuCauThongTinVm.duongList = [];
             nhuCauThongTinVm.districts = [];
             nhuCauThongTinVm.bds.phuongXa = "notSelect";
             nhuCauThongTinVm.bds.duongPho = "notSelect";
             nhuCauThongTinVm.bds.quanHuyen = "notSelect";
+            if (!!quanHuyen)
+                nhuCauThongTinVm.bds.quanHuyen = quanHuyen;
+            if (!!phuongXa)
+                nhuCauThongTinVm.bds.phuongXa = phuongXa;
+            if (!!duongPho)
+                nhuCauThongTinVm.bds.duongPho = duongPho;
             if (nhuCauThongTinVm.bds.thanhPho === "notSelect") {
                 return;
             }
@@ -318,22 +324,17 @@
                     text: item.text
                 });
             });
-            console.log('DISTRICK SELECT',districts);
-            //if(nhuCauThongTinVm.isMapInit) return;
-
-            var thanhPho = getTextByKey(nhuCauThongTinVm.cities, nhuCauThongTinVm.bds.thanhPho);
-            var quanHuyen = nhuCauThongTinVm.bds.quanHuyen === "notSelect" ? getTextByKey(nhuCauThongTinVm.districts, null) : getTextByKey(nhuCauThongTinVm.districts, nhuCauThongTinVm.bds.quanHuyen);
-            var phuongXa = nhuCauThongTinVm.bds.phuongXa === "notSelect" ? getTextByKey(nhuCauThongTinVm.xaList, null) : getTextByKey(nhuCauThongTinVm.xaList, nhuCauThongTinVm.bds.phuongXa);
-            var duongPho = nhuCauThongTinVm.bds.duongPho === "notSelect" ? getTextByKey(nhuCauThongTinVm.duongList, null) : getTextByKey(nhuCauThongTinVm.duongList, nhuCauThongTinVm.bds.duongPho);
-            
-            getLatLong(thanhPho, quanHuyen, phuongXa, duongPho);
         };
         
-        nhuCauThongTinVm.changeDistrict = function () {
+        nhuCauThongTinVm.changeDistrict = function (phuongXa, duongPho) {
             nhuCauThongTinVm.xaList = [];
             nhuCauThongTinVm.duongList = [];
             nhuCauThongTinVm.bds.phuongXa = "notSelect";
             nhuCauThongTinVm.bds.duongPho = "notSelect";
+            if (!!phuongXa)
+                nhuCauThongTinVm.bds.phuongXa = phuongXa;
+            if (!!duongPho)
+                nhuCauThongTinVm.bds.duongPho = duongPho;
             if(nhuCauThongTinVm.bds.quanHuyen === "notSelect") {
                 return;
             }
@@ -343,23 +344,10 @@
             settingService.getListChildHanhChinh('duong', nhuCauThongTinVm.bds.quanHuyen).then(function(data) {
                 nhuCauThongTinVm.duongList = data;
             });
-            //if(nhuCauThongTinVm.isMapInit) return;
-            var thanhPho = getTextByKey(nhuCauThongTinVm.cities, nhuCauThongTinVm.bds.thanhPho);
-            var quanHuyen = getTextByKey(nhuCauThongTinVm.districts, nhuCauThongTinVm.bds.quanHuyen);
-            var phuongXa = nhuCauThongTinVm.bds.phuongXa === "notSelect" ? getTextByKey(nhuCauThongTinVm.xaList, null) : getTextByKey(nhuCauThongTinVm.xaList, nhuCauThongTinVm.bds.phuongXa);
-            var duongPho = nhuCauThongTinVm.bds.duongPho === "notSelect" ? getTextByKey(nhuCauThongTinVm.duongList, null) : getTextByKey(nhuCauThongTinVm.duongList, nhuCauThongTinVm.bds.duongPho);
-            
-            getLatLong(thanhPho, quanHuyen, phuongXa, duongPho);
         };
         
         nhuCauThongTinVm.changeStreet = function () {
             //if(nhuCauThongTinVm.isMapInit) return;
-            var thanhPho = getTextByKey(nhuCauThongTinVm.cities, nhuCauThongTinVm.bds.thanhPho);
-            var quanHuyen = getTextByKey(nhuCauThongTinVm.districts, nhuCauThongTinVm.bds.quanHuyen);
-            var phuongXa = nhuCauThongTinVm.bds.phuongXa === "notSelect" ? getTextByKey(nhuCauThongTinVm.xaList, null) : getTextByKey(nhuCauThongTinVm.xaList, nhuCauThongTinVm.bds.phuongXa);
-            var duongPho = nhuCauThongTinVm.bds.duongPho === "notSelect" ? getTextByKey(nhuCauThongTinVm.duongList, null) : getTextByKey(nhuCauThongTinVm.duongList, nhuCauThongTinVm.bds.duongPho);
-            
-            getLatLong(thanhPho, quanHuyen, phuongXa, duongPho);
         };
 
         nhuCauThongTinVm.changeLoaiBDS = function(item) {
@@ -370,21 +358,21 @@
         };
 
         //Function
-        function changeForm(key) {
+        function changeForm(key, khoKey) {
             switch (key) {
                 case 'ban':
-                    createDropzone(nhuCauThongTinVm.model.khoBDSKey, key);
-                    nhuCauThongTinVm.isMapInit = true;
+                    nhuCauThongTinVm.showMapMedia = true;
+                    createDropzone(khoKey, key);
                     break;
                 case 'mua':
-                    nhuCauThongTinVm.noMapImg = true;
+                    nhuCauThongTinVm.showMapMedia = false;
                     break;
                 case 'thue':
-                    nhuCauThongTinVm.noMapImg = true;
+                    nhuCauThongTinVm.showMapMedia = false;
                     break;
                 case 'cho-thue':
-                    nhuCauThongTinVm.isMapInit = true;
-                    createDropzone(nhuCauThongTinVm.model.khoBDSKey, key);
+                    nhuCauThongTinVm.showMapMedia = true;
+                    createDropzone(khoKey, key);
                     break;
             }
         }
@@ -392,187 +380,123 @@
         nhuCauThongTinVm.save = function (form) {
             appUtils.showLoading();
             if (nhuCauThongTinVm.isEdit) {
-                switch (nhuCauThongTinVm.model.loaiNhuCauKey) {
-                    case 'ban':
-                        delete nhuCauThongTinVm.model.donGiaFrom;
-                        delete nhuCauThongTinVm.model.donGiaTo;
-                        delete nhuCauThongTinVm.model.tongGiaFrom;
-                        delete nhuCauThongTinVm.model.tongGiaTo;
-                        delete nhuCauThongTinVm.bds.dienTichFrom;
-                        delete nhuCauThongTinVm.bds.dienTichTo;
-                        editBDSBan();
-                        break;
-                    case 'mua':
-                        editBDSMua();
-                        break;
-                    case 'thue':
-                        editBDSThue();
-                        break;
-                    case 'cho-thue':
-                        delete nhuCauThongTinVm.model.donGiaFrom;
-                        delete nhuCauThongTinVm.model.donGiaTo;
-                        delete nhuCauThongTinVm.model.tongGiaFrom;
-                        delete nhuCauThongTinVm.model.tongGiaTo;
-                        delete nhuCauThongTinVm.bds.dienTichFrom;
-                        delete nhuCauThongTinVm.bds.dienTichTo;
-                        editBDSBan();
-                        break;
+                if(nhuCauThongTinVm.model.loaiNhuCauKey === 'ban' || nhuCauThongTinVm.model.loaiNhuCauKey === 'cho-thue') {
+                    if (!!nhuCauThongTinVm.model.activeTab)
+                        delete nhuCauThongTinVm.model.activeTab;
+
+                    editNhuCauWithBDS(nhuCauThongTinVm.model.khoBDSKey, nhuCauThongTinVm.model.loaiNhuCauKey, nhuCauThongTinVm.model, nhuCauThongTinVm.bds, $stateParams.nhuCauId);
                 }
-            } else {
-                switch (nhuCauThongTinVm.model.loaiNhuCauKey) {
-                    case 'ban':
-                        delete nhuCauThongTinVm.model.donGiaFrom;
-                        delete nhuCauThongTinVm.model.donGiaTo;
-                        delete nhuCauThongTinVm.model.tongGiaFrom;
-                        delete nhuCauThongTinVm.model.tongGiaTo;
-                        delete nhuCauThongTinVm.bds.dienTichFrom;
-                        delete nhuCauThongTinVm.bds.dienTichTo;
-                        addBDSBan();
-                        break;
-                    case 'mua':
-                        addBDSMua();
-                        break;
-                    case 'thue':
-                        addBDSThue();
-                        break;
-                    case 'cho-thue':
-                        delete nhuCauThongTinVm.model.donGiaFrom;
-                        delete nhuCauThongTinVm.model.donGiaTo;
-                        delete nhuCauThongTinVm.model.tongGiaFrom;
-                        delete nhuCauThongTinVm.model.tongGiaTo;
-                        delete nhuCauThongTinVm.bds.dienTichFrom;
-                        delete nhuCauThongTinVm.bds.dienTichTo;
-                        addBDSBan();
-                        break;
+                else {
+                    nhuCauThongTinVm.model = _.assignIn(nhuCauThongTinVm.model, nhuCauThongTinVm.bds);
+                    editNhuCauBDS(nhuCauThongTinVm.model.khoBDSKey, nhuCauThongTinVm.model.loaiNhuCauKey, nhuCauThongTinVm.model, $stateParams.nhuCauId);
+                }
+            } 
+            else {
+                if(nhuCauThongTinVm.model.loaiNhuCauKey === 'ban' || nhuCauThongTinVm.model.loaiNhuCauKey === 'cho-thue') {
+                    delete nhuCauThongTinVm.model.donGiaFrom;
+                    delete nhuCauThongTinVm.model.donGiaTo;
+                    delete nhuCauThongTinVm.model.tongGiaFrom;
+                    delete nhuCauThongTinVm.model.tongGiaTo;
+                    delete nhuCauThongTinVm.bds.dienTichFrom;
+                    delete nhuCauThongTinVm.bds.dienTichTo;
+                    addNhuCauWithBDS(nhuCauThongTinVm.model.khoBDSKey, nhuCauThongTinVm.model.loaiNhuCauKey, nhuCauThongTinVm.model, nhuCauThongTinVm.bds);
+                }
+                else {
+                    nhuCauThongTinVm.model = _.assignIn(nhuCauThongTinVm.model, nhuCauThongTinVm.bds);
+                    addNhuCauBDS(nhuCauThongTinVm.model.khoBDSKey, nhuCauThongTinVm.model.loaiNhuCauKey, nhuCauThongTinVm.model);
                 }
             }
         };
 
-        function addBDSBan() {
-            nhuCauService.addNhuCauMua(nhuCauThongTinVm.model.khoBDSKey, nhuCauThongTinVm.model.loaiNhuCauKey, nhuCauThongTinVm.model).then(function(res) {
-                nhuCauService.addNhuCauBan(nhuCauThongTinVm.model.khoBDSKey, nhuCauThongTinVm.bds, res.key).then(function(bdsRes) {
-                    if(res.result && bdsRes.result) {
-                        var linkCreateUser = {
-                            phone: currentUser.phoneNumber,
-                            userName: currentUser.lastName + ' ' + currentUser.firstName,
-                            loaiLienKetUser: "createUserUniq",
-                            timeCreated: Date.now(),
-                            khoBDSKey: nhuCauThongTinVm.model.khoBDSKey,
-                            loaiNhuCauKey: nhuCauThongTinVm.model.loaiNhuCauKey
-                        };
-                        nhuCauService.updateTabLienKetNhuCauMua('lienKetUser', linkCreateUser, res.key, currentUser.phoneNumber);
-                        appUtils.hideLoading();
-                        $scope.$apply(function() {
-                            bdsKey = res.key;
-                            nhuCauThongTinVm.dzMethods.processQueue();
-                            toaster.success("Thêm Mới Nhu Cầu Thành Công");
-                            $state.go('nhuCauListing');
-                        });
-                        return;
-                    }
-                    appUtils.hideLoading();
-                    toaster.error("Thêm Mới Nhu Không Thành Công!");  
-                });
-            });            
-        }
-
-        function addBDSMua() {
-            nhuCauService.addNhuCauMua(nhuCauThongTinVm.model.khoBDSKey, nhuCauThongTinVm.model.loaiNhuCauKey, nhuCauThongTinVm.model).then(function(res) {
-                if(res.result) {
-                    var linkCreateUser = {
-                        phone: currentUser.phoneNumber,
-                        userName: currentUser.lastName + ' ' + currentUser.firstName,
-                        loaiLienKetUser: "createUserUniq",
-                        timeCreated: Date.now(),
-                        khoBDSKey: nhuCauThongTinVm.model.khoBDSKey,
-                        loaiNhuCauKey: nhuCauThongTinVm.model.loaiNhuCauKey
-                    };
-                    nhuCauService.updateTabLienKetNhuCauMua('lienKetUser', linkCreateUser, res.key, currentUser.phoneNumber);
-                    appUtils.hideLoading();
-                    $scope.$apply(function() {
-                        toaster.success("Thêm Mới Nhu Cầu Mua Thành Công");
+        function addNhuCauBDS(khoBDSId, loaiNhuCauId, nhuCauModel) {
+            nhuCauService.addNhuCau(khoBDSId, loaiNhuCauId, nhuCauModel).then(function (res) {
+                if (res.result) {
+                    $scope.$apply(function () {
+                        toaster.success("Thêm Mới Nhu Cầu Thành Công");
                         $state.go('nhuCauListing');
                     });
+                    appUtils.hideLoading();
                     return;
                 }
                 appUtils.hideLoading();
-                toaster.error("Thêm Mới Nhu Cầu Mua Không Thành Công!");
-            });            
-        }
-
-        function addBDSThue() {
-            nhuCauService.addNhuCauMua(nhuCauThongTinVm.model.khoBDSKey, nhuCauThongTinVm.model.loaiNhuCauKey, nhuCauThongTinVm.model).then(function(res) {
-                if(res.result) {
-                    var linkCreateUser = {
-                        phone: currentUser.phoneNumber,
-                        userName: currentUser.lastName + ' ' + currentUser.firstName,
-                        loaiLienKetUser: "createUserUniq",
-                        timeCreated: Date.now(),
-                        khoBDSKey: nhuCauThongTinVm.model.khoBDSKey,
-                        loaiNhuCauKey: nhuCauThongTinVm.model.loaiNhuCauKey
-                    };
-                    nhuCauService.updateTabLienKetNhuCauMua(nhuCauThongTinVm.model.khoBDSKey, 'lienKetUser', linkCreateUser, res.key, currentUser.phoneNumber);
-                    appUtils.hideLoading();
-                    $scope.$apply(function() {
-                        toaster.success("Thêm Mới Nhu Cầu Thuê Thành Công");
-                        $state.go('nhuCauListing');
-                    });
-                    return;
-                }
-                appUtils.hideLoading();
-                toaster.error("Thêm Mới Nhu Cầu Thuê Không Thành Công!");
-            });            
-        }
-
-        function editBDSBan() {
-            nhuCauService.updateNhuCauMua(nhuCauThongTinVm.model.khoBDSKey, nhuCauThongTinVm.model.loaiNhuCauKey, nhuCauThongTinVm.model, nhuCauThongTinVm.model.bdsKey).then(function (res) {
-                delete nhuCauThongTinVm.bds.$id;
-                nhuCauService.updateNhuCauBan(nhuCauThongTinVm.model.khoBDSKey, nhuCauThongTinVm.bds, res.key).then(function (bdsRes) {
-                    if(res.result && bdsRes.result) {
-                        appUtils.hideLoading();
-                        $scope.$apply(function () {
-                            bdsKey = res.key;
-                            nhuCauThongTinVm.dzMethods.processQueue();
-                            toaster.success("Sửa Nhu Cầu Thành Công");
-                            $state.go('nhuCauListing');
-                        });
-                        return;
-                    }
-                    appUtils.hideLoading();
-                    toaster.error("Sửa Nhu Cầu Không Thành Công!");
-                });
+                toaster.error("Thêm Mới Nhu Không Thành Công!");
             });
         }
 
-        function editBDSMua() {
-            nhuCauService.updateNhuCauMua(nhuCauThongTinVm.model.khoBDSKey, nhuCauThongTinVm.model.loaiNhuCauKey, nhuCauThongTinVm.model, nhuCauThongTinVm.model.bdsKey).then(function(res) {
+        function editNhuCauBDS(khoBDSId, loaiNhuCauId, nhuCauModel, nhuCauKey) {
+            nhuCauService.updateNhuCau(khoBDSId, loaiNhuCauId, nhuCauModel, nhuCauKey).then(function(res) {
                 if(res.result) {
                     appUtils.hideLoading();
                     $scope.$apply(function() {
-                        toaster.success("Sửa Nhu Cầu Mua Thành Công");
+                        toaster.success("Sửa Nhu Cầu Thành Công");
                         $state.go('nhuCauListing');
                     });
                     return;
                 }
                 appUtils.hideLoading();
-                toaster.error("Sửa Nhu Cầu Mua Không Thành Công!");
+                toaster.error("Sửa Nhu Cầu Không Thành Công!");
             });            
         }
 
-        function editBDSThue() {
-            nhuCauService.updateNhuCauMua(nhuCauThongTinVm.model.khoBDSKey, nhuCauThongTinVm.model.loaiNhuCauKey, nhuCauThongTinVm.model, nhuCauThongTinVm.model.bdsKey).then(function(res) {
-                if(res.result) {
-                    appUtils.hideLoading();
-                    $scope.$apply(function() {
-                        toaster.success("Sửa Nhu Cầu Thuê Thành Công");
+        function addNhuCauWithBDS(khoBDSId, loaiNhuCauId, nhuCauModel, bdsModel, nhuCauKey) {
+            nhuCauService.addNhuCauWithBDS(khoBDSId, loaiNhuCauId, nhuCauModel, bdsModel, nhuCauKey).then(function(res) {
+                if (res.result) {
+                    $scope.$apply(function () {
+                        bdsKey = res.bdsKey;
+                        nhuCauThongTinVm.dzMethods.processQueue();
+                        toaster.success("Thêm Mới Nhu Cầu Thành Công");
                         $state.go('nhuCauListing');
                     });
                     return;
                 }
                 appUtils.hideLoading();
-                toaster.error("Sửa Nhu Cầu Thuê Không Thành Công!");
-            });            
+                toaster.error("Thêm Mới Nhu Không Thành Công!");
+            });
         }
+
+        function editNhuCauWithBDS(khoBDSId, loaiNhuCauId, nhuCauModel, bdsModel, nhuCauKey) {
+            nhuCauService.updateNhuCauWithBDS(khoBDSId, loaiNhuCauId, nhuCauModel, bdsModel, nhuCauKey).then(function(res) {
+                if (res.result) {
+                    $scope.$apply(function () {
+                        bdsKey = res.bdsKey;
+                        nhuCauThongTinVm.dzMethods.processQueue();
+                        toaster.success("Sửa Nhu Cầu Thành Công");
+                        $state.go('nhuCauListing');
+                    });
+                    return;
+                }
+                appUtils.hideLoading();
+                toaster.error("Sửa Nhu Cầu Không Thành Công!");
+            });
+        }
+
+        // function addBDSBan() {
+        //     nhuCauService.addNhuCauMua(nhuCauThongTinVm.model.khoBDSKey, nhuCauThongTinVm.model.loaiNhuCauKey, nhuCauThongTinVm.model).then(function(res) {
+        //         nhuCauService.addNhuCauBan(nhuCauThongTinVm.model.khoBDSKey, nhuCauThongTinVm.bds, res.key).then(function(bdsRes) {
+        //             if(res.result && bdsRes.result) {
+        //                 var linkCreateUser = {
+        //                     phone: currentUser.phoneNumber,
+        //                     userName: currentUser.lastName + ' ' + currentUser.firstName,
+        //                     loaiLienKetUser: "createUserUniq",
+        //                     timeCreated: Date.now(),
+        //                     khoBDSKey: nhuCauThongTinVm.model.khoBDSKey,
+        //                     loaiNhuCauKey: nhuCauThongTinVm.model.loaiNhuCauKey
+        //                 };
+        //                 nhuCauService.updateTabLienKetNhuCauMua('lienKetUser', linkCreateUser, res.key, currentUser.phoneNumber);
+        //                 appUtils.hideLoading();
+        //                 $scope.$apply(function() {
+        //                     bdsKey = res.key;
+        //                     nhuCauThongTinVm.dzMethods.processQueue();
+        //                     toaster.success("Thêm Mới Nhu Cầu Thành Công");
+        //                     $state.go('nhuCauListing');
+        //                 });
+        //                 return;
+        //             }
+        //             appUtils.hideLoading();
+        //             toaster.error("Thêm Mới Nhu Không Thành Công!");  
+        //         });
+        //     });            
+        // }
 
         nhuCauThongTinVm.cancel = function() {
             $state.go('nhuCauListing');
@@ -625,40 +549,50 @@
         //set type of form 
         function setForm() {
             if($stateParams.item) {
-                if($stateParams.item.isEdit) {
-                    bdsService.getBDS($stateParams.bdsKho, $stateParams.bdsId).then(function (result) {
-                        console.log('DATA RESULT', result);
-                        nhuCauThongTinVm.bds = result;
-                        //     dienTich: result.dienTich || '',
-                        //     dienTichFrom: result.dienTichFrom || 50,
-                        //     dienTichTo: result.dienTichTo || 50,
-                        //     thanhPho: result.thanhPho || "notSelect",
-                        //     quanHuyen: result.quanHuyen || "notSelect",
-                        //     phuongXa: result.phuongXa || "notSelect",
-                        //     duongPho: result.duongPho || "notSelect",
-                        //     lat: result.lat,
-                        //     lon: result.lon
-                        // };
+                if($stateParams.nhuCauId) {
+                    changeForm($stateParams.loaiId, $stateParams.khoId);
+                    nhuCauThongTinVm.isEdit = true;
+                    console.log('FINAL PARMS', $stateParams);
+                    if($stateParams.loaiId === "mua" || $stateParams.loaiId === "thue") {
+                        nhuCauThongTinVm.model = $stateParams.item;
+                        delete nhuCauThongTinVm.model.$id;
+                        delete nhuCauThongTinVm.model.activeTab;
+                        nhuCauThongTinVm.bds = nhuCauThongTinVm.model;
+
                         var loaiBDS = _.find(nhuCauThongTinVm.loaiBDSList, function(o) {
                             return o.value == nhuCauThongTinVm.bds.loaiBDS;
                         });
                         nhuCauThongTinVm.loaiBDSForm = loaiBDS.loaiForm;
                         if (nhuCauThongTinVm.bds.thanhPho)
-                            nhuCauThongTinVm.changeCity(nhuCauThongTinVm.bds.thanhPho);
+                            nhuCauThongTinVm.changeCity(nhuCauThongTinVm.bds.quanHuyen);
                         if (nhuCauThongTinVm.bds.quanHuyen)
-                            nhuCauThongTinVm.changeDistrict(nhuCauThongTinVm.bds.quanHuyen);
+                            nhuCauThongTinVm.changeDistrict(nhuCauThongTinVm.bds.phuongXa, nhuCauThongTinVm.bds.duongPho);
+                    }
+                    else {
+                        console.log('FINAL PARMS BAN CHO THUE', $stateParams);
+                        nhuCauThongTinVm.model = $stateParams.item;
+                        bdsService.getBDS($stateParams.khoId, nhuCauThongTinVm.model.bdsKey).then(function (result) {
+                            console.log('DATA RESULT', result);
+                            nhuCauThongTinVm.bds = result;
+                            delete nhuCauThongTinVm.bds.$id;
+                            delete nhuCauThongTinVm.model.$id;
 
-                        loadMedia(nhuCauThongTinVm.bds.media);
-                        setLatLong(nhuCauThongTinVm.bds.lat, nhuCauThongTinVm.bds.lon);
-                        $scope.$apply();
-                    });
-                    googleMapInit();
-                    nhuCauThongTinVm.model = $stateParams.item;
-                    nhuCauThongTinVm.model.donGiaFrom = $stateParams.item.donGiaFrom || 100000000;
-                    nhuCauThongTinVm.model.donGiaTo= $stateParams.item.donGiaTo || 100000000;
-                    nhuCauThongTinVm.isEdit = $stateParams.item.isEdit;
-                    nhuCauThongTinVm.model.loaiNhuCauKey = $stateParams.item.loaiNhuCauKey;
-                    changeForm(nhuCauThongTinVm.model.loaiNhuCauKey);
+                            var loaiBDS = _.find(nhuCauThongTinVm.loaiBDSList, function(o) {
+                                return o.value == nhuCauThongTinVm.bds.loaiBDS;
+                            });
+                            nhuCauThongTinVm.loaiBDSForm = loaiBDS.loaiForm;
+                            if (nhuCauThongTinVm.bds.thanhPho)
+                                nhuCauThongTinVm.changeCity(nhuCauThongTinVm.bds.quanHuyen, nhuCauThongTinVm.bds.phuongXa, nhuCauThongTinVm.bds.duongPho);
+                            if (nhuCauThongTinVm.bds.quanHuyen)
+                                nhuCauThongTinVm.changeDistrict(nhuCauThongTinVm.bds.phuongXa, nhuCauThongTinVm.bds.duongPho);
+                            if (!nhuCauThongTinVm.bds.media)
+                                nhuCauThongTinVm.bds.media = {};
+                            loadMedia(nhuCauThongTinVm.bds.media);
+                            setLatLong(nhuCauThongTinVm.bds.lat, nhuCauThongTinVm.bds.lon);
+                            $scope.$apply();
+                        });
+                        googleMapInit();
+                    }
                 } else {
                     var loaiBDSDefault = _.find(nhuCauThongTinVm.loaiBDSList, function(o) {
                         return o.loaiForm == 'form1';
@@ -685,8 +619,8 @@
                     };
                     nhuCauThongTinVm.loaiBDSForm = loaiBDSDefault.loaiForm;
                     nhuCauThongTinVm.model.khoBDSKey = !!nhuCauThongTinVm.khoBDSDefault ? nhuCauThongTinVm.khoBDSDefault: 'allKho';
-                    nhuCauThongTinVm.model.loaiNhuCauKey = $stateParams.item.loaiNhuCauKey;
-                    changeForm(nhuCauThongTinVm.model.loaiNhuCauKey);
+                    nhuCauThongTinVm.model.loaiNhuCauKey = $stateParams.loaiId;
+                    changeForm($stateParams.loaiId, $stateParams.khoId);
                     googleMapInit();
                 }
             }

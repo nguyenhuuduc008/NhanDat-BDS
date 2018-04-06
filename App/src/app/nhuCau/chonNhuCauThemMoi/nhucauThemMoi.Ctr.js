@@ -11,12 +11,13 @@
         var currentUser = $rootScope.storage.currentUser;
 
         var nhuCauThemMoiVm =this;// jshint ignore:line
+
         console.log('NEW PARAM S', $stateParams);
         //
 
         //Function
             function loadFormTitle() {
-                switch (nhuCauThemMoiVm.loaiNhuCauKey) {
+                switch ($stateParams.loaiId) {
                     case 'ban':
                         nhuCauThemMoiVm.formTitle = nhuCauThemMoiVm.isEdit ? 'Sửa Nhu Cầu Bán Bất Động Sản' : 'Thêm Nhu Cầu Bán Bất Động Sản';
                         break;
@@ -33,7 +34,7 @@
             }
 
         function tabInit() {
-            if($stateParams.bdsId === undefined || $stateParams.bdsId === null) {
+            if($stateParams.nhuCauId === undefined || $stateParams.nhuCauId === null) {
                 nhuCauThemMoiVm.tab = {
                     tabs: {
                         thongTin: {
@@ -98,14 +99,12 @@
 
         nhuCauThemMoiVm.loadTab = function(tab) {
             nhuCauThemMoiVm.item.activeTab = tab;
-            console.log('BDS ID ID', nhuCauThemMoiVm.item);
-            $state.go(tab + 'NhuCau', {item: nhuCauThemMoiVm.item, bdsKho: nhuCauThemMoiVm.item.khoBDSKey || '', nhuCauId: nhuCauThemMoiVm.item.loaiNhuCauKey || '', bdsId: nhuCauThemMoiVm.item.bdsKey || ''});
+            $state.go(tab + 'NhuCau', {item: nhuCauThemMoiVm.item, khoId: nhuCauThemMoiVm.item.khoBDSKey || '', loaiId: nhuCauThemMoiVm.item.loaiNhuCauKey || '', nhuCauId: nhuCauThemMoiVm.item.$id || ''});
         };
 
         nhuCauThemMoiVm.changeForm = function (key) {
             $rootScope.isSelectedLoaiNhuCau = true;
             nhuCauThemMoiVm.item.loaiNhuCauKey = key;
-            console.log('ssdsadsad', nhuCauThemMoiVm.item.loaiNhuCauKey );
             switch (key) {
                 case 'ban':
                     nhuCauThemMoiVm.loadTab(nhuCauThemMoiVm.activeTab);
@@ -130,29 +129,31 @@
             $state.go('nhuCauListing');
         };
 
-        nhuCauThemMoiVm.item = {
-            //loaiNhuCauKey: 'default',
-            activeTab: 'thongTin'
-        };
+        nhuCauThemMoiVm.item = {};
 
-        $rootScope.isSelectedLoaiNhuCau = false;
-        if($stateParams.item) {
-            nhuCauThemMoiVm.item = $stateParams.item;
-            nhuCauThemMoiVm.isEdit = nhuCauThemMoiVm.item.isEdit || false;
-            $rootScope.isSelectedLoaiNhuCau = true;
-        }
-        if($stateParams.editItem) {
-            nhuCauThemMoiVm.item = $stateParams.editItem;
+        if($stateParams.item === null) {
+            nhuCauThemMoiVm.isEdit = false;
+            $rootScope.isSelectedLoaiNhuCau = false;
             nhuCauThemMoiVm.item.activeTab = 'thongTin';
-            nhuCauThemMoiVm.item.isEdit = true;
-            nhuCauThemMoiVm.isEdit = true;
-            nhuCauThemMoiVm.loadTab(nhuCauThemMoiVm.item.activeTab);
+        } 
+        else {
+            if(!!$stateParams.item.$id) {
+                nhuCauThemMoiVm.item = $stateParams.item;
+                nhuCauThemMoiVm.isEdit = true;
+                if(nhuCauThemMoiVm.item.activeTab == undefined)
+                    nhuCauThemMoiVm.loadTab('thongTin');
+                $rootScope.isSelectedLoaiNhuCau = true;
+            }
+            else {
+                nhuCauThemMoiVm.item.activeTab = 'thongTin';
+                $rootScope.isSelectedLoaiNhuCau = true;
+            }
         }
 
+        nhuCauThemMoiVm.loaiNhuCauKey = $stateParams.loaiId;
+        nhuCauThemMoiVm.activeTab = nhuCauThemMoiVm.item.activeTab;
         nhuCauThemMoiVm.isSelectedLoaiNhuCau = $rootScope.isSelectedLoaiNhuCau;
         nhuCauThemMoiVm.cacLoaiNhuCau = appSettings.cacLoaiNhuCau;
-        nhuCauThemMoiVm.loaiNhuCauKey = nhuCauThemMoiVm.item.loaiNhuCauKey;
-        nhuCauThemMoiVm.activeTab = nhuCauThemMoiVm.item.activeTab;
 
         function pageInit() {
             loadFormTitle();

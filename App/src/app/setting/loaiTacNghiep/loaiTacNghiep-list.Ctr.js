@@ -54,13 +54,21 @@
             });
 
         };
+
+        loaiTacNghiepListVm.checkFlag = function(flag){            
+            if(typeof(flag) === 'undefined'){
+               return false;
+            }else{
+               return flag;
+            }
+		};
+
         function getCacLoaiTacNghiep(){
             settingService.getCacLoaiTacNghiep().$loaded().then(function(res){
-                loaiTacNghiepListVm.items=res;
-                console.log(' loaiTacNghiepListVm.items');
-                console.log( loaiTacNghiepListVm.items);
+                loaiTacNghiepListVm.items=res;               
             });
-        }
+        }        
+        
         function init(){
             getCacLoaiTacNghiep();
         }

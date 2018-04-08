@@ -12,7 +12,7 @@
         var nhuCauLienKetUsersVm =this;// jshint ignore:line
         //
         nhuCauLienKetUsersVm.model = {};
-        nhuCauLienKetUsersVm.lienKetUserList = [];
+        nhuCauLienKetUsersVm.userLinkedList = [];
 
         nhuCauLienKetUsersVm.cacKhoBDS = appSettings.cacKhoBDS; //key kho bds dung để lưu dữ liệu
         nhuCauLienKetUsersVm.cacLoaiLienKetUser = appSettings.cacLoaiLienKetUser;
@@ -20,8 +20,11 @@
         //Function 
         nhuCauLienKetUsersVm.searchUserByPhone = function() {
             appUtils.showLoading();
+            if(nhuCauLienKetUsersVm.keyword === '' || nhuCauLienKetUsersVm.keyword === null || nhuCauLienKetUsersVm.keyword === undefined) {
+                appUtils.hideLoading();
+                return;
+            }
             userService.getExitedPhone(nhuCauLienKetUsersVm.keyword).then(function(res) {
-                console.log('RESULT SDT', res);
                 if(res.data.userId === undefined || res.data.userId === null) {
                     $ngBootbox.customDialog({
                         message: 'Số Điện Thoại Chưa Được Đăng Ký!',
@@ -52,8 +55,8 @@
                     nhuCauLienKetUsersVm.isUserExit = true;
                     nhuCauLienKetUsersVm.model.phone = res.data.phone;
                     nhuCauLienKetUsersVm.userEmail = res.data.userEmail;
-                    nhuCauLienKetUsersVm.model.userId = res.data.userId;
-                    nhuCauLienKetUsersVm.userName = res.data.userName;
+                    //nhuCauLienKetUsersVm.model.userId = res.data.userId;
+                    nhuCauLienKetUsersVm.model.userName = res.data.userName;
                     nhuCauLienKetUsersVm.model.timeCreated = Date.now();
                 }
             });
@@ -72,7 +75,7 @@
         };
 
         //Function remove item
-        nhuCauLienKetUsersVm.removeLinkedUser = function(lienKetKey) {
+        nhuCauLienKetUsersVm.removeLinkedUser = function(linkedKey) {
             $ngBootbox.customDialog({
                 message: 'Bạn Muốn Dừng Liên Kết Với User Này?',
                 buttons: {
@@ -88,23 +91,24 @@
                         label: "Chấp Nhận",
                         className: "btn-success",
                         callback: function () {
-                            console.log('PHONE ID USER', lienKetKey);
-                            removeLinked(lienKetKey);
+                            console.log('DDDDDLIST MODEL KEY', nhuCauLienKetUsersVm.userLinkedList);
+                            console.log('PHONE ID USER', linkedKey);
+                            removeLinked('lienKetUser', nhuCauLienKetUsersVm.model.nhuCauKey, true, linkedKey);
+                            toaster.success("Dừng Liên Kết Thành Công");
                         }
                     }
                 }
             });
         };
 
-        function removeLinked(lienKetKey) {
-            nhuCauService.removeTabLienKetNhuCau(nhuCauLienKetUsersVm.model.khoBDSKey, 'lienKetUser', nhuCauLienKetUsersVm.model.bdsKey, lienKetKey).then(function(res) {
+        function removeLinked(nhuCauTab, nhuCauKey, isLinked, linkedKey) {
+            nhuCauService.removeTabNhuCau(nhuCauTab, nhuCauKey, isLinked, linkedKey).then(function(res) {
                 if (res.result) {
                     appUtils.hideLoading();
-                    _.remove(nhuCauLienKetUsersVm.lienKetUserList, function(o) {
-                        return o.lienKetKey == lienKetKey;
-                    });
                     $scope.$apply(function () {
-                        toaster.success("Dừng Liên Kết Thành Công");
+                        _.remove(nhuCauLienKetUsersVm.userLinkedList, function(o) {
+                            return o.linkedKey == linkedKey;
+                        });
                     });
                     return;
                 }
@@ -115,141 +119,140 @@
 
         //Function save data
         nhuCauLienKetUsersVm.save = function (form) {
-            if(!nhuCauLienKetUsersVm.model.loaiLienKetUser)
-                return;
-            appUtils.showLoading();
-            if (nhuCauLienKetUsersVm.isEdit) {
-                switch (nhuCauLienKetUsersVm.model.loaiNhuCauKey) {
-                    case 'ban':
-                        editBDSBan();
-                        break;
-                    case 'mua':
-                        editBDSMua();
-                        break;
-                    case 'thue':
-                        editBDSMua();
-                        break;
-                    case 'cho-thue':
-                        editBDSBan();
-                        break;
-                }
+            var duplicate = _.find(nhuCauLienKetUsersVm.userLinkedList, function (o) {
+                return o.loaiLienKetUser === nhuCauLienKetUsersVm.model.loaiLienKetUser;
+            });
+            if (!!duplicate) {
+                $ngBootbox.customDialog({
+                    message: 'Loại người dùng đã có liên kết, tiếp tục sẽ thay thế liên kết cũ?',
+                    buttons: {
+                        danger: {
+                            label: "Huỷ",
+                            className: "btn-default",
+                            callback: function () {
+                                console.log('cancel');
+                                nhuCauLienKetUsersVm.isUserExit = false;
+                                $scope.$apply();
+                                appUtils.hideLoading();
+                            }
+                        },
+                        success: {
+                            label: "Chấp Nhận",
+                            className: "btn-success",
+                            callback: function () {
+                                editLinked('lienKetUser', nhuCauLienKetUsersVm.model, nhuCauLienKetUsersVm.model.nhuCauKey, true);
+                                removeLinked('lienKetUser', nhuCauLienKetUsersVm.model.nhuCauKey, true, duplicate.linkedKey);
+                                toaster.success("Liên Kết Người Dùng Thành Công");
+                                appUtils.showLoading();
+                            }
+                        }
+                    }
+                });
+            }
+            else {
+                $ngBootbox.customDialog({
+                    message: 'Bạn Có Muốn Liên Kết Với User Này?',
+                    buttons: {
+                        danger: {
+                            label: "Huỷ",
+                            className: "btn-default",
+                            callback: function () {
+                                console.log('cancel');
+                                nhuCauLienKetUsersVm.isUserExit = false;
+                                $scope.$apply();
+                                appUtils.hideLoading();
+                            }
+                        },
+                        success: {
+                            label: "Chấp Nhận",
+                            className: "btn-success",
+                            callback: function () {
+                                editLinked('lienKetUser', nhuCauLienKetUsersVm.model, nhuCauLienKetUsersVm.model.nhuCauKey, true);
+                                toaster.success("Liên Kết Người Dùng Thành Công");
+                                appUtils.showLoading();
+                            }
+                        }
+                    }
+                });
             }
         };
 
-        function editBDSMua() {
-            nhuCauService.updateTabLienKetNhuCauMua(nhuCauLienKetUsersVm.model.khoBDSKey, 'lienKetUser', nhuCauLienKetUsersVm.model, nhuCauLienKetUsersVm.model.bdsKey).then(function (res) {
+        function editLinked(nhuCauTab, nhuCauModel, nhuCauKey, isLinked) {
+            nhuCauService.updateTabNhuCau(nhuCauTab, nhuCauModel, nhuCauKey, isLinked).then(function (res) {
                 if (res.result) {
                     appUtils.hideLoading();
                     $scope.$apply(function () {
-                        toaster.success("Lưu Nhu Cầu Thành Công");
+                        nhuCauLienKetUsersVm.model.linkedKey = res.linkedKey;
+                        addToLinkedList(nhuCauLienKetUsersVm.model);
                     });
-                    nhuCauLienKetUsersVm.model.lienKetKey = res.key;
-                    addToListLienKet(nhuCauLienKetUsersVm.model);
-                    nhuCauLienKetUsersVm.model.bdsKey = $stateParams.bdsId;
                     return;
                 }
                 appUtils.hideLoading();
-                toaster.error("Lưu Nhu Cầu Không Thành Công!");
-            });
-        }
-
-        function editBDSBan() {
-            nhuCauService.updateTabLienKetNhuCauMua(nhuCauLienKetUsersVm.model.khoBDSKey, 'lienKetUser', nhuCauLienKetUsersVm.model, nhuCauLienKetUsersVm.model.bdsKey).then(function (res) {
-                if (res.result) {
-                    appUtils.hideLoading();
-                    $scope.$apply(function () {
-                        toaster.success("Lưu Nhu Cầu Thành Công");
-                    });
-                    nhuCauLienKetUsersVm.model.lienKetKey = res.key;
-                    addToListLienKet(nhuCauLienKetUsersVm.model);
-                    nhuCauLienKetUsersVm.model.bdsKey = $stateParams.bdsId;
-                    return;
-                }
-                appUtils.hideLoading();
-                toaster.error("Lưu Nhu Cầu Không Thành Công!");
+                toaster.error("Liên Kết Người Dùng  Không Thành Công!");
             });
         }
 
         //function 
-        function addToListLienKet(modelAdd) {
-            userService.getExitedPhone(modelAdd.phone).then(function(rs) {
-                nhuCauLienKetUsersVm.lienKetUserList.push({
-                    phone: rs.data.phone,
-                    userName: rs.data.userName,
-                    loaiLienKetUser: modelAdd.loaiLienKetUser,
-                    timeCreated: displayDate(modelAdd.timeCreated),
-                    lienKetKey: modelAdd.lienKetKey
-                });
-                nhuCauLienKetUsersVm.isUserExit = false;
+        function addToLinkedList(linkedModel) {
+            console.log('MODEL ADD', linkedModel);
+            nhuCauLienKetUsersVm.userLinkedList.push({
+                phone: linkedModel.phone,
+                userName: linkedModel.userName,
+                loaiLienKetUser: linkedModel.loaiLienKetUser,
+                timeCreated: displayDate(linkedModel.timeCreated),
+                linkedKey: linkedModel.linkedKey
             });
+            nhuCauLienKetUsersVm.isUserExit = false;
         }
 
         function displayDate(timestamp) {
             var d = new Date(timestamp);
             return d.toLocaleString();
         }
+        
+        nhuCauLienKetUsersVm.keyword = '';
+        nhuCauLienKetUsersVm.phoneValid = function (e) {
+            var iKeyCode = (e.which) ? e.which : e.keyCode;
+            if (iKeyCode < 48 || iKeyCode > 57)
+                e.preventDefault(); 
+            else {
+                console.log('nhuCauLienKetUsersVm.keyword',nhuCauLienKetUsersVm.keyword);
+                if(nhuCauLienKetUsersVm.keyword.length === 11)
+                    e.preventDefault(); 
+            }    
+        };
 
-        if(!!$stateParams.bdsId) {
+        if (!!$stateParams.nhuCauId) {
             //$stateParams.item ---> chứa dữ liệu của bds được truyền từ NhuCau List page
             //$stateParams.item.loaiNhuCauKey  --> //key loại nhu cầu dung để lưu dữ liệu
             ///xét trường hợp vào trang vào trang edit
             nhuCauLienKetUsersVm.isUserExit = false;
             nhuCauLienKetUsersVm.isEdit = true;
-            nhuCauLienKetUsersVm.model.loaiNhuCauKey = $stateParams.nhuCauId;
-            nhuCauLienKetUsersVm.model.khoBDSKey = $stateParams.bdsKho;
-            nhuCauLienKetUsersVm.model.bdsKey = $stateParams.bdsId;
-            if (nhuCauLienKetUsersVm.model.loaiNhuCauKey === 'ban' || nhuCauLienKetUsersVm.model.loaiNhuCauKey === 'cho-thue') {
-                nhuCauService.getTabNhuCauMua('lienKetUser', nhuCauLienKetUsersVm.model.bdsKey).then(function (result) {
-                    nhuCauLienKetUsersVm.lienKetUserList = [];
-                    _.forEach(result, function(item, key) {
-                        if(_.isObject(item)) {
-                            console.log('TEST LIEN KEYT', item);
-                            userService.getExitedPhone(item.phone).then(function(rs) {
-                                console.log('FINAL TEST 2', rs);
-                                nhuCauLienKetUsersVm.lienKetUserList.push({
+            nhuCauLienKetUsersVm.model.loaiNhuCauKey = $stateParams.loaiId;
+            nhuCauLienKetUsersVm.model.khoBDSKey = $stateParams.khoId;
+            nhuCauLienKetUsersVm.model.nhuCauKey = $stateParams.nhuCauId;
+            nhuCauService.getTabNhuCau('lienKetUser', nhuCauLienKetUsersVm.model.nhuCauKey).then(function (result) {
+                console.log('LIEN KET USER resukt', result);
+                if (!!result) {
+                    nhuCauLienKetUsersVm.userLinkedList = [];
+                    _.forEach(result, function (item, key) {
+                        if (_.isObject(item)) {
+                            userService.getExitedPhone(item.phone).then(function (rs) {
+                                nhuCauLienKetUsersVm.userLinkedList.push({
                                     phone: rs.data.phone,
                                     userName: rs.data.userName,
                                     loaiLienKetUser: item.loaiLienKetUser,
                                     timeCreated: displayDate(item.timeCreated),
-                                    lienKetKey: item.lienKetKey
+                                    linkedKey: key
                                 });
                             });
                         }
                     });
-                    if(!!result)
-                        delete nhuCauLienKetUsersVm.model.$id;
-                    else
-                        nhuCauLienKetUsersVm.model = {};
-                    nhuCauLienKetUsersVm.model.loaiNhuCauKey = $stateParams.nhuCauId;
-                    nhuCauLienKetUsersVm.model.khoBDSKey = $stateParams.bdsKho;
-                    nhuCauLienKetUsersVm.model.bdsKey = $stateParams.bdsId;
-                    console.log('PRAMS CAP DO', nhuCauLienKetUsersVm.lienKetUserList);
-                });
-            } else {
-                nhuCauService.getTabNhuCauMua('lienKetUser', nhuCauLienKetUsersVm.model.bdsKey).then(function (result) {
-                    nhuCauLienKetUsersVm.lienKetUserList = [];
-                    _.forEach(result, function(item, key) {
-                        if(_.isObject(item)) {
-                            userService.getExitedPhone(item.phone).then(function(rs) {
-                                nhuCauLienKetUsersVm.lienKetUserList.push({
-                                    phone: rs.data.phone,
-                                    userName: rs.data.userName,
-                                    loaiLienKetUser: item.loaiLienKetUser,
-                                    timeCreated: displayDate(item.timeCreated),
-                                });
-                            });
-                        }
-                    });
-                    if(!!result)
-                        delete nhuCauLienKetUsersVm.model.$id;
-                    else
-                        nhuCauLienKetUsersVm.model = {};
-                    nhuCauLienKetUsersVm.model.loaiNhuCauKey = $stateParams.nhuCauId;
-                    nhuCauLienKetUsersVm.model.khoBDSKey = $stateParams.bdsKho;
-                    nhuCauLienKetUsersVm.model.bdsKey = $stateParams.bdsId;
-                });
-            }
+                    console.log('LIEN KET USER', nhuCauLienKetUsersVm.userLinkedList);
+                }
+            });
         } else {
+            console.log('tab lien ket user - init error');
             //xét trường hợp vào trang vào trang thêm mới
             //$stateParams.item.loaiNhuCauKey  --> //key loại nhu cầu dung để lưu dữ liệu
         }

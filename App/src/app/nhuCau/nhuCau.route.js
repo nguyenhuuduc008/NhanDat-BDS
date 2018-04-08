@@ -115,7 +115,7 @@
             }
         }).state('lienKetUsersNhuCau',{
             parent: 'root',
-            url: '/nhuCau/nhuCauLienKetUsers?bdsKho&khoId?loaiNC&nhuCauId?bdsId&id',
+            url: '/nhuCau/nhuCauLienKetUsers?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
             controller: 'nhuCauLienKetUsersCtr',
             controllerAs: 'nhuCauLienKetUsersVm',
@@ -127,7 +127,6 @@
             },
             params: {
                 item: null,
-                isEdit: null
             },
             resolve:{
                 "currentAuth": ["authService", function(authService) {

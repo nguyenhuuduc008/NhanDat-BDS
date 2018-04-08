@@ -412,6 +412,16 @@
             nhuCauService.addNhuCau(khoBDSId, loaiNhuCauId, nhuCauModel).then(function (res) {
                 if (res.result) {
                     $scope.$apply(function () {
+                        var linkCreateUser = {
+                            phone: currentUser.phoneNumber,
+                            userName: currentUser.lastName + ' ' + currentUser.firstName,
+                            loaiLienKetUser: "createUserUniq",
+                            timeCreated: Date.now(),
+                            khoBDSKey: nhuCauThongTinVm.model.khoBDSKey,
+                            loaiNhuCauKey: nhuCauThongTinVm.model.loaiNhuCauKey
+                        };
+                        nhuCauService.updateTabNhuCau('lienKetUser', linkCreateUser, res.key, true);
+
                         toaster.success("Thêm Mới Nhu Cầu Thành Công");
                         $state.go('nhuCauListing');
                     });
@@ -444,6 +454,19 @@
                     $scope.$apply(function () {
                         bdsKey = res.bdsKey;
                         nhuCauThongTinVm.dzMethods.processQueue();
+
+                        setTimeout(function() {
+                            var linkCreateUser = {
+                                phone: currentUser.phoneNumber,
+                                userName: currentUser.lastName + ' ' + currentUser.firstName,
+                                loaiLienKetUser: "createUserUniq",
+                                timeCreated: Date.now(),
+                                khoBDSKey: nhuCauThongTinVm.model.khoBDSKey,
+                                loaiNhuCauKey: nhuCauThongTinVm.model.loaiNhuCauKey
+                            };
+                            console.log('NHUC AU KEY LIEN KET', res.nhuCaukey);
+                            nhuCauService.updateTabNhuCau('lienKetUser', linkCreateUser, res.nhuCaukey, true);
+                        }, 500);
                         toaster.success("Thêm Mới Nhu Cầu Thành Công");
                         $state.go('nhuCauListing');
                     });
@@ -469,34 +492,6 @@
                 toaster.error("Sửa Nhu Cầu Không Thành Công!");
             });
         }
-
-        // function addBDSBan() {
-        //     nhuCauService.addNhuCauMua(nhuCauThongTinVm.model.khoBDSKey, nhuCauThongTinVm.model.loaiNhuCauKey, nhuCauThongTinVm.model).then(function(res) {
-        //         nhuCauService.addNhuCauBan(nhuCauThongTinVm.model.khoBDSKey, nhuCauThongTinVm.bds, res.key).then(function(bdsRes) {
-        //             if(res.result && bdsRes.result) {
-        //                 var linkCreateUser = {
-        //                     phone: currentUser.phoneNumber,
-        //                     userName: currentUser.lastName + ' ' + currentUser.firstName,
-        //                     loaiLienKetUser: "createUserUniq",
-        //                     timeCreated: Date.now(),
-        //                     khoBDSKey: nhuCauThongTinVm.model.khoBDSKey,
-        //                     loaiNhuCauKey: nhuCauThongTinVm.model.loaiNhuCauKey
-        //                 };
-        //                 nhuCauService.updateTabLienKetNhuCauMua('lienKetUser', linkCreateUser, res.key, currentUser.phoneNumber);
-        //                 appUtils.hideLoading();
-        //                 $scope.$apply(function() {
-        //                     bdsKey = res.key;
-        //                     nhuCauThongTinVm.dzMethods.processQueue();
-        //                     toaster.success("Thêm Mới Nhu Cầu Thành Công");
-        //                     $state.go('nhuCauListing');
-        //                 });
-        //                 return;
-        //             }
-        //             appUtils.hideLoading();
-        //             toaster.error("Thêm Mới Nhu Không Thành Công!");  
-        //         });
-        //     });            
-        // }
 
         nhuCauThongTinVm.cancel = function() {
             $state.go('nhuCauListing');
@@ -588,7 +583,8 @@
                             if (!nhuCauThongTinVm.bds.media)
                                 nhuCauThongTinVm.bds.media = {};
                             loadMedia(nhuCauThongTinVm.bds.media);
-                            setLatLong(nhuCauThongTinVm.bds.lat, nhuCauThongTinVm.bds.lon);
+                            if(!!nhuCauThongTinVm.bds.lat && !!nhuCauThongTinVm.bds.lon)
+                                setLatLong(nhuCauThongTinVm.bds.lat, nhuCauThongTinVm.bds.lon);
                             $scope.$apply();
                         });
                         googleMapInit();

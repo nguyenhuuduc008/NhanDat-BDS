@@ -17,6 +17,9 @@
         var nhuCauBan = {};
         var nhuCauChoThue = {};
 
+        console.log("$rootScope.storage.roles",$rootScope.storage.roles);
+        console.log("$rootScope.storage.permissions",$rootScope.storage.permissions);
+        console.log("currentUser",currentUser);
         //-----default function-----
         function getDuLieuTho(){
             settingService.getDuLieuTho().then(function(rs){

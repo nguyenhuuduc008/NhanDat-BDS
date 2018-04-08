@@ -7,7 +7,7 @@
         </div>
         <div class="caption caption-md" style="padding-left:5px;">
             <select class="form-control" required id="idTrangThai" ng-model="vm.item.nhuCauKey">
-                <option value="allTrangThai" selected>Tất Cả Trạng Thái</option>
+                <option value="allTrangThai" selected>Chọn Loại Nhu Cầu</option>
                 <option ng-repeat="item in vm.cacLoaiNhuCau" value="{{item.value}}" ng-selected="item.value == vm.bdsCate">{{item.text}}</option>
                 
             </select>
@@ -45,7 +45,7 @@
                     <a type="button" href="#/nhuCau/chonNhuCauThemMoi" class="btn blue">Thêm Mới</a>
                 </div>
                 <div class="col-xs-6">
-                    <a type="button" href="#" class="btn blue">Duplicate</a>
+                    <a type="button" href="#" class="btn blue">Nhân Bản</a>
                 </div>
             </div>
             <!-- <div class="col-md-2 no-padding-left no-padding-right">

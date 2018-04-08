@@ -4,7 +4,6 @@
     /** @ngInject **/
     function nhuCauService($q, $filter, $firebaseObject, $firebaseArray, firebaseDataRef, appUtils,toaster,$ngBootbox, storageRef, DataUtils){
         var service={
-            getNhuCauBan:getNhuCauBan,
             getNhuCau:getNhuCau,
             getOnceNhuCau:getOnceNhuCau,
             addNhuCau: addNhuCau,
@@ -19,7 +18,9 @@
             getTabNhuCau: getTabNhuCau,
             removeTabNhuCau: removeTabNhuCau,
             addNhuCauWithBDS: addNhuCauWithBDS,
-            updateNhuCauWithBDS: updateNhuCauWithBDS
+            updateNhuCauWithBDS: updateNhuCauWithBDS,
+            updateTabNhuCauToBDS: updateTabNhuCauToBDS,
+            getTabNhuCauFromBDS: getTabNhuCauFromBDS
         };
         //Ref
         var nhuCauRef=firebaseDataRef.child('nhuCau');
@@ -27,9 +28,6 @@
         
         return service;
         //function 
-        function getNhuCauBan(){
-            return $firebaseArray(bdsRef);
-        }
         function getNhuCau(){
             return $firebaseArray(nhuCauRef);
         }
@@ -81,19 +79,6 @@
             });
         }
 
-        // function updateTabNhuCau(khoBDSId, bdsTab, bdsModel, bdsKey){
-        //     var ref = nhuCauRef.child("tabs/" + bdsTab + "/" + bdsKey);
-        //     var refPath = "nhuCau/" + "tabs/" + bdsTab + "/" + bdsKey;
-        //     delete bdsModel.bdsKey;
-        //     bdsModel.timestampModified = Date.now();
-
-        //     return ref.update(bdsModel).then(function(res){
-        //         return {result:true,key:bdsKey};
-        //     }).catch(function(err){
-        //         return {result:true,errMsg:err};
-        //     });
-        // }
-
         function updateTabNhuCau(nhuCauTab, nhuCauModel, nhuCauKey, isLinked){
             var refPath = "nhuCau/tabs/" + nhuCauTab + "/" + nhuCauKey;
             var ref = nhuCauRef.child("tabs/" + nhuCauTab + "/" + nhuCauKey), key;
@@ -109,6 +94,22 @@
             }).catch(function(err){
                 return {result:true,errMsg:err};
             });
+        }
+
+        function updateTabNhuCauToBDS(nhuCauTab, nhuCauModel, bdsKey){
+            var ref = bdsRef.child("tabs/" + nhuCauTab + "/" + bdsKey);
+            nhuCauModel.timestampModified = Date.now();
+
+            return ref.update(nhuCauModel).then(function(res){
+                return {result:true,key:bdsKey};
+            }).catch(function(err){
+                return {result:true,errMsg:err};
+            });
+        }
+
+        function getTabNhuCauFromBDS(nhuCauTab, bdsKey){
+            var refPath = "bds/tabs/" + nhuCauTab + "/" + bdsKey;
+            return DataUtils.getDataFirebaseLoadOnce(refPath);
         }
 
         function removeTabNhuCau(nhuCauTab, nhuCauKey, isLinked, linkedKey){

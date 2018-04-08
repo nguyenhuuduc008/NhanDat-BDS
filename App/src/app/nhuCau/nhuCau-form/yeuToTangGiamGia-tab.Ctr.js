@@ -20,26 +20,17 @@
         //Function
         nhuCauYeuToGiaVm.save = function (form) {
             appUtils.showLoading();
-            if (nhuCauYeuToGiaVm.isEdit) {
-                switch (nhuCauYeuToGiaVm.model.loaiNhuCauKey) {
-                    case 'ban':
-                        editBDSBan();
-                        break;
-                    case 'mua':
-                        editBDSMua();
-                        break;
-                    case 'thue':
-                        editBDSMua();
-                        break;
-                    case 'cho-thue':
-                        editBDSBan();
-                        break;
-                }
+            delete nhuCauYeuToGiaVm.model.$id;
+            if($stateParams.loaiId === 'ban' || $stateParams.loaiId === 'cho-thue') {
+                editTabBDS('yeuToTangGiamGia', nhuCauYeuToGiaVm.model, nhuCauYeuToGiaVm.model.bdsKey);
+            }
+            else {
+                editTab('yeuToTangGiamGia', nhuCauYeuToGiaVm.model, nhuCauYeuToGiaVm.model.nhuCauKey, false);
             }
         };
 
-        function editBDSMua() {
-            nhuCauService.updateTabNhuCauMua(nhuCauYeuToGiaVm.model.khoBDSKey, 'yeuToTangGiamGia', nhuCauYeuToGiaVm.model, nhuCauYeuToGiaVm.model.bdsKey).then(function(res) {
+        function editTabBDS(nhuCauTab, nhuCauModel, bdsKey) {
+            nhuCauService.updateTabNhuCauToBDS(nhuCauTab, nhuCauModel, bdsKey).then(function(res) {
                 if(res.result) {
                     appUtils.hideLoading();
                     $scope.$apply(function() {
@@ -52,49 +43,44 @@
             });            
         }
 
-        function editBDSBan() {
-            nhuCauService.updateTabNhuCauMua(nhuCauYeuToGiaVm.model.khoBDSKey, 'yeuToTangGiamGia', nhuCauYeuToGiaVm.model, nhuCauYeuToGiaVm.model.bdsKey).then(function(res) {
-                if(res.result) {
+        function editTab(nhuCauTab, nhuCauModel, nhuCauKey, isLinked) {
+            nhuCauService.updateTabNhuCau(nhuCauTab, nhuCauModel, nhuCauKey, isLinked).then(function (res) {
+                if (res.result) {
                     appUtils.hideLoading();
-                    $scope.$apply(function() {
+                    $scope.$apply(function () {
                         toaster.success("Lưu Nhu Cầu Thành Công");
                     });
                     return;
                 }
                 appUtils.hideLoading();
                 toaster.error("Lưu Nhu Cầu Không Thành Công!");
-            });            
+            });
         }
 
-        if(!!$stateParams.bdsId) {
+
+        if (!!$stateParams.item) {
             //$stateParams.item ---> chứa dữ liệu của bds được truyền từ NhuCau List page
             //$stateParams.item.loaiNhuCauKey  --> //key loại nhu cầu dung để lưu dữ liệu
             ///xét trường hợp vào trang vào trang edit
-            nhuCauYeuToGiaVm.isEdit = true;
-            nhuCauYeuToGiaVm.model.loaiNhuCauKey = $stateParams.nhuCauId;
-            nhuCauYeuToGiaVm.model.khoBDSKey = $stateParams.bdsKho;
-            nhuCauYeuToGiaVm.model.bdsKey = $stateParams.bdsId;
-            if (nhuCauYeuToGiaVm.model.loaiNhuCauKey === 'ban' || nhuCauYeuToGiaVm.model.loaiNhuCauKey === 'cho-thue') {
-                nhuCauService.getTabNhuCauMua(nhuCauYeuToGiaVm.model.khoBDSKey, 'yeuToTangGiamGia', nhuCauYeuToGiaVm.model.bdsKey).then(function (result) {
-                    nhuCauYeuToGiaVm.model = result;
-                    if(!!nhuCauYeuToGiaVm.model)
-                        delete nhuCauYeuToGiaVm.model.$id;
-                    else
-                        nhuCauYeuToGiaVm.model = {};
-                    nhuCauYeuToGiaVm.model.loaiNhuCauKey = $stateParams.nhuCauId;
-                    nhuCauYeuToGiaVm.model.khoBDSKey = $stateParams.bdsKho;
-                    nhuCauYeuToGiaVm.model.bdsKey = $stateParams.bdsId;
+            nhuCauYeuToGiaVm.model = {};
+            nhuCauYeuToGiaVm.model.loaiNhuCauKey = $stateParams.loaiId;
+            nhuCauYeuToGiaVm.model.khoBDSKey = $stateParams.khoId;
+            nhuCauYeuToGiaVm.model.nhuCauKey = $stateParams.nhuCauId;
+            if($stateParams.loaiId === 'ban' || $stateParams.loaiId === 'cho-thue') {
+                nhuCauYeuToGiaVm.model.bdsKey = $stateParams.item.bdsKey;
+                nhuCauService.getTabNhuCauFromBDS('yeuToTangGiamGia', nhuCauYeuToGiaVm.model.bdsKey).then(function (result) {
+                    if (!!result) {
+                        nhuCauYeuToGiaVm.model = result;
+                        $scope.$apply();
+                    }
                 });
-            } else {
-                nhuCauService.getTabNhuCauMua(nhuCauYeuToGiaVm.model.khoBDSKey, 'yeuToTangGiamGia', nhuCauYeuToGiaVm.model.bdsKey).then(function (result) {
-                    nhuCauYeuToGiaVm.model = result;
-                    if(!!nhuCauYeuToGiaVm.model)
-                        delete nhuCauYeuToGiaVm.model.$id;
-                    else
-                        nhuCauYeuToGiaVm.model = {};
-                    nhuCauYeuToGiaVm.model.loaiNhuCauKey = $stateParams.nhuCauId;
-                    nhuCauYeuToGiaVm.model.khoBDSKey = $stateParams.bdsKho;
-                    nhuCauYeuToGiaVm.model.bdsKey = $stateParams.bdsId;
+            }
+            else {
+                nhuCauService.getTabNhuCau('yeuToTangGiamGia', nhuCauYeuToGiaVm.model.nhuCauKey).then(function (result) {
+                    if (!!result) {
+                        nhuCauYeuToGiaVm.model = result;
+                        $scope.$apply();
+                    }
                 });
             }
         } else {

@@ -92,7 +92,7 @@
             }
         }).state('tacNghiepNhuCau',{
             parent: 'root',
-            url: '/nhuCau/nhuCauTacNghiep?bdsKho&khoId?loaiNC&nhuCauId?bdsId&id',
+            url: '/nhuCau/nhuCauTacNghiep?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
             controller: 'nhuCauTacNghiepCtr',
             controllerAs: 'nhuCauTacNghiepVm',
@@ -144,7 +144,7 @@
             }
         }).state('yeuToTangGiamGiaNhuCau',{
             parent: 'root',
-            url: '/nhuCau/nhuCauYeuToTangGiamGia?bdsKho&khoId?loaiNC&nhuCauId?bdsId&id',
+            url: '/nhuCau/nhuCauYeuToTangGiamGia?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
             controller: 'nhuCauYeuToTangGiamGiaCtr',
             controllerAs: 'nhuCauYeuToGiaVm',
@@ -156,7 +156,6 @@
             },
             params: {
                 item: null,
-                isEdit: null
             },
             resolve:{
                 "currentAuth": ["authService", function(authService) {
@@ -166,7 +165,7 @@
             }
         }).state('thuocQuyHoachNhuCau',{
             parent: 'root',
-            url: '/nhuCau/nhuCauThuocQuyHoach?bdsKho&khoId?loaiNC&nhuCauId?bdsId&id',
+            url: '/nhuCau/nhuCauThuocQuyHoach?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
             controller: 'nhuCauThuocQuyHoachCtr',
             controllerAs: 'nhuCauThuocQuyHoachVm',
@@ -188,7 +187,7 @@
             }
         }).state('lichSuChuyenQuyenNhuCau',{
             parent: 'root',
-            url: '/nhuCau/nhuCauLichSuChuyenQuyen?bdsKho&khoId?loaiNC&nhuCauId?bdsId&id',
+            url: '/nhuCau/nhuCauLichSuChuyenQuyen?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
             controller: 'nhuCauLichSuChuyenQuyenCtr',
             controllerAs: 'nhuCauLichSuChuyenQuyenVm',
@@ -210,7 +209,7 @@
             }
         }).state('lichSuGiaoDichNhuCau',{
             parent: 'root',
-            url: '/nhuCau/nhuCauLichSuGiaoDich?bdsKho&khoId?loaiNC&nhuCauId?bdsId&id',
+            url: '/nhuCau/nhuCauLichSuGiaoDich?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
             controller: 'nhuCauLichSuGiaoDichCtr',
             controllerAs: 'nhuCauLichSuGiaoDichVm',
@@ -232,7 +231,7 @@
             }
         }).state('capDoNhuCau',{
             parent: 'root',
-            url: '/nhuCau/nhuCauCapDo?bdsKho&khoId?loaiNC&nhuCauId?bdsId&id',
+            url: '/nhuCau/nhuCauCapDo?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
             controller: 'nhuCauCapDoCtr',
             controllerAs: 'nhuCauCapDoVm',
@@ -254,7 +253,7 @@
             }
         }).state('lichSuGiaNhuCau',{
             parent: 'root',
-            url: '/nhuCau/nhuCauLichSuGia?bdsKho&khoId?loaiNC&nhuCauId?bdsId&id',
+            url: '/nhuCau/nhuCauLichSuGia?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
             controller: 'nhuCauLichSuGiaCtr',
             controllerAs: 'nhuCauLichSuGiaVm',
@@ -276,7 +275,7 @@
             }
         }).state('lienKetBDSNhuCau',{
             parent: 'root',
-            url: '/nhuCau/nhuCaulienKetBDS?bdsKho&khoId?loaiNC&nhuCauId?bdsId&id',
+            url: '/nhuCau/nhuCaulienKetBDS?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
             controller: 'nhuCaulienKetBDSCtr',
             controllerAs: 'nhuCaulienKetBDSVm',
@@ -298,7 +297,7 @@
             }
         }).state('lienKetNhuCau',{
             parent: 'root',
-            url: '/nhuCau/nhuCaulienKet?bdsKho&khoId?loaiNC&nhuCauId?bdsId&id',
+            url: '/nhuCau/nhuCaulienKet?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
             controller: 'nhuCaulienKetCtr',
             controllerAs: 'nhuCaulienKetVm',

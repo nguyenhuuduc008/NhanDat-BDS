@@ -66,25 +66,21 @@
                 toaster.warning("Bạn cần lựa chọn Trạng Thái!");
                 return;
             }
-            if (idDanhMuc == 'allDanhMuc') {
-                toaster.warning("Bạn cần lựa chọn Danh Mục!");
-                return;
-            }
             // get data
             nhuCauService.getNhuCauByKhoLoai(idDanhMuc, idTrangThai).then(function (data) {
                 var result = [];
                 _.forEach(data, function (item, key) {
                     if (_.isObject(item)) {
-                        // item.bdsKey = key;
-                        // nhuCauService.getTabNhuCauMua(idDanhMuc, 'capDo', item.bdsKey).then(function (capDoRs) {
-                        //     if (capDoRs !== null) {
-                        //         var find = _.find(vm.cacLoaiCapDo, function (o) {
-                        //             return o.value == capDoRs.capDo;
-                        //         });
-                        //         item.capDoColor = { 'color': find.color };
-                        //         $scope.$apply();
-                        //     }
-                        // });
+                        item.nhuCauKey = item.$id;
+                        nhuCauService.getTabNhuCau('capDo', item.nhuCauKey).then(function (capDoRs) {
+                            if (capDoRs !== null) {
+                                var find = _.find(vm.cacLoaiCapDo, function (o) {
+                                    return o.value == capDoRs.capDo;
+                                });
+                                item.capDoColor = { 'color': find.color };
+                                $scope.$apply();
+                            }
+                        });
                         result.push(item);
                     }
                 });

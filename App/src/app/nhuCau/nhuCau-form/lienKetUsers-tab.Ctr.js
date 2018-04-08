@@ -188,7 +188,7 @@
                     return;
                 }
                 appUtils.hideLoading();
-                toaster.error("Liên Kết Người Dùng  Không Thành Công!");
+                toaster.error("Liên Kết Người Dùng Không Thành Công!");
             });
         }
 

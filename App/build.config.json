@@ -104,7 +104,10 @@
         "Jcrop/js/*.min/js",
         "Jcrop/css/*.*",
         "textAngular/dist/*.*",
+        "firebaseui/dist/firebaseui.js",
+        "firebaseui/dist/firebaseui.css",
         
+
         "tg-dynamic-directive/src/*.js",
         "ng-dropzone/dist/**.js",
         "angular-ui-select/dist/*.min.*",
@@ -137,7 +140,7 @@
 		"metronic/theme/assets/global/plugins/amcharts/amcharts/amcharts.js",
 		"metronic/theme/assets/global/plugins/amcharts/amcharts/serial.js",
 		"metronic/theme/assets/global/plugins/amcharts/amcharts/pie.js"
-		    ],
+    ],
     "inject_css_files": [
     ],
     "inject_vendor_css_files":[
@@ -226,7 +229,9 @@
         "vendor/format-as-currency/dist/*.js",
         "vendor/elasticsearch/*.min.js",
         "vendor/angular-haversine/*.js",
-
+        "vendor/firebaseui/dist/firebaseui.js",
+        "vendor/firebaseui/dist/firebaseui.css",
+        
         
         "vendor/angularjs-autocomplete/build/*.js",
         "vendor/angular-google-maps/dist/angular-google-maps.min.js",

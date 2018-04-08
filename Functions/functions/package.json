@@ -1,0 +1,22 @@
+{
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "dependencies": {
+    "async": "^2.1.5",
+    "body-parser": "^1.17.1",
+    "child-process-promise": "^2.2.1",
+    "cors": "^2.8.1",
+    "firebase-admin": "~4.2.1",
+    "firebase-functions": "^0.5.7",
+    "fs": "0.0.1-security",
+    "google-cloud": "^0.50.0",
+    "handlebars": "^4.0.6",
+    "lodash": "^4.17.4",
+    "mkdirp-promise": "^5.0.1",
+    "moment": "^2.17.1",
+    "nodemon": "^1.11.0",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.2"
+  },
+  "private": true
+}

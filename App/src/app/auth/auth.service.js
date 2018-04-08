@@ -85,7 +85,7 @@
 				return firebase.auth().signInWithPopup(provider).then(function(result) {
 					var user = result.user;
 					return createFBUser(user.uid, user).then(function(rs){
-						return {result : rs, uid: user.uid};
+						return rs;
 					});
 				}).catch(function(error) {
 					var errorMessage = error.message;
@@ -105,7 +105,7 @@
 				return auth.$updatePassword(newPass);
 			}
 
-			function resetPasswordAuth(email) {				
+			function resetPasswordAuth(email) {
 				return auth.$sendPasswordResetEmail(email);
 			}
 
@@ -136,13 +136,13 @@
 						var fbUser = {
 							address: '',
 							city: '',
-							email: user.email,
-							displayName: user.displayName || '',
+							email: user.email || '',
+							displayName: user.displayName || user.phoneNumber || '',
 							firstName: '',
 							isAuthorized: true,
 							isDeleted: false,
 							lastName: '',
-							primaryPhone: '',
+							primaryPhone: user.phoneNumber || '',
 							photoURL: user.photoURL || '',
 							state: '',
 							zipCode: '',
@@ -153,16 +153,18 @@
 							var regx = new RegExp(' ');
 							var arr = fbUser.displayName.split(regx);
 							console.log(arr);
-							if(arr && arr.length > 0){
+							if(arr && arr.length === 2){
 								fbUser.firstName = arr[0] || '';
 								fbUser.lastName = arr[1] || '';
+							}else if(arr.length === 1){
+								fbUser.firstName = arr[0] || '';
 							}
 						}
 						console.log('getUserInfo');
 						console.log(fbUser);
 						return create(fbUser, authId);
 					}else{
-						return true;
+						return {result: true , data: authId};
 					}
 				});
 

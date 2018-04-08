@@ -4,13 +4,16 @@
 	angular
 		.module('app.auth')
 		.controller("LoginCtrl", LoginCtrl)
-		.controller("ForgotPasswordCtrl", ForgotPasswordCtrl);
+        .controller("ForgotPasswordCtrl", ForgotPasswordCtrl)
+		.controller("loginPhoneCtrl", loginPhoneCtrl);
+        
 
 	/** @ngInject */
 	function LoginCtrl($rootScope, $scope, $state,$firebaseObject,$uibModal,$timeout,firebaseDataRef,$firebaseArray, authService, currentAuth, toaster ,appUtils, APP_CONFIG, md5, $http, appSettingService){
 		$rootScope.settings.layout.showSmartphone = false;
 		
-		var loginVm = this;
+        var loginVm = this;
+        var ui = new firebaseui.auth.AuthUI(firebase.auth());
 		if(!loginVm.currentAuth){
 			$state.go('login');
 		}
@@ -78,26 +81,24 @@
         };
 
         loginVm.phoneLogin = function(){
-            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-                'size': 'normal',
-                'callback': function(response) {
-                var phoneNumber = getPhoneNumberFromUserInput();
-                var appVerifier = window.recaptchaVerifier;
-                firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
-                .then(function (confirmationResult) {
-                // SMS sent. Prompt user to type the code from the message, then sign the
-                // user in with confirmationResult.confirm(code).
-                window.confirmationResult = confirmationResult;
-                }).catch(function (error) {
-                // Error; SMS not sent
-                // ...
-                });
-                },
-                'expired-callback': function() {
-                    // Response expired. Ask user to solve reCAPTCHA again.
-                    // ...
-                }
+            var modalInstance = $uibModal.open({
+				templateUrl: 'app/auth/phone-login.tpl.html',
+				controller: 'loginPhoneCtrl',
+                size: 'md',
+                windowClass : 'model-z-index',
+				resolve:{
+					"currentAuth": ["authService", function(authService) {
+				        return authService.waitForSignIn();
+                     }],
+                    fbUI: function(){
+                        return ui;
+                    }
+				}
             });
+            modalInstance.result.then(function (result) {
+                CheckNSetStorageData(result);
+           }, function (res) {
+           });
         };
 
         function firebaseAuth ( loginVm ) {
@@ -254,7 +255,60 @@
                 }
             });
         }
-	}
+    }
+    
+    /** @ngInject */
+	function loginPhoneCtrl($rootScope, $scope, $state, $uibModalInstance, authService, toaster ,fbUI) {
+        // Disable auto-sign in.
+        $scope.close = function () {
+		    $uibModalInstance.dismiss('cancel');
+		};
+        fbUI.disableAutoSignIn();
+        fbUI.reset();
+        fbUI.start('#firebaseui-container', getUiConfig());
+        var CLIENT_ID = '160055175076-frvf58o8j6bqv948kq1ksade4boodgj8.apps.googleusercontent.com';
+        function getUiConfig() {
+            return {
+              'callbacks': {
+                // Called when the user has been successfully signed in.
+                'signInSuccess': function(user, credential, redirectUrl) {
+                    if(user && user.uid){
+                        authService.createFBUser(user.uid, user).then(function(data){
+                            if(data.result){
+                                $uibModalInstance.close(user.uid);
+                            }else{
+                                appUtils.hideLoading();
+                                $scope.parent.showError = true;
+                                $scope.parent.errMessage = 'Đăng nhập xảy ra lỗi vui lòng thử lại sau.';
+                                authService.logout();
+                            }
+                        });
+                    }
+                  // Do not redirect.
+                  return false;
+                }
+              },
+              // Opens IDP Providers sign-in flow in a popup.
+              'signInFlow': 'popup',
+              'signInOptions': [
+                {
+                  provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+                  recaptchaParameters: {
+                    size: 'normal'
+                  },
+                  defaultCountry: 'VN'
+                }
+              ],
+              // Terms of service url.
+              'tosUrl': 'https://www.google.com',
+              'credentialHelper': CLIENT_ID && CLIENT_ID != '160055175076-frvf58o8j6bqv948kq1ksade4boodgj8.apps.googleusercontent.com' ?
+                  firebaseui.auth.CredentialHelper.GOOGLE_YOLO :
+                  firebaseui.auth.CredentialHelper.ACCOUNT_CHOOSER_COM
+            };
+        }
+       
+    }
+
     /** @ngInject */
 	function ForgotPasswordCtrl($rootScope, $scope, $state, $uibModalInstance,authService,toaster) {
 		$scope.email = '';
@@ -275,11 +329,11 @@
 				$uibModalInstance.dismiss('cancel');
 				toaster.success("Yêu cầu lấy lại mật khẩu thành công!");
 			}, function(error) {
-                $scope.showError = true;
+			    $scope.showError = true;
                //handle error message to vietnamese language
                 $scope.errMessage = handleError(error);
 			});
-        };
+		};
         
         function handleError(error){  
             console.log(error.message);          

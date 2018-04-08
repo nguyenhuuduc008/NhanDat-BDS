@@ -17,7 +17,7 @@
         var direction = $stateParams.bdsType ? $stateParams.direction : 'All';
         
 
-        var timKiemCtrVm = this;
+        var timKiemCtrVm = this; // jshint ignore:line
         timKiemCtrVm.bdsTypes = [];
         timKiemCtrVm.city = [];
         timKiemCtrVm.type = [];
@@ -40,7 +40,7 @@
             areaTo: 0,
             from: 0,
             size: 15,
-        }
+        };
 
         //paging
         timKiemCtrVm.paging = {

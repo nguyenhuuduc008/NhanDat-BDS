@@ -9,14 +9,26 @@
      var elasticHost = elasticConfig && elasticConfig.host ? elasticConfig.host : APP_CONFIG.elasticHost;
      var elasticusAuth =   elasticConfig && elasticConfig.auth ? elasticConfig.auth : APP_CONFIG.elasticusAuth;
      console.log(elasticConfig);
-     var tv = esFactory({host: elasticHost, httpAuth: elasticusAuth, log: 'trace', port: 9200, protocol: 'http',headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': 'true',
-      'Access-Control-Allow-Headers':'Origin, Content-Type, X-Auth-Token',
-      'Access-Control-Allow-Methods':'GET, POST, PATCH, PUT, DELETE, OPTIONS',
-      'cache-control': 'no-cache',
-      'content-type': 'application/json',
-    }});
+    //  var tv = esFactory({host: elasticHost, httpAuth: elasticusAuth, log: 'trace', port: 9200, protocol: 'http',headers: {
+    //   'Access-Control-Allow-Origin': '*',
+    //   'Access-Control-Allow-Credentials': 'true',
+    //   'Access-Control-Allow-Headers':'Origin, Content-Type, X-Auth-Token',
+    //   'Access-Control-Allow-Methods':'GET, POST, PATCH, PUT, DELETE, OPTIONS',
+    //   'cache-control': 'no-cache',
+    //   'content-type': 'application/json',
+    // }});
+
+    var tv = new elasticsearch.Client({
+      host: [
+        {
+          host: elasticHost,
+          auth: elasticusAuth,
+          protocol: 'https',
+          port: 9200,
+          log: 'trace'
+        }
+      ]
+    });
 
     tv.ping({
       // ping usually has a 3000ms timeout

@@ -130,8 +130,6 @@
 
 			function createFBUser(authId, user) {
 				return getUserInfo(authId).then(function(rs){
-					console.log('getUserInfo');
-					console.log(rs);
 					if(rs === null){
 						var fbUser = {
 							address: '',
@@ -160,8 +158,6 @@
 								fbUser.firstName = arr[0] || '';
 							}
 						}
-						console.log('getUserInfo');
-						console.log(fbUser);
 						return create(fbUser, authId);
 					}else{
 						return {result: true , data: authId};

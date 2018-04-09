@@ -68,9 +68,9 @@
             provider.setCustomParameters({
                 'display': 'popup'
             });
-            return authService.signUpWithPopup(provider).then(function(data){
-                if(data.result){
-                    CheckNSetStorageData(data.uid);
+            return authService.signUpWithPopup(provider).then(function(res){
+                if(res.result){
+                    CheckNSetStorageData(res.data);
                 }else{
                     appUtils.hideLoading();
                     $scope.showError = true;

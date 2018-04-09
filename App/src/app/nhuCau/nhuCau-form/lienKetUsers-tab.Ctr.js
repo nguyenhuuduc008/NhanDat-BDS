@@ -93,7 +93,7 @@
                         callback: function () {
                             console.log('DDDDDLIST MODEL KEY', nhuCauLienKetUsersVm.userLinkedList);
                             console.log('PHONE ID USER', linkedKey);
-                            removeLinked('lienKetUser', nhuCauLienKetUsersVm.model.nhuCauKey, true, linkedKey);
+                            removeLinked('lienKetUser', nhuCauLienKetUsersVm.model.nhuCauKey, linkedKey);
                             toaster.success("Dừng Liên Kết Thành Công");
                         }
                     }
@@ -101,8 +101,8 @@
             });
         };
 
-        function removeLinked(nhuCauTab, nhuCauKey, isLinked, linkedKey) {
-            nhuCauService.removeTabNhuCau(nhuCauTab, nhuCauKey, isLinked, linkedKey).then(function(res) {
+        function removeLinked(nhuCauTab, nhuCauKey, linkedKey) {
+            nhuCauService.removeTabNhuCau(nhuCauTab, nhuCauKey, linkedKey).then(function(res) {
                 if (res.result) {
                     appUtils.hideLoading();
                     $scope.$apply(function () {
@@ -124,7 +124,7 @@
             });
             if (!!duplicate) {
                 $ngBootbox.customDialog({
-                    message: 'Loại người dùng đã có liên kết, tiếp tục sẽ thay thế liên kết cũ?',
+                    message: 'Loại Người Dùng Đã Có Liên Kết, Tiếp Tục Sẽ Thay Thế Liên Kết Cũ?',
                     buttons: {
                         danger: {
                             label: "Huỷ",
@@ -141,7 +141,7 @@
                             className: "btn-success",
                             callback: function () {
                                 editLinked('lienKetUser', nhuCauLienKetUsersVm.model, nhuCauLienKetUsersVm.model.nhuCauKey, true);
-                                removeLinked('lienKetUser', nhuCauLienKetUsersVm.model.nhuCauKey, true, duplicate.linkedKey);
+                                removeLinked('lienKetUser', nhuCauLienKetUsersVm.model.nhuCauKey, duplicate.linkedKey);
                                 toaster.success("Liên Kết Người Dùng Thành Công");
                                 appUtils.showLoading();
                             }
@@ -194,7 +194,6 @@
 
         //function 
         function addToLinkedList(linkedModel) {
-            console.log('MODEL ADD', linkedModel);
             nhuCauLienKetUsersVm.userLinkedList.push({
                 phone: linkedModel.phone,
                 userName: linkedModel.userName,

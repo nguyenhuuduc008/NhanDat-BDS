@@ -112,7 +112,7 @@
             return DataUtils.getDataFirebaseLoadOnce(refPath);
         }
 
-        function removeTabNhuCau(nhuCauTab, nhuCauKey, isLinked, linkedKey){
+        function removeTabNhuCau(nhuCauTab, nhuCauKey, linkedKey){
             var refPath = "nhuCau/tabs/" + nhuCauTab + "/" + nhuCauKey;
             var ref = nhuCauRef.child("tabs/" + nhuCauTab + "/" + nhuCauKey);
 

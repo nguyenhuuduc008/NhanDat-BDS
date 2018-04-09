@@ -84,10 +84,7 @@
                         result.push(item);
                     }
                 });
-                console.log('NOTRIGHTHERA', result);
                 vm.filteredItems = appUtils.sortArray(result, 'timestampCreated');
-                console.log('vm.filteredItems');
-                console.log(vm.filteredItems);
                 vm.paging.totalRecord = result.length;
                 vm.paging.currentPage = 0;
                 //group by pages

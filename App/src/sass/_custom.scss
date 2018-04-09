@@ -345,3 +345,8 @@ body{
         padding: 6px 9px;
     }
 }
+
+.absolute-btn {
+    z-index: 999;
+    position: absolute; 
+}

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
-    angular.module('app.search').factory('searchService', ['$q', '$filter','authService', 'firebaseDataRef', '$firebaseObject', '$firebaseArray','elasticSearch',
-    function ($q,$filter, authService, firebaseDataRef, $firebaseObject, $firebaseArray,elasticSearch) {
+    angular.module('app.search').factory('searchService', ['$q', '$filter','authService', 'firebaseDataRef', '$firebaseObject', '$firebaseArray','elasticSearchService',
+    function ($q,$filter, authService, firebaseDataRef, $firebaseObject, $firebaseArray,elasticSearchService) {
             var service = {
                 search: search,
                 convertDataSnapshot : convertDataSnapshot,
@@ -19,7 +19,7 @@
                     totalRecords: 0,
                     pages: 0
                 };
-                var req = elasticSearch.search(query);
+                var req = elasticSearchService.search(query);
                 req = req.then(function (response) {
                     if(!response.hits || !response.hits.hits || !response.hits.total){
                         return result;

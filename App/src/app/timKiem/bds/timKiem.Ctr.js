@@ -94,7 +94,7 @@
 
         }
 
-        timKiemService.search({size: 1, from: 0, city: 'ho-chi-minh'}).then(function (result) {
+        timKiemService.search({size: 1, from: 0, city: '-L75kBHGLdgJbU1PUQ4b'}).then(function (result) {
             console.log(result);
         }); 
 

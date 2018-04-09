@@ -20,10 +20,7 @@ admin.initializeApp(functions.config().firebase);
 exports.elasticIndexBDS = functions.database.ref("/bds/{type}/{bdsId}").onWrite((entry) => {
         let BDS = entry.data.val();
 		let bdsId   = entry.params.bdsId;
-		BDS.$id = bdsId;
-		console.log('Indexing BDS ', bdsId, BDS);
-
-		let elasticsearchFields = ['$id','huongNha','dienTich','quanHuyen','thanhPho','tongGia','loaiBDS','uid','timestampCreated','dai','ngang'];
+		let elasticsearchFields = ['huongNha','dienTich','quanHuyen','thanhPho','tongGia','loaiBDS','uid','timestampCreated','dai','ngang'];
 		let elasticSearchConfig = functions.config().elasticsearch;
 		let elasticSearchUrl = elasticSearchConfig.url + 'live-bds/bds/' + bdsId;
 		let elasticSearchMethod = BDS ? 'POST' : 'DELETE';
@@ -41,6 +38,7 @@ exports.elasticIndexBDS = functions.database.ref("/bds/{type}/{bdsId}").onWrite(
 		};
 
 		return request(elasticsearchRequest).then(response => {
-			console.log('Elasticsearch response', response);
+			console.log('response');
+			console.log(response);
 		})
 });

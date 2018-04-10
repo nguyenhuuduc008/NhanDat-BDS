@@ -1,5 +1,14 @@
-Step deploy functions.
+====Elastic Information====
+Elastic host: https://144accd3e3c2c5fe37e5e7e7b1e13671.us-east-1.aws.found.io:9243
+Kibana host:  https://96c189da348f5d77f5ad6887433c3a67.us-east-1.aws.found.io:9243
 
-step 1: run
-firebase functions:config:set elasticsearch.username="elastic" elasticsearch.password="VkXI28WUgq3BmfQJfU2c4MCb" elasticsearch.url="https://ffcf49468da802874d314e796c694d25.us-east-1.aws.found.io:9243/"
-step 2: run firbase deploy --only functions
+
+
+====Deploy Functions===
+Step 1: Set config elastic on functions service
+run: 
+firebase functions:config:set elasticsearch.username="elastic" elasticsearch.password="n170oh6NsG4GSj9zh2564Zxf" elasticsearch.url="https://144accd3e3c2c5fe37e5e7e7b1e13671.us-east-1.aws.found.io:9243/"
+
+Step 2: Deploy 
+run:
+firbase deploy --only functions

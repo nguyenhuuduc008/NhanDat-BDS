@@ -2,15 +2,16 @@
     'use strict';
     angular.module('app.quytrinhphaply').factory('quyTrinhPhapLyService', quyTrinhPhapLyService);
     /** @ngInject **/
-    function quyTrinhPhapLyService($q, $filter, $firebaseObject, $firebaseArray, firebaseDataRef, appUtils, DataUtils){
-        var quyTrinhPhapLyRef = firebaseDataRef.child('quy-trinh-phap-ly');
+    function quyTrinhPhapLyService($q, $rootScope, $filter, $firebaseObject, $firebaseArray, firebaseDataRef, appUtils, DataUtils, searchService){
+        var rootPath = 'quy-trinh-phap-ly', quyTrinhPhapLyRef = firebaseDataRef.child(rootPath);
         var service={
             getQuyTrinhPhapLy: getQuyTrinhPhapLy,
             getOnceQuyTrinhPhapLy:getOnceQuyTrinhPhapLy,
             addQuyTrinhPhapLy: addQuyTrinhPhapLy,
             updateQuyTrinhPhapLy: updateQuyTrinhPhapLy,
             removeQuyTrinhPhapLy: removeQuyTrinhPhapLy,
-            search: search            
+            search: search,
+            search2: search2          
         };
         //Ref
         
@@ -88,6 +89,67 @@
             return true;
             }
             return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
+        }
+
+        function search2(cri){
+            // create query
+			var searchSetting = $rootScope.storage.appSettings.elasticSearch[rootPath];
+			var query = {
+				index: searchSetting.index,
+				type: searchSetting.type,
+				size: parseInt(cri.size),
+				from: parseInt(cri.from)
+            };
+            
+			query.body = {
+				query: {
+					bool: {
+						must: [],
+						should: [],
+						must_not: {
+							match: {
+								isDeleted: true
+							}
+						},
+
+					}
+				}
+            };
+            
+			var queryBody = query.body.query.bool;
+            if(cri.keyword){
+				queryBody.must.push({
+                    bool: {
+                    should: [{
+                        multi_match: {
+                            query: cri.keyword,
+                            type: "phrase_prefix",
+                            fields: ["tenQuyTrinh", "noiDung"]
+                        }
+                    }]}
+                });
+            }
+
+			if(typeof(cri.thanhPho) !== 'undefined' && (cri.thanhPho !== 'all')){
+				queryBody.must.push({
+					match:{
+						thanhPho: cri.thanhPho
+					}
+				});
+            }
+            
+            if(typeof(cri.quanHuyen) !== 'undefined' && (cri.quanHuyen !== 'all')){
+				queryBody.must.push({
+					match:{
+						quanHuyen: cri.quanHuyen
+					}
+				});
+            }
+           
+			query.sort = 'timestampCreated:desc';
+            console.log('query');
+            console.log(query);
+			return searchService.search(query, rootPath, true);
         }
                
     }

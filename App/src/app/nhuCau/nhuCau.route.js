@@ -18,7 +18,15 @@
                 resolve:{
 					"currentAuth": ["authService", function(authService) {
 				        return authService.requireSignIn();
-				     }]
+                     }],
+                     deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            cache: true,
+                            files: [
+                                './app/bds/bds.service.js'
+                            ]
+                        });
+                    }]
 				}
             }
         ).state('chonNhuCauThemMoi',{
@@ -42,7 +50,7 @@
             }
         }).state('nhuCauEdit',{
             parent: 'root',
-            url: '/nhuCau/nhuCauEdit',
+            url: '/nhuCau/nhuCauEdit?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
             // controller: 'nhuCauThemMoiCtr',
             // controllerAs: 'nhuCauThemMoiVm',
@@ -84,7 +92,8 @@
                     return $ocLazyLoad.load({
                         cache: true,
                         files: [
-                            './app/bds/bds.service.js'
+                            './app/bds/bds.service.js',
+                            './app/user/user.service.js'
                         ]
                     });
                 }]

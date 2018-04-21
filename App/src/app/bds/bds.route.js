@@ -79,7 +79,7 @@
 		};
 
 		states['bds.thongTin'] = {
-			url: '/detail/thongTin?bdsId',
+			url: '/detail/thongTin?khoId?bdsId',
 			templateUrl: './app/bds/add_edit/edit-bds.tpl.html',
 			controller: 'editBdsCtrl as vm',
 			data: {
@@ -94,7 +94,8 @@
 						cache: true,
 						name: 'app.bds.detail',
 						files: [
-							'./app/bds/add_edit/edit-bds.js'		
+							'./app/bds/add_edit/edit-bds.js',
+							'./app/nhuCau/nhuCau.service.js'		
 						]
 					});
 				}]
@@ -102,7 +103,7 @@
 		};
 
 		states['bds.tacNghiep'] = {
-			url: '/detail/tac-nghiep?bdsId&id&user',
+			url: '/detail/tac-nghiep?khoId?bdsId',
 			templateUrl: './app/bds/add_edit/edit-tac-nghiep.tpl.html',
 			controller: 'editTacNghiepCtrl as vm',
 			data: {
@@ -118,17 +119,16 @@
 						name: 'app.bds.tacNghiep',
 						files: [
 							'./app/bds/add_edit/edit-tac-nghiep.js',
-							'./app/bds/tacNghiep.service.js'
 						]
 					});
 				}]
 			}
 		};
 		
-		states['bds.viTri'] = {
-			url: '/detail/vitri?bdsId',
-			templateUrl: './app/bds/add_edit/edit-vi-tri.tpl.html',
-			controller: 'editViTriCtrl as vm',
+		states['bds.lienKetNhuCau'] = {
+			url: '/detail/lienKetNhuCau?khoId?bdsId',
+			templateUrl: './app/bds/add_edit/edit-lien-ket-nhu-cau.tpl.html',
+			controller: 'editLienKetNhuCauCtrl as vm',
 			data: {
 				pageTitle: 'Chi Tiết BĐS',
 				module: 'bds',
@@ -141,8 +141,8 @@
 						cache: true,
 						name: 'app.bds.viTri',
 						files: [
-							'./app/bds/add_edit/edit-vi-tri.js',
-							'./app/bds/viTri.service.js'
+							'./app/bds/add_edit/edit-lien-ket-nhu-cau.js',
+							'./app/nhuCau/nhuCau.service.js'
 						]
 					});
 				}]
@@ -150,7 +150,7 @@
 		};
 		
 		states['bds.lienKetUsers'] = {
-			url: '/detail/lienketusers?bdsId',
+			url: '/detail/lienketusers?khoId?bdsId',
 			templateUrl: './app/bds/add_edit/edit-lien-ket-users.tpl.html',
 			controller: 'editLienKetUsersCtrl as vm',
 			data: {
@@ -167,7 +167,7 @@
 						files: [
 							'./app/bds/add_edit/edit-lien-ket-users.js',
 							'./app/bds/add_edit/_popup-lien-ket-users.js',
-							'./app/bds/lientKetUsers.service.js',
+							'./app/nhuCau/nhuCau.service.js',
 							'./app/user/user.service.js',
 						]
 					});
@@ -175,31 +175,8 @@
 			}
 		};
 
-		states['bds.giamGia'] = {
-			url: '/detail/giam-gia?bdsId',
-			templateUrl: './app/bds/add_edit/edit-giam-gia.tpl.html',
-			controller: 'editGiamGiaCtrl as vm',
-			data: {
-				pageTitle: 'Chi Tiết BĐS',
-				module: 'bds',
-				parent: 'bds',
-				hide: true
-			},
-			resolve: {
-				deps: ['$ocLazyLoad', function($ocLazyLoad){
-					return $ocLazyLoad.load({
-						cache: true,
-						name: 'app.bds.giaGia',
-						files: [
-							'./app/bds/add_edit/edit-giam-gia.js',
-						]
-					});
-				}]
-			}
-		};
-		
 		states['bds.yeuToTangGiamGia'] = {
-			url: '/detail/yeu-to-tang-giam-gia?bdsId',
+			url: '/detail/yeu-to-tang-giam-gia?khoId?bdsId',
 			templateUrl: './app/bds/add_edit/edit-yeu-to-tang-giam-gia.tpl.html',
 			controller: 'editYeuToTangGiamGiaCtrl as vm',
 			data: {
@@ -267,103 +244,7 @@
 				}]
 			}
 		};
-
-		states['bds.lichSuGiaoDich'] = {
-			url: '/detail/lich-su-giao-dich?bdsId&id',
-			templateUrl: './app/bds/add_edit/edit-ls-giao-dich.tpl.html',
-			controller: 'editLSGiaoDichCtrl as vm',
-			data: {
-				pageTitle: 'Chi Tiết BĐS',
-				module: 'bds',
-				parent: 'bds',
-				hide: true
-			},
-			resolve: {
-				deps: ['$ocLazyLoad', function($ocLazyLoad){
-					return $ocLazyLoad.load({
-						cache: true,
-						name: 'app.bds.lichSuGiaoDich',
-						files: [
-							'./app/bds/add_edit/edit-ls-giao-dich.js',
-							'./app/bds/lichSuGiaoDich.service.js'
-						]
-					});
-				}]
-			}
-		};
 		
-		states['bds.capDo'] = {
-			url: '/detail/cap-do?bdsId',
-			templateUrl: './app/bds/add_edit/edit-ls-giao-dich.tpl.html',
-			controller: 'editCapDoCtrl as vm',
-			data: {
-				pageTitle: 'Chi Tiết BĐS',
-				module: 'bds',
-				parent: 'bds',
-				hide: true
-			},
-			resolve: {
-				deps: ['$ocLazyLoad', function($ocLazyLoad){
-					return $ocLazyLoad.load({
-						cache: true,
-						name: 'app.bds.capDo',
-						files: [
-							'./app/bds/add_edit/edit-cap-do.js',
-						]
-					});
-				}]
-			}
-		};
-
-		states['bds.lichSuGia'] = {
-			url: '/detail/lich-su-gia?bdsId&id',
-			templateUrl: './app/bds/add_edit/edit-ls-gia.tpl.html',
-			controller: 'editLSGiaCtrl as vm',
-			data: {
-				pageTitle: 'Chi Tiết BĐS',
-				module: 'bds',
-				parent: 'bds',
-				hide: true
-			},
-			resolve: {
-				deps: ['$ocLazyLoad', function($ocLazyLoad){
-					return $ocLazyLoad.load({
-						cache: true,
-						name: 'app.bds.lichSuGia',
-						files: [
-							'./app/bds/add_edit/edit-ls-gia.js',
-							'./app/bds/lichSuGia.service.js',
-							'./app/user/user.service.js'
-						]
-					});
-				}]
-			}
-		};
-
-		states['bds.media'] = {
-			url: '/detail/media?bdsId&id',
-			templateUrl: './app/bds/add_edit/edit-media.tpl.html',
-			controller: 'MediaCtrl as vm',
-			data: {
-				pageTitle: 'Chi Tiết BĐS',
-				module: 'bds',
-				parent: 'bds',
-				hide: true
-			},
-			resolve: {
-				deps: ['$ocLazyLoad', function($ocLazyLoad){
-					return $ocLazyLoad.load({
-						cache: true,
-						name: 'app.bds.media',
-						files: [
-							'./app/bds/add_edit/edit-media.js',
-							'./app/bds/media.service.js'
-						]
-					});
-				}]
-			}
-		};
-
 		for(var state in states){
 			$stateProvider.state(state, states[state]);
 		}

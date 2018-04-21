@@ -15,20 +15,19 @@
 			search: search,
 			searchAll: searchAll,
 			getLinkToCategory: getLinkToCategory,
-			updateGiamGia: updateGiamGia,
-			getGiamGia: getGiamGia,
-			getYeuToTangGiamGia: getYeuToTangGiamGia,
-			updateYeuToTangGiamGia: updateYeuToTangGiamGia,
-			updateThuocQuyHoach: updateThuocQuyHoach,
-			getThuocQuyHoach: getThuocQuyHoach,
-			updateCapDo: updateCapDo,
-			getCapDo: getCapDo,
+			updateLoaiNoiThat: updateLoaiNoiThat,
+			getLoaiNoiThat: getLoaiNoiThat,
 			checkAddressExist: checkAddressExist,
-			getBDS: getBDS
+			getBDS: getBDS,
+			updateTab: updateTab,
+			getTab: getTab,
+			removeTab: removeTab
 		};
 
 		var bdsPath = 'bds';
 		var bdsRef = firebaseDataRef.child('bds');
+		var bdsTabsPath = 'bds/tabs';
+		var bdsTabsRef = firebaseDataRef.child(bdsTabsPath);
 		var bdsCategoryRef = firebaseDataRef.child('bds-danh-muc');
 		var tacNghiepRef = firebaseDataRef.child('bds-tac-nghiep');
 		var giamGiaRef = firebaseDataRef.child('bds-giam-gia');
@@ -36,9 +35,10 @@
 		var thuocQuyHoachRef = firebaseDataRef.child('bds-thuoc-quy-hoach');
 		var capDoRef = firebaseDataRef.child('bds-cap-do');
 		var existedAddressRef = firebaseDataRef.child('bds-existed-address');
+		var loaiNoiThatRef = firebaseDataRef.child('bds-loai-noi-that');
 
 		//historyRef
-		var bdsHistoryRef=firebaseDataRef.child('history/bds');
+		var bdsHistoryRef = firebaseDataRef.child('history/bds');
 
 		return service;
 
@@ -73,50 +73,79 @@
 				var existedAddress = {
 					fullAddress: obj.soNha + ' ' + obj.tenDuong + ' ' + obj.thanhPho + ' ' + obj.quanHuyen + ' ' + obj.xaPhuong
 				};
-				existedAddressRef.child(key).set(existedAddress).then(function(res){});
-				return { result: true, key: key };
+				existedAddressRef.child(key).set(existedAddress).then(function (res) {});
+				return {
+					result: true,
+					key: key
+				};
 			}).catch(function (error) {
-				return { result: false, errorMsg: error };
+				return {
+					result: false,
+					errorMsg: error
+				};
 			});
 		}
-		
-        function checkAddressExist(fullAddress){
-			if($.trim(fullAddress) ===''){
-				return $q.when({data: []});
+
+		function checkAddressExist(fullAddress) {
+			if ($.trim(fullAddress) === '') {
+				return $q.when({
+					data: []
+				});
 			}
-            return $firebaseArray(existedAddressRef).$loaded().then(function(data){
+			return $firebaseArray(existedAddressRef).$loaded().then(function (data) {
 				existedAddressRef.onDisconnect();
-                var address = _.filter(data, function(item) { 
-                    return item.fullAddress.toString() === fullAddress.toString() && (item.isDeleted === false || item.isDeleted === '' || item.isDeleted === undefined);
-                });
-			    return {data: address};
-            });
+				var address = _.filter(data, function (item) {
+					return item.fullAddress.toString() === fullAddress.toString() && (item.isDeleted === false || item.isDeleted === '' || item.isDeleted === undefined);
+				});
+				return {
+					data: address
+				};
+			});
 		}
 
 		function deleteItem(bdsId) {
-			return getLinkToCategory(bdsId).$loaded().then(function(bdsDanhMucRs){
+			return getLinkToCategory(bdsId).$loaded().then(function (bdsDanhMucRs) {
 				var ts = appUtils.getTimestamp();
-				return bdsRef.child(bdsDanhMucRs.danhMucId).child(bdsId).update({ isDeleted: true, timestampModified: ts }).then(function (res) {
+				return bdsRef.child(bdsDanhMucRs.danhMucId).child(bdsId).update({
+					isDeleted: true,
+					timestampModified: ts
+				}).then(function (res) {
 					deleteLinkToCategory(bdsId);
 					// deleteBdsTacNghiep(bdsId);
-					existedAddressRef.child(bdsId).update({isDeleted: true, timestampModified: ts}).then(function(res){});
-					return { result: true };
+					existedAddressRef.child(bdsId).update({
+						isDeleted: true,
+						timestampModified: ts
+					}).then(function (res) {});
+					return {
+						result: true
+					};
 				}).catch(function (error) {
-					return { result: false, errorMsg: error };
+					return {
+						result: false,
+						errorMsg: error
+					};
 				});
 			});
 		}
-		
-		function update(update) {
+
+		function update(khoId, bdsId, model) {
+			var ref = bdsRef.child(khoId + '/' + bdsId);
+			var refPath = bdsPath + '/' + khoId;
 			var ts = appUtils.getTimestamp();
-			update.timestampModified = ts;
-			console.log('update');
-			console.log(update);
-			createHistoryEditThongTin(update);
-			return update.$save().then(function () {
-				return { result: true, errorMsg: "" };
+			model.timestampModified = ts;
+			//createHistoryEditThongTin(model);
+			console.log('MODEDEL UPDA TA@', model);
+			return ref.update(model).then(function () {
+				DataUtils.updateTimeStampModifiedNode(refPath);
+				return {
+					result: true,
+					key: bdsId
+				};
 			}).catch(function (error) {
-				return { result: false, errorMsg: error };
+				return {
+					result: false,
+					errorMsg: error
+				};
 			});
 		}
 
@@ -125,30 +154,95 @@
 			return $firebaseObject(ref);
 		}
 
-		function createBdsLinkToCategory(bdsId, obj){
+		function createBdsLinkToCategory(bdsId, obj) {
 			return bdsCategoryRef.child(bdsId).set(obj).then(function (res) {
-				return { result: true, key: key };
+				return {
+					result: true,
+					key: key
+				};
 			}).catch(function (error) {
-				return { result: false, errorMsg: error };
-			});
-		}
-		
-		function deleteLinkToCategory(bdsId) {
-			var ts = appUtils.getTimestamp();
-			return bdsCategoryRef.child(bdsId).update({ isDeleted: true, timestampModified: ts }).then(function (res) {
-				return { result: true };
-			}).catch(function (error) {
-				return { result: false, errorMsg: error };
+				return {
+					result: false,
+					errorMsg: error
+				};
 			});
 		}
 
-		function deleteBdsTacNghiep(bdsId) {
+		function deleteLinkToCategory(bdsId) {
 			var ts = appUtils.getTimestamp();
-			return tacNghiepRef.child(bdsId).update({ isDeleted: true, timestampModified: ts }).then(function (res) {
-				return { result: true };
+			return bdsCategoryRef.child(bdsId).update({
+				isDeleted: true,
+				timestampModified: ts
+			}).then(function (res) {
+				return {
+					result: true
+				};
 			}).catch(function (error) {
-				return { result: false, errorMsg: error };
+				return {
+					result: false,
+					errorMsg: error
+				};
 			});
+		}
+
+		// function updateTab(bdsId, model, tabPath) {
+		// 	var ts = appUtils.getTimestamp();
+		// 	model.timestampModified = ts;
+		// 	return bdsTabsRef.child(tabPath + '/' + bdsId).update(model).then(function(result) {
+		// 		return { result: true, key: bdsId };
+		// 	}).catch(function (error) {
+		// 		return { result: false, errorMsg: error };
+		// 	});
+		// }
+
+		function updateTab(bdsId, model, tabPath, isLinked) {
+			var refPath = bdsTabsPath + "/" + tabPath + "/" + bdsId;
+			var ref = bdsTabsRef.child(tabPath + "/" + bdsId),
+				key;
+			if (isLinked) {
+				key = ref.push().key;
+				ref = bdsTabsRef.child(tabPath + "/" + bdsId + "/" + key);
+				model.bdsKey = bdsId;
+			}
+			var ts = appUtils.getTimestamp();
+			model.timestampModified = ts;
+
+			return ref.update(model).then(function (res) {
+				DataUtils.updateTimeStampModifiedNode(refPath);
+				return {
+					result: true,
+					key: bdsId,
+					linkedKey: key
+				};
+			}).catch(function (err) {
+				return {
+					result: true,
+					errMsg: err
+				};
+			});
+		}
+
+		function removeTab(bdsId, tabPath, linkedKey) {
+			var refPath = bdsTabsPath + "/" + tabPath + "/" + bdsId;
+			var ref = bdsTabsRef.child(tabPath + "/" + bdsId);
+
+			return ref.child(linkedKey).remove().then(function (res) {
+				DataUtils.updateTimeStampModifiedNode(refPath);
+				return {
+					result: true,
+					key: linkedKey
+				};
+			}).catch(function (err) {
+				return {
+					result: true,
+					errMsg: err
+				};
+			});
+		}
+
+		function getTab(bdsId, tabPath) {
+			var refPath = bdsTabsPath + "/" + tabPath + "/" + bdsId;
+			return DataUtils.getDataFirebaseLoadOnce(refPath);
 		}
 
 		function search(danhMucId, keyword) {
@@ -176,7 +270,9 @@
 					});
 				});
 				// asynchronous function, which calls
-				deferred.resolve({ data: result }); //on sucess
+				deferred.resolve({
+					data: result
+				}); //on sucess
 			} catch (e) {
 				deferred.reject(e);
 			}
@@ -202,121 +298,91 @@
 			}
 			return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
 		}
-		
-		function updateGiamGia(bdsId, obj) {
-			var key = giamGiaRef.push().key;
+
+		function updateLoaiNoiThat(bdsId, obj) {
+			var key = loaiNoiThatRef.push().key;
 			var ts = appUtils.getTimestamp();
 			obj.timestampModified = ts;
 			obj.timestampCreated = ts;
-			return giamGiaRef.child(bdsId).update(obj).then(function (res) {
-				return { result: true, key: key };
+			return loaiNoiThatRef.child(bdsId).update(obj).then(function (res) {
+				return {
+					result: true,
+					key: key
+				};
 			}).catch(function (error) {
-				return { result: false, errorMsg: error };
+				return {
+					result: false,
+					errorMsg: error
+				};
 			});
 		}
 
-		function getGiamGia(bdsId) {
-			var ref = giamGiaRef.child(bdsId);
+		function getLoaiNoiThat(bdsId) {
+			//var ref = thuocQuyHoachRef.child(bdsId);
+			var ref = loaiNoiThatRef.child(bdsId);
 			return $firebaseObject(ref);
-		}
-		
-		function updateYeuToTangGiamGia(bdsId, obj) {
-			var key = yeuToTangGiamGiaRef.push().key;
-			var ts = appUtils.getTimestamp();
-			obj.timestampModified = ts;
-			obj.timestampCreated = ts;
-			return yeuToTangGiamGiaRef.child(bdsId).update(obj).then(function (res) {
-				return { result: true, key: key };
-			}).catch(function (error) {
-				return { result: false, errorMsg: error };
-			});
 		}
 
-		function getYeuToTangGiamGia(bdsId) {
-			var ref = yeuToTangGiamGiaRef.child(bdsId);
-			return $firebaseObject(ref);
-		}
-		
-		function updateThuocQuyHoach(bdsId, obj) {
-			var key = thuocQuyHoachRef.push().key;
-			var ts = appUtils.getTimestamp();
-			obj.timestampModified = ts;
-			obj.timestampCreated = ts;
-			return thuocQuyHoachRef.child(bdsId).update(obj).then(function (res) {
-				return { result: true, key: key };
-			}).catch(function (error) {
-				return { result: false, errorMsg: error };
-			});
-		}
-
-		function getThuocQuyHoach(bdsId) {
-			var ref = thuocQuyHoachRef.child(bdsId);
-			return $firebaseObject(ref);
-		}
-		
-		function updateCapDo(bdsId, obj) {
-			var key = capDoRef.push().key;
-			var ts = appUtils.getTimestamp();
-			obj.timestampModified = ts;
-			obj.timestampCreated = ts;
-			return capDoRef.child(bdsId).update(obj).then(function (res) {
-				return { result: true, key: key };
-			}).catch(function (error) {
-				return { result: false, errorMsg: error };
-			});
-		}
-
-		function getCapDo(bdsId) {
-			var ref = capDoRef.child(bdsId);
-			return $firebaseObject(ref);
-		}
 		//history
-		function getData(model){
-			var newModel={};
+		function getData(model) {
+			var newModel = {};
 			var x;
-			for(x in model){
-				if(x.charAt(0)=='$'){
+			for (x in model) {
+				if (x.charAt(0) == '$') {
 					continue;
 				}
-				if(x=='forEach'){
+				if (x == 'forEach') {
 					continue;
 				}
-				newModel[x]=model[x];
+				newModel[x] = model[x];
 			}
 			return newModel;
 		}
-		function createHistoryAdd(model){
-			var content=JSON.stringify(model);
-			content=content.replace(/,/g, ", ");
-			model.content=content;
-			model.type='Tạo Mới';
-			model.timestampCreated=Date.now();
-			model.userEmail=model.email;
-			var key=bdsHistoryRef.push().key;
+
+		function createHistoryAdd(model) {
+			var content = JSON.stringify(model);
+			content = content.replace(/,/g, ", ");
+			model.content = content;
+			model.type = 'Tạo Mới';
+			model.timestampCreated = Date.now();
+			model.userEmail = model.email;
+			var key = bdsHistoryRef.push().key;
 			return bdsHistoryRef.child(key).set(model).then(function (res) {
-				return { result: true, key: key };
+				return {
+					result: true,
+					key: key
+				};
 			}).catch(function (error) {
-				return { result: false, errorMsg: error };
+				return {
+					result: false,
+					errorMsg: error
+				};
 			});
 		}
-		
-		function createHistoryEditThongTin(model){
+
+		function createHistoryEditThongTin(model) {
 			console.log('model');
 			console.log(model);
-			var dataModel=getData(model);
-			var content=JSON.stringify(dataModel);
-			content=content.replace(/,/g, ", ");
-			dataModel.content=content;
-			dataModel.type='Sửa Đổi Thông Tin';
-			dataModel.timestampCreated=Date.now();
-			dataModel.userEmail=model.email;
+			var dataModel = getData(model);
+			var content = JSON.stringify(dataModel);
+			content = content.replace(/,/g, ", ");
+			dataModel.content = content;
+			dataModel.type = 'Sửa Đổi Thông Tin';
+			dataModel.timestampCreated = Date.now();
+			dataModel.userEmail = model.email;
 			console.log('data model');
 			console.log(dataModel);
-			var key=bdsHistoryRef.push().key;
+			var key = bdsHistoryRef.push().key;
 			return bdsHistoryRef.child(key).set(dataModel).then(function (res) {
-				return { result: true, key: key };
+				return {
+					result: true,
+					key: key
+				};
 			}).catch(function (error) {
-				return { result: false, errorMsg: error };
+				return {
+					result: false,
+					errorMsg: error
+				};
 			});
 		}
 

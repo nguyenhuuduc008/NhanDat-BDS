@@ -1,25 +1,8 @@
 <div class="row">       
     <div class="col-md-12">
         <!-- BEGIN BORDERED TABLE PORTLET-->
-        <div class="portlet light portlet-fit bordered">
+        <div class="portlet light portlet-fit bordered">        
             <div class="portlet-title">
-                <div class="caption width70 row">                        
-                    <div class="col-md-3 no-padding-right">                
-                        <select name="thanhPho" ng-model="quyTrinhPhapLyListVm.cri.thanhPho" class="form-control" ng-change="quyTrinhPhapLyListVm.changeCity()">
-                            <option value="all">Tất cả Tỉnh/Thành phố</option>
-                            <option ng-repeat="item in quyTrinhPhapLyListVm.cities" value="{{item.$id}}" ng-selected="item.$id == quyTrinhPhapLyListVm.cri.thanhPho">{{item.text}}</option>
-                        </select>                                        
-                    </div>
-                    <div class="col-md-3 no-padding-right">
-                        <select name="quanHuyen" ng-model="quyTrinhPhapLyListVm.cri.quanHuyen" class="form-control">
-                            <option value="all">Tất cả Quận/Huyện</option>
-                            <option ng-repeat="item in quyTrinhPhapLyListVm.districts" value="{{item.$id}}" ng-selected="item.$id == quyTrinhPhapLyListVm.cri.quanHuyen">{{item.text}}</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3 no-padding-right">
-                        <buton class="btn green" ng-click="quyTrinhPhapLyListVm.search(true)">Lọc</button>
-                    </div>                        
-                </div>
                 <div class="inputs">
                     <div class="portlet-input input-inline">
                         <div class="input-icon right">
@@ -30,30 +13,51 @@
                 </div>
             </div>
             <div class="portlet-title">
-                <div class="caption width70 row">
-                    <div class="col-md-3 no-padding-right">                        
-                        <select class="bs-select form-control" id="action-list" ng-model="quyTrinhPhapLyListVm.selectAction">
-                            <option>Chọn</option>
-                            <option>Xóa</option>
-                        </select>
-                    </div>                        
-                    <div class="col-md-1 no-padding-left">
-                        <button type="button" class="btn green" ng-click="quyTrinhPhapLyListVm.apply('select-checkBox')">Áp dụng</button>
-                    </div>                        
-                    <div class="col-md-3 text-center">
-                        <a href="#/quyTrinhPhapLy/quyTrinhPhapLy-add"  class="btn blue">Thêm Mới</a>                                                      
-                    </div>
+                <div class="col-sm-12 col-lg-3 no-padding-right margin-bottom-10">
+                    <select name="thanhPho" ng-model="quyTrinhPhapLyListVm.cri.thanhPho" class="form-control" ng-change="quyTrinhPhapLyListVm.changeCity()">
+                        <option value="all">Tất cả Tỉnh/Thành phố</option>
+                        <option ng-repeat="item in quyTrinhPhapLyListVm.cities" value="{{item.$id}}" ng-selected="item.$id == quyTrinhPhapLyListVm.cri.thanhPho">{{item.text}}</option>
+                    </select>
                 </div>
-                <div class="actions">
-                    <list-paging ng-model="quyTrinhPhapLyListVm.paging"  change-page="changePage"></list-paging>
+                <div class="col-sm-12 col-lg-3 no-padding-right margin-bottom-10">
+                    <select name="quanHuyen" ng-model="quyTrinhPhapLyListVm.cri.quanHuyen" class="form-control">
+                        <option value="all">Tất cả Quận/Huyện</option>
+                        <option ng-repeat="item in quyTrinhPhapLyListVm.districts" value="{{item.$id}}" ng-selected="item.$id == quyTrinhPhapLyListVm.cri.quanHuyen">{{item.text}}</option>
+                    </select>
+                </div>
+                <div class="col-lg-2 no-padding-right">
+                    <buton class="btn green" ng-click="quyTrinhPhapLyListVm.search(true)">Lọc</button>
                 </div>
             </div>
-            <div class="portlet-body">
+            <div class="portlet-title">
+                <div class="col-sm-12 col-lg-7">
+                    <div class="row">
+                        <div class="col-lg-3 no-padding-right margin-bottom-10">                        
+                            <select class="bs-select form-control" id="action-list" ng-model="quyTrinhPhapLyListVm.selectAction">
+                                <option>Chọn</option>
+                                <option>Xóa</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 no-padding-right margin-bottom-20">
+                            <button type="button" class="btn green" ng-click="quyTrinhPhapLyListVm.apply('select-checkBox')">Áp dụng</button>
+                        </div>                        
+                        <div class="col-lg-2 no-padding-right margin-bottom-5">
+                            <a href="#/quyTrinhPhapLy/quyTrinhPhapLy-add"  class="btn blue">Thêm Mới</a>                                                      
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-xs-12 no-padding-right">
+                    <div class="actions pull-right">
+                        <list-paging ng-model="quyTrinhPhapLyListVm.paging"  change-page="changePage"></list-paging>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body no-padding-left-right">
                 <div class="table-scrollable table-scrollable-borderless">
                     <table class="table table-hover table-light">
                         <thead>
                             <tr class="uppercase">
-                                <th class="width5">
+                                <th class="width2">
                                     <label class="mt-checkbox mt-checkbox-outline">                                        
                                         <input type="checkbox" id="select-all-checkBox" ng-click="quyTrinhPhapLyListVm.selectAll('select-all-checkBox','select-checkBox')"/>
                                         <span></span>
@@ -66,7 +70,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in quyTrinhPhapLyListVm.models">
-                                <td class="width5">
+                                <td class="width2">
                                     <label class="mt-checkbox mt-checkbox-outline">
                                         <input type="checkbox" name="select-checkBox" value="{{item.$id}}"/>
                                         <span></span>

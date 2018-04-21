@@ -97,9 +97,9 @@
         }
 
 
-        nhuCauThemMoiVm.loadTab = function(tab) {
+        nhuCauThemMoiVm.loadTab = function(tab, loaiId) {
             nhuCauThemMoiVm.item.activeTab = tab;
-            $state.go(tab + 'NhuCau', {item: nhuCauThemMoiVm.item, khoId: nhuCauThemMoiVm.item.khoBDSKey || '', loaiId: nhuCauThemMoiVm.item.loaiNhuCauKey || '', nhuCauId: nhuCauThemMoiVm.item.$id || ''});
+            $state.go(tab + 'NhuCau', {khoId: $stateParams.khoId || '', loaiId: loaiId || $stateParams.loaiId, nhuCauId: $stateParams.nhuCauId || '', item: nhuCauThemMoiVm.item});
         };
 
         nhuCauThemMoiVm.changeForm = function (key) {
@@ -107,19 +107,19 @@
             nhuCauThemMoiVm.item.loaiNhuCauKey = key;
             switch (key) {
                 case 'ban':
-                    nhuCauThemMoiVm.loadTab(nhuCauThemMoiVm.activeTab);
+                    nhuCauThemMoiVm.loadTab(nhuCauThemMoiVm.activeTab, key);
                     loadFormTitle();
                     break;
                 case 'mua':
-                    nhuCauThemMoiVm.loadTab(nhuCauThemMoiVm.activeTab);
+                    nhuCauThemMoiVm.loadTab(nhuCauThemMoiVm.activeTab, key);
                     loadFormTitle();
                     break;
                 case 'thue':
-                    nhuCauThemMoiVm.loadTab(nhuCauThemMoiVm.activeTab);
+                    nhuCauThemMoiVm.loadTab(nhuCauThemMoiVm.activeTab, key);
                     loadFormTitle();
                     break;
                 case 'cho-thue':
-                    nhuCauThemMoiVm.loadTab(nhuCauThemMoiVm.activeTab);
+                    nhuCauThemMoiVm.loadTab(nhuCauThemMoiVm.activeTab, key);
                     loadFormTitle();
                     break;
             }
@@ -131,22 +131,42 @@
 
         nhuCauThemMoiVm.item = {};
 
-        if($stateParams.item === null) {
-            nhuCauThemMoiVm.isEdit = false;
-            $rootScope.isSelectedLoaiNhuCau = false;
-            nhuCauThemMoiVm.item.activeTab = 'thongTin';
-        } 
-        else {
-            if(!!$stateParams.item.$id) {
+        // if($stateParams.item === null) {
+        //     nhuCauThemMoiVm.isEdit = false;
+        //     $rootScope.isSelectedLoaiNhuCau = false;
+        //     nhuCauThemMoiVm.item.activeTab = 'thongTin';
+        // } 
+        // else {
+        //     if(!!$stateParams.item.$id) {
+        //         nhuCauThemMoiVm.item = $stateParams.item;
+        //         nhuCauThemMoiVm.isEdit = true;
+        //         if(nhuCauThemMoiVm.item.activeTab == undefined)
+        //             nhuCauThemMoiVm.loadTab('thongTin');
+        //         $rootScope.isSelectedLoaiNhuCau = true;
+        //     }
+        //     else {
+        //         nhuCauThemMoiVm.item.activeTab = 'thongTin';
+        //         $rootScope.isSelectedLoaiNhuCau = true;
+        //     }
+        // }
+
+        if (!!$stateParams.nhuCauId && !!$stateParams.loaiId && !!$stateParams.khoId) {
+            if($stateParams.item != null)
                 nhuCauThemMoiVm.item = $stateParams.item;
-                nhuCauThemMoiVm.isEdit = true;
-                if(nhuCauThemMoiVm.item.activeTab == undefined)
-                    nhuCauThemMoiVm.loadTab('thongTin');
+            nhuCauThemMoiVm.isEdit = true;
+            if (nhuCauThemMoiVm.item.activeTab == undefined)
+                nhuCauThemMoiVm.loadTab('thongTin');
+            $rootScope.isSelectedLoaiNhuCau = true;
+        }
+        else {
+            if (!!$stateParams.loaiId) {
+                nhuCauThemMoiVm.item.activeTab = 'thongTin';
                 $rootScope.isSelectedLoaiNhuCau = true;
             }
             else {
+                nhuCauThemMoiVm.isEdit = false;
+                $rootScope.isSelectedLoaiNhuCau = false;
                 nhuCauThemMoiVm.item.activeTab = 'thongTin';
-                $rootScope.isSelectedLoaiNhuCau = true;
             }
         }
 

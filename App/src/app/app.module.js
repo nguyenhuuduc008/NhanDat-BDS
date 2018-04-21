@@ -76,6 +76,7 @@
             'app.quanLyNhom',
             'app.timKiem',
             'app.baoCaoThongKe'
+            //,'app.raoVat'
         ])
         .config(config)
         .run(run)

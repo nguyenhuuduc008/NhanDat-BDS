@@ -55,63 +55,63 @@
         </div>
         <!-- BEGIN BORDERED TABLE PORTLET-->
         <div class="portlet light portlet-fit bordered">
-            <div class="portlet-title">
-                <div class="caption ">
-                    <div class="col-md-10 col-sm-10 col-xs-10 no-padding-right">
-                        <select class="bs-select form-control" ng-model="roleVm.selectAction">
-                            <option>Chọn</option>
-                            <option>Xóa</option>
-                        </select>
+            <div class="portlet-title">                
+                <div class="col-sm-12 col-lg-6">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-4 no-padding-right margin-bottom-10">
+                            <select class="bs-select form-control" ng-model="roleVm.selectAction">
+                                <option>Chọn</option>
+                                <option>Xóa</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-lg-2 no-padding-right margin-bottom-20">
+                            <button type="button" class="btn green" ng-click="roleVm.apply('select-role')">Áp dụng</button>
+                        </div>
+                    </div>                    
+                </div>
+                <div class="col-lg-6 col-xs-12 no-padding-right margin-bottom-20">
+                    <div class="actions pull-right">                    
+                        <list-paging ng-model="roleVm.paging" change-page="changePage"></list-paging>
                     </div>
-                    <div class="col-md-2 col-sm-2 col-xs-2 no-padding-left">
-                        <button type="button" class="btn green" ng-click="roleVm.apply('select-role')">Áp dụng</button>
-                    </div>                   
-                </div>
-                <div class="actions margin-top-5">
-                    <!--<list-paging ng-model="roleVm.paging" on-change="roleVm.changePage()"></list-paging>-->
-                    <list-paging ng-model="roleVm.paging" change-page="changePage"></list-paging>
+                </div>            
+                <div class="portlet-body">
+                    <div class="table-scrollable table-scrollable-borderless">
+                        <table class="table table-hover table-light">
+                            <thead>
+                                <tr class="uppercase">
+                                    <th>
+                                        <label class="mt-checkbox mt-checkbox-outline">
+                                            <input type="checkbox" name="tnc" id="select-all-role" ng-click="roleVm.selectAll('select-all-role','select-role')"/>
+                                            <span></span>
+                                        </label>
+                                    </th>
+                                    <th> Tên </th>
+                                    <th> Mô tả </th>
+                                    <th> Số </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in roleVm.pagedItems[roleVm.paging.currentPage]">
+                                    <td>
+                                        <label class="mt-checkbox mt-checkbox-outline">
+                                            <input type="checkbox" name="select-role" value="{{item.$id}}"/>
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <a class="primary-link" href="#/role/list/{{item.$id}}">{{item.name}}</a>
+                                    </td>
+                                    <td>{{item.description}}</td>
+                                    <td>
+                                        {{item.number}}
+                                    </td>
+                                </tr>                                
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <div class="portlet-body">
-                <div class="table-scrollable table-scrollable-borderless">
-                    <table class="table table-hover table-light">
-                        <thead>
-                            <tr class="uppercase">
-                                <th>
-                                    <label class="mt-checkbox mt-checkbox-outline">
-                                        <input type="checkbox" name="tnc" id="select-all-role" ng-click="roleVm.selectAll('select-all-role','select-role')"/>
-                                        <span></span>
-                                    </label>
-                                </th>
-                                <th> Tên </th>
-                                <th> Mô tả </th>
-                                <th> Số </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="item in roleVm.pagedItems[roleVm.paging.currentPage]">
-                                <td>
-                                    <label class="mt-checkbox mt-checkbox-outline">
-                                        <input type="checkbox" name="select-role" value="{{item.$id}}"/>
-                                        <span></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <a class="primary-link" href="#/role/list/{{item.$id}}">{{item.name}}</a>
-                                </td>
-                                <td>{{item.description}}</td>
-                                <td>
-                                    {{item.number}}
-                                </td>
-                            </tr>
-                                
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-        </div>
         <!-- END BORDERED TABLE PORTLET-->
     </div>
 </div>

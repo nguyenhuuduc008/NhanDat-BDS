@@ -1,4 +1,3 @@
-
 <div class="row">
     <form role="form" id="createForm" name="createForm" novalidate ng-submit="vm.save(createForm)">
         <div class="tab-pane" id="tab_1">
@@ -7,7 +6,7 @@
                 <div class="portlet-title">
                     <div class="caption">
                         <i class="icon-equalizer font-blue-hoki"></i>
-                        <span class="caption-subject font-blue-hoki bold uppercase">Địa Chỉ</span>
+                        <span class="caption-subject font-blue-hoki bold uppercase">Thông Tin Cơ Bản</span>
                     </div>
                     <div class="tools">
                         <a href="" class="collapse"> </a>
@@ -18,77 +17,250 @@
                     <div class="form-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.soNha.$error.required)}">
-                                    <label class="control-label">Số nhà
-                                        <span class="required-field">*</span>
-                                    </label>
-                                    <input type="text" name="soNha" placeholder="Số nhà" class="form-control" required ng-model="vm.model.soNha" />
-                                </div>
-                            </div>
-                            <!--/span-->
-                            <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.tenDuong.$error.required)}">
-                                    <label class="control-label">Tên đường
-                                        <span class="required-field">*</span>
-                                    </label>
-                                    <input type="text" name="tenDuong" placeholder="Tên đường" class="form-control" required ng-model="vm.model.tenDuong" />
-                                </div>
-                            </div>
-                            <!--/span-->
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.thanhPho.$error.required)}">
-                                    <label class="control-label">Thành phố
-                                        <span class="required-field">*</span>
-                                    </label>
-                                    <!-- <input type="text" name="thanhPho" placeholder="Thành phố" class="form-control" required ng-model="vm.model.thanhPho" /> -->
+                                <div class="form-group">
+                                    <label class="control-label">Tỉnh / Thành phố</label>
                                     <select name="thanhPho" ng-model="vm.model.thanhPho" class="form-control" ng-change="vm.changeCity()" required>
-                                        <option value="" disabled>Thành phố</option>
-                                        <option ng-repeat="item in vm.cities" value="{{item.value}}" ng-selected="item.value == vm.model.thanhPho">{{item.text}}</option>
+                                        <option value="notSelect">Tỉnh / Thành phố</option>
+                                        <option ng-repeat="item in vm.cities" value="{{item.$id}}" ng-selected="item.$id == vm.model.thanhPho">{{item.text}}</option>
                                     </select>
                                 </div>
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.quanHuyen.$error.required)}">
-                                    <label class="control-label">Quận / Huyện
-                                        <span class="required-field">*</span>
-                                    </label>
-                                    <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" required ng-model="vm.model.quanHuyen"/> -->
+                                <div class="form-group">
+                                    <label class="control-label">Quận / Huyện </label>
                                     <select name="quanHuyen" ng-model="vm.model.quanHuyen" class="form-control" ng-change="vm.changeDistrict()" required>
-                                        <option value="" disabled>Quận / Huyện</option>
-                                        <option ng-repeat="item in vm.districts" value="{{item.value}}" ng-selected="item.value == vm.model.quanHuyen">{{item.text}}</option>
+                                        <option value="notSelect">Quận / Huyện</option>
+                                        <option ng-repeat="item in vm.districts" value="{{item.$id}}" ng-selected="item.$id == vm.model.quanHuyen">{{item.text}}</option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Phường / Xã </label>
+                                    <select name="phuongXa" ng-model="vm.model.phuongXa" class="form-control" ng-change="vm.changeStreet()">
+                                        <option value="notSelect">Phường / Xã</option>
+                                        <option ng-repeat="item in vm.xaList" value="{{item.$id}}" ng-selected="item.$id == vm.model.phuongXa">{{item.text}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Đường / Phố</label>
+                                    <select name="duongPho" ng-model="vm.model.duongPho" class="form-control" ng-change="vm.changeStreet()">
+                                        <option value="notSelect">Đường / Phố</option>
+                                        <option ng-repeat="item in vm.duongList" value="{{item.$id}}" ng-selected="item.$id == vm.model.duongPho">{{item.text}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Loại BDS
+                                    </label>
+                                    <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" ng-model="vm.model.quanHuyen"/> -->
+                                    <!-- <select name="loaiBDS" ng-model="vm.model.loaiBDS" class="form-control" ng-change="vm.changeLoaiBDS(vm.model.loaiBDS)">
+                                            <option ng-repeat="item in vm.loaiBDSList" value="{{item.value}}" ng-selected="item.$id == vm.model.loaiBDS">{{item.text}}</option>
+                                        </select> -->
+                                    <select class="form-control" ng-model="vm.model.loaiBDS" ng-options="item.value as item.text for item in vm.loaiBDSList" ng-change="vm.changeLoaiBDS(vm.model.loaiBDS)"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Loại Vị Trí
+
+                                    </label>
+                                    <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" ng-model="vm.model.quanHuyen"/> -->
+                                    <select name="loaiViTri" ng-model="vm.model.loaiViTri" class="form-control">
+                                        <option value="notSelect">--Loại Vị Trí</option>
+                                        <option ng-repeat="item in vm.cacLoaiViTri" value="{{item.value}}" ng-selected="item.value == vm.model.loaiViTri">{{item.text}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6" ng-if="vm.loaiBDSForm == 'form1'">
+                                <div class="form-group">
+                                    <label class="control-label">Số Nhà
+                                    </label>
+                                    <input type="text" name="soNha" placeholder="Số Nhà" class="form-control" ng-model="vm.model.soNha" />
+                                </div>
+                            </div>
+                            <div class="col-md-6" ng-if="vm.loaiBDSForm == 'form2' || vm.loaiBDSForm == 'form3'">
+                                <div class="form-group">
+                                    <label class="control-label">Khối / Khu
+                                    </label>
+                                    <input type="text" name="khoiKhu" placeholder="Khối / Khu" class="form-control" ng-model="vm.model.khoiKhu" />
+                                </div>
+                            </div>
+                            <div class="col-md-6" ng-if="vm.loaiBDSForm == 'form2'">
+                                <div class="form-group">
+                                    <label class="control-label">Tòa Nhà / Lô
+                                    </label>
+                                    <input type="text" name="toaNhaLo" placeholder="Tòa Nhà / Lô" class="form-control" ng-model="vm.model.toaNhaLo" />
+                                </div>
+                            </div>
+                            <div class="col-md-6" ng-if="vm.loaiBDSForm == 'form2'">
+                                <div class="form-group">
+                                    <label class="control-label">Tầng
+                                    </label>
+                                    <input type="text" name="tang" placeholder="Tầng" class="form-control" ng-model="vm.model.tang" />
+                                </div>
+                            </div>
+                            <div class="col-md-6" ng-if="vm.loaiBDSForm == 'form2'">
+                                <div class="form-group">
+                                    <label class="control-label">Số Căn Hộ
+                                    </label>
+                                    <input type="text" name="soCanHo" placeholder="Số Căn Hộ" class="form-control" ng-model="vm.model.soCanHo" />
+                                </div>
+                            </div>
+                            <div class="col-md-6" ng-if="vm.loaiBDSForm == 'form3'">
+                                <div class="form-group">
+                                    <label class="control-label">Lô
+                                    </label>
+                                    <input type="text" name="lo" placeholder="Lô" class="form-control" ng-model="vm.model.lo" />
+                                </div>
+                            </div>
+                            <div class="col-md-6" ng-if="vm.loaiBDSForm == 'form3'">
+                                <div class="form-group">
+                                    <label class="control-label">Đường
+                                    </label>
+                                    <input type="text" name="loaiDuong" placeholder="Đường" class="form-control" ng-model="vm.model.loaiDuong" />
+                                </div>
+                            </div>
+                            <div class="col-md-6" ng-if="vm.loaiBDSForm == 'form3'">
+                                <div class="form-group">
+                                    <label class="control-label">Số Nền
+                                    </label>
+                                    <input type="text" name="soNen" placeholder="Số Nền" class="form-control" ng-model="vm.model.soNen" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Dự Án
+
+                                    </label>
+                                    <!-- <input type="text" name="quanHuyen" placeholder="Quận / Huyện" class="form-control" ng-model="vm.model.quanHuyen"/> -->
+                                    <select name="duAn" ng-model="vm.model.duAn" class="form-control">
+                                        <option value="notSelect">--Dự Án</option>
+                                        <option ng-repeat="item in vm.cacDuAn" value="{{item.value}}" ng-selected="item.value == vm.model.duAn">{{item.text}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Địa Chỉ Khác
+                                    </label>
+                                    <input type="text" name="diaChiBDS" placeholder="Địa Chỉ" class="form-control" ng-model="vm.model.diaChiBDS" />
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group" ng-class="{'has-error': (vm.showInvalid && createForm.thongTinMoTa.$error.required)}">
+                                    <label class="control-label">Thông Tin Mô Tả
+
+                                    </label>
+                                    <textarea rows="6" name="thongTinMoTa" class="form-control" ng-model="vm.model.thongTinMoTa"></textarea>
                                 </div>
                             </div>
                             <!--/span-->
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.xaPhuong.$error.required)}">
-                                    <label class="control-label">Xã / Phường
-                                    </label>
-                                    <!-- <input type="text" name="xaPhuong" placeholder="Xã / Phường" class="form-control" required ng-model="vm.model.xaPhuong" /> -->
-                                    <select name="xaPhuong" ng-model="vm.model.xaPhuong" class="form-control">
-                                        <option value="" disabled>Xã / Phường</option>
-                                        <option ng-repeat="item in vm.wards" value="{{item.value}}" ng-selected="item.value == vm.model.xaPhuong">{{item.text}}</option>
-                                    </select>
-                                </div>
+                        <!-- END FORM-->
+                    </div>
+                </div>
+                <!--Thông Tin Chung-->
+            </div>
+            <!--Ban Do-->
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-equalizer font-blue-hoki"></i>
+                        <span class="caption-subject font-blue-hoki bold uppercase">Bản Đồ</span> &nbsp; &nbsp;
+                    </div>
+                    <div class="col-xs-6">
+                        <span class="bold uppercase">
+                            <button type="button" class="btn default" ng-click="vm.getToaDo()">Lấy Tọa Độ Địa Chỉ</button>
+                        </span>
+                        <span class="bold uppercase">
+                            <button type="button" class="btn default" ng-click="vm.getGPS()">&nbsp; &nbsp;Lấy Tọa Độ GPS&nbsp;&nbsp;&nbsp;</button>
+                        </span>
+                    </div>
+                    <div class="tools">
+                        <a href="" class="collapse"> </a>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <div class="form-body map-google">
+                        <ui-gmap-google-map center="map.center" zoom="map.zoom" options="options">
+                            <ui-gmap-marker coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id">
+                            </ui-gmap-marker>
+                        </ui-gmap-google-map>
+                    </div>
+                    <!-- END FORM-->
+                </div>
+            </div>
+            <!--Hinh Anh-->
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-equalizer font-blue-hoki"></i>
+                        <span class="caption-subject font-blue-hoki bold uppercase">Hình Ảnh / Video</span>
+                    </div>
+                    <div class="tools">
+                        <a href="" class="collapse"> </a>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <!-- BEGIN FORM-->
+                    <div class="form-body row">
+                        <div class="col-md-12">
+                            <ng-dropzone class="dropzone" options="vm.dzOptions" callbacks="vm.dzCallbacks" methods="vm.dzMethods"></ng-dropzone>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="actions padding-top-10 pull-right">
+                                <list-paging ng-model="vm.paging" change-page="vm.changePage"></list-paging>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.diaChiKhac.$error.required)}">
-                                    <label class="control-label">Địa chỉ khác</label>
-                                    <input type="text" name="diaChiKhac" placeholder="Địa chỉ khác" class="form-control" ng-model="vm.model.diaChiKhac">
-                                </div>
+                            <div class="table-scrollable table-scrollable-borderless">
+                                <table class="table table-hover table-light">
+                                    <thead>
+                                        <tr class="uppercase">
+                                            <th></th>
+                                            <th class="width30 text-left"> Hình Ảnh / Video </th>
+                                            <th class="width15 text-center"> Loại </th>
+                                            <th class="width30 text-left">Ghi Chú</th>
+                                            <th class="width20 text-center"> Actions </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in vm.pagedItems[vm.paging.currentPage]">
+                                            <td colspan="2" style="vertical-align: middle; text-align: center;">
+                                                <img class="lib-media-icon" ng-src="{{item.downloadUrl}}" alt="media" style="width: 100%;">
+                                                <label>{{item.fileName}}</label>
+                                            </td>
+                                            <td class="text-center">
+                                                {{item.loai}}
+                                            </td>
+                                            <td>
+                                                <textarea rows="5" name="desc" placeholder="Ghi Chú" ng-model="item.fileDescription" class="form-control"></textarea>
+                                                <a href="#" title="Lưu" ng-click="vm.saveMedia(item)" class="padding-5 badge badge-success margin-top-5" style="float: right;">
+                                                    Lưu
+                                                </a>
+                                            </td>
+                                            <td align="center">
+                                                <button class="btn padding-5 badge badge-warning" title="Sao Chép Đường Dẫn" ngclipboard data-clipboard-text="{{item.downloadUrl}}">
+                                                    <i class="fa fa-link "></i>
+                                                </button>
+                                                <a href="#" title="Xoá" ng-click="vm.deleteMedia(item)" class="padding-5 badge badge-danger">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                            <!--/span-->
                         </div>
                     </div>
                     <!-- END FORM-->
                 </div>
             </div>
-            <!--Thông Tin Chung-->
+            <!--Thông tin khác-->
             <div class="portlet light bordered">
                 <div class="portlet-title">
                     <div class="caption">
@@ -102,160 +274,24 @@
                 <div class="portlet-body form">
                     <!-- BEGIN FORM-->
                     <div class="form-body">
+                        <h3 class="form-section no-margin-top">Diện Tích</h3>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group" ng-class="{'has-error': (vm.showInvalid && createForm.bdsCate.$error.required)}">
-                                    <label class="control-label">Danh mục
-                                        <span class="required-field">*</span>
+                                <div class="form-group">
+                                    <label class="control-label">Diện Tích &nbsp; {{vm.model.dienTich | currency: "": 0}} m
+                                        <sup>2</sup>
+
                                     </label>
-                                    <select name="bdsCate" ng-model="vm.model.danhMuc" class="form-control" required >
-                                        <option value="" disabled>Chọn Danh Mục</option>
-                                        <option ng-repeat="item in vm.cacDanhMucBDS" value="{{item.value}}" ng-selected="item.value == vm.danhMuc">{{item.text}}</option>
-                                    </select>
+                                    <input type="number" name="dienTich" placeholder="Diện Tích" class="form-control" ng-model="vm.model.dienTich" />
                                 </div>
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
-                                <div class="form-group" ng-class="{'has-error': (vm.showInvalid && createForm.loaiDuong.$error.required)}">
-                                    <label class="control-label">Loại đường
-                                         
-                                    </label>
-                                    <!-- <input type="text" name="loaiDuong" placeholder="Loại đường" class="form-control"   ng-model="vm.model.loaiDuong"/> -->
-                                    <select name="loaiDuong" ng-model="vm.model.loaiDuong" class="form-control"  >
-                                        <option value="" disabled>Loại đường</option>
-                                        <option ng-repeat="item in vm.cacLoaiDuong" value="{{item.value}}" ng-selected="item.value == vm.model.loaiDuong">{{item.text}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!--/span-->
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.loaiViTri.$error.required)}">
-                                    <label class="control-label">Loại vị trí
-                                         
-                                    </label>
-                                    <!-- <input type="text" name="loaiViTri" placeholder="Loại vị trí" class="form-control"   ng-model="vm.model.loaiViTri"/> -->
-                                    <select name="loaiViTri" ng-model="vm.model.loaiViTri" class="form-control"  >
-                                        <option value="" disabled>Loại vị trí</option>
-                                        <option ng-repeat="item in vm.cacLoaiViTri" value="{{item.value}}" ng-selected="item.value == vm.model.loaiViTri">{{item.text}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!--/span-->
-                            <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.huong.$error.required)}">
-                                    <label class="control-label">Hướng
-                                         
-                                    </label>
-                                    <select name="huong" ng-model="vm.model.huong" class="form-control"  >
-                                        <option value="" disabled>Chọn Hướng</option>
-                                        <option ng-repeat="item in vm.cacLoaiHuong" value="{{item.value}}" ng-selected="item.value == vm.model.huong">{{item.text}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!--/span-->
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.tongGia.$error.required) || (createForm.tongGia.$error.pattern)}">
-                                    <label class="control-label">Tổng giá (VNĐ)
-                                         
-                                    </label>
-                                    <input type="text" name="tongGia" placeholder="Tổng giá" class="form-control"   ng-model="vm.model.tongGia"    
-                                    ng-pattern="currencyRegx" />
-                                </div>
-                            </div>
-                            <!--/span-->
-                            <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.donGia.$error.required) || (createForm.donGia.$error.pattern)}">
-                                    <label class="control-label">Đơn giá (VNĐ)
-                                         
-                                    </label>
-                                    <input type="text" name="donGia" placeholder="Đơn giá" class="form-control"   ng-model="vm.model.donGia"    
-                                    ng-pattern="currencyRegx" />
-                                </div>
-                            </div>
-                            <!--/span-->
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.loaiBDS.$error.required)}">
-                                    <label class="control-label">Loại BĐS
-                                         
-                                    </label>
-                                    <select name="loaiBDS" ng-model="vm.model.loaiBDS" class="form-control"  >
-                                        <option value="" disabled>Chọn Loại BĐS</option>
-                                        <option ng-repeat="item in vm.cacLoaiBDS" value="{{item.value}}" ng-selected="item.value == vm.model.loaiBDS">{{item.text}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!--/span-->
-                            <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.soDangKy.$error.required)}">
-                                    <label class="control-label">Số đăng ký
-                                         
-                                    </label>
-                                    <input type="text" name="soDangKy" placeholder="Số đăng ký" class="form-control"   ng-model="vm.model.soDangKy" />
-                                </div>
-                            </div>
-                            <!--/span-->
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.nguon.$error.required)}">
-                                    <label class="control-label">Nguồn
-                                         
-                                    </label>
-                                    <select name="nguon" ng-model="vm.model.nguon" class="form-control"  >
-                                        <option value="" disabled>Chọn Nguồn</option>
-                                        <option ng-repeat="item in vm.cacNguonBDS" value="{{item.value}}" ng-selected="item.value == vm.model.nguon">{{item.text}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!--/span-->
-                            <div class="col-md-6">
-                                
-                            </div>
-                            <!--/span-->
-                        </div>
-                    </div>
-                    <!-- END FORM-->
-                </div>
-            </div>
-            <!--Diện tích và không gian-->
-            <div class="portlet light bordered">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="icon-equalizer font-blue-hoki"></i>
-                        <span class="caption-subject font-blue-hoki bold uppercase">Diện Tích Và Không Gian</span>
-                    </div>
-                    <div class="tools">
-                        <a href="" class="collapse"> </a>
-                    </div>
-                </div>
-                <div class="portlet-body form">
-                    <!-- BEGIN FORM-->
-                    <div class="form-body">
-                            <h3 class="form-section">Diện Tích</h3>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.dienTichSuDung.$error.required)}">
-                                    <label class="control-label">Diện tích sử dụng (m2)
-                                         
-                                    </label>
-                                    <input type="number" name="dienTichSuDung" placeholder="Diện tích sử dụng" class="form-control"   ng-model="vm.model.dienTichSuDung"
-                                    />
-                                </div>
-                            </div>
-                            <!--/span-->
-                            <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.dienTichXayDung.$error.required)}">
+                                <div class="form-group  ">
                                     <label class="control-label">Diện tích xây dựng (m2)
-                                         
+
                                     </label>
-                                    <input type="number" name="dienTichXayDung" placeholder="Diện tích xây dựng" class="form-control"   ng-model="vm.model.dienTichXayDung"
+                                    <input type="number" name="dienTichXayDung" placeholder="Diện tích xây dựng" class="form-control" ng-model="vm.model.dienTichXayDung"
                                     />
                                 </div>
                             </div>
@@ -263,41 +299,21 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.dienTichKhuonVien.$error.required)}">
+                                <div class="form-group  ">
                                     <label class="control-label">Diện tích Khuôn Viên (m2)
-                                         
+
                                     </label>
-                                    <input type="number" name="dienTichKhuonVien" placeholder="Diện tích Khuôn Viên" class="form-control"   ng-model="vm.model.dienTichKhuonVien"
+                                    <input type="number" name="dienTichKhuonVien" placeholder="Diện tích Khuôn Viên" class="form-control" ng-model="vm.model.dienTichKhuonVien"
                                     />
                                 </div>
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.ngang.$error.required)}">
-                                    <label class="control-label">Ngang (m)
-                                         
-                                    </label>
-                                    <input type="number" name="ngang" placeholder="Ngang" class="form-control"   ng-model="vm.model.ngang" />
-                                </div>
-                            </div>
-                            <!--/span-->
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.dai.$error.required)}">
-                                    <label class="control-label">Dài (m)
-                                         
-                                    </label>
-                                    <input type="number" name="dai" placeholder="Dài" class="form-control"   ng-model="vm.model.dai" />
-                                </div>
-                            </div>
-                            <!--/span-->
-                            <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.hau.$error.required)}">
+                                <div class="form-group  ">
                                     <label class="control-label">Hậu
-                                         
+
                                     </label>
-                                    <select name="hau" ng-model="vm.model.hau" class="form-control"  >
+                                    <select name="hau" ng-model="vm.model.hau" class="form-control">
                                         <option value="" disabled>Chọn Hậu</option>
                                         <option ng-repeat="item in vm.cacLoaiHau" value="{{item.value}}" ng-selected="item.value == vm.model.hau">{{item.text}}</option>
                                     </select>
@@ -307,217 +323,184 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.tang.$error.required)}">
-                                    <label class="control-label">Tầng
-                                         
+                                <div class="form-group">
+                                    <label class="control-label">Ngang
+
                                     </label>
-                                    <input type="text" name="tang" placeholder="Tầng" class="form-control"   ng-model="vm.model.tang" />
+                                    <input type="text" name="ngang" placeholder="Ngang" class="form-control" ng-model="vm.model.ngang" />
                                 </div>
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
-                                
+                                <div class="form-group">
+                                    <label class="control-label">Dài
+
+                                    </label>
+                                    <input type="text" name="dai" placeholder="Dài" class="form-control" ng-model="vm.model.dai" />
+                                </div>
                             </div>
                             <!--/span-->
                         </div>
                         <h3 class="form-section">Không Gian</h3>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.phongKhach.$error.required)}">
+                                <div class="form-group  ">
                                     <label class="control-label">Phòng khách
-                                         
+
                                     </label>
-                                    <input type="text" name="phongKhach" placeholder="Phòng khách" class="form-control"   ng-model="vm.model.phongKhach"
-                                    />
+                                    <input type="text" name="phongKhach" placeholder="Phòng khách" class="form-control" ng-model="vm.model.phongKhach" />
                                 </div>
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.phongNgu.$error.required)}">
-                                    <label class="control-label">Phòng ngủ
-                                         
+                                <div class="form-group">
+                                    <label class="control-label">Phòng Ngủ
+
                                     </label>
-                                    <input type="text" name="phongNgu" placeholder="Phòng ngủ" class="form-control"   ng-model="vm.model.phongNgu" />
+                                    <input type="text" name="soPhongNgu" placeholder="Số Phòng Ngủ" class="form-control" ng-model="vm.model.soPhongNgu" ng-pattern="numberRegx"
+                                    />
                                 </div>
                             </div>
                             <!--/span-->
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.phongAn.$error.required)}">
+                                <div class="form-group  ">
                                     <label class="control-label">Phòng ăn
-                                         
+
                                     </label>
-                                    <input type="text" name="phongAn" placeholder="Phòng ăn" class="form-control"   ng-model="vm.model.phongAn" />
+                                    <input type="text" name="phongAn" placeholder="Phòng ăn" class="form-control" ng-model="vm.model.phongAn" />
                                 </div>
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.nhaBep.$error.required)}">
+                                <div class="form-group  ">
                                     <label class="control-label">Nhà bếp
-                                         
+
                                     </label>
-                                    <input type="text" name="nhaBep" placeholder="Nhà bếp" class="form-control"   ng-model="vm.model.nhaBep" />
+                                    <input type="text" name="nhaBep" placeholder="Nhà bếp" class="form-control" ng-model="vm.model.nhaBep" />
                                 </div>
                             </div>
                             <!--/span-->
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.wc.$error.required)}">
-                                    <label class="control-label">WC
-                                         
+                                <div class="form-group">
+                                    <label class="control-label">Số WC
+
                                     </label>
-                                    <input type="text" name="wc" placeholder="WC" class="form-control"   ng-model="vm.model.wc" />
+                                    <input type="text" name="soWC" placeholder="Số WC" class="form-control" ng-model="vm.model.soWC" />
                                 </div>
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.sanTruoc.$error.required)}">
+                                <div class="form-group  ">
                                     <label class="control-label">Sân trước
-                                         
+
                                     </label>
-                                    <input type="text" name="sanTruoc" placeholder="Sân trước" class="form-control"   ng-model="vm.model.sanTruoc" />
+                                    <input type="text" name="sanTruoc" placeholder="Sân trước" class="form-control" ng-model="vm.model.sanTruoc" />
                                 </div>
                             </div>
                             <!--/span-->
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.sanSau.$error.required)}">
+                                <div class="form-group  ">
                                     <label class="control-label">Sân sau
-                                         
+
                                     </label>
-                                    <input type="text" name="sanSau" placeholder="Sân sau" class="form-control"   ng-model="vm.model.sanSau" />
+                                    <input type="text" name="sanSau" placeholder="Sân sau" class="form-control" ng-model="vm.model.sanSau" />
                                 </div>
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.sanThuong.$error.required)}">
+                                <div class="form-group  ">
                                     <label class="control-label">Sân thượng
-                                         
+
                                     </label>
-                                    <input type="text" name="sanThuong" placeholder="Sân thượng" class="form-control"   ng-model="vm.model.sanThuong"
-                                    />
+                                    <input type="text" name="sanThuong" placeholder="Sân thượng" class="form-control" ng-model="vm.model.sanThuong" />
                                 </div>
                             </div>
                             <!--/span-->
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.giengTroi.$error.required)}">
+                                <div class="form-group  ">
                                     <label class="control-label">Giếng trời
-                                         
+
                                     </label>
-                                    <input type="text" name="giengTroi" placeholder="Giếng trời" class="form-control"   ng-model="vm.model.giengTroi"
-                                    />
+                                    <input type="text" name="giengTroi" placeholder="Giếng trời" class="form-control" ng-model="vm.model.giengTroi" />
                                 </div>
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.tangLung.$error.required)}">
+                                <div class="form-group  ">
                                     <label class="control-label">Tầng lửng
-                                         
+
                                     </label>
-                                    <input type="text" name="tangLung" placeholder="Tầng lửng" class="form-control"   ng-model="vm.model.tangLung" />
+                                    <input type="text" name="tangLung" placeholder="Tầng lửng" class="form-control" ng-model="vm.model.tangLung" />
                                 </div>
                             </div>
                             <!--/span-->
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.ham.$error.required)}">
+                                <div class="form-group  ">
                                     <label class="control-label">Hầm
-                                         
+
                                     </label>
-                                    <input type="text" name="ham" placeholder="Hầm" class="form-control"   ng-model="vm.model.ham" />
+                                    <input type="text" name="ham" placeholder="Hầm" class="form-control" ng-model="vm.model.ham" />
                                 </div>
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.hoBoi.$error.required)}">
+                                <div class="form-group  ">
                                     <label class="control-label">Hồ bơi
-                                         
+
                                     </label>
-                                    <input type="text" name="hoBoi" placeholder="Hồ bơi" class="form-control"   ng-model="vm.model.hoBoi" />
+                                    <input type="text" name="hoBoi" placeholder="Hồ bơi" class="form-control" ng-model="vm.model.hoBoi" />
                                 </div>
                             </div>
                             <!--/span-->
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.gym.$error.required)}">
+                                <div class="form-group  ">
                                     <label class="control-label">Gym
-                                         
+
                                     </label>
-                                    <input type="text" name="gym" placeholder="Gym" class="form-control"   ng-model="vm.model.gym" />
+                                    <input type="text" name="gym" placeholder="Gym" class="form-control" ng-model="vm.model.gym" />
                                 </div>
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
-                                
-                            </div>
-                            <!--/span-->
-                        </div>  
-                    </div>
-                    <!-- END FORM-->
-                </div>
-            </div>
-            <!--Thông tin khác-->
-            <div class="portlet light bordered">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="icon-equalizer font-blue-hoki"></i>
-                        <span class="caption-subject font-blue-hoki bold uppercase">Thông Tin Khác</span>
-                    </div>
-                    <div class="tools">
-                        <a href="" class="collapse"> </a>
-                    </div>
-                </div>
-                <div class="portlet-body form">
-                    <!-- BEGIN FORM-->
-                    <div class="form-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.ttThuongMai.$error.required)}">
-                                    <label class="control-label">Trung tâm thương mại
-                                         
+                                <div class="form-group">
+                                    <label class="control-label">Số Tầng
                                     </label>
-                                    <input type="text" name="ttThuongMai" placeholder="Trung tâm thương mại" class="form-control"   ng-model="vm.model.ttThuongMai"
-                                    />
-                                </div>
-                            </div>
-                            <!--/span-->
-                            <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.cvMoiGioi.$error.required)}">
-                                    <label class="control-label">CV môi giới
-                                         
-                                    </label>
-                                    <input type="text" name="cvMoiGioi" placeholder="CV môi giới" class="form-control"   ng-model="vm.model.cvMoiGioi"
-                                    />
+                                    <input type="number" name="soTang" placeholder="--Số Tầng" class="form-control" ng-model="vm.model.soTang" />
                                 </div>
                             </div>
                             <!--/span-->
                         </div>
+                        <h3 class="form-section">Khác</h3>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.phiMG.$error.required) || (createForm.phiMG.$error.pattern)}">
-                                    <label class="control-label">Phí MG (VNĐ)
-                                         
+                                <div class="form-group  ">
+                                    <label class="control-label">Số đăng ký
+
                                     </label>
-                                    <input type="text" name="phiMG" placeholder="Phí MG" class="form-control"   ng-model="vm.model.phiMG"    
-                                    ng-pattern="currencyRegx"/>
+                                    <input type="text" name="soDangKy" placeholder="Số đăng ký" class="form-control" ng-model="vm.model.soDangKy" />
                                 </div>
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.duAn.$error.required)}">
-                                    <label class="control-label">Dự án
-                                         
+                                <div class="form-group  ">
+                                    <label class="control-label">Nguồn
+
                                     </label>
-                                    <select name="duAn" ng-model="vm.model.duAn" class="form-control"  >
-                                        <option value="" disabled>Chọn Dự Án</option>
-                                        <option ng-repeat="item in vm.cacDuAn" value="{{item.value}}" ng-selected="item.value == vm.model.duAn">{{item.text}}</option>
+                                    <select name="nguon" ng-model="vm.model.nguon" class="form-control">
+                                        <option value="" disabled>Chọn Nguồn</option>
+                                        <option ng-repeat="item in vm.cacNguonBDS" value="{{item.value}}" ng-selected="item.value == vm.model.nguon">{{item.text}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -525,89 +508,89 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.namXayDung.$error.required) || createForm.namXayDung.$error.pattern}">
-                                    <label class="control-label">Năm xây dựng
-                                         
+                                <div class="form-group  ">
+                                    <label class="control-label">Trung tâm thương mại
+
                                     </label>
-                                    <input type="text" name="namXayDung" placeholder="Numberic" class="form-control"   ng-model="vm.model.namXayDung" ng-pattern="numberRegx"
+                                    <input type="text" name="ttThuongMai" placeholder="Trung tâm thương mại" class="form-control" ng-model="vm.model.ttThuongMai"
                                     />
                                 </div>
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.tyLeMG.$error.required)}">
-                                    <label class="control-label">Tỷ lệ MG
-                                         
+                                <div class="form-group  ">
+                                    <label class="control-label">CV môi giới
+
                                     </label>
-                                    <input type="text" name="tyLeMG" placeholder="Tỷ lệ MG" class="form-control"   ng-model="vm.model.tyLeMG" />
+                                    <input type="text" name="cvMoiGioi" placeholder="CV môi giới" class="form-control" ng-model="vm.model.cvMoiGioi" />
                                 </div>
                             </div>
                             <!--/span-->
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.phapLy.$error.required)}">
-                                    <label class="control-label">Pháp lý
-                                            
+                                <div class="form-group  ">
+                                    <label class="control-label">Phí MG (VNĐ)
+
                                     </label>
-                                    <input type="text" name="phapLy" placeholder="Pháp lý" class="form-control"   ng-model="vm.model.phapLy" />
+                                    <input type="text" name="phiMG" placeholder="Phí MG" class="form-control" ng-model="vm.model.phiMG" ng-pattern="currencyRegx"
+                                    />
                                 </div>
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
-                                
+                                <div class="form-group  ">
+                                    <label class="control-label">Năm xây dựng
+
+                                    </label>
+                                    <input type="text" name="namXayDung" placeholder="Numberic" class="form-control" ng-model="vm.model.namXayDung" ng-pattern="numberRegx"
+                                    />
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group  ">
+                                    <label class="control-label">Pháp lý
+
+                                    </label>
+                                    <input type="text" name="phapLy" placeholder="Pháp lý" class="form-control" ng-model="vm.model.phapLy" />
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group  ">
+                                    <label class="control-label">Tỷ lệ MG
+
+                                    </label>
+                                    <input type="text" name="tyLeMG" placeholder="Tỷ lệ MG" class="form-control" ng-model="vm.model.tyLeMG" />
+                                </div>
                             </div>
                             <!--/span-->
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.dienGiai.$error.required)}">
+                                <div class="form-group  " >
                                     <label class="control-label">Diễn giải
                                         <!--   -->
                                     </label>
-                                    <textarea rows="2" type="text" name="dienGiai" placeholder="Diễn giải" class="form-control" ng-model="vm.model.dienGiai" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- END FORM-->
-                </div>
-            </div>
-            <!-- Thông tin liên hệ-->
-            <div class="portlet light bordered">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="icon-equalizer font-blue-hoki"></i>
-                        <span class="caption-subject font-blue-hoki bold uppercase">Thông Tin Liên Hệ</span>
-                    </div>
-                    <div class="tools">
-                        <a href="" class="collapse"> </a>
-                    </div>
-                </div>
-                <div class="portlet-body form">
-                    <!-- BEGIN FORM-->
-                    <div class="form-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.email.$error.required) || (createForm.email.$error.pattern || createForm.email.$error.email)}">
-                                    <label class="control-label">Email
-                                        <span class="required-field">*</span>    
-                                    </label>
-                                    <input type="email" name="email" placeholder="Email" class="form-control" required ng-model="vm.model.email" ng-pattern="emailRegx"/>
-                                </div>
-                            </div>
-                            <!--/span-->
-                            <div class="col-md-6">
-                                <div class="form-group  " ng-class="{'has-error': (vm.showInvalid && createForm.dienThoai.$error.required)}">
-                                    <label class="control-label">Điện thoại
-                                        <span class="required-field">*</span>
-                                    </label>
-                                    <input type="text" name="dienThoai" placeholder="Điện thoại" ui-mask="999-999-9999" class="form-control" required ng-model="vm.model.dienThoai"
+                                    <textarea rows="2" type="text" name="dienGiai" placeholder="Diễn giải" class="form-control" ng-model="vm.model.dienGiai"
                                     />
                                 </div>
                             </div>
-                            <!--/span-->
-                        </div> 
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group" >
+                                    <label class="control-label">Nội Thất
+                                        <!--   -->
+                                    </label>
+                                    <textarea rows="5" type="text" name="noiThat" placeholder="Thông Tin Nội Thất" class="form-control" ng-model="vm.model.noiThat"
+                                    />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- END FORM-->
                 </div>
@@ -615,13 +598,10 @@
         </div>
         <div class=" col-md-12">
             <div class="margin-top-20 pull-right">
-                <button class="btn green grreen-haze" type="submit" ng-disabled="createForm.$invalid">
-                    Save
-                </button>
-                <button class="btn default" type="button" ng-click="vm.cancel()">
-                    Cancel
+                <button class="btn green grreen-haze" type="submit" ng-disabled="">
+                    Lưu
                 </button>
             </div>
-        </div>     
+        </div>
     </form>
 </div>

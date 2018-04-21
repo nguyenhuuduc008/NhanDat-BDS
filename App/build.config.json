@@ -317,6 +317,7 @@
         "src/app/quyTrinhPhapLy/**/*.js",
 		"src/app/baoCaoThongKe/**/*.js",
 		"src/app/timKiem/**/*.js",
-		"src/app/quanLyNhom/**/*.js"
+		"src/app/quanLyNhom/**/*.js",
+		"src/app/raoVat/**/*.js"
     ]
 }

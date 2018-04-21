@@ -1,0 +1,135 @@
+<style>
+    .group-user-list {
+        border: 1px solid #c2cad8;
+        padding: 10px;
+        border-radius: 4px;
+        max-height: 300px;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+        .group-user-list ul {
+            padding: 0px !important;
+        }
+
+            .group-user-list ul li {
+                list-style: none;
+                border-bottom: 1px dotted #dfdfdf;
+                height: 38px;
+            }
+
+    .group-user-list-btn {
+        padding-top: 0px !important;
+        padding-bottom: 2px !important;
+        margin: 5px !important;
+        width: 120px !important;
+    }
+</style>
+
+<div class="row" id="permission">
+    <div class="col-md-12">
+        <!-- BEGIN PORTLET-->
+        <div class="portlet light bordered">
+            <div>
+                <span style="color: #697882;font-size: 22px;font-weight: 400" class="ng-binding">{{pageTitle}}</span>
+            </div>
+            <hr style="margin:9px 0px !important">
+            <div class="portlet-body form">
+                <!-- BEGIN FORM-->
+                <form ng-submit="btnSave_Click(thisForm)" role="form" id="thisForm" name="thisForm">
+                    <div class="form-body">
+
+                        <div class="row" ng-show="trangThaiMo!=null">
+                            <div class="form-group col-md-12">
+                                <div ng-show="trangThai" class="alert alert-success">
+                                    <strong>Tốt! Tin rao vặt đang hiển thị.</strong>
+                                </div>
+                                <div ng-show="!trangThai" class="alert alert-danger">
+                                    <strong>Chú ý! Tin rao vặt tạm thời không hiển thị.</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-12" ng-class="{'has-error': (thisForm.tieuDe.$error.required)&&thisForm.tieuDe.$touched}">
+                                <label class="control-label">Tiêu đề: <span style="color:red">*</span></label>
+                                <input name="text" type="text" placeholder="Tên nhóm" ng-model="model.tieuDe" class="form-control" required />
+                                <label class="control-label" ng-show="thisForm.tieuDe.$error.required">* Vui lòng nhập tên Tiêu đề</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-12" ng-class="{'has-error': thisForm.moTa.$error.required&&thisForm.moTa.$touched}">
+                                <label class="control-label">Mô Tả: <span style="color:red">*</span></label>
+                                <textarea name="moTa" type="text" placeholder="Mô tả" ng-model="model.moTa" class="form-control" required />
+                                <!--<label class="control-label" ng-show="thisForm.moTa.$error.required">* Vui lòng nhập tên Mô tả</label>-->
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top:5px">
+                            <div class="col-lg-6 col-xs-12 col-sm-12">
+                                <label class="control-label">Hình ảnh</label>
+                                <div class="fileinput fileinput-new" data-provides="fileinput" style="width:100%">
+                                    <div ng-show="model.file==null" class="fileinput-new thumbnail" style="width: 100%;color:#dedede">
+                                        <h3 style="text-align:center;padding:35px;color: #697882;font-size: 22px;font-weight: 400">Chưa có hình nào được chọn</h3>
+                                    </div>
+                                    <div id="preViewImg" ng-show="model.file!=null" class="fileinput-preview thumbnail" style="width: 100%; max-height: 500px; line-height: 10px;">
+                                        <img ng-src="{{model.file}}" alt="{{model.file}}" />
+                                    </div>
+                                    <div class="fileinput-preview fileinput-exists thumbnail" style="width: 100%; max-height: 500px; line-height: 10px;">
+                                        <!---->
+                                    </div>
+                                    <div>
+                                        <span class="btn default btn-file">
+                                            <span class="fileinput-new">Chọn ảnh</span>
+                                            <span class="fileinput-exists">Thay đổi</span>
+                                            <input type="hidden">
+                                            <input id="avatar-file" ng-src="model.file" type="file" name="...">
+                                        </span>
+                                        <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput">Hủy</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12 col-sm-12">
+                                <div class="col-lg-6 col-xs-12 col-sm-12">
+                                    <label class="control-label">Từ ngày: <span style="color:red">*</span></label>
+                                    <single-date-picker name="timeShow" ng-model="model.tuNgay" hour-format="false" is-require="true" value="{{model.tuNgay}}"></single-date-picker>
+                                </div>
+
+                                <div class="col-lg-6 col-xs-12 col-sm-12">
+                                    <label class="control-label">Đến ngày: <span style="color:red">*</span></label>
+                                    <single-date-picker name="timeShow" ng-model="model.denNgay" hour-format="false" is-require="true" value="{{model.denNgay}}"></single-date-picker>
+                                </div>
+
+                                <div class="col-lg-12 col-xs-12 col-sm-12" style="margin-top:7px" ng-class="{'has-error': (thisForm.lienKet.$error.required)&&thisForm.lienKet.$touched}">
+                                    <label class="control-label">Liên kết: <span style="color:red">*</span></label>
+                                    <input name="text" type="text" placeholder="Liên kết" ng-model="model.lienKet" class="form-control" required />
+                                    <label class="control-label" ng-show="thisForm.lienKet.$error.required">* Vui lòng nhập liên kết</label>
+                                </div>
+
+                                <div class="col-lg-2 col--12 col-sm-12" style="margin-top:7px">
+                                    <div class="hidden-sm hidden-xs"></div>
+                                    <label class="mt-checkbox mt-checkbox-outline">
+                                        <input ng-model="model.anTin" ng-false-value="false" ng-true-value="true" type="checkbox"> Ẩn tin
+                                        <span></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button type="submit" class="btn green" ng-disabled="thisForm.$invalid">
+                                    <i class="fa fa-check"></i> Lưu
+                                </button>
+                                <button type="button" class="btn default" ng-click="btnCancel_Click()">Quay lại</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- END FORM-->
+            </div>
+        </div>
+    </div>
+</div>

@@ -36,37 +36,24 @@
 			lienKetUsers: {
 				title: 'Liên Kết Users'
 			},
-			giamGia: {
-				title: 'Giảm Giá'
-			},
 			yeuToTangGiamGia: {
 				title: 'Yếu Tố Tăng Giảm Giá'
 			},
-			thuocQuyHoach: {
-				title: 'Thuộc Quy Hoạch'
+			loaiNoiThat: {
+				title: 'Loại Nội Thất'
 			},
 			lichSuChuyenQuyen: {
 				title: 'Lịch Sử Chuyển Quyền',
 				url: './app/bds/add_edit/_tab-ls-chuyen-quyen.tpl.html'
 			},
-			lichSuGiaoDich: {
-				title: 'Lịch Sử Giao Dịch'
-			},
-			capDo: {
-				title: 'Cấp Độ'
-			},
-			lichSuGia: {
-				title: 'Lịch Sử Giá'
-			},
-			media: {
-				title: 'Media'
-			}
 		};
 
 		//Functions
-		vm.loadTab = function(key){
+		vm.loadTab = function (key) {
 			vm.activeTab = key;
-            $state.go('bds.' + key, { bdsId: vm.bdsId });
+			$state.go('bds.' + key, {
+				bdsId: vm.bdsId
+			});
 		};
 
 		//Load Data
@@ -140,8 +127,7 @@
 							toaster.error(rs.errorMsg);
 						}
 					});
-				}, function () {
-				});
+				}, function () {});
 
 		};
 

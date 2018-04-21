@@ -2,9 +2,9 @@
 	'use strict';
 
 	angular.module("app.bds")
-		.controller("editTacNghiepCtrl", editTacNghiepCtrl);
+		.controller("editLienKetNhuCauCtrl", editLienKetNhuCauCtrl);
 	/** @ngInject */
-	function editTacNghiepCtrl($q, $rootScope, $timeout, $scope, $state, $stateParams, $ngBootbox, $uibModal, appUtils, bdsService, authService, toaster) {
+	function editLienKetNhuCauCtrl($q, $rootScope, $timeout, $scope, $state, $stateParams, $ngBootbox, $uibModal, appUtils, bdsService, nhuCauService, authService, toaster) {
 		$rootScope.settings.layout.showSmartphone = false;
 		$rootScope.settings.layout.showPageHead = true;
 		$rootScope.settings.layout.guestPage = false;
@@ -16,32 +16,22 @@
 		vm.khoBDSKey = $stateParams.khoId;
 		vm.user = $stateParams.user;
 		vm.currentUserId = currentUser.$id;
-		vm.loaiTacNghiepList = [];
-		var tacNghiepList = [];
+		vm.nhuCauList = [];
 
-		vm.cacLoaiTacNghiep = appSettings.cacLoaiTacNghiep;
-		_.forEach(vm.cacLoaiTacNghiep, function (item, key) {
-			if (!item.flagTacNghiepHeThong)
-				vm.loaiTacNghiepList.push({
-					text: item.text,
-					value: key
-				});
-		});
-
-		vm.activeTab = 'tacNghiep';
+		vm.activeTab = 'lienKetNhuCau';
 		vm.tabs = {
 			thongTin: {
 				title: 'Thông Tin'
 			},
 			tacNghiep: {
 				title: 'Tác Nghiệp',
-				url: './app/bds/add_edit/_tab-tac-nghiep.tpl.html'
 			},
 			lienKetUsers: {
 				title: 'Liên Kết Users'
 			},
 			lienKetNhuCau: {
-				title: 'Liên Kết Nhu Cầu'
+				title: 'Liên Kết Nhu Cầu',
+				url: './app/bds/add_edit/_tab-lien-ket-nhu-cau.tpl.html'
 			},
 			yeuToTangGiamGia: {
 				title: 'Yếu Tố Tăng Giảm Giá'
@@ -63,37 +53,7 @@
 			});
 		};
 
-		vm.groupedItems = [];
-		vm.filteredItems = [];
-		vm.pagedItems = [];
-		vm.paging = {
-			pageSize: 25,
-			currentPage: 0,
-			totalPage: 0,
-			totalRecord: 0
-		};
-
 		vm.keyword = '';
-		vm.groupToPages = function () {
-			vm.pagedItems = [];
-			for (var i = 0; i < vm.filteredItems.length; i++) {
-				if (i % vm.paging.pageSize === 0) {
-					vm.pagedItems[Math.floor(i / vm.paging.pageSize)] = [vm.filteredItems[i]];
-				} else {
-					vm.pagedItems[Math.floor(i / vm.paging.pageSize)].push(vm.filteredItems[i]);
-				}
-			}
-			if (vm.filteredItems.length % vm.paging.pageSize === 0) {
-				vm.paging.totalPage = vm.filteredItems.length / vm.paging.pageSize;
-			} else {
-				vm.paging.totalPage = Math.floor(vm.filteredItems.length / vm.paging.pageSize) + 1;
-			}
-
-		};
-
-		$scope.changePage = function () {
-			vm.groupToPages();
-		};
 
 		// vm.search = function (keyword) {
 		// 	appUtils.showLoading();
@@ -222,21 +182,42 @@
 			if (!!vm.bdsId && !!vm.khoBDSKey) {
 				appUtils.showLoading();
 				vm.model.khoBDSKey = vm.khoBDSKey;
-				bdsService.getTab(vm.bdsId, 'tacNghiep').then(function (result) {
-					console.log('MODEL AC NGJIIE{', result);
-					if (!!result) {
-						_.forEach(result, function (item, key) {
-							if (_.isObject(item)) {
-								item.tacNghiepKey = key;
-								tacNghiepList.push(item);
-							}
+				bdsService.getBDS(vm.khoBDSKey, vm.bdsId).then(function (result) {
+					console.log('Lien kET Nhu CAU', result);
+					if (!!result.listNhuCauKey) {
+						_.forEach(result.listNhuCauKey, function (item, key) {
+							nhuCauService.getOnceNhuCau(vm.khoBDSKey, 'ban', item).then(function (res) {
+								if (!!res) {
+									nhuCauService.getTabNhuCau('lienKetUser', item).then(function (linkedRs) {
+										var create = _.find(linkedRs, function (o) {
+											return o.loaiLienKetUser === "createUserUniq";
+										});
+										vm.nhuCauList.push({
+											tieuDe: res.tieuDe,
+											createUser: create.userName,
+											timestampCreated: create.timeCreated
+										});
+										$scope.$apply();
+									});
+								}
+							});
+							nhuCauService.getOnceNhuCau(vm.khoBDSKey, 'cho-thue', item).then(function (res) {
+								if (!!res) {
+									nhuCauService.getTabNhuCau('lienKetUser', item).then(function (linkedRs) {
+										var create = _.find(linkedRs, function (o) {
+											return o.loaiLienKetUser === "createUserUniq";
+										});
+										nhuCauList.push({
+											tieuDe: res.tieuDe,
+											createUser: create.userName,
+											timestampCreated: create.timeCreated
+										});
+										$scope.$apply();
+									});
+								}
+							});
 						});
-						vm.filteredItems = appUtils.sortArray(tacNghiepList, 'timestampCreated');
-						vm.paging.totalRecord = tacNghiepList.length;
-						vm.paging.currentPage = 0;
-						//group by pages
-						vm.groupToPages();
-						$scope.$apply();
+						console.log('LIST NHU CAU', vm.nhuCauList);
 					}
 					appUtils.hideLoading();
 				});

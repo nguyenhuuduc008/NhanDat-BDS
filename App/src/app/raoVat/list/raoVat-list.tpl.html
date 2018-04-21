@@ -1,0 +1,55 @@
+﻿<style>
+    .group-user-list-btn {
+        padding-top: 2px !important;
+        padding-bottom: 2px !important;
+        margin: 5px !important;
+        width: 147px !important;
+    }
+</style>
+<div class="portlet light bordered tasks-widget">
+    <div class="portlet-title">
+        <div class="row">
+            <div class="col-md-1">
+                <a type="button" href="#" ng-click="btnAddNew_Click()" class="btn blue">Thêm mới</a>
+            </div>
+           
+            <div class="off-set col-md-4 col-sm-offset-7">
+                <div class="input-group select2-bootstrap-append">
+                    <input ng-model="keyWord" placeholder="tìm kiếm" class="form-control" tabindex="-1" aria-hidden="true" />
+                    <span class="input-group-btn">
+                        <button style="border-radius: 0px 5px 5px 0px;" type="button" class="btn btn-default" data-select2-open="single-append-text" ng-click="btnSearch_Click(keyWord)" ng-keydown="$event.keyCode === 13 && btnSearch_Click(keyword)">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="table-scrollable table-scrollable-borderless">
+        <table class="table table-hover table-light">
+            <thead class="flip-content">
+                <tr class="uppercase">
+                    <th style="text-align:center">Tiêu đề</th>
+                    <th style="text-align:center">Từ ngày</th>
+                    <th style="text-align:center">Đến ngày</th>
+                    <th style="text-align:center">Trạng thái</th>
+                    <th style="text-align:center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="x in Data">
+                    <td> <a href="#/raoVat/chiTiet/{{x.$id}}">{{x.tieuDe}}</a></td>
+                    <td style="text-align:center">{{x.tuNgay | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                    <td style="text-align:center">{{x.denNgay | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                    <td style="text-align:center">
+                        <b ng-show="x.trangThai" style="color:green">Đang hiển thị</b>
+                        <b ng-show="!x.trangThai" style="color:red">Không hiển thị</b>
+                    </td>
+                    <td style="text-align:center">
+                        <button type="button" class="btn red group-user-list-btn" ng-click="btnRemoveMember_Click(x.$id)">Xóa</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

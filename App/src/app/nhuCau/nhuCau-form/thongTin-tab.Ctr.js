@@ -3,14 +3,12 @@
     angular.module('app.nhuCau')
     .controller('nhuCauThongTinCtr', nhuCauThongTinCtr);
     	/** @ngInject */
-    function nhuCauThongTinCtr($rootScope, $scope, $state, $stateParams, $q, $filter, nhuCauService,appUtils,$ngBootbox,toaster, settingService, bdsService){
+    function nhuCauThongTinCtr($rootScope, $scope, $state, $stateParams, $q, $filter, nhuCauService,appUtils,$ngBootbox,toaster, settingService, bdsService, userService){
         $rootScope.settings.layout.showSmartphone = false;
         $rootScope.settings.layout.showBreadcrumb = false;
         $rootScope.settings.layout.guestPage = false;
         var appSettings = $rootScope.storage.appSettings;    
         var currentUser = $rootScope.storage.currentUser;
-        if($stateParams.item == null || $stateParams.item == undefined)
-            $state.go('nhuCauListing');
 
         var nhuCauThongTinVm =this;// jshint ignore:line
         //
@@ -22,6 +20,7 @@
         nhuCauThongTinVm.cacLoaiHuong = appSettings.cacLoaiHuong;
         nhuCauThongTinVm.loaiBDSList = appSettings.cacLoaiBDS;
         
+        nhuCauThongTinVm.contactUser = {};
         nhuCauThongTinVm.khoBDSList = [];
         nhuCauThongTinVm.cities = [];
         nhuCauThongTinVm.districts = [];
@@ -414,7 +413,7 @@
                     $scope.$apply(function () {
                         var linkCreateUser = {
                             phone: currentUser.phoneNumber,
-                            userName: currentUser.lastName + ' ' + currentUser.firstName,
+                            name: currentUser.lastName + ' ' + currentUser.firstName,
                             loaiLienKetUser: "createUserUniq",
                             timeCreated: Date.now(),
                             khoBDSKey: nhuCauThongTinVm.model.khoBDSKey,
@@ -429,7 +428,7 @@
                     return;
                 }
                 appUtils.hideLoading();
-                toaster.error("Thêm Mới Nhu Không Thành Công!");
+                toaster.error("Thêm Mới Nhu Cầu Không Thành Công!");
             });
         }
 
@@ -458,7 +457,7 @@
                         setTimeout(function() {
                             var linkCreateUser = {
                                 phone: currentUser.phoneNumber,
-                                userName: currentUser.lastName + ' ' + currentUser.firstName,
+                                name: currentUser.lastName + ' ' + currentUser.firstName,
                                 loaiLienKetUser: "createUserUniq",
                                 timeCreated: Date.now(),
                                 khoBDSKey: nhuCauThongTinVm.model.khoBDSKey,
@@ -466,6 +465,7 @@
                             };
                             console.log('NHUC AU KEY LIEN KET', res.nhuCaukey);
                             nhuCauService.updateTabNhuCau('lienKetUser', linkCreateUser, res.nhuCaukey, true);
+                            bdsService.updateTab(bdsKey, linkCreateUser, 'lienKetUser', true);
                         }, 500);
                         toaster.success("Thêm Mới Nhu Cầu Thành Công");
                         $state.go('nhuCauListing');
@@ -541,20 +541,58 @@
             return 'Diện Tích Từ ' + $filter('currency')(nhuCauThongTinVm.bds.dienTichFrom, "", 0) + ' Đến ' + $filter('currency')(nhuCauThongTinVm.bds.dienTichTo, "", 0); 
         };
 
+        function checkContactUser(loaiNhuCauId, linkedList) {
+            var find;
+            switch (loaiNhuCauId) {
+                case 'ban':
+                    find = _.find(linkedList, function (o) {
+                        return o.loaiLienKetUser == "1";
+                    });
+                    break;
+                case 'cho-thue':
+                    find = _.find(linkedList, function (o) {
+                        return o.loaiLienKetUser == "1";
+                    });
+                    break;
+                case 'mua':
+                    find = _.find(linkedList, function (o) {
+                        return o.loaiLienKetUser == "-LA44NgCmhU6d05Alyx5";
+                    });
+                    break;
+                case 'thue':
+                    find = _.find(linkedList, function (o) {
+                        return o.loaiLienKetUser == "-LA44UJaXJ-KlSyJ6Wj6";
+                    });
+                    break;
+            }
+            console.log('FINDER LOAI ID', find);
+            return find;
+        }
+
         //set type of form 
         function setForm() {
-            if($stateParams.item) {
-                if($stateParams.nhuCauId) {
-                    changeForm($stateParams.loaiId, $stateParams.khoId);
-                    nhuCauThongTinVm.isEdit = true;
-                    console.log('FINAL PARMS', $stateParams);
-                    if($stateParams.loaiId === "mua" || $stateParams.loaiId === "thue") {
-                        nhuCauThongTinVm.model = $stateParams.item;
+            if (!!$stateParams.nhuCauId) {
+                nhuCauThongTinVm.model = {
+                    donGiaFrom: 100000000,
+                    donGiaTo: 100000000,
+                    tongGiaFrom: 100000000,
+                    tongGiaTo: 100000000,
+                };
+                nhuCauThongTinVm.bds = {
+                    dienTichFrom: 50,
+                    dienTichTo: 50,
+                };
+                changeForm($stateParams.loaiId, $stateParams.khoId);
+                nhuCauThongTinVm.isEdit = true;
+                googleMapInit();
+                nhuCauService.getOnceNhuCau($stateParams.khoId, $stateParams.loaiId, $stateParams.nhuCauId).then(function (res) {
+                    nhuCauThongTinVm.model = res;
+                    console.log('PARAM NEW', nhuCauThongTinVm.model);
+                    if ($stateParams.loaiId === "mua" || $stateParams.loaiId === "thue") {
                         delete nhuCauThongTinVm.model.$id;
-                        delete nhuCauThongTinVm.model.activeTab;
                         nhuCauThongTinVm.bds = nhuCauThongTinVm.model;
 
-                        var loaiBDS = _.find(nhuCauThongTinVm.loaiBDSList, function(o) {
+                        var loaiBDS = _.find(nhuCauThongTinVm.loaiBDSList, function (o) {
                             return o.value == nhuCauThongTinVm.bds.loaiBDS;
                         });
                         nhuCauThongTinVm.loaiBDSForm = loaiBDS.loaiForm;
@@ -564,15 +602,13 @@
                             nhuCauThongTinVm.changeDistrict(nhuCauThongTinVm.bds.phuongXa, nhuCauThongTinVm.bds.duongPho);
                     }
                     else {
-                        console.log('FINAL PARMS BAN CHO THUE', $stateParams);
-                        nhuCauThongTinVm.model = $stateParams.item;
                         bdsService.getBDS($stateParams.khoId, nhuCauThongTinVm.model.bdsKey).then(function (result) {
                             console.log('DATA RESULT', result);
                             nhuCauThongTinVm.bds = result;
                             delete nhuCauThongTinVm.bds.$id;
                             delete nhuCauThongTinVm.model.$id;
 
-                            var loaiBDS = _.find(nhuCauThongTinVm.loaiBDSList, function(o) {
+                            var loaiBDS = _.find(nhuCauThongTinVm.loaiBDSList, function (o) {
                                 return o.value == nhuCauThongTinVm.bds.loaiBDS;
                             });
                             nhuCauThongTinVm.loaiBDSForm = loaiBDS.loaiForm;
@@ -583,42 +619,58 @@
                             if (!nhuCauThongTinVm.bds.media)
                                 nhuCauThongTinVm.bds.media = {};
                             loadMedia(nhuCauThongTinVm.bds.media);
-                            if(!!nhuCauThongTinVm.bds.lat && !!nhuCauThongTinVm.bds.lon)
+                            if (!!nhuCauThongTinVm.bds.lat && !!nhuCauThongTinVm.bds.lon)
                                 setLatLong(nhuCauThongTinVm.bds.lat, nhuCauThongTinVm.bds.lon);
                             $scope.$apply();
                         });
-                        googleMapInit();
                     }
-                } else {
-                    var loaiBDSDefault = _.find(nhuCauThongTinVm.loaiBDSList, function(o) {
-                        return o.loaiForm == 'form1';
-                    });
-                    nhuCauThongTinVm.model = {
-                        donGiaFrom: 100000000,
-                        donGiaTo: 100000000,
-                        tongGiaFrom: 100000000,
-                        tongGiaTo: 100000000,
-                        donViDonGia: 'trieu/m2',
-                        donViTongGia: 'ty',
-                    };
-                    nhuCauThongTinVm.bds = {
-                        loaiViTri: "notSelect",
-                        duAn: "notSelect",
-                        dienTichFrom: 50,
-                        dienTichTo: 50,
-                        thanhPho: "notSelect",
-                        quanHuyen: "notSelect",
-                        phuongXa: "notSelect",
-                        duongPho: "notSelect",
-                        loaiBDS: loaiBDSDefault.value,
-                        media: {}
-                    };
-                    nhuCauThongTinVm.loaiBDSForm = loaiBDSDefault.loaiForm;
-                    nhuCauThongTinVm.model.khoBDSKey = !!nhuCauThongTinVm.khoBDSDefault ? nhuCauThongTinVm.khoBDSDefault: 'allKho';
-                    nhuCauThongTinVm.model.loaiNhuCauKey = $stateParams.loaiId;
-                    changeForm($stateParams.loaiId, $stateParams.khoId);
-                    googleMapInit();
-                }
+                });
+                nhuCauService.getTabNhuCau('lienKetUser', $stateParams.nhuCauId).then(function (result) {
+                    console.log('LIEN KET USER resukt', result);
+                    var contactUser = checkContactUser($stateParams.loaiId, result);
+                    if (!!contactUser) {
+                        userService.get(contactUser.userKey).$loaded().then(function (userRs) {
+                            console.log('USER CONtACT', userRs);
+                            nhuCauThongTinVm.contactUser = {
+                                contactName: userRs.lastName + ' ' + userRs.firstName || '',
+                                address: userRs.address || '',
+                                email: userRs.email || '',
+                                phone: userRs.phoneNumber || '',
+                                cellPhone: userRs.cellPhone || ''
+                            };
+                        });
+                    }
+                });
+            } else {
+                nhuCauThongTinVm.isEdit = false;
+                var loaiBDSDefault = _.find(nhuCauThongTinVm.loaiBDSList, function (o) {
+                    return o.loaiForm == 'form1';
+                });
+                nhuCauThongTinVm.model = {
+                    donGiaFrom: 100000000,
+                    donGiaTo: 100000000,
+                    tongGiaFrom: 100000000,
+                    tongGiaTo: 100000000,
+                    donViDonGia: '1',
+                    donViTongGia: '1',
+                };
+                nhuCauThongTinVm.bds = {
+                    loaiViTri: "notSelect",
+                    duAn: "notSelect",
+                    dienTichFrom: 50,
+                    dienTichTo: 50,
+                    thanhPho: "notSelect",
+                    quanHuyen: "notSelect",
+                    phuongXa: "notSelect",
+                    duongPho: "notSelect",
+                    loaiBDS: loaiBDSDefault.value,
+                    media: {}
+                };
+                nhuCauThongTinVm.loaiBDSForm = loaiBDSDefault.loaiForm;
+                nhuCauThongTinVm.model.khoBDSKey = !!nhuCauThongTinVm.khoBDSDefault ? nhuCauThongTinVm.khoBDSDefault : 'allKho';
+                nhuCauThongTinVm.model.loaiNhuCauKey = $stateParams.loaiId;
+                changeForm($stateParams.loaiId, $stateParams.khoId);
+                googleMapInit();
             }
         }
 

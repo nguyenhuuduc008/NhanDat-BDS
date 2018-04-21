@@ -8,8 +8,8 @@ luis.phan@vonic.vn / team_Vonic12345
 ====Deploy Functions===
 Step 1: Set config elastic on functions service
 run: 
-firebase functions:config:set elasticsearch.username="elastic" elasticsearch.password="n170oh6NsG4GSj9zh2564Zxf" elasticsearch.url="https://144accd3e3c2c5fe37e5e7e7b1e13671.us-east-1.aws.found.io:9243/"
+firebase functions:config:set elasticsearch.username="elastic" elasticsearch.password="vmHMqg9Xwer7extE92BEd4x4" elasticsearch.url="https://144accd3e3c2c5fe37e5e7e7b1e13671.us-east-1.aws.found.io:9243/"
 
 Step 2: Deploy 
 run:
-firbase deploy --only functions
+firebase deploy --only functions

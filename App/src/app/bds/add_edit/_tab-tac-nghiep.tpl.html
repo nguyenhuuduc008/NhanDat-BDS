@@ -1,15 +1,15 @@
 <div class="row">
-    <div class="col-md-4 col-sm-12">
+    <div class="">
         <div class="portlet light bordered">
             <div class="portlet-title tabbable-line">
                 <div class="caption">
-                    <span class="caption-subject">{{vm.formTitle}} </span>
+                    <span class="caption-subject"><h5>Thêm Tác Ngiệp Người Dùng </h5></span>
                 </div>
             </div>
             <div class="portlet-body form">
-                <form role="form" name="form" novalidate ng-submit="vm.save()">
+                <form role="form" name="form" novalidate ng-submit="vm.save(form)">
                     <div class="form-body">
-                        <div class="form-group" ng-class="{'has-error': (vm.showInvalid && form.loaiTacNghiep.$error.required)}">
+                        <div class="form-group col-md-4" >
                             <label class="control-label">Loại tác nghiệp
                                 <span class="required-field">*</span>
                             </label>
@@ -17,58 +17,29 @@
                                 <div class="col-md-12">
                                     <select name="loaiTacNghiep" ng-model="vm.model.loaiTacNghiep" class="form-control" required>
                                         <option value="" disabled>Chọn Loại Tác Nghiệp</option>
-                                        <option ng-repeat="item in vm.cacLoaiTacNghiep" value="{{item.value}}" ng-selected="item.value == vm.model.loaiTacNghiep">{{item.text}}</option>
+                                        <option ng-repeat="item in vm.loaiTacNghiepList" value="{{item.value}}" ng-selected="item.value == vm.model.loaiTacNghiep">{{item.text}}</option>
                                     </select>
-                                    <label class="control-label" ng-show="vm.showInvalid && form.loaiTacNghiep.$error.required">* This field is required</label>
-                                    <!-- <small>The description is not prominent by default; however, some themes may show it.</small> -->
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group" ng-class="{'has-error': (vm.showInvalid && form.thongtin.$error.required) || form.thongtin.$error.pattern}">
+                        <div class="form-group col-md-7" >
                             <label class="control-label">Thông tin tác nghiệp
                                 <span class="required-field">*</span>
                             </label>
-                            <input class="form-control" type="text" placeholder="Thông tin tác nghiệp" ng-model="vm.model.thongtin" required ng-pattern="vm.nameRegx"
-                                name="thongtin" />
-                            <label class="control-label" ng-show="vm.showInvalid && form.thongtin.$error.required">* This field is required</label>
-                            <label class="control-label" ng-show="form.thongtin.$error.pattern">* This field dose not allow special characters</label>
-                        </div>
-                        <div class="form-group" ng-class="{'has-error': (vm.showInvalid && form.user.$error.required) || form.user.$error.pattern}">
-                            <label class="control-label">User
-                                <span class="required-field">*</span>
-                            </label>
-                            <div class="input-group mb-3">
-                                <input class="form-control" type="text" placeholder="Số điện thoại" ng-model="vm.model.user" required ng-pattern="vm.nameRegx"
-                                    name="user" />
-                                <span class="input-group-btn input-group-addon no-padding">
-                                    <button class="btn btn-defaul" type="button" style="padding: 6px;" ng-click="vm.getUserByPhone(vm.model.user)">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                            </div>
-                            <label class="control-label" ng-show="vm.showInvalid && form.user.$error.required">* This field is required</label>
-                            <label class="control-label" ng-show="form.user.$error.pattern">* This field dose not allow special characters</label>
-                        </div>
-                        <div class="form-group" ng-class="{'has-error': (vm.showInvalid && form.ngayTacNghiep.$error.required)}">
-                            <label class="control-label">Ngày giờ
-                                <span class="required-field">*</span>
-                            </label>
-                            <single-date-picker name="ngayTacNghiep" ng-model="vm.model.ngayTacNghiep" hour-format="true" is-require="true"></single-date-picker>
-                            <label class="control-label" ng-show="vm.showInvalid && form.ngayTacNghiep.$error.required">* This field is required</label>
+                            <input class="form-control" type="text" placeholder="Thông tin tác nghiệp" ng-model="vm.model.thongtin" required name="thongtin" />
                         </div>
                     </div>
-                    <div class="form-actions">
-                        <button type="submit" class="btn green" ng-disabled="form.$invalid">Save</button>
-                        <button type="button" class="btn default" ng-show="!vm.showAddNew" ng-click="vm.cancel()">Cancel</button>
+                    <div class="form-actions no-padding-top margin-top-5 margin-left-15" style="padding-left: 15px;">
+                        <button type="submit" class="btn green" ng-disabled="form.$invalid">Thêm</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <div class="col-md-8 col-sm-12">
-        <div class="portlet light portlet-fit">
+    <div class="">
+        <div class="portlet light portlet-fit bordered">
             <!-- BEGIN BORDERED TABLE PORTLET-->
-            <div class="portlet-title" style="padding-top:12px">
+            <!-- <div class="portlet-title" style="padding-top:12px">
                 <div class="inputs">
                     <div class="portlet-input input-inline">
                         <div class="input-icon right">
@@ -77,8 +48,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="portlet-title" style="padding-top:0px">
+            </div> -->
+            <div class="portlet-title ">
                <!-- <div class="caption ">
                     <div class="col-md-10 col-sm-10 col-xs-10 no-padding-right">
                         <select class="bs-select form-control" ng-model="vm.selectAction">
@@ -90,6 +61,9 @@
                         <button type="button" class="btn green" ng-click="vm.apply('select-role')">Apply</button>
                     </div>
                 </div>-->
+                <div class="caption">
+                    <span class="caption-subject"><h5>Danh Sách Tác Ngiệp Người Dùng </h5></span>
+                </div>
                 <div class="actions margin-top-5">
                     <!--<list-paging ng-model="vm.paging" on-change="vm.changePage()"></list-paging>-->
                     <list-paging ng-model="vm.paging" change-page="changePage"></list-paging>
@@ -100,33 +74,29 @@
                     <table class="table table-hover table-light">
                         <thead>
                             <tr class="uppercase">
-                                <th>
-                                    <label class="mt-checkbox mt-checkbox-outline">
-                                        <input type="checkbox" name="tnc" id="select-all-role" ng-click="vm.selectAll('select-all-role','select-role')" />
-                                        <span></span>
-                                    </label>
-                                </th>
                                 <th> Loại </th>
                                 <th> Thông tin </th>
-                                <th> User </th>
-                                <th> Ngày Giờ </th>
+                                <th> Người Dùng </th>
+                                <th class="hide-xs">Số Điện Thoại</th>
+                                <th class="hide-xs"> Ngày Giờ </th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in vm.pagedItems[vm.paging.currentPage]">
-                                <td>
-                                    <label class="mt-checkbox mt-checkbox-outline">
-                                        <input type="checkbox" name="select-role" value="{{item.$id}}" />
-                                        <span></span>
-                                    </label>
-                                </td>
                                 <td>{{vm.textLoaiTacNghiep(item.loaiTacNghiep)}}</td>
                                 <td>
-                                    <a class="primary-link" href="#/bds/detail/tac-nghiep?bdsId={{vm.bdsId}}&id={{item.$id}}&user={{vm.textUser(item.userPhone)}}">{{item.thongtin}}</a>
+                                    {{item.thongtin}}
                                 </td>
-                                <td>{{vm.textUser(item.userPhone)}}</td>
-                                <td>
-                                    {{item.ngayTacNghiep | date : "MM/dd/yyyy HH:mm:ss"}}
+                                <td>{{item.name}}</td>
+                                <td class="hide-xs">{{item.phoneNumber}}</td>
+                                <td class="hide-xs">
+                                    {{item.timestampCreated | date : "MM/dd/yyyy, hh:mm:ss a"}}
+                                </td>
+                                <td ng-if="!item.isSystem || item.userKey == vm.currentUserId">
+                                    <a href="javascript:;" ng-click="vm.delete(item.tacNghiepKey)">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
                                 </td>
                             </tr>
 

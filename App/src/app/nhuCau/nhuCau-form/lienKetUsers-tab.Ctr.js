@@ -43,7 +43,8 @@
                                 label: "Tạo mới",
                                 className: "btn-success",
                                 callback: function () {
-                                    $window.location.href = '#/user/add';
+                                    //$window.location.href = '#/user/add';
+                                    $state.go('user.add', { linkedId: $stateParams.nhuCauId , loaiId: $stateParams.loaiId, khoId: $stateParams.khoId});
                                     appUtils.hideLoading();
                                 }
                             }
@@ -55,8 +56,8 @@
                     nhuCauLienKetUsersVm.isUserExit = true;
                     nhuCauLienKetUsersVm.model.phone = res.data.phone;
                     nhuCauLienKetUsersVm.userEmail = res.data.userEmail;
-                    //nhuCauLienKetUsersVm.model.userId = res.data.userId;
-                    nhuCauLienKetUsersVm.model.userName = res.data.userName;
+                    nhuCauLienKetUsersVm.model.userKey = res.data.userId;
+                    nhuCauLienKetUsersVm.model.name = res.data.userName;
                     nhuCauLienKetUsersVm.model.timeCreated = Date.now();
                 }
             });
@@ -91,8 +92,6 @@
                         label: "Chấp Nhận",
                         className: "btn-success",
                         callback: function () {
-                            console.log('DDDDDLIST MODEL KEY', nhuCauLienKetUsersVm.userLinkedList);
-                            console.log('PHONE ID USER', linkedKey);
                             removeLinked('lienKetUser', nhuCauLienKetUsersVm.model.nhuCauKey, linkedKey);
                             toaster.success("Dừng Liên Kết Thành Công");
                         }
@@ -143,7 +142,7 @@
                                 editLinked('lienKetUser', nhuCauLienKetUsersVm.model, nhuCauLienKetUsersVm.model.nhuCauKey, true);
                                 removeLinked('lienKetUser', nhuCauLienKetUsersVm.model.nhuCauKey, duplicate.linkedKey);
                                 toaster.success("Liên Kết Người Dùng Thành Công");
-                                appUtils.showLoading();
+                                appUtils.hideLoading();
                             }
                         }
                     }
@@ -169,7 +168,7 @@
                             callback: function () {
                                 editLinked('lienKetUser', nhuCauLienKetUsersVm.model, nhuCauLienKetUsersVm.model.nhuCauKey, true);
                                 toaster.success("Liên Kết Người Dùng Thành Công");
-                                appUtils.showLoading();
+                                appUtils.hideLoading();
                             }
                         }
                     }
@@ -196,7 +195,7 @@
         function addToLinkedList(linkedModel) {
             nhuCauLienKetUsersVm.userLinkedList.push({
                 phone: linkedModel.phone,
-                userName: linkedModel.userName,
+                name: linkedModel.name,
                 loaiLienKetUser: linkedModel.loaiLienKetUser,
                 timeCreated: displayDate(linkedModel.timeCreated),
                 linkedKey: linkedModel.linkedKey
@@ -213,12 +212,7 @@
         nhuCauLienKetUsersVm.phoneValid = function (e) {
             var iKeyCode = (e.which) ? e.which : e.keyCode;
             if (iKeyCode < 48 || iKeyCode > 57)
-                e.preventDefault(); 
-            else {
-                console.log('nhuCauLienKetUsersVm.keyword',nhuCauLienKetUsersVm.keyword);
-                if(nhuCauLienKetUsersVm.keyword.length === 11)
-                    e.preventDefault(); 
-            }    
+                e.preventDefault();    
         };
 
         if (!!$stateParams.nhuCauId) {
@@ -226,7 +220,6 @@
             //$stateParams.item.loaiNhuCauKey  --> //key loại nhu cầu dung để lưu dữ liệu
             ///xét trường hợp vào trang vào trang edit
             nhuCauLienKetUsersVm.isUserExit = false;
-            nhuCauLienKetUsersVm.isEdit = true;
             nhuCauLienKetUsersVm.model.loaiNhuCauKey = $stateParams.loaiId;
             nhuCauLienKetUsersVm.model.khoBDSKey = $stateParams.khoId;
             nhuCauLienKetUsersVm.model.nhuCauKey = $stateParams.nhuCauId;
@@ -238,8 +231,8 @@
                         if (_.isObject(item)) {
                             userService.getExitedPhone(item.phone).then(function (rs) {
                                 nhuCauLienKetUsersVm.userLinkedList.push({
-                                    phone: rs.data.phone,
-                                    userName: rs.data.userName,
+                                    phone: item.phone,
+                                    name: item.name,
                                     loaiLienKetUser: item.loaiLienKetUser,
                                     timeCreated: displayDate(item.timeCreated),
                                     linkedKey: key
@@ -247,7 +240,6 @@
                             });
                         }
                     });
-                    console.log('LIEN KET USER', nhuCauLienKetUsersVm.userLinkedList);
                 }
             });
         } else {

@@ -1,13 +1,25 @@
 <div class="row">
-    <div class="">
+    <!-- <div class="">
         <div class="portlet light bordered">
             <div class="portlet-title tabbable-line">
                 <div class="caption">
-                    <span class="caption-subject"><h5>Thêm Tác Ngiệp Người Dùng </h5></span>
+                    <span class="caption-subject"><h5>Thêm Liên Kết Nhu Cầu </h5></span>
+                </div>
+                <div class="inputs">
+                    <label>Nhu Cầu</label> &nbsp;
+                    <div class="portlet-input input-inline">
+                        <div class="input-icon right">
+                            <i class="icon-magnifier" ng-click="vm.searchUserByPhone()"></i>
+                            <input type="text" class="phoneInput form-control form-control-solid" name="phoneInput" ng-model="vm.keyword" placeholder="Nhu Cầu..." ng-keypress="vm.phoneValid($event)" >
+                        </div>
+                    </div>
+                    <button class="btn blue" ng-click="vm.searchUserByPhone()">
+                        Tìm Kiếm
+                    </button>
                 </div>
             </div>
             <div class="portlet-body form">
-                <form role="form" name="form" novalidate ng-submit="nhuCauTacNghiepVm.save(form)">
+                <form role="form" name="form" novalidate ng-submit="vm.save(form)">
                     <div class="form-body">
                         <div class="form-group col-md-4" >
                             <label class="control-label">Loại tác nghiệp
@@ -15,9 +27,9 @@
                             </label>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <select name="loaiTacNghiep" ng-model="nhuCauTacNghiepVm.model.loaiTacNghiep" class="form-control" required>
+                                    <select name="loaiTacNghiep" ng-model="vm.model.loaiTacNghiep" class="form-control" required>
                                         <option value="" disabled>Chọn Loại Tác Nghiệp</option>
-                                        <option ng-repeat="item in nhuCauTacNghiepVm.loaiTacNghiepList" value="{{item.value}}" ng-selected="item.value == nhuCauTacNghiepVm.model.loaiTacNghiep">{{item.text}}</option>
+                                        <option ng-repeat="item in vm.loaiTacNghiepList" value="{{item.value}}" ng-selected="item.value == vm.model.loaiTacNghiep">{{item.text}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -26,7 +38,7 @@
                             <label class="control-label">Thông tin tác nghiệp
                                 <span class="required-field">*</span>
                             </label>
-                            <input class="form-control" type="text" placeholder="Thông tin tác nghiệp" ng-model="nhuCauTacNghiepVm.model.thongtin" required name="thongtin" />
+                            <input class="form-control" type="text" placeholder="Thông tin tác nghiệp" ng-model="vm.model.thongtin" required name="thongtin" />
                         </div>
                     </div>
                     <div class="form-actions no-padding-top margin-top-5 margin-left-15" style="padding-left: 15px;">
@@ -35,7 +47,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> -->
     <div class="">
         <div class="portlet light portlet-fit bordered">
             <!-- BEGIN BORDERED TABLE PORTLET-->
@@ -44,7 +56,7 @@
                     <div class="portlet-input input-inline">
                         <div class="input-icon right">
                             <i class="icon-magnifier"></i>
-                            <input type="text" class="form-control form-control-solid" ng-model="nhuCauTacNghiepVm.keyword" placeholder="search..." ng-change="nhuCauTacNghiepVm.search(nhuCauTacNghiepVm.keyword)">
+                            <input type="text" class="form-control form-control-solid" ng-model="vm.keyword" placeholder="search..." ng-change="vm.search(vm.keyword)">
                         </div>
                     </div>
                 </div>
@@ -52,21 +64,17 @@
             <div class="portlet-title ">
                <!-- <div class="caption ">
                     <div class="col-md-10 col-sm-10 col-xs-10 no-padding-right">
-                        <select class="bs-select form-control" ng-model="nhuCauTacNghiepVm.selectAction">
+                        <select class="bs-select form-control" ng-model="vm.selectAction">
                             <option>Bulk Actions</option>
                             <option>Delete</option>
                         </select>
                     </div>
                     <div class="col-md-2 col-sm-2 col-xs-2 no-padding-left">
-                        <button type="button" class="btn green" ng-click="nhuCauTacNghiepVm.apply('select-role')">Apply</button>
+                        <button type="button" class="btn green" ng-click="vm.apply('select-role')">Apply</button>
                     </div>
                 </div>-->
                 <div class="caption">
-                    <span class="caption-subject"><h5>Danh Sách Tác Ngiệp Người Dùng </h5></span>
-                </div>
-                <div class="actions margin-top-5">
-                    <!--<list-paging ng-model="nhuCauTacNghiepVm.paging" on-change="nhuCauTacNghiepVm.changePage()"></list-paging>-->
-                    <list-paging ng-model="nhuCauTacNghiepVm.paging" change-page="changePage"></list-paging>
+                    <span class="caption-subject"><h5>Danh Sách Liên Kết Nhu Cầu </h5></span>
                 </div>
             </div>
             <div class="portlet-body">
@@ -74,27 +82,21 @@
                     <table class="table table-hover table-light">
                         <thead>
                             <tr class="uppercase">
-                                <th> Loại </th>
-                                <th> Thông tin </th>
-                                <th> Người Dùng </th>
-                                <th class="hide-xs">Số Điện Thoại</th>
-                                <th class="hide-xs"> Ngày Giờ </th>
+                                <th> Tiêu Đề </th>
+                                <th> Người Tạo </th>
+                                <th class="hide-xs"> Thời Gian Tạo </th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="item in nhuCauTacNghiepVm.pagedItems[nhuCauTacNghiepVm.paging.currentPage]">
-                                <td>{{nhuCauTacNghiepVm.textLoaiTacNghiep(item.loaiTacNghiep)}}</td>
-                                <td>
-                                    {{item.thongtin}}
-                                </td>
-                                <td>{{item.name}}</td>
-                                <td class="hide-xs">{{item.phoneNumber}}</td>
+                            <tr ng-repeat="item in vm.nhuCauList">
+                                <td>{{item.tieuDe}}</td>
+                                <td>{{item.createUser}}</td>
                                 <td class="hide-xs">
                                     {{item.timestampCreated | date : "MM/dd/yyyy, hh:mm:ss a"}}
                                 </td>
-                                <td ng-if="!item.isSystem || item.userKey == nhuCauTacNghiepVm.currentUserId">
-                                    <a href="javascript:;" ng-click="nhuCauTacNghiepVm.removeTacNghiep(item.tacNghiepKey)">
+                                <td ng-if="!item.isSystem || item.userKey == vm.currentUserId">
+                                    <a href="javascript:;" ng-click="vm.delete(item.tacNghiepKey)">
                                         <i class="fa fa-trash"></i>
                                     </a>
                                 </td>

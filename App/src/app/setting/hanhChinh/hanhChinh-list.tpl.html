@@ -2,7 +2,8 @@
     <div class="col-md-12">
         <!-- BEGIN BORDERED TABLE PORTLET-->
         <div class="portlet light portlet-fit bordered">
-            <div class="portlet-title">
+            <div class="portlet-title row">
+                <!--
                 <div class="caption col-md-12">
                     <div class="col-md-3 text-right">
                         <label class="control-label padding-top-10">{{hanhChinhListVm.input}}</label>
@@ -14,6 +15,19 @@
                     <div class="col-md-3">
                         <button type="button" class="btn green" ng-click="hanhChinhListVm.actionHanhChinh(hanhChinhListVm.model.text)">{{hanhChinhListVm.buttonType}}</button>
                     </div>
+                </div>
+                -->                
+                <div class="col-md-8 col-sm-12">                    
+                    <div class="col-md-2 col-xs-12 margin-bottom-10">
+                        <label class="control-label padding-top-10">{{hanhChinhListVm.input}}</label>
+                    </div>
+                    <div class="col-md-7 col-xs-12 margin-bottom-20">
+                        <input class="form-control" type="text" placeholder="{{hanhChinhListVm.input}}" ng-model="hanhChinhListVm.model.text" name="hanhChinhInput" required ng-pattern="nameRegx"/>
+                        <div ng-show="hanhChinhListVm.isRegex" class="text-danger"><h5>Vui lòng không nhập ký tự đặc biệt!</h5></div>
+                    </div>
+                    <div class="col-md-3 col-xs-12 margin-bottom-10">
+                        <button type="button" class="btn green" ng-click="hanhChinhListVm.actionHanhChinh(hanhChinhListVm.model.text)">{{hanhChinhListVm.buttonType}}</button>
+                    </div>                    
                 </div>
             </div>
             <div class="portlet-body row">

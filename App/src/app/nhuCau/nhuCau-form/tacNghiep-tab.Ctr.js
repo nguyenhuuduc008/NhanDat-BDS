@@ -11,8 +11,9 @@
         var currentUser = $rootScope.storage.currentUser;
         var nhuCauTacNghiepVm =this;// jshint ignore:line
         //
-        console.log('CMOEL TAC NGHIEP aaaaaa', appSettings);
+        console.log('CMOEL TAC NGHIEP aaaaaa', currentUser);
 
+        nhuCauTacNghiepVm.currentUserId = currentUser.$id;
         nhuCauTacNghiepVm.loaiTacNghiepList = [];
         nhuCauTacNghiepVm.cacKhoBDS = appSettings.cacKhoBDS; //key kho bds dung để lưu dữ liệu
         nhuCauTacNghiepVm.cacLoaiTacNghiep = appSettings.cacLoaiTacNghiep;
@@ -41,7 +42,6 @@
                         className: "btn-default",
                         callback: function () {
                             console.log('cancel');
-                            nhuCauTacNghiepVm.isUserExit = false;
                             $scope.$apply();
                             appUtils.hideLoading();
                         }
@@ -172,10 +172,16 @@
                 if (!!result) {
                     _.forEach(result, function(item, key) {
                         if(_.isObject(item)) {
+                            var rs = _.find(nhuCauTacNghiepVm.cacLoaiTacNghiep, function(o) {
+                                return o.value == item.loaiTacNghiep;
+                            });
+                            if(!!rs.flagTacNghiepHeThong)
+                                item.isSystem = rs.flagTacNghiepHeThong;
                             item.tacNghiepKey = key;
                             tacNghiepList.push(item);
                         }
                     });
+              
                     console.log('FILIEE ITEM', tacNghiepList);
                     nhuCauTacNghiepVm.filteredItems = appUtils.sortArray(tacNghiepList, 'timestampCreated');
                     nhuCauTacNghiepVm.paging.totalRecord = tacNghiepList.length;

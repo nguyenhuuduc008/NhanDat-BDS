@@ -9,7 +9,6 @@
             addNhuCau: addNhuCau,
             uploadMediaStorage: uploadMediaStorage,
             updateNhuCau: updateNhuCau,
-            getNhuCauBanById: getNhuCauBanById,
             getNhuCauByKhoLoai: getNhuCauByKhoLoai,
             updateMediaData: updateMediaData,
             deleteMediaStorage: deleteMediaStorage,
@@ -31,16 +30,13 @@
         function getNhuCau(){
             return $firebaseArray(nhuCauRef);
         }
-        function getNhuCauBanById(loaiKhoId){
-            var ref = bdsRef.child(loaiKhoId);
-            return $firebaseArray(ref);
-        }
         function getNhuCauByKhoLoai(khoBDSId, loaiNhuCauId){
             var refPath = "nhuCau/" + khoBDSId + "/" + loaiNhuCauId;
             return DataUtils.getListDataFirebaseLoadOnce(refPath);
         }
-        function getOnceNhuCau(loaiNhuCauId,id){
-            return $firebaseObject(nhuCauRef.child(loaiNhuCauId).child(id));
+        function getOnceNhuCau(khoBDSId, loaiNhuCauId, nhuCauId){
+            var refPath = "nhuCau/" + khoBDSId + "/" + loaiNhuCauId + "/" + nhuCauId;
+            return DataUtils.getDataFirebaseLoadOnce(refPath);
         }
 
         function updateMediaData(khoBDSId, bdsKey, bdsModel, mediaKey) {

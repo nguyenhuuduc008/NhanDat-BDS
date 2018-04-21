@@ -2,9 +2,10 @@
 	'use strict';
 
 	angular.module("app.bds")
-		.controller("editthuocQuyHoachCtrl", editthuocQuyHoachCtrl);
+		.controller("editloaiNoiThatCtrl", editloaiNoiThatCtrl);
 	/** @ngInject */
-	function editthuocQuyHoachCtrl($q, $rootScope, $timeout, $scope, $state, $stateParams, $ngBootbox, toaster, appUtils, bdsService) {
+	function editloaiNoiThatCtrl($q, $rootScope, $timeout, $scope, $state, $stateParams,
+		$ngBootbox, toaster, appUtils, bdsService, settingService) {
 		$rootScope.settings.layout.showSmartphone = false;
 		$rootScope.settings.layout.showPageHead = true;
 		$rootScope.settings.layout.guestPage = false;
@@ -13,13 +14,13 @@
 		var vm = this; // jshint ignore:line
 		vm.currentUser = $rootScope.storage.currentUser;
 		vm.bdsId = $stateParams.bdsId;
-		vm.model = {
-		};
+		vm.model = {};
 
-		vm.cacLoaiQuyHoach = appSettings.cacLoaiQuyHoach;
+		vm.cacLoaiNoiThat = [];
+
 		vm.showInvalid = true;
 
-		vm.activeTab = 'thuocQuyHoach';
+		vm.activeTab = 'loaiNoiThat';
 		vm.tabs = {
 			thongTin: {
 				title: 'Thông Tin'
@@ -33,45 +34,32 @@
 			lienKetUsers: {
 				title: 'Liên Kết Users'
 			},
-			giamGia: {
-				title: 'Giảm Giá'
-			},
 			yeuToTangGiamGia: {
 				title: 'Yếu Tố Tăng Giảm Giá'
 			},
-			thuocQuyHoach: {
-				title: 'Thuộc Quy Hoạch',
-				url: './app/bds/add_edit/_tab-thuoc-quy-hoach.tpl.html'
+			loaiNoiThat: {
+				title: 'Loại Nội Thất',
+				url: './app/bds/add_edit/_tab-loai-noi-that.tpl.html'
 			},
 			lichSuChuyenQuyen: {
 				title: 'Lịch Sử Chuyển Quyền'
 			},
-			lichSuGiaoDich: {
-				title: 'Lịch Sử Giao Dịch'
-			},
-			capDo: {
-				title: 'Cấp Độ'
-			},
-			lichSuGia: {
-				title: 'Lịch Sử Giá'
-			},
-			media: {
-				title: 'Media'
-			}
 		};
 
 		//Functions
 		vm.loadTab = function (key) {
 			vm.activeTab = key;
-			$state.go('bds.' + key, { bdsId: vm.bdsId });
+			$state.go('bds.' + key, {
+				bdsId: vm.bdsId
+			});
 		};
 
 		vm.save = function () {
 			appUtils.showLoading();
 			var obj = {
-				thuocQuyHoach: vm.model.thuocQuyHoach
+				loaiNoiThatId: vm.loaiNoiThatId
 			};
-			bdsService.updateThuocQuyHoach(vm.bdsId, obj).then(function (res) {
+			bdsService.updateLoaiNoiThat(vm.bdsId, obj).then(function (res) {
 				if (!res.result) {
 					$ngBootbox.alert(res.errorMsg.message);
 					return;
@@ -87,15 +75,27 @@
 			});
 		};
 
-		//Load Data
+		//Load Data		
 		function loadBDSDetails() {
 			appUtils.showLoading();
-			bdsService.getThuocQuyHoach(vm.bdsId).$loaded().then(function(rs){
-				if(rs && rs.timestampCreated){
-					vm.model = rs;
+			settingService.getCacLoaiNoiThat().$loaded().then(function (res) {
+				if (res) {
+					vm.cacLoaiNoiThat = res;
+					bdsService.getLoaiNoiThat(vm.bdsId).$loaded().then(function (rs) {
+						if (rs) {
+							vm.loaiNoiThatId = rs.loaiNoiThatId;
+						}
+
+					});
 				}
 				appUtils.hideLoading();
 			});
+			/* bdsService.getLoaiNoiThat(vm.bdsId).$loaded().then(function (rs) {
+				if (rs) {
+					vm.loaiNoiThatId = rs.loaiNoiThatId;
+				}
+				appUtils.hideLoading();
+			}); */
 		}
 
 		loadBDSDetails();

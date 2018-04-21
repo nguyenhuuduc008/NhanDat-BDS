@@ -1,12 +1,12 @@
 <div class="row">
     <form role="form" id="createForm" name="createForm" novalidate ng-submit="vm.save(createForm)">
-        <div class="form-group col-md-12" ng-class="{'has-error': (vm.showInvalid && createForm.capDo.$error.required)}">
-            <label class="control-label">Thuộc cấp độ
+        <div class="form-group col-md-12" ng-class="{'has-error': (vm.showInvalid && createForm.loaiNoiThat.$error.required)}">
+            <label class="control-label">Loại Nội Thất
                 <span class="required-field">*</span>
             </label>
-            <select name="capDo" ng-model="vm.model.capDo" class="form-control" required>
-                <option value="" disabled>Chọn Cấp Độ</option>
-                <option ng-repeat="item in vm.cacLoaiCapDo" value="{{item.value}}" ng-selected="item.value == vm.capDo">{{item.text}}</option>
+            <select name="loaiNoiThat" ng-model="vm.loaiNoiThatId" class="form-control" required>
+                <option value="" disabled>Chọn Nội Thất</option>
+                <option ng-repeat="item in vm.cacLoaiNoiThat" value="{{item.value}}" ng-selected="item.value == vm.loaiNoiThatId">{{item.text}}</option>
             </select>
         </div>
         <div class=" col-md-12">

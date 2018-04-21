@@ -4,7 +4,7 @@
 	angular.module("app.user")
 	.controller("addUserCtrl" , addUserCtrl);
 	/** @ngInject **/
-	function addUserCtrl($rootScope, $scope, $state,$ngBootbox, userService, authService, currentAuth,appUtils, toaster){
+	function addUserCtrl($rootScope, $scope, $state, $stateParams, $ngBootbox, userService, authService, currentAuth,appUtils, toaster, nhuCauService, bdsService){
 		$rootScope.settings.layout.showSmartphone = false;
 		$rootScope.settings.layout.showPageHead = true;
         $rootScope.settings.layout.guestPage = false;
@@ -15,8 +15,13 @@
 
 		var userAddVm = this; // jshint ignore:line		
 		userAddVm.cacLoaiHanhChinh = appSettings.cacLoaiHanhChinh;
+        userAddVm.cacLoaiLienKetUser = appSettings.cacLoaiLienKetUser;
         userAddVm.cities = [];
-        userAddVm.districts = [];        
+		userAddVm.districts = [];       
+		userAddVm.linked = {}; 
+		userAddVm.linked.pLinkedKey = $stateParams.linkedId;
+		userAddVm.linked.loaiId = $stateParams.loaiId;
+		var duplicate = null;
 
 		userAddVm.existedPhone=false;
 		userAddVm.showInvalid = false;
@@ -66,7 +71,7 @@
 			if(form.$invalid){
 				appUtils.hideLoading();
 				return;
-			}			
+			}	
 			// check password
 			var pvalid = $scope.passwordRegx.test(userAddVm.user.password);
 			 if(!pvalid){
@@ -104,7 +109,44 @@
 								//delete $rootScope.storage.usersList;
 								//create succces go to edit view
 								//$rootScope.reProcessSideBar = true;
-								$state.go('user.details', {id: res.data});		
+								if(!!userAddVm.linked.pLinkedKey && !!userAddVm.linked.loaiId) {
+									userAddVm.linked.phone = userAddVm.user.phoneNumber;
+									userAddVm.linked.userKey = res.data;
+									userAddVm.linked.name = userAddVm.user.lastName + ' ' + userAddVm.user.firstName;
+									userAddVm.linked.timeCreated = Date.now();
+									userAddVm.linked.nhuCauKey = $stateParams.linkedId;
+									userAddVm.linked.khoBDSKey = $stateParams.khoId;
+									delete userAddVm.linked.pLinkedKey;
+									var linkedItem = {
+										activeTab: 'lienKetUsers'
+									};
+									if (!!duplicate) {
+										nhuCauService.removeTabNhuCau('lienKetUser', userAddVm.linked.nhuCauKey, duplicate.linkedKey);
+									}
+									nhuCauService.updateTabNhuCau('lienKetUser', userAddVm.linked, userAddVm.linked.nhuCauKey, true).then(function(linkRs) {
+										$state.go('lienKetUsersNhuCau', {khoId: $stateParams.khoId, loaiId: $stateParams.loaiId, nhuCauId: $stateParams.linkedId, item: linkedItem});	
+									});
+								}
+								else if (!!userAddVm.linked.pLinkedKey) {
+									userAddVm.linked.phone = userAddVm.user.phoneNumber;
+									userAddVm.linked.userKey = res.data;
+									userAddVm.linked.name = userAddVm.user.lastName + ' ' + userAddVm.user.firstName;
+									userAddVm.linked.timeCreated = Date.now();
+									userAddVm.linked.bdsKey = $stateParams.linkedId;
+									userAddVm.linked.khoBDSKey = $stateParams.khoId;
+									delete userAddVm.linked.pLinkedKey;
+									delete userAddVm.linked.loaiId;
+
+									if (!!duplicate) {
+										bdsService.removeTab(userAddVm.linked.bdsKey, 'lienKetUser', duplicate.linkedKey);
+									}
+									bdsService.updateTab(userAddVm.linked.bdsKey, userAddVm.linked, 'lienKetUser', true).then(function(linkRs) {
+										$state.go('bds.lienKetUsers', {khoId: $stateParams.khoId, bdsId: $stateParams.linkedId});	
+									});
+								}
+								else {
+									$state.go('user.details', { id: res.data });
+								}
 							}, function(res){
 								$ngBootbox.alert(res.errorMsg);
 								appUtils.hideLoading();
@@ -142,6 +184,92 @@
 						});
 					}
 				});			
+		};
+
+		userAddVm.checkDupLinked = function (form) {
+			if (!!userAddVm.linked.pLinkedKey) {
+				if(!!userAddVm.linked.loaiId) {
+					nhuCauService.getTabNhuCau('lienKetUser', userAddVm.linked.pLinkedKey).then(function (result) {
+						_.forEach(result, function (item, key) {
+							if(item.loaiLienKetUser === userAddVm.linked.loaiLienKetUser) {
+								item.linkedKey = key;
+								duplicate = item;
+							}
+						});
+						console.log('DUPLICA OBJ', duplicate);
+						if (!!duplicate) {
+							$ngBootbox.customDialog({
+								message: 'Loại Liên Kết Đã Tồn Tại, Tiếp Tục Sẽ Thay Thế Liên Kết Cũ?',
+								buttons: {
+									danger: {
+										label: "Huỷ",
+										className: "btn-default",
+										callback: function () {
+											console.log('cancel');
+											userAddVm.linked.loaiLienKetUser = '';
+											duplicate = {};
+											$scope.$apply();
+											appUtils.hideLoading();
+										}
+									},
+									success: {
+										label: "Chấp Nhận",
+										className: "btn-success",
+										callback: function () {
+											userAddVm.create(form);
+										}
+									}
+								}
+							});
+						}
+						else {
+							userAddVm.create(form);
+						}
+					});
+				}
+				else {
+					bdsService.getTab(userAddVm.linked.pLinkedKey, 'lienKetUser').then(function (result) {
+						_.forEach(result, function (item, key) {
+							if(item.loaiLienKetUser === userAddVm.linked.loaiLienKetUser) {
+								item.linkedKey = key;
+								duplicate = item;
+							}
+						});
+						console.log('DUPLICA OBJ`111111', result);
+						if (!!duplicate) {
+							$ngBootbox.customDialog({
+								message: 'Loại Liên Kết Đã Tồn Tại, Tiếp Tục Sẽ Thay Thế Liên Kết Cũ?',
+								buttons: {
+									danger: {
+										label: "Huỷ",
+										className: "btn-default",
+										callback: function () {
+											console.log('cancel');
+											userAddVm.linked.loaiLienKetUser = '';
+											duplicate = {};
+											$scope.$apply();
+											appUtils.hideLoading();
+										}
+									},
+									success: {
+										label: "Chấp Nhận",
+										className: "btn-success",
+										callback: function () {
+											userAddVm.create(form);
+										}
+									}
+								}
+							});
+						}
+						else {
+							userAddVm.create(form);
+						}
+					});
+				}
+			}
+			else {
+				userAddVm.create(form);
+			}
 		};
 
 		userAddVm.cancel = function(form){

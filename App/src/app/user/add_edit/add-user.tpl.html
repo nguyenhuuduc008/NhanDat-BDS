@@ -25,17 +25,31 @@
                             <div class="tab-content">
                                 <!-- PERSONAL INFO TAB -->
                                 <div class="tab-pane active row" id="tab_1_1">
-                                    <form role="form" id="createUserForm" name="createUserForm" novalidate ng-submit="userAddVm.create(createUserForm)">
-                                            <div class="form-group col-md-12" ng-class="{'has-error': (userAddVm.showInvalid && createUserForm.username.$error.required) || createUserForm.username.$error.pattern}">
-                                                    <label class="control-label">Tên đăng nhập
-                                                        <span class="required-field">*</span>
-                                                    </label>
-                                                    <input type="text" name="username" placeholder="Tên đăng nhập" class="form-control" required ng-pattern="nameRegx" ng-model="userAddVm.user.userName"/>                                                    
-                                                    <label class="control-label" ng-show="createUserForm.username.$error.pattern">* Không cho phép nhập ký tự đặc biệt</label>
-                                                </div>
+                                    <form role="form" id="createUserForm" name="createUserForm" novalidate ng-submit="userAddVm.checkDupLinked(createUserForm)">
+                                        <div class="form-group col-md-12" ng-if="!!userAddVm.linked.pLinkedKey">
+                                            <label class="control-label">Loại liên kết
+                                                <span class="required-field">*</span>
+                                            </label>
+                                            <select name="city" ng-model="userAddVm.linked.loaiLienKetUser" class="form-control" required>
+                                                <option value="" disabled>Chọn loại liên kết</option>
+                                                <option ng-repeat="item in userAddVm.cacLoaiLienKetUser " value="{{item.value}}" ng-selected="item.value == userAddVm.linked.loaiLienKetUser">{{item.text}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-12" ng-class="{'has-error': (userAddVm.showInvalid && createUserForm.username.$error.required) || createUserForm.username.$error.pattern}">
+                                            <label class="control-label">Tên đăng nhập
+                                                <span class="required-field">*</span>
+                                            </label>
+                                            <input type="text" name="username" placeholder="Tên đăng nhập" class="form-control" required ng-pattern="nameRegx" ng-model="userAddVm.user.userName"
+                                            />
+                                            <label class="control-label" ng-show="createUserForm.username.$error.pattern">* Không cho phép nhập ký tự đặc biệt</label>
+                                        </div>
                                         <div class="form-group col-md-12" ng-class="{'has-error': (createUserForm.phonenumber.$error.pattern||createUserForm.phonenumber.$error.required)&&createUserForm.phonenumber.$touched}">
-                                            <label class="control-label" >Điện Thoại<span class="required-field"> *</span></label> 
-                                            <input type="text" maxlength="11" minlength="10"  required placeholder="Số điện thoại" class="form-control" name="phonenumber" ng-keyup="userAddVm.EnalblePhoneForm(createUserForm)" ng-model="userAddVm.Phone" ng-pattern="phoneRegx" />
+                                            <label class="control-label">Điện Thoại
+                                                <span class="required-field"> *</span>
+                                            </label>
+                                            <input type="text" maxlength="11" minlength="10" required placeholder="Số điện thoại" class="form-control" name="phonenumber"
+                                                ng-keyup="userAddVm.EnalblePhoneForm(createUserForm)" ng-model="userAddVm.Phone"
+                                                ng-pattern="phoneRegx" />
                                             <label class="control-label" ng-show="createUserForm.phonenumber.$error.required&&createUserForm.phonenumber.$touched">* Cần nhập Số Điện Thoại</label>
                                             <label class="control-label" ng-show="createUserForm.phonenumber.$error.pattern&&createUserForm.phonenumber.$touched">* Số Điện thoại chỉ được nhập số</label>
                                             <label class="control-label font-green-sharp" ng-show="createUserForm.phonenumber.$error.minlength&&!createUserForm.phonenumber.$error.pattern&&createUserForm.phonenumber.$touched">* Số Điện thoại quá ngắn</label>
@@ -105,9 +119,10 @@
                                                     <span class="required-field">*</span>
                                                 </label>
                                                 <input name="password" type="password" placeholder="Mật khẩu" class="form-control " ng-model="userAddVm.user.password" required
-                                                    />
+                                                />
                                                 <!--<label class="control-label" ng-show="userAddVm.showInvalid && createUserForm.password.$error.required">* This field is required</label>-->
-                                                <label class="control-label" ng-show="createUserForm.password.$error.pattern">* Mật khẩu phải dài từ 6-12 ký tự và bao gồm ít nhất một chữ cái và một số. Mật khẩu phân biệt chữ hoa chữ thường.</label>
+                                                <label class="control-label" ng-show="createUserForm.password.$error.pattern">* Mật khẩu phải dài từ 6-12 ký tự và bao gồm ít nhất một chữ cái và một số.
+                                                    Mật khẩu phân biệt chữ hoa chữ thường.</label>
                                             </div>
                                             <div class="form-group col-md-12">
                                             </div>

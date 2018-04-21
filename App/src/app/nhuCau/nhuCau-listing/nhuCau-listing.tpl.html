@@ -1,6 +1,6 @@
 <div class="portlet light bordered tasks-widget">
     <div class="portlet-title">
-        <div class="caption caption-md" style="min-width: 275px;">
+        <div class="caption caption-md col-sm-2" style="min-width: 285px;">
             <select class="form-control" required id="idDanhMuc" ng-model="vm.item.khoBDSKey">
                 <option ng-repeat="item in vm.khoBDSList" value="{{item.$id}}">{{item.text}}</option>
             </select>
@@ -28,39 +28,38 @@
     --> 
     </div>
     <div class="portlet-title">
-        <div class="caption width70 col-md-12 row">
-            <div class="col-md-6 no-padding-right">
-                <div class="col-xs-6 no-padding-left">
-                    <select class="bs-select form-control" id="idLuaChon" style="max-width: 240px;">
-                        <option value="0">Lựa Chọn</option>
-                        <option value="delete">Xóa</option>
-                    </select>
-                </div>
-                <div class="col-xs-6">
-                    <button type="button" class="btn green col-md-12 " ng-click="vm.appDungLuaChon('select-checkBox','idLuaChon')">Áp Dụng</button>
-                </div>
+        <div class="caption col-xs-12 no-padding-top">
+            <div class="no-padding-left no-padding-right col-sm-2 margin-top-10" style="max-width: 285px;">
+                <select class="bs-select form-control" id="idLuaChon">
+                    <option value="0">Lựa Chọn</option>
+                    <option value="delete">Xóa</option>
+                </select>
             </div>
-            <div class="col-md-6 no-padding-right">
-                <div class="col-xs-6 no-padding-left">
-                    <a type="button" href="#/nhuCau/chonNhuCauThemMoi" class="btn blue">Thêm Mới</a>
-                </div>
-                <div class="col-xs-6">
+            <div class="col-sm-6 margin-top-10" style="padding-left:5px;">
+                <span class="">
+                    <a type="button" class="btn green" ng-click="vm.appDungLuaChon('select-checkBox','idLuaChon')">&nbsp;&nbsp;Áp Dụng&nbsp;</a>
+                </span>
+                <span class="">
+                    <a type="button" href="#/nhuCau/chonNhuCauThemMoi" class="btn blue ">Thêm Mới</a>
+                </span>
+                <span class="">
                     <a type="button" href="#" class="btn blue">Nhân Bản</a>
-                </div>
+                </span>
             </div>
+        
             <!-- <div class="col-md-2 no-padding-left no-padding-right">
-                <button type="button" class="btn green col-md-12 " ng-click="vm.appDungLuaChon('select-checkBox','idLuaChon')">Áp Dụng</button>
-            </div>
-            <div class="col-md-3 text-center">
-                <a type="button" href="#/nhuCau/chonNhuCauThemMoi" class="btn blue">Thêm Mới</a>
-            </div>
-            <div class="col-md-3 text-center">
-                <a type="button" href="#" class="btn blue">Duplicate</a>
-            </div> -->
+                        <button type="button" class="btn green col-md-12 " ng-click="vm.appDungLuaChon('select-checkBox','idLuaChon')">Áp Dụng</button>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <a type="button" href="#/nhuCau/chonNhuCauThemMoi" class="btn blue">Thêm Mới</a>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <a type="button" href="#" class="btn blue">Duplicate</a>
+                    </div> -->
         </div>
         
-        <div class="actions">
-            <div class="padding-top-2">
+        <div class="actions col-xs-12">
+            <div class="pull-right">
                 <list-paging ng-model="vm.paging" change-page="vm.changePage"></list-paging>
             </div>
         </div>
@@ -75,8 +74,10 @@
                             <span></span>
                         </label>
                     </th>
-                    <th class="width25"> Tiêu Đề</th>
-                    <th> Trạng Thái</th>
+                    <th class=""> Tiêu Đề</th>
+                    <th class="hidden-xs hidden-sm"> Địa Chỉ </th>
+                    <th class="hidden-xs"> Thông Tin</th>
+                    <th> Giá</th>
                 </tr>
             </thead>
             <tbody>
@@ -88,12 +89,23 @@
                         </label>
                     </td>
                     <td>
-                        <a class="primary-link" href="#" ng-click="vm.chiTietnhuCau(item)"  style="word-break: break-all;" ng-style="item.capDoColor">
+                        <a class="primary-link" href="#" ng-click="vm.chiTietnhuCau(item)"  ng-style="item.capDoColor">
                             {{item.tieuDe}}
                         </a>
                     </td>
+                    <td class="hidden-xs hidden-sm">
+                        <span class="text-primary bold">{{item.address}}</span>
+                    </td>
+                    <td class="hidden-xs">
+                        Hướng: <span class="font-green-sharp bold">{{item.huongNha}}</span> <br>
+                        Tầng: <span class="font-green-sharp bold">{{item.soTang}}</span> <br>
+                        Ngang: <span class="font-green-sharp bold">{{item.ngang|number:1}} m</span> <br>
+                        Dài: <span class="font-green-sharp bold">{{item.dai|number:1}} m</span> <br>
+                        Diện tích: <span class="font-green-sharp bold">{{item.dienTich}} m<sup>2</sup></span>
+                    </td>
                     <td>
-                        {{item.loaiNhuCauText}}
+                        Đơn giá: <span class="font-red-intense bold">{{item.donGia}} VNĐ / m<sup>2</span><br>
+                        Tổng giá: <span class="font-red-intense bold">{{item.tongGia}} VNĐ</span>
                     </td>
                 </tr>
             </tbody>

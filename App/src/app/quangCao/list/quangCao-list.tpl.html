@@ -1,31 +1,23 @@
 ﻿<div class="portlet light bordered tasks-widget" id="quangCaos">
-    <div class="portlet-title">
-
-
-
-        <div class="caption width70 row">
-            <div class="col-md-3 no-padding-right">
-                <select class="bs-select form-control" id="action-list">
-                    <option value="0">Chọn hành động</option>
-                    <option value="delete">Xóa</option>
-                    <!-- <option value="disable">Disable</option>
-                    <option value="enable">Enable</option> -->
-                </select>
+    <div class="portlet-title">       
+        <div class="col-sm-12 col-lg-7">
+            <div class="row">
+                <div class="col-lg-3 no-padding-right margin-bottom-10">                        
+                    <select class="bs-select form-control" id="action-list">
+                        <option value="0">Chọn</option>
+                        <option value="delete">Xóa</option>                   
+                    </select>
+                </div>
+                <div class="col-lg-2 no-padding-right margin-bottom-20">
+                    <button type="button" class="btn green" ng-click="vm.applyAction('select-quangCao','action-list')">Áp dụng</button>
+                </div>                        
+                <div class="col-lg-2 no-padding-right margin-bottom-5">
+                    <a class="btn  blue" href="#/quangCao/details">Thêm mới</a>        
+                </div>
             </div>
-            <div class="col-md-1 no-padding-left">
-                <button type="button" class="btn green" ng-click="vm.applyAction('select-quangCao','action-list')">Áp dụng</button>
-            </div>
-           
-            <div class="col-md-1 ">
-                <a class="btn  blue" href="#/quangCao/details">
-                  Thêm mới
-                </a>    
-            </div>
-            
-
         </div>
-        <div class="actions">
-            <div class="padding-top-2">
+        <div class="col-lg-5 col-xs-12 no-padding-right margin-bottom-20">
+            <div class="actions pull-right">
                 <list-paging ng-model="vm.paging" change-page="vm.changePage"></list-paging>
             </div>
         </div>
@@ -34,17 +26,16 @@
         <table class="table table-hover table-light">
             <thead class="flip-content">
                 <tr class="uppercase">
-                    <th class="width5">
+                    <th class="width2">
                         <label class="mt-checkbox mt-checkbox-outline">
                             <input type="checkbox" id="select-all-quangCao" ng-click="vm.selectAllQuangCao('select-all-quangCao','select-quangCao')"/>
                             <span></span>
                         </label>
                     </th>
-                    <th class="width5"> Image </th>
-                    <th class="width25"> Vị Trí </th>
-                    <th class="width25"> Đường Dẫn </th>
-                    <th class="hidden-sm text-center width7"> Thời Gian Hiển Thị  </th>
-          
+                    <th class="width5"> Hình ảnh </th>
+                    <th class="width25"> Vị trí </th>
+                    <th class="width25"> Đường dẫn </th>
+                    <th class="hidden-sm text-center width7"> Thời gian hiển thị  </th>          
                     <th class="hidden-sm text-center width15"> Số điện thoại </th>
                 </tr>
             </thead>
@@ -64,18 +55,14 @@
                             </p>
                             <img   ng-if="item.photoURL !==''"   ng-src="{{item.photoURL}}" class="quangCao-pic" class="" alt="profile-image"> 
                         </a>
-                    </td>
-
-                  
+                    </td>                  
                     <td>
                         <select disabled="true" ng-model="item.viTri" ng-options="itemVT as itemVT.value  for itemVT in dataViTri  track by itemVT.name">
                         </select>
                     </td>
-                    <td> <a class="primary-link" href="{{item.duongDan}}">{{item.duongDan}}</a></td>
-                    
+                    <td> <a class="primary-link" href="{{item.duongDan}}">{{item.duongDan}}</a></td>                    
                     <td class="hidden-sm text-center">{{item.timeShow}}</td>
-                    <td class="hidden-sm text-center phoneno">{{vm.formatPhone(item.phoneNumber)}}</td>
-                    
+                    <td class="hidden-sm text-center phoneno">{{vm.formatPhone(item.phoneNumber)}}</td>                    
                 </tr>
             </tbody>
         </table>

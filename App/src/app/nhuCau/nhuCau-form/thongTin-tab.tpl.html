@@ -212,9 +212,9 @@
                                 <div class="form-group">
                                     <label class="control-label">Đơn vị (VNĐ) </label>
                                     <select name="donViDonGia" ng-model="nhuCauThongTinVm.model.donViDonGia" class="form-control" ng-change="nhuCauThongTinVm.selectDonvi(nhuCauThongTinVm.model.donViDonGia, 'donGia')">
-                                        <option value="trieu/m2" selected>Triệu / m</sup>2</sup></option>
-                                        <option value="ty/m2">Tỷ / m</sup>2</sup></option>
-                                        <option value="deal">Thoả Thuận</option>
+                                        <option value="1" selected>Triệu / m</sup>2</sup></option>
+                                        <option value="2">Tỷ / m</sup>2</sup></option>
+                                        <option value="0">Thoả Thuận</option>
                                     </select>
                                 </div>
                             </div>
@@ -238,9 +238,9 @@
                                 <div class="form-group">
                                     <label class="control-label">Đơn vị (VNĐ)  </label>
                                     <select name="donViTongGia" ng-model="nhuCauThongTinVm.model.donViTongGia" class="form-control" ng-change="nhuCauThongTinVm.selectDonvi(nhuCauThongTinVm.model.donViTongGia, 'tongGia')">
-                                        <option value="trieu" selected>Triệu</option>
-                                        <option value="ty">Tỷ</option>
-                                        <option value="deal">Thoả Thuận</option>
+                                        <option value="1" selected>Triệu</option>
+                                        <option value="2">Tỷ</option>
+                                        <option value="0">Thoả Thuận</option>
                                     </select>
                                 </div>
                             </div>
@@ -450,7 +450,7 @@
                 </div>
             </div>
             <!-- Thông tin liên hệ-->
-            <div class="portlet light bordered">
+            <div class="portlet light bordered" ng-if="nhuCauThongTinVm.isEdit">
                 <div class="portlet-title">
                     <div class="caption">
                         <i class="icon-equalizer font-blue-hoki"></i>
@@ -465,48 +465,39 @@
                     <div class="form-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form-group" ng-class="{'has-error': (nhuCauThongTinVm.showInvalid && createForm.tenLienHe.$error.required)}">
+                                <div class="form-group">
                                     <label class="control-label">Tên Liên Hệ
-
                                     </label>
-                                    <input type="text" name="tenLienHe" placeholder="--Tên Liên Hệ" class="form-control" ng-model="nhuCauThongTinVm.model.tenLienHe"
-                                        ng-pattern="emailRegx" />
+                                    <input type="text" name="tenLienHe" placeholder="--Tên Liên Hệ" class="form-control" ng-model="nhuCauThongTinVm.contactUser.contactName" disabled/>
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <div class="form-group" ng-class="{'has-error': (nhuCauThongTinVm.showInvalid && createForm.diaChi.$error.required)}">
+                                <div class="form-group">
                                     <label class="control-label">Địa Chỉ
-
                                     </label>
-                                    <input type="text" name="diaChi" placeholder="--Địa Chỉ" class="form-control" ng-model="nhuCauThongTinVm.model.diaChi" />
+                                    <input type="text" name="diaChi" placeholder="--Địa Chỉ" class="form-control" ng-model="nhuCauThongTinVm.contactUser.address" disabled/>
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <div class="form-group" ng-class="{'has-error': (nhuCauThongTinVm.showInvalid && createForm.email.$error.required) || (createForm.email.$error.pattern || createForm.email.$error.email)}">
+                                <div class="form-group">
                                     <label class="control-label">Email
-
                                     </label>
-                                    <input type="email" name="email" placeholder="Email" class="form-control" ng-model="nhuCauThongTinVm.model.email" ng-pattern="emailRegx"
-                                    />
+                                    <input type="email" name="email" placeholder="Email" class="form-control" ng-model="nhuCauThongTinVm.contactUser.email" disabled/>
                                 </div>
                             </div>
                             <!--/span-->
                             <div class="col-md-6">
-                                <div class="form-group" ng-class="{'has-error': (nhuCauThongTinVm.showInvalid && createForm.dienThoai.$error.required)}">
+                                <div class="form-group">
                                     <label class="control-label">Điện Thoại
-
                                     </label>
-                                    <input type="text" name="dienThoai" placeholder="Di Động" ui-mask="999-999-9999" class="form-control" ng-model="nhuCauThongTinVm.model.dienThoai"
-                                    />
+                                    <input type="text" name="dienThoai" placeholder="Di Động" ui-mask="999-999-9999" class="form-control" ng-model="nhuCauThongTinVm.contactUser.phone" disabled/>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group" ng-class="{'has-error': (nhuCauThongTinVm.showInvalid && createForm.diDong.$error.required)}">
+                                <div class="form-group">
                                     <label class="control-label">Di Động
-
                                     </label>
-                                    <input type="text" name="diDong" placeholder="Di Động" ui-mask="999-999-9999" class="form-control" ng-model="nhuCauThongTinVm.model.diDong"
-                                    />
+                                    <input type="text" name="diDong" placeholder="Di Động" ui-mask="999-999-9999" class="form-control" ng-model="nhuCauThongTinVm.contactUser.cellPhone" disabled/>
                                 </div>
                             </div>
                             <!--/span-->

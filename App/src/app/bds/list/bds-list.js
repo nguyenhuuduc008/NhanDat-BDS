@@ -19,7 +19,6 @@
 
         var vm = this; // jshint ignore:line
         vm.keyword = '';
-        vm.bdsCate = '-1';
         vm.groupedItems = [];
         vm.filteredItems = [];
         vm.pagedItems = [];
@@ -29,6 +28,8 @@
             totalPage: 0,
             totalRecord: 0
         };
+
+        var tinhThanhList = appSettings.cacLoaiHanhChinh.capTinh;
 
         vm.khoBDSList = [];
         vm.cacKhoBDS = appSettings.cacKhoBDS;
@@ -41,8 +42,31 @@
             } else 
                 vm.khoBDSDefault = item;
         });
+        vm.khoBDSKey = vm.khoBDSDefault;
 
         /*=============================================================*/
+
+        //function
+        function textAdress(soNha, duongPhoId, quanHuyenId, tinhThanhId ) {
+            soNha = !!soNha ? soNha + ', ' : '';
+            var duongPho, quanHuyen, tinhThanh;
+            tinhThanh = _.find(tinhThanhList, function(o, k) {
+                return k === tinhThanhId;
+            });
+            tinhThanh = (tinhThanh === undefined) ? '' : tinhThanh.text;
+            var quanHuyenList = appSettings.cacLoaiHanhChinh.capHuyen[tinhThanhId];
+            quanHuyen = _.find(quanHuyenList, function(o, k) {
+                return k === quanHuyenId;
+            });
+            quanHuyen = (quanHuyen === undefined) ? '' : quanHuyen.text + ', ';
+            var duongPhoList = appSettings.cacLoaiHanhChinh.duong[quanHuyenId];
+            duongPho = _.find(duongPhoList, function(o, k) {
+                return k === duongPhoId;
+            });
+            duongPho = (duongPho === undefined) ? '' : duongPho.text + ', ';
+
+            return (soNha + duongPho + quanHuyen + tinhThanh);
+        }
 
         //Functions
         vm.groupToPages = function () {
@@ -64,12 +88,12 @@
         };
 
         vm.getFullAddress = function (item) {
-            return item.soNha + ' ' + item.tenDuong + ', ' + item.xaPhuong + ', ' + item.quanHuyen + ', ' + item.thanhPho;
+            return textAdress(item.soNha, item.duongPho, item.quanHuyen, item.thanhPho);
         };
 
         vm.executeSearchItems = function (keyword) {
-            if (vm.bdsCate && vm.bdsCate !== '' && vm.bdsCate !== '-1') {
-                vm.searchItems(vm.bdsCate, keyword);
+            if (vm.khoBDSKey && vm.khoBDSKey !== '' && vm.khoBDSKey !== '-1') {
+                vm.searchItems(vm.khoBDSKey, keyword);
             } else {
                 vm.searchAllItems(keyword);
             }
@@ -94,8 +118,6 @@
                 appUtils.hideLoading();
                 var result = rs.data;
                 vm.filteredItems = appUtils.sortArray(result, 'timestampCreated');
-
-                getCapDo();
 
                 console.log('vm.filteredItems');
                 console.log(vm.filteredItems);
@@ -163,26 +185,8 @@
         };
 
         vm.edit = function (id) {
-            $state.go('bds.thongTin', { bdsId: id });
+            $state.go('bds.thongTin', { bdsId: id , khoId: vm.khoBDSKey});
         };
-
-
-        function getCapDo() {
-            settingService.getCacLoaiCapDo().$loaded().then(function (res) {
-                var cacLoaiCapDo = res;
-                $.each(vm.filteredItems, function (i) {
-                    bdsService.getCapDo(this.$id).$loaded().then(function (rs) {
-                        if (rs && rs.timestampCreated) {
-                            $.each(cacLoaiCapDo, function (j) {
-                                if (cacLoaiCapDo[j].value == rs.capDo) {
-                                    vm.filteredItems[i].capDoColor = { 'color': cacLoaiCapDo[j].color };
-                                }
-                            });
-                        }
-                    });
-                });
-            });
-        }
 
         //Init
         vm.searchAllItems('');

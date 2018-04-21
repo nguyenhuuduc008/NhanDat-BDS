@@ -13,26 +13,10 @@
 		var vm = this; // jshint ignore:line
 		vm.currentUser = $rootScope.storage.currentUser;
 		vm.bdsId = $stateParams.bdsId;
-		vm.model = {
-			noHau: false,
-			khuCompound: false,
-			canGoc: false,
-			ganCho: false,
-			sieuThi: false,
-			truongHoc: false,
-			benhVien: false,
-			congVien: false,
-			coQuanHanhChinh: false,
+		vm.khoBDSKey = $stateParams.khoId;
 
-			topHau: false,
-			cotDien: false,
-			cayXanh: false,
-			congTruocNha: false,
-			damDuong: false,
-			ganCoSoTonGIao: false,
-			nhaTangLe: false,
-			tuongChung: false
-		};
+		vm.model = {};
+
 		vm.showInvalid = true;
 		vm.cacLoaiGiamGia = appSettings.cacLoaiGiamGia;
 
@@ -44,74 +28,43 @@
 			tacNghiep: {
 				title: 'Tác Nghiệp'
 			},
-			viTri: {
-				title: 'Vị Trí'
-			},
 			lienKetUsers: {
 				title: 'Liên Kết Users'
 			},
-			giamGia: {
-				title: 'Giảm Giá'
+			lienKetNhuCau: {
+				title: 'Liên Kết Nhu Cầu'
 			},
 			yeuToTangGiamGia: {
 				title: 'Yếu Tố Tăng Giảm Giá',
 				url: './app/bds/add_edit/_tab-yeu-to-tang-giam-gia.tpl.html'
 			},
-			thuocQuyHoach: {
-				title: 'Thuộc Quy Hoạch'
+			loaiNoiThat: {
+				title: 'Loại Nội Thất'
 			},
 			lichSuChuyenQuyen: {
 				title: 'Lịch Sử Chuyển Quyền'
 			},
-			lichSuGiaoDich: {
-				title: 'Lịch Sử Giao Dịch'
-			},
-			capDo: {
-				title: 'Cấp Độ'
-			},
-			lichSuGia: {
-				title: 'Lịch Sử Giá'
-			},
-			media: {
-				title: 'Media'
-			}
 		};
 
 		//Functions
 		vm.loadTab = function (key) {
 			vm.activeTab = key;
-			$state.go('bds.' + key, { bdsId: vm.bdsId });
+			$state.go('bds.' + key, {
+				bdsId: vm.bdsId,
+				khoId: vm.khoBDSKey
+			});
 		};
 
 		vm.save = function () {
 			appUtils.showLoading();
-			var obj = {
-				noHau: vm.model.noHau,
-				khuCompound: vm.model.khuCompound,
-				canGoc: vm.model.canGoc,
-				ganCho: vm.model.ganCho,
-				sieuThi: vm.model.sieuThi,
-				truongHoc: vm.model.truongHoc,
-				benhVien: vm.model.benhVien,
-				congVien: vm.model.congVien,
-				coQuanHanhChinh: vm.model.coQuanHanhChinh,
-
-				topHau: vm.model.topHau,
-				cotDien: vm.model.cotDien,
-				cayXanh: vm.model.cayXanh,
-				congTruocNha: vm.model.congTruocNha,
-				damDuong: vm.model.damDuong,
-				ganCoSoTonGIao: vm.model.ganCoSoTonGIao,
-				nhaTangLe: vm.model.nhaTangLe,
-				tuongChung: vm.model.tuongChung
-			};
-			bdsService.updateYeuToTangGiamGia(vm.bdsId, obj).then(function (res) {
+			delete vm.model.$id;
+			bdsService.updateTab(vm.bdsId, vm.model, 'yeuToTangGiamGia').then(function (res) {
 				if (!res.result) {
 					$ngBootbox.alert(res.errorMsg.message);
 					return;
 				}
 				$scope.$apply(function () {
-					toaster.success('Success', "Save success!");
+					toaster.success('Thành Công', "Lưu Bất Động Sản Thành Công!");
 				});
 				appUtils.hideLoading();
 			}, function (res) {
@@ -122,17 +75,23 @@
 		};
 
 		//Load Data
-		function loadBDSDetails() {
+		function pageInit() {
 			appUtils.showLoading();
-			bdsService.getYeuToTangGiamGia(vm.bdsId).$loaded().then(function(rs){
-				if(rs && rs.timestampCreated){
-					vm.model = rs;
-				}
-				appUtils.hideLoading();
-			});
+			vm.model.khoBDSKey = vm.khoBDSKey;
+			if (!!vm.bdsId && !!vm.khoBDSKey) {
+				bdsService.getTab(vm.bdsId, 'yeuToTangGiamGia').then(function (rs) {
+					if (!!rs) {
+						vm.model = rs;
+						$scope.$apply();
+					}
+					appUtils.hideLoading();
+				});
+			} else {
+				$state.go('bds.list');
+			}
 		}
 
-		loadBDSDetails();
+		pageInit();
 	}
 
 })();

@@ -22,7 +22,7 @@
                 <tbody>
                     <tr ng-repeat="item in nhuCauLienKetUsersVm.userLinkedList">
                         <td>
-                            <a class="primary-link" href="#" ng-click="nhuCauLienKetUsersVm.edit(item.$id)" style="word-break: break-all;">{{item.userName}}</a>
+                            <a class="primary-link" href="#" ng-click="nhuCauLienKetUsersVm.edit(item.$id)" style="word-break: break-all;">{{item.name}}</a>
                         </td>
                         <td>
                             <a class="primary-link" href="#">{{item.phone}}</a>
@@ -65,7 +65,7 @@
                 <div class="portlet-input input-inline">
                     <div class="input-icon right">
                         <i class="icon-magnifier" ng-click="nhuCauLienKetUsersVm.searchUserByPhone()"></i>
-                        <input type="text" class="phoneInput form-control form-control-solid" name="phoneInput" ng-model="nhuCauLienKetUsersVm.keyword" placeholder="Số điện thoại..." ng-keypress="nhuCauLienKetUsersVm.phoneValid($event)" >
+                        <input type="text" class="phoneInput form-control form-control-solid" name="phoneInput" ng-model="nhuCauLienKetUsersVm.keyword" placeholder="Số điện thoại..." ng-keypress="nhuCauLienKetUsersVm.phoneValid($event)" maxlength="11">
                     </div>
                 </div>
                 <button class="btn blue" ng-click="nhuCauLienKetUsersVm.searchUserByPhone()">
@@ -87,7 +87,7 @@
                     <label class="control-label">Họ và Tên
                     </label>
                     <input type="text" name="firstname" disabled placeholder="Họ và Tên" class="form-control" required ng-pattern="nameRegx"
-                        ng-model="nhuCauLienKetUsersVm.model.userName" />
+                        ng-model="nhuCauLienKetUsersVm.model.name" />
                 </div>
                 <div class="form-group col-md-12" >
                     <label class="control-label">Địa Chỉ </label>

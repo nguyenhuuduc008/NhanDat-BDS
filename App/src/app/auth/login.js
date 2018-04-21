@@ -109,8 +109,7 @@
             });
             modalInstance.result.then(function (result) {
                 CheckNSetStorageData(result);
-            }, function (res) {
-            });
+            }, function (res) {});
         };
 
         function firebaseAuth(loginVm) {
@@ -174,7 +173,8 @@
                         // });
 
                         // $state.go('index');
-                        var dashboardUrl = '/#/bds/list';
+                        //var dashboardUrl = '/#/bds/list';
+                        var dashboardUrl = '/#/nhuCau/nhuCau-listing';
                         // if(window.location.href.indexOf('admin') !== -1){
                         //     dashboardUrl = '/admin/#/home';
                         // }
@@ -246,7 +246,9 @@
                                         }
                                     }
                                 });
-                                subMenus = _.sortBy(subMenus, [function (o) { return o.index; }]);
+                                subMenus = _.sortBy(subMenus, [function (o) {
+                                    return o.index;
+                                }]);
                                 var currentState = $state.is(o.name) || subCurrentStateTmp;
                                 var menu = {
                                     name: o.data.pageTitle,
@@ -279,6 +281,7 @@
         fbUI.reset();
         fbUI.start('#firebaseui-container', getUiConfig());
         var CLIENT_ID = '160055175076-frvf58o8j6bqv948kq1ksade4boodgj8.apps.googleusercontent.com';
+
         function getUiConfig() {
             return {
                 'callbacks': {
@@ -302,20 +305,17 @@
                 },
                 // Opens IDP Providers sign-in flow in a popup.
                 'signInFlow': 'popup',
-                'signInOptions': [
-                    {
-                        provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
-                        recaptchaParameters: {
-                            size: 'normal'
-                        },
-                        defaultCountry: 'VN'
-                    }
-                ],
+                'signInOptions': [{
+                    provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+                    recaptchaParameters: {
+                        size: 'normal'
+                    },
+                    defaultCountry: 'VN'
+                }],
                 // Terms of service url.
                 'tosUrl': 'https://www.google.com',
                 'credentialHelper': CLIENT_ID && CLIENT_ID != '160055175076-frvf58o8j6bqv948kq1ksade4boodgj8.apps.googleusercontent.com' ?
-                    firebaseui.auth.CredentialHelper.GOOGLE_YOLO :
-                    firebaseui.auth.CredentialHelper.ACCOUNT_CHOOSER_COM
+                    firebaseui.auth.CredentialHelper.GOOGLE_YOLO : firebaseui.auth.CredentialHelper.ACCOUNT_CHOOSER_COM
             };
         }
 
@@ -351,8 +351,7 @@
             console.log(error.message);
             if (typeof ($scope.errors[error.code]) !== 'undefined') {
                 return $scope.errors[error.code];
-            }
-            else {
+            } else {
                 return error.message;
             }
         }

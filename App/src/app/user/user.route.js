@@ -56,7 +56,7 @@
 		};
 
 		states['user.add'] = {
-			url: '/add',
+			url: '/add?linkedId?khoId?loaiId',
 			templateUrl: './app/user/add_edit/add-user.tpl.html',
 			controller: 'addUserCtrl as userAddVm',
 			data: {
@@ -71,7 +71,9 @@
 						cache: true,
 						name: 'app.user.add',
 						files: [
-							'./app/user/add_edit/add-user.js'					
+							'./app/user/add_edit/add-user.js',
+							'./app/bds/bds.service.js',
+							'./app/nhuCau/nhuCau.service.js'
 						]
 					});
 				}]

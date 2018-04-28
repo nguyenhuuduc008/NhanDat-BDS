@@ -1,35 +1,35 @@
-(function(){
+(function () {
     'use strict';
     angular.module('app.nhuCau').config(config);
     /** @ngInject */
-    function config($stateProvider){
-        $stateProvider.state('nhuCauListing',{
-                parent: 'root',
-                url: '/nhuCau/nhuCau-listing',
-                templateUrl: 'app/nhuCau/nhuCau-listing/nhuCau-listing.tpl.html',
-                controller: 'nhuCauListingCtr',
-                controllerAs: 'vm',
-                data: {
-					pageTitle: 'Quản Lý Nhu Cầu',
-					module: 'nhuCau',
-					icon: 'icon-settings',
-					permission: 'NhuCau'
-				},
-                resolve:{
-					"currentAuth": ["authService", function(authService) {
-				        return authService.requireSignIn();
-                     }],
-                     deps: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load({
-                            cache: true,
-                            files: [
-                                './app/bds/bds.service.js'
-                            ]
-                        });
-                    }]
-				}
+    function config($stateProvider) {
+        $stateProvider.state('nhuCauListing', {
+            parent: 'root',
+            url: '/nhuCau/nhuCau-listing?khoId?loaiId?',
+            templateUrl: 'app/nhuCau/nhuCau-listing/nhuCau-listing.tpl.html',
+            controller: 'nhuCauListingCtr',
+            controllerAs: 'vm',
+            data: {
+                pageTitle: 'Quản Lý Nhu Cầu',
+                module: 'nhuCau',
+                icon: 'icon-settings',
+                permission: 'NhuCau'
+            },
+            resolve: {
+                "currentAuth": ["authService", function (authService) {
+                    return authService.requireSignIn();
+                }],
+                deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        cache: true,
+                        files: [
+                            './app/bds/bds.service.js'
+                        ]
+                    });
+                }]
             }
-        ).state('chonNhuCauThemMoi',{
+        }
+        ).state('chonNhuCauThemMoi', {
             parent: 'root',
             url: '/nhuCau/chonNhuCauThemMoi',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
@@ -37,18 +37,18 @@
                 pageTitle: 'Lựa Chọn Nhu Cầu Sẽ Thêm Mới',
                 module: 'nhuCau',
                 parent: 'nhuCauListing',
-                hide:true
+                hide: true
             },
             params: {
                 item: null,
             },
-            resolve:{
-                "currentAuth": ["authService", function(authService) {
+            resolve: {
+                "currentAuth": ["authService", function (authService) {
                     return authService.requireSignIn();
-                 }]
-                 
+                }]
+
             }
-        }).state('nhuCauEdit',{
+        }).state('nhuCauEdit', {
             parent: 'root',
             url: '/nhuCau/nhuCauEdit?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
@@ -58,18 +58,18 @@
                 pageTitle: 'Sửa Nhu Cầu',
                 module: 'nhuCau',
                 parent: 'nhuCauListing',
-                hide:true
+                hide: true
             },
             params: {
                 item: null,
             },
-            resolve:{
-                "currentAuth": ["authService", function(authService) {
+            resolve: {
+                "currentAuth": ["authService", function (authService) {
                     return authService.requireSignIn();
-                 }]
-                 
+                }]
+
             }
-        }).state('thongTinNhuCau',{
+        }).state('thongTinNhuCau', {
             parent: 'root',
             url: '/nhuCau/nhuCauThongTin?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
@@ -79,12 +79,12 @@
                 pageTitle: 'Chi Tiết Nhu Cầu',
                 module: 'nhuCau',
                 parent: 'nhuCauListing',
-                hide:true
+                hide: true
             },
             params: {
                 item: null,
             },
-            resolve:{
+            resolve: {
                 "currentAuth": ["authService", function (authService) {
                     return authService.requireSignIn();
                 }],
@@ -97,9 +97,9 @@
                         ]
                     });
                 }]
-                 
+
             }
-        }).state('tacNghiepNhuCau',{
+        }).state('tacNghiepNhuCau', {
             parent: 'root',
             url: '/nhuCau/nhuCauTacNghiep?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
@@ -109,20 +109,20 @@
                 pageTitle: 'Chi Tiết Nhu Cầu',
                 module: 'nhuCau',
                 parent: 'nhuCauListing',
-                hide:true
+                hide: true
             },
             params: {
                 loaiNhuCauKey: null,
                 item: null,
                 isEdit: null
             },
-            resolve:{
-                "currentAuth": ["authService", function(authService) {
+            resolve: {
+                "currentAuth": ["authService", function (authService) {
                     return authService.requireSignIn();
-                 }]
-                 
+                }]
+
             }
-        }).state('lienKetUsersNhuCau',{
+        }).state('lienKetUsersNhuCau', {
             parent: 'root',
             url: '/nhuCau/nhuCauLienKetUsers?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
@@ -132,26 +132,26 @@
                 pageTitle: 'Chi Tiết Nhu Cầu',
                 module: 'nhuCau',
                 parent: 'nhuCauListing',
-                hide:true
+                hide: true
             },
             params: {
                 item: null,
             },
-            resolve:{
-                "currentAuth": ["authService", function(authService) {
+            resolve: {
+                "currentAuth": ["authService", function (authService) {
                     return authService.requireSignIn();
-                 }],
-                 deps: ['$ocLazyLoad', function($ocLazyLoad){
-					return $ocLazyLoad.load({
-						cache: true,
-						name: 'app.user',
-						files: [
-							'./app/user/user.service.js'
-						]
-					});
-				}]
+                }],
+                deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        cache: true,
+                        name: 'app.user',
+                        files: [
+                            './app/user/user.service.js'
+                        ]
+                    });
+                }]
             }
-        }).state('yeuToTangGiamGiaNhuCau',{
+        }).state('yeuToTangGiamGiaNhuCau', {
             parent: 'root',
             url: '/nhuCau/nhuCauYeuToTangGiamGia?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
@@ -161,18 +161,18 @@
                 pageTitle: 'Chi Tiết Nhu Cầu',
                 module: 'nhuCau',
                 parent: 'nhuCauListing',
-                hide:true
+                hide: true
             },
             params: {
                 item: null,
             },
-            resolve:{
-                "currentAuth": ["authService", function(authService) {
+            resolve: {
+                "currentAuth": ["authService", function (authService) {
                     return authService.requireSignIn();
-                 }]
-                 
+                }]
+
             }
-        }).state('thuocQuyHoachNhuCau',{
+        }).state('thuocQuyHoachNhuCau', {
             parent: 'root',
             url: '/nhuCau/nhuCauThuocQuyHoach?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
@@ -182,19 +182,19 @@
                 pageTitle: 'Chi Tiết Nhu Cầu',
                 module: 'nhuCau',
                 parent: 'nhuCauListing',
-                hide:true
+                hide: true
             },
             params: {
                 item: null,
                 isEdit: null
             },
-            resolve:{
-                "currentAuth": ["authService", function(authService) {
+            resolve: {
+                "currentAuth": ["authService", function (authService) {
                     return authService.requireSignIn();
-                 }]
-                 
+                }]
+
             }
-        }).state('lichSuChuyenQuyenNhuCau',{
+        }).state('lichSuChuyenQuyenNhuCau', {
             parent: 'root',
             url: '/nhuCau/nhuCauLichSuChuyenQuyen?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
@@ -204,19 +204,19 @@
                 pageTitle: 'Chi Tiết Nhu Cầu',
                 module: 'nhuCau',
                 parent: 'nhuCauListing',
-                hide:true
+                hide: true
             },
             params: {
                 item: null,
                 isEdit: null
             },
-            resolve:{
-                "currentAuth": ["authService", function(authService) {
+            resolve: {
+                "currentAuth": ["authService", function (authService) {
                     return authService.requireSignIn();
-                 }]
-                 
+                }]
+
             }
-        }).state('lichSuGiaoDichNhuCau',{
+        }).state('lichSuGiaoDichNhuCau', {
             parent: 'root',
             url: '/nhuCau/nhuCauLichSuGiaoDich?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
@@ -226,19 +226,19 @@
                 pageTitle: 'Chi Tiết Nhu Cầu',
                 module: 'nhuCau',
                 parent: 'nhuCauListing',
-                hide:true
+                hide: true
             },
             params: {
                 item: null,
                 isEdit: null
             },
-            resolve:{
-                "currentAuth": ["authService", function(authService) {
+            resolve: {
+                "currentAuth": ["authService", function (authService) {
                     return authService.requireSignIn();
-                 }]
-                 
+                }]
+
             }
-        }).state('capDoNhuCau',{
+        }).state('capDoNhuCau', {
             parent: 'root',
             url: '/nhuCau/nhuCauCapDo?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
@@ -248,19 +248,19 @@
                 pageTitle: 'Chi Tiết Nhu Cầu',
                 module: 'nhuCau',
                 parent: 'nhuCauListing',
-                hide:true
+                hide: true
             },
             params: {
                 item: null,
                 isEdit: null
             },
-            resolve:{
-                "currentAuth": ["authService", function(authService) {
+            resolve: {
+                "currentAuth": ["authService", function (authService) {
                     return authService.requireSignIn();
-                 }]
-                 
+                }]
+
             }
-        }).state('lichSuGiaNhuCau',{
+        }).state('lichSuGiaNhuCau', {
             parent: 'root',
             url: '/nhuCau/nhuCauLichSuGia?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
@@ -270,19 +270,19 @@
                 pageTitle: 'Chi Tiết Nhu Cầu',
                 module: 'nhuCau',
                 parent: 'nhuCauListing',
-                hide:true
+                hide: true
             },
             params: {
                 item: null,
                 isEdit: null
             },
-            resolve:{
-                "currentAuth": ["authService", function(authService) {
+            resolve: {
+                "currentAuth": ["authService", function (authService) {
                     return authService.requireSignIn();
-                 }]
-                 
+                }]
+
             }
-        }).state('lienKetBDSNhuCau',{
+        }).state('lienKetBDSNhuCau', {
             parent: 'root',
             url: '/nhuCau/nhuCaulienKetBDS?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
@@ -292,19 +292,19 @@
                 pageTitle: 'Chi Tiết Nhu Cầu',
                 module: 'nhuCau',
                 parent: 'nhuCauListing',
-                hide:true
+                hide: true
             },
             params: {
                 item: null,
                 isEdit: null
             },
-            resolve:{
-                "currentAuth": ["authService", function(authService) {
+            resolve: {
+                "currentAuth": ["authService", function (authService) {
                     return authService.requireSignIn();
-                 }]
-                 
+                }]
+
             }
-        }).state('lienKetNhuCau',{
+        }).state('lienKetNhuCau', {
             parent: 'root',
             url: '/nhuCau/nhuCaulienKet?khoId?loaiId?nhuCauId',
             templateUrl: 'app/nhuCau/chonNhuCauThemMoi/nhuCauThemMoi.tpl.html',
@@ -314,19 +314,19 @@
                 pageTitle: 'Chi Tiết Nhu Cầu',
                 module: 'nhuCau',
                 parent: 'nhuCauListing',
-                hide:true
+                hide: true
             },
             params: {
                 item: null,
                 isEdit: null
             },
-            resolve:{
-                "currentAuth": ["authService", function(authService) {
+            resolve: {
+                "currentAuth": ["authService", function (authService) {
                     return authService.requireSignIn();
-                 }]
-                 
+                }]
+
             }
         });
-         //----
+        //----
     }
 })();

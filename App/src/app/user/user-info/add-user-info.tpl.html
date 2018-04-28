@@ -1,0 +1,113 @@
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PROFILE CONTENT -->
+        <div class="profile-content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="portlet light bordered">
+                        <div class="portlet-title">
+                            <div class="caption col-md-12 text-right action-tools">
+                                <a href="javascript:;" ng-click="historyBack()" class="btn btn-circle grey-mint" title="Back">Trở về</a>
+                            </div>
+                        </div>
+                        <div class="portlet-title tabbable-line">
+                            <div class="caption caption-md">
+                                <i class="icon-globe theme-font hide"></i>
+                                <span class="caption-subject font-blue-madison bold uppercase">Thông tin người dùng</span>
+                            </div>
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#tab_1_1" data-toggle="tab">Thông tin người dùng</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="portlet-body">
+                            <div class="tab-content">
+                                <!-- PERSONAL INFO TAB -->
+                                <div class="tab-pane active row" id="tab_1_1">
+                                    <form role="form" id="createUserForm" name="createUserForm" novalidate ng-submit="infoAddVm.checkDupLinked(createUserForm)">
+                                        <div class="form-group col-md-12">
+                                            <label class="control-label">Loại liên kết
+                                                <span class="required-field">*</span>
+                                            </label>
+                                            <select name="city" ng-model="infoAddVm.linked.loaiLienKetUser" class="form-control" required>
+                                                <option value="" disabled>Chọn loại liên kết</option>
+                                                <option ng-repeat="item in infoAddVm.cacLoaiLienKetUser " value="{{item.value}}" ng-selected="item.value == infoAddVm.linked.loaiLienKetUser">{{item.text}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-12" ng-class="{'has-error': (createUserForm.phonenumber.$error.pattern||createUserForm.phonenumber.$error.required)&&createUserForm.phonenumber.$touched}">
+                                            <label class="control-label">Điện Thoại
+                                                <span class="required-field"> *</span>
+                                            </label>
+                                            <input type="text" maxlength="11" minlength="10" required placeholder="Số điện thoại" class="form-control" name="phonenumber"
+                                                ng-keyup="infoAddVm.EnalblePhoneForm(createUserForm)" ng-model="infoAddVm.user.phone"
+                                                ng-pattern="phoneRegx" />
+                                            <label class="control-label" ng-show="createUserForm.phonenumber.$error.required&&createUserForm.phonenumber.$touched">* Cần nhập Số Điện Thoại</label>
+                                            <label class="control-label" ng-show="createUserForm.phonenumber.$error.pattern&&createUserForm.phonenumber.$touched">* Số Điện thoại chỉ được nhập số</label>
+                                            <label class="control-label font-green-sharp" ng-show="createUserForm.phonenumber.$error.minlength&&!createUserForm.phonenumber.$error.pattern">* Số Điện thoại quá ngắn</label>
+                                            <label class="control-label font-red-intense bold" ng-show="infoAddVm.existedPhone&&createUserForm.phonenumber.$touched">* Số Điện thoại này đã tồn tại. Vui lòng nhập số khác!</label>
+                                        </div>
+                                        <div class="form-group col-md-12" ng-class="{'has-error': (infoAddVm.showInvalid && createUserForm.firstname.$error.required) || createUserForm.firstname.$error.pattern}">
+                                            <label class="control-label">Tên
+                                                <span class="required-field">*</span>
+                                            </label>
+                                            <input type="text" name="firstname" placeholder="Tên" class="form-control" required ng-pattern="nameRegx" ng-model="infoAddVm.user.name"
+                                            />
+                                            <!--<label class="control-label" ng-show="infoAddVm.showInvalid && createUserForm.firstname.$error.required">* This field is required</label>-->
+                                            <label class="control-label" ng-show="createUserForm.firstname.$error.pattern">* Không cho phép nhập ký tự đặc biệt</label>
+                                        </div>
+                                        <div class="form-group col-md-6" ng-class="{'has-error': (infoAddVm.showInvalid && createUserForm.address.$error.required)}">
+                                            <label class="control-label">Địa chỉ </label>
+                                            <input name="address" type="text" placeholder="Địa chỉ" ng-model="infoAddVm.user.address" class="form-control" />
+                                            <!--<label class="control-label" ng-show="infoAddVm.showInvalid && createUserForm.address.$error.required">* This field is required</label>-->
+                                            <label class="control-label" ng-show="createUserForm.address.$error.pattern">* Không cho phép nhập ký tự đặc biệt</label>
+                                        </div>
+                                        <div class="form-group col-md-6" ng-class="{'has-error': infoAddVm.showInvalid && createUserForm.city.$error.required}">
+                                            <label class="control-label">Tỉnh / Thành phố </label>
+                                            <select name="city" ng-model="infoAddVm.user.city" class="form-control" ng-change="infoAddVm.changeCity()">
+                                                <option value="notSelect" >Tỉnh / Thành phố</option>
+                                                <option ng-repeat="item in infoAddVm.cities" value="{{item.$id}}" ng-selected="item.$id == infoAddVm.user.city">{{item.text}}</option>
+                                            </select>
+                                            <!--<label class="control-label" ng-show="infoAddVm.showInvalid && createUserForm.state.$error.required">* This field is required</label>-->
+                                        </div>
+                                        <div class="form-group col-md-6" ng-class="{'has-error': infoAddVm.showInvalid && createUserForm.district.$error.required}">
+                                            <label class="control-label">Quận / Huyện </label>
+                                            <select name="district" ng-model="infoAddVm.user.district" class="form-control" ng-change="infoAddVm.changeDistrict()">
+                                                <option value="notSelect" >Quận / Huyện </option>
+                                                <option ng-repeat="item in infoAddVm.districts" value="{{item.$id}}" ng-selected="item.$id == infoAddVm.user.district">{{item.text}}</option>
+                                            </select>
+                                            <!--<label class="control-label" ng-show="infoAddVm.showInvalid && createUserForm.state.$error.required">* This field is required</label>-->
+                                        </div>
+                                        <div class="form-group col-md-6" ng-class="{'has-error': infoAddVm.showInvalid && createUserForm.ward.$error.required}">
+                                            <label class="control-label">Phường / Xã </label>
+                                            <select name="ward" ng-model="infoAddVm.user.ward" class="form-control">
+                                                <option value="notSelect" >Phường / Xã</option>
+                                                <option ng-repeat="item in infoAddVm.wards" value="{{item.$id}}" ng-selected="item.$id == infoAddVm.user.ward">{{item.text}}</option>
+                                            </select>
+                                            <!--<label class="control-label" ng-show="infoAddVm.showInvalid && createUserForm.state.$error.required">* This field is required</label>-->
+                                        </div>
+                                        <div class=" col-md-12">
+                                            <div class="margin-top-20">
+                                                <button class="btn green grreen-haze" type="submit" ng-disabled="createUserForm.$invalid">
+                                                    Lưu lại
+                                                </button>
+                                                <button class="btn default" type="button" ng-click="infoAddVm.cancel()">
+                                                    Hủy bỏ
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- END PERSONAL INFO TAB -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END PROFILE CONTENT -->
+    </div>
+    <div class="col-md-6">
+    </div>
+</div>
+<!-- END PAGE BASE CONTENT -->

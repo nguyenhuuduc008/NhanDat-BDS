@@ -1,0 +1,66 @@
+﻿<div class="portlet light bordered tasks-widget" id="users">
+    <div class="portlet-title">
+        <div class="inputs">
+            <div class="portlet-input input-inline">
+                <div class="input-icon right">
+                    <i class="icon-magnifier"></i>
+                    <input type="text" class="form-control form-control-solid" ng-model="infoVm.keyword" placeholder="Tìm kiếm..." ng-change="infoVm.searchUser(infoVm.keyword)">
+                </div>
+            </div>
+        </div>        
+    </div>
+    <div class="portlet-title row">
+        <div class="col-sm-12 col-lg-7">
+            <div class="row">
+                <div class="col-sm-6 col-xs-12 no-padding-right">
+                    <div class="col-sm-8 col-xs-12 no-padding-left margin-bottom-5">
+                        <select class="bs-select form-control" id="action-list">
+                            <option value="0">Chọn</option>
+                            <option value="delete">Xóa</option>
+                        </select>                
+                    </div>
+                    <div class="col-sm-1 no-padding-left margin-bottom-20">
+                        <button type="button" class="btn green" ng-click="infoVm.applyAction('select-user','action-list')">Áp dụng</button>
+                    </div>            
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5 col-xs-12">
+            <div class="actions pull-right">
+                <div class="padding-top-2 margin-bottom-10">
+                    <list-paging ng-model="infoVm.paging" change-page="infoVm.changePage"></list-paging>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="table-scrollable table-scrollable-borderless">
+        <table class="table table-hover table-light">
+            <thead class="flip-content">
+                <tr class="uppercase">
+                    <th class="width5">
+                        <label class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" id="select-all-user" ng-click="infoVm.selectAllUser('select-all-user','select-user')"/>
+                            <span></span>
+                        </label>
+                    </th>
+                    <th class=""> Số Điện Thoại </th>
+                    <th class=""> Tên </th>
+                    <th class=""> Địa Chỉ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in infoVm.pagedItems[infoVm.paging.currentPage]">
+                    <td>
+                        <label class="mt-checkbox mt-checkbox-outline">
+                            <input type="checkbox" name="select-user" value="{{item.phone}}" class="chk-select-user"/> 
+                            <span></span>
+                        </label>
+                    </td>
+                    <td> <a class="primary-link" href="#" ng-click="infoVm.edit(item.phone)">{{item.phone}}</a> </td>
+                    <td> <a class="primary-link" href="#">{{item.name}}</a></td>
+                    <td class="">{{item.address}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

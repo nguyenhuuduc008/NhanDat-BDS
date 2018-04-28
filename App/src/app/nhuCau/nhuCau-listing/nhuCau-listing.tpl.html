@@ -7,13 +7,11 @@
         </div>
         <div class="caption caption-md" style="padding-left:5px;">
             <select class="form-control" required id="idTrangThai" ng-model="vm.item.nhuCauKey">
-                <option value="allTrangThai" selected>Chọn Loại Nhu Cầu</option>
-                <option ng-repeat="item in vm.cacLoaiNhuCau" value="{{item.value}}" ng-selected="item.value == vm.bdsCate">{{item.text}}</option>
-                
+                <option value="allTrangThai">Chọn Loại Nhu Cầu</option>
+                <option ng-repeat="item in vm.cacLoaiNhuCau" value="{{item.value}}" >{{item.text}}</option>
             </select>
         </div>
-        
-        <div class="caption caption-md" style="padding-left:5px;" >
+        <div class="caption caption-md" style="padding-left:5px;">
             <a type="button" href="#" class="btn blue" ng-click="vm.appDung(vm.item.khoBDSKey, vm.item.nhuCauKey)">Áp Dụng</a>
         </div>
         <!--
@@ -25,7 +23,7 @@
                 </div>
             </div>
         </div>
-    --> 
+    -->
     </div>
     <div class="portlet-title">
         <div class="caption col-xs-12 no-padding-top">
@@ -46,7 +44,7 @@
                     <a type="button" href="#" class="btn blue">Nhân Bản</a>
                 </span>
             </div>
-        
+
             <!-- <div class="col-md-2 no-padding-left no-padding-right">
                         <button type="button" class="btn green col-md-12 " ng-click="vm.appDungLuaChon('select-checkBox','idLuaChon')">Áp Dụng</button>
                     </div>
@@ -57,7 +55,7 @@
                         <a type="button" href="#" class="btn blue">Duplicate</a>
                     </div> -->
         </div>
-        
+
         <div class="actions col-xs-12">
             <div class="pull-right">
                 <list-paging ng-model="vm.paging" change-page="vm.changePage"></list-paging>
@@ -70,7 +68,7 @@
                 <tr class="uppercase">
                     <th class="width5">
                         <label class="mt-checkbox mt-checkbox-outline">
-                            <input type="checkbox" id="select-all-checkBox" ng-click="vm.selectAllItem('select-all-checkBox','select-checkBox')"/>
+                            <input type="checkbox" id="select-all-checkBox" ng-click="vm.selectAllItem('select-all-checkBox','select-checkBox')" />
                             <span></span>
                         </label>
                     </th>
@@ -84,12 +82,12 @@
                 <tr ng-repeat="item in vm.pagedItems[vm.paging.currentPage]">
                     <td>
                         <label class="mt-checkbox mt-checkbox-outline">
-                            <input type="checkbox" name="select-checkBox" value="{{item.$id}}" class="chk-select-item"/> 
+                            <input type="checkbox" name="select-checkBox" value="{{item.$id}}" class="chk-select-item" />
                             <span></span>
                         </label>
                     </td>
                     <td>
-                        <a class="primary-link" href="#" ng-click="vm.chiTietnhuCau(item)"  ng-style="item.capDoColor">
+                        <a class="primary-link" href="#" ng-click="vm.chiTietnhuCau(item)" ng-style="item.capDoColor">
                             {{item.tieuDe}}
                         </a>
                     </td>
@@ -97,15 +95,25 @@
                         <span class="text-primary bold">{{item.address}}</span>
                     </td>
                     <td class="hidden-xs">
-                        Hướng: <span class="font-green-sharp bold">{{item.huongNha}}</span> <br>
-                        Tầng: <span class="font-green-sharp bold">{{item.soTang}}</span> <br>
-                        Ngang: <span class="font-green-sharp bold">{{item.ngang|number:1}} m</span> <br>
-                        Dài: <span class="font-green-sharp bold">{{item.dai|number:1}} m</span> <br>
-                        Diện tích: <span class="font-green-sharp bold">{{item.dienTich}} m<sup>2</sup></span>
+                        Hướng:
+                        <span class="font-green-sharp bold">{{item.huongNha}}</span>
+                        <br> Tầng:
+                        <span class="font-green-sharp bold">{{item.soTang}}</span>
+                        <br> Ngang:
+                        <span class="font-green-sharp bold">{{item.ngang|number:1}} m</span>
+                        <br> Dài:
+                        <span class="font-green-sharp bold">{{item.dai|number:1}} m</span>
+                        <br> Diện tích:
+                        <span class="font-green-sharp bold">{{item.dienTich}} m
+                            <sup>2</sup>
+                        </span>
                     </td>
                     <td>
-                        Đơn giá: <span class="font-red-intense bold">{{item.donGia}} VNĐ / m<sup>2</span><br>
-                        Tổng giá: <span class="font-red-intense bold">{{item.tongGia}} VNĐ</span>
+                        Đơn giá:
+                        <span class="font-red-intense bold">{{item.donGia}} VNĐ / m
+                            <sup>2</span>
+                        <br> Tổng giá:
+                        <span class="font-red-intense bold">{{item.tongGia}} VNĐ</span>
                     </td>
                 </tr>
             </tbody>

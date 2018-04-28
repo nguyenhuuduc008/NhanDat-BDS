@@ -113,7 +113,14 @@
             getDuLieuTho: getDuLieuTho,
             deleteDuLieuTho: deleteDuLieuTho,
             getAllNhuCauTheoLoai: getAllNhuCauTheoLoai,
-            removeNhuCau: removeNhuCau
+            removeNhuCau: removeNhuCau,
+
+            // khoan gia
+            getKhoanGia: getKhoanGia,
+            getKhoanGiaById: getKhoanGiaById,
+            delKhoanGia: delKhoanGia,
+            updateKhoanGia: updateKhoanGia,
+            createKhoanGia: createKhoanGia,
         };
         //Ref
         var cacLoaiNoiThatRef = firebaseDataRef.child('app-options/cacLoaiNoiThat');
@@ -135,6 +142,7 @@
         var cacLoaiHanhChinhRef = firebaseDataRef.child('app-options/cacLoaiHanhChinh');
         var duLieuThoRef = firebaseDataRef.child('duLieuTho');
         var nhuCauRef = firebaseDataRef.child('nhuCau');
+        var khoanGiaRef = firebaseDataRef.child('app-options/cacKhoanGia');
 
         return service;
         //function cacLoaiQUyHoach
@@ -1226,8 +1234,14 @@
             return $firebaseArray(ref).$loaded();
         }
 
-        function getListChildHanhChinh(path, parentKey) {
-            var ref = cacLoaiHanhChinhRef.child(path).child(parentKey);
+        function getListChildHanhChinh(path, parentKey, rootKey) {
+            var ref;
+            if (!!rootKey) {
+                ref = cacLoaiHanhChinhRef.child(path).child(rootKey).child(parentKey);
+            }
+            else {
+                ref = cacLoaiHanhChinhRef.child(path).child(parentKey);
+            }
             return $firebaseArray(ref).$loaded();
         }
 
@@ -1275,18 +1289,33 @@
             });
         }
 
-        function updateChildHanhChinh(dataModel, addPath, parentKey, key) {
-            return cacLoaiHanhChinhRef.child(addPath).child(parentKey).child(key).update(dataModel).then(function (res) {
-                return {
-                    result: true,
-                    key: key
-                };
-            }).catch(function (error) {
-                return {
-                    result: false,
-                    errMsg: error
-                };
-            });
+        function updateChildHanhChinh(dataModel, addPath, parentKey, key, rootKey) {
+            if (!!rootKey) {
+                return cacLoaiHanhChinhRef.child(addPath).child(rootKey).child(parentKey).child(key).update(dataModel).then(function (res) {
+                    return {
+                        result: true,
+                        key: key
+                    };
+                }).catch(function (error) {
+                    return {
+                        result: false,
+                        errMsg: error
+                    };
+                });
+            }
+            else {
+                return cacLoaiHanhChinhRef.child(addPath).child(parentKey).child(key).update(dataModel).then(function (res) {
+                    return {
+                        result: true,
+                        key: key
+                    };
+                }).catch(function (error) {
+                    return {
+                        result: false,
+                        errMsg: error
+                    };
+                });
+            }
         }
 
         function deleteLoaiHanhChinh(addPath, key) {
@@ -1323,6 +1352,69 @@
 
         function removeNhuCau(childRef) {
             return nhuCauRef.child(childRef).remove();
+        }
+
+        // -- khoan gia --
+        // da kiem tra
+        function createKhoanGia(dataModel) {
+            var key = khoanGiaRef.push().key;
+            dataModel.timestampCreated = dataModel.timestampModified = appUtils.getTimestamp();
+            return khoanGiaRef.child(key).update({
+                id: key,
+                tieuDe: dataModel.tieuDe,
+                giaTu: dataModel.giaTu,
+                giaDen: dataModel.giaDen,
+                timestampCreated: dataModel.timestampCreated,
+                timestampModified: dataModel.timestampModified,
+            }).then(function (res) {
+                return { result: true, data: key };
+            }).catch(function (error) {
+                return { result: false, errMsg: error };
+            });
+        }
+
+        // da kiem tra
+        function updateKhoanGia(dataModel) {
+            dataModel.timestampModified = appUtils.getTimestamp();
+            //dataModel = DataUtils.stripDollarPrefixedKeys(dataModel);
+            return khoanGiaRef.child(dataModel.id).update({
+                tieuDe: dataModel.tieuDe,
+                giaTu: dataModel.giaTu,
+                giaDen: dataModel.giaDen,
+                timestampModified: dataModel.timestampModified,
+            }).then(function (res) {
+                return { result: true };
+            }).catch(function (error) {
+                return { result: false, errMsg: error };
+            });
+        }
+
+        // da kiem tra
+        function delKhoanGia(id) {
+            return khoanGiaRef.child(id).remove().then(function (res) {
+                return { result: true };
+            }).catch(function (error) {
+                return { result: false, errMsg: error };
+            });
+        }
+
+        // da kiem tra
+        function getKhoanGia() {
+            return $firebaseArray(khoanGiaRef).$loaded().then(function (res) {
+                return { result: true, data: res };
+            }).catch(function (err) {
+                return { result: false, errorMsg: err };
+            });
+            //return $firebaseObject(khoanGiaRef);
+        }
+
+        // da kiem tra
+        function getKhoanGiaById(id) {
+            return $firebaseObject(khoanGiaRef.child(id)).$loaded().then(function (res) {
+                return { result: true, data: res };
+            }).catch(function (err) {
+			    return { result: false, errorMsg: err };
+			});
         }
     }
 })();

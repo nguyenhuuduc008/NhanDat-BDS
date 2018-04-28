@@ -1,33 +1,33 @@
 (function () {
-	'use strict';
+    'use strict';
 
-	angular.module("app.bds")
-		.controller("editBdsCtrl", editBdsCtrl);
-	/** @ngInject */
-	function editBdsCtrl($q, $rootScope, $timeout, $scope, $state, $stateParams, $ngBootbox, $uibModal, appUtils, bdsService, authService, toaster, nhuCauService) {
-		$rootScope.settings.layout.showSmartphone = false;
-		$rootScope.settings.layout.showPageHead = true;
-		$rootScope.settings.layout.guestPage = false;
-		$rootScope.settings.layout.pageSidebarClosed = true;
-		var vm = this; // jshint ignore:line
-		vm.currentUser = $rootScope.storage.currentUser;
+    angular.module("app.bds")
+        .controller("editBdsCtrl", editBdsCtrl);
+    /** @ngInject */
+    function editBdsCtrl($q, $rootScope, $timeout, $scope, $state, $stateParams, $ngBootbox, $uibModal, appUtils, bdsService, authService, toaster, nhuCauService) {
+        $rootScope.settings.layout.showSmartphone = false;
+        $rootScope.settings.layout.showPageHead = true;
+        $rootScope.settings.layout.guestPage = false;
+        $rootScope.settings.layout.pageSidebarClosed = true;
+        var vm = this; // jshint ignore:line
+        vm.currentUser = $rootScope.storage.currentUser;
         var appSettings = $rootScope.storage.appSettings;
-		vm.cities = appSettings.thanhPho;
-		vm.cacLoaiDuong = appSettings.cacLoaiDuong;
-		vm.cacLoaiViTri = appSettings.cacLoaiViTri;
-		vm.cacLoaiHuong = appSettings.cacLoaiHuong;
-		vm.cacNguonBDS = appSettings.cacNguonBDS;
+        vm.cities = appSettings.thanhPho;
+        vm.cacLoaiDuong = appSettings.cacLoaiDuong;
+        vm.cacLoaiViTri = appSettings.cacLoaiViTri;
+        vm.cacLoaiHuong = appSettings.cacLoaiHuong;
+        vm.cacNguonBDS = appSettings.cacNguonBDS;
         vm.cacDuAn = appSettings.cacDuAn;
         vm.cacLoaiHanhChinh = appSettings.cacLoaiHanhChinh;
-		
-		vm.cacDanhMucBDS = appSettings.cacDanhMucBDS;
-		vm.cacLoaiHau = appSettings.cacLoaiHau;
-		vm.loaiBDSList = appSettings.cacLoaiBDS;
-		vm.cacLoaiTacNghiep = appSettings.cacLoaiTacNghiep;
+
+        vm.cacDanhMucBDS = appSettings.cacDanhMucBDS;
+        vm.cacLoaiHau = appSettings.cacLoaiHau;
+        vm.loaiBDSList = appSettings.cacLoaiBDS;
+        vm.cacLoaiTacNghiep = appSettings.cacLoaiTacNghiep;
 
         vm.bdsId = $stateParams.bdsId;
         vm.khoBDSKey = $stateParams.khoId;
-		vm.model = {};
+        vm.model = {};
         vm.model.$id = vm.bdsId;
         vm.cities = [];
 
@@ -43,52 +43,52 @@
 		$scope.numberRegx = /^\d+$/;
         $scope.currencyRegx = /^\$\d/;
 		$scope.emailRegx = /^[^!'"\/ ]+$/;*/
-		vm.showInvalid = true;
-		
-		vm.activeTab='thongTin';
-		vm.tabs = {
-			thongTin: {
-				title: 'Thông Tin',
-				url: './app/bds/add_edit/_tab-thong-tin.tpl.html'
-			},
-			tacNghiep: {
-				title: 'Tác Nghiệp'
-			},
-			lienKetUsers: {
-				title: 'Liên Kết Users'
+        vm.showInvalid = true;
+
+        vm.activeTab = 'thongTin';
+        vm.tabs = {
+            thongTin: {
+                title: 'Thông Tin',
+                url: './app/bds/add_edit/_tab-thong-tin.tpl.html'
+            },
+            tacNghiep: {
+                title: 'Tác Nghiệp'
+            },
+            lienKetUsers: {
+                title: 'Liên Kết Users'
             },
             lienKetNhuCau: {
-				title: 'Liên Kết Nhu Cầu'
-			},
-			yeuToTangGiamGia: {
-				title: 'Yếu Tố Tăng Giảm Giá'
-			},
-			thuocQuyHoach: {
-				title: 'Thuộc Quy Hoạch'
-			},
-			lichSuChuyenQuyen: {
-				title: 'Lịch Sử Chuyển Quyền'
-			},
-		};
+                title: 'Liên Kết Nhu Cầu'
+            },
+            yeuToTangGiamGia: {
+                title: 'Yếu Tố Tăng Giảm Giá'
+            },
+            thuocQuyHoach: {
+                title: 'Thuộc Quy Hoạch'
+            },
+            lichSuChuyenQuyen: {
+                title: 'Lịch Sử Chuyển Quyền'
+            },
+        };
 
-		//Functions
-		vm.loadTab = function(key){
-			vm.activeTab = key;
-            $state.go('bds.' + key, { bdsId: vm.bdsId, khoId: vm.khoBDSKey});
-		};
+        //Functions
+        vm.loadTab = function (key) {
+            vm.activeTab = key;
+            $state.go('bds.' + key, { bdsId: vm.bdsId, khoId: vm.khoBDSKey });
+        };
 
-		vm.save = function(){
+        vm.save = function () {
             appUtils.showLoading();
             delete vm.model.$id;
             console.log('MODEL UDPDATE', vm.model);
-            if(!!vm.model.media) {
-                _.forEach(vm.model.media, function(item, key) {
-                    if(!!item.$$hashKey)
+            if (!!vm.model.media) {
+                _.forEach(vm.model.media, function (item, key) {
+                    if (!!item.$$hashKey)
                         delete item.$$hashKey;
                 });
             }
-			bdsService.update(vm.khoBDSKey, vm.bdsId, vm.model).then(function(res){
-                if(!res.result){				
+            bdsService.update(vm.khoBDSKey, vm.bdsId, vm.model).then(function (res) {
+                if (!res.result) {
                     $ngBootbox.alert(res.errorMsg.message);
                     return;
                 }
@@ -96,12 +96,12 @@
                 $scope.$apply(function () {
                     toaster.success('Thành Công', "Lưu Bất Động Sản Thành Công!");
                 });
-            }, function(res){
+            }, function (res) {
                 $ngBootbox.alert(res.errorMsg.message);
                 appUtils.hideLoading();
                 return;
             });
-		};
+        };
 
         //function
         vm.changeCity = function (quanHuyen, phuongXa, duongPho) {
@@ -120,79 +120,64 @@
             if (vm.model.thanhPho === "notSelect") {
                 return;
             }
-            var districts = [];
             vm.districts = [];
-            _.forEach(vm.cacLoaiHanhChinh.capHuyen, function (item, key) {
-                if(key === vm.model.thanhPho) {
-                    districts = item;
-                }
-            });
-            _.forEach(districts, function (item, key) {
+            _.forEach(vm.cacLoaiHanhChinh.capHuyen[vm.model.thanhPho], function (item, key) {
                 vm.districts.push({
                     $id: key,
                     text: item.text
                 });
             });
         };
-        
+
         vm.changeDistrict = function (phuongXa, duongPho) {
             vm.xaList = [];
             vm.duongList = [];
             vm.model.phuongXa = "notSelect";
             vm.model.duongPho = "notSelect";
-            if (!!phuongXa)
-                vm.model.phuongXa = phuongXa;
-            if (!!duongPho)
-                vm.model.duongPho = duongPho;
-            if(vm.model.quanHuyen === "notSelect") {
+            if (vm.model.quanHuyen === "notSelect") {
                 return;
             }
-            var xaList = [];
-            _.forEach(vm.cacLoaiHanhChinh.capXa, function (item, key) {
-                if(key === vm.model.quanHuyen) {
-                    xaList = item;
-                }
-            });
-            _.forEach(xaList, function (item, key) {
+            vm.xaList = [];
+            var capXa = !!vm.cacLoaiHanhChinh.capXa[vm.model.thanhPho] ? vm.cacLoaiHanhChinh.capXa[vm.model.thanhPho] : {};
+            _.forEach(capXa[vm.model.quanHuyen], function (item, key) {
                 vm.xaList.push({
                     $id: key,
                     text: item.text
                 });
             });
-       
-            var duongList = [];
-            _.forEach(vm.cacLoaiHanhChinh.duong, function (item, key) {
-                if(key === vm.model.quanHuyen) {
-                    duongList = item;
-                }
-            });
-            _.forEach(duongList, function (item, key) {
+            vm.duongList = [];
+            var duong = !!vm.cacLoaiHanhChinh.duong[vm.model.thanhPho] ? vm.cacLoaiHanhChinh.duong[vm.model.thanhPho] : {};
+            _.forEach(duong[vm.model.quanHuyen], function (item, key) {
                 vm.duongList.push({
                     $id: key,
                     text: item.text
                 });
             });
+            if (!!phuongXa)
+                vm.model.phuongXa = phuongXa;
+            if (!!duongPho)
+                vm.model.duongPho = duongPho;
         };
 
-        vm.changeLoaiBDS = function(item) {
-            var loaiBDSSelected = _.find(vm.loaiBDSList, function(o) {
+        vm.changeLoaiBDS = function (item) {
+            var loaiBDSSelected = _.find(vm.loaiBDSList, function (o) {
                 return o.value == item;
             });
             vm.loaiBDSForm = loaiBDSSelected.loaiForm;
         };
 
         function getTextByKey(list, key) {
-            if(!!key) {
-                var result = _.find(list , ['$id', key]);
-                return result.text; 
+            if (!!key) {
+                var result = _.find(list, ['$id', key]);
+                return result.text;
             }
         }
 
-		//media 
+        //media 
         function createDropzone(khoBDSKey) {
             Dropzone.autoDiscover = false;
             vm.dzOptions = {
-                url: 'bds_media/' + khoBDSKey ,
+                url: 'bds_media/' + khoBDSKey,
                 firebaseStorage: true,
                 parallelUploads: 10,
                 dictDefaultMessage: '(Click để tải ảnh hoặc kéo thả ảnh vào đây)',
@@ -202,7 +187,7 @@
 
         vm.dzCallbacks = {
             'addedfile': function (file) {
-          
+
                 //nhuCauService.uploadMediaStorage(vm.dzOptions.url, file, metadata);
             },
             'success': function (file, response) {
@@ -290,15 +275,15 @@
             vm.groupToPages();
         };
 
-        vm.saveMedia = function(mediaObj) {
+        vm.saveMedia = function (mediaObj) {
             appUtils.showLoading();
             var mediaModel = {
                 fileDescription: mediaObj.fileDescription,
             };
-            nhuCauService.updateMediaData(vm.model.khoBDSKey, vm.model.bdsKey, mediaModel, mediaObj.mediaKey).then(function(res) {
-                if(res.result) {
+            nhuCauService.updateMediaData(vm.model.khoBDSKey, vm.model.bdsKey, mediaModel, mediaObj.mediaKey).then(function (res) {
+                if (res.result) {
                     appUtils.hideLoading();
-                    $scope.$apply(function() {
+                    $scope.$apply(function () {
                         toaster.success("Thay Đổi Hình Ảnh / Video Thành Công");
                     });
                     return;
@@ -308,14 +293,14 @@
             });
         };
 
-        vm.deleteMedia = function(mediaObj) {
-            nhuCauService.deleteMediaData(vm.model.khoBDSKey, vm.model.bdsKey, mediaObj.mediaKey).then(function(res) {
-                if(res.result) {
+        vm.deleteMedia = function (mediaObj) {
+            nhuCauService.deleteMediaData(vm.model.khoBDSKey, vm.model.bdsKey, mediaObj.mediaKey).then(function (res) {
+                if (res.result) {
                     appUtils.hideLoading();
-                    $scope.$apply(function() {
+                    $scope.$apply(function () {
                         nhuCauService.deleteMediaStorage(mediaObj.fullPath);
 
-                        var media = _.filter(vm.filteredItems, function(o) {
+                        var media = _.filter(vm.filteredItems, function (o) {
                             return (mediaObj.mediaKey != o.mediaKey);
                         });
                         vm.filteredItems = [];
@@ -374,7 +359,7 @@
             };
             $scope.$apply();
         }
-        
+
         function getLatLong(tinhThanh, quanHuyen, phuongXa, duongPho) {
             tinhThanh = tinhThanh || '';
             quanHuyen = quanHuyen || '';
@@ -384,12 +369,12 @@
             console.log('quanHuyen', quanHuyen);
             console.log('phuongXa', phuongXa);
             console.log('duongPho', duongPho);
-            
-            
-            var geocoder =  new google.maps.Geocoder();
+
+
+            var geocoder = new google.maps.Geocoder();
             geocoder.geocode({
                 'address': tinhThanh + ',' + quanHuyen + ',' + phuongXa + ',' + duongPho
-            }, function(result, status) {
+            }, function (result, status) {
                 var lat = result[0].geometry.location.lat();
                 var lon = result[0].geometry.location.lng();
                 setLatLong(lat, lon);
@@ -403,13 +388,13 @@
             vm.model.lon = newVal.longitude;
         });
 
-        vm.getToaDo = function() {
+        vm.getToaDo = function () {
             console.log('gettoado');
             var thanhPho = vm.model.thanhPho === "notSelect" ? getTextByKey(vm.cities, null) : getTextByKey(vm.cities, vm.model.thanhPho);
             var quanHuyen = vm.model.quanHuyen === "notSelect" ? getTextByKey(vm.districts, null) : getTextByKey(vm.districts, vm.model.quanHuyen);
             var phuongXa = vm.model.phuongXa === "notSelect" ? getTextByKey(vm.xaList, null) : getTextByKey(vm.xaList, vm.model.phuongXa);
             var duongPho = vm.model.duongPho === "notSelect" ? getTextByKey(vm.duongList, null) : getTextByKey(vm.duongList, vm.model.duongPho);
-            
+
             getLatLong(thanhPho, quanHuyen, phuongXa, duongPho);
         };
 
@@ -436,23 +421,25 @@
             navigator.geolocation.getCurrentPosition(success, error, options);
         };
 
-		//Load Data
-		function pageInit() {
+        //Load Data
+        function pageInit() {
             createDropzone(vm.khoBDSKey);
             googleMapInit();
-			bdsService.getBDS(vm.khoBDSKey, vm.bdsId).then(function(res) {
+            bdsService.getBDS(vm.khoBDSKey, vm.bdsId).then(function (res) {
                 console.log('BDS KHO ', res);
-                if(!!res) {
+                if (!!res) {
                     vm.model = res;
 
                     var loaiBDS = _.find(vm.loaiBDSList, function (o) {
                         return o.value == vm.model.loaiBDS;
                     });
                     vm.loaiBDSForm = loaiBDS.loaiForm;
+                    var phuongXa = _.cloneDeep(vm.model.phuongXa);
+                    var duongPho = _.cloneDeep(vm.model.duongPho);
                     if (vm.model.thanhPho)
                         vm.changeCity(vm.model.quanHuyen, vm.model.phuongXa, vm.model.duongPho);
                     if (vm.model.quanHuyen)
-                        vm.changeDistrict(vm.model.phuongXa, vm.model.duongPho);
+                        vm.changeDistrict(phuongXa, duongPho);
                     if (!vm.model.media)
                         vm.model.media = {};
                     loadMedia(vm.model.media);
@@ -465,8 +452,8 @@
                 }
             });
         }
-        
+
         pageInit();
-	}
+    }
 
 })();

@@ -223,7 +223,7 @@ body{
     }
 }
 
-.select2-container { width: 100%!important; }
+.select2-container { width: auto !important; }
 .pac-container {
     z-index: 99999;
     &:after {

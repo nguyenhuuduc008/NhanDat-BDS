@@ -20,15 +20,15 @@
 		userDetailVm.adminRole = true;
 		userDetailVm.cacLoaiHanhChinh = appSettings.cacLoaiHanhChinh;
 		userDetailVm.cities = [];
-        userDetailVm.districts = [];
-        var districts;
+		userDetailVm.districts = [];
+		var districts;
 		// var adminRole = _.find(userDetailVm.currentUser.userRoles, function(o) { return o === "-KTlccaZaxPCGDaFPSc5"; });
 		// userDetailVm.adminRole = adminRole;
 		// console.log(adminRole);
-		userDetailVm.existedPhone=false;
+		userDetailVm.existedPhone = false;
 		userDetailVm.user = {};
 		userDetailVm.user.$id = $stateParams.id;
-		$scope.phoneRegx=/^(0-9)*[^!#$%^&*()'"\/\\;:@=+,?\[\]\/.A-Za-z ]*$/;
+		$scope.phoneRegx = /^(0-9)*[^!#$%^&*()'"\/\\;:@=+,?\[\]\/.A-Za-z ]*$/;
 		$scope.zipcodeRegx = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
 		$scope.nameRegx = /^(a-z|A-Z|0-9)*[^!#$%^&*()'"\/\\;:@=+,?\[\]\/.]*$/;
 		$scope.addressRegx = /^(a-z|A-Z|0-9)*[^!$%^&*()'"\/\\;:@=+,?\[\]]*$/;
@@ -44,12 +44,12 @@
 		});
 
 		_.forEach(userDetailVm.cacLoaiHanhChinh.capTinh, function (item, key) {
-            userDetailVm.cities.push({
-                $id: key,
-                text: item.text
-            });
+			userDetailVm.cities.push({
+				$id: key,
+				text: item.text
+			});
 		});
-		
+
 		//Load Data
 		function loadUserDetails() {
 			appUtils.showLoading();
@@ -60,44 +60,6 @@
 					return;
 				}
 			});
-		}
-
-		function setUser(result) {
-			userDetailVm.user = result;
-			userDetailVm.dataLetterPic = userDetailVm.user.firstName.charAt(0).toUpperCase() + userDetailVm.user.lastName.charAt(0).toUpperCase(); //userDetailVm.user.email.charAt(0).toUpperCase();// Handle avatar    
-			userPhone = userDetailVm.user.phoneNumber;
-			userDetailVm.Phone = userDetailVm.user.phoneNumber;
-			
-			//Load districts
-			userDetailVm.districts = [];
-			_.forEach(userDetailVm.cacLoaiHanhChinh.capHuyen, function (item, key) {                     
-				if(key === userDetailVm.user.city) {
-					districts = item;
-				}
-			});
-			_.forEach(districts, function (item, key) {
-				userDetailVm.districts.push({
-					$id: key,
-					text: item.text
-				});
-			});
-			
-			//Load wards
-			var wards;
-			userDetailVm.wards = [];
-			_.forEach(userDetailVm.cacLoaiHanhChinh.capXa, function (item, key) {                     
-				if(key === userDetailVm.user.district) {
-					wards = item;
-				}
-			});
-			_.forEach(wards, function (item, key) {
-				userDetailVm.wards.push({
-					$id: key,
-					text: item.text
-				});
-			});						
-			//Get UserRole Info
-			loadRoles();
 		}
 
 		function loadRoles() {
@@ -173,91 +135,115 @@
 				if (userDetailVm.currentUser.$id == userDetailVm.user.$id) {
 					appUtils.transformObject(userDetailVm.currentUser, userDetailVm.user);
 				}
-			});			
+			});
 		}
 
 		//Functions
 		userDetailVm.saveEdit = function (form) {
 			appUtils.showLoading();
-			userDetailVm.existedPhone=false;
+			userDetailVm.existedPhone = false;
 			userDetailVm.showInvalid = true;
 			if (form.$invalid) {
-				
+
 				return;
 			}
 			userDetailVm.user.phoneNumber = $.trim(userDetailVm.Phone) === '' ? ' ' : userDetailVm.Phone;
 			//Check user phone
-			userService.getExitedPhone(userDetailVm.user.phoneNumber).then(function(res){
-				var data=res.data;
-				if(data.phone){//phone đã tồn tại
-					
-					if(data.userEmail==userDetailVm.user.email){//phone tồn tại nhưng là của user cũ
-						
+			userService.getExitedPhone(userDetailVm.user.phoneNumber).then(function (res) {
+				var data = res.data;
+				if (data.phone) {//phone đã tồn tại
+
+					if (data.userEmail == userDetailVm.user.email) {//phone tồn tại nhưng là của user cũ
+
 						userService.setPhone({
-							phone:userDetailVm.user.phoneNumber,
-							userId:userDetailVm.user.$id,
-							userEmail:userDetailVm.user.email,
-							userName:userDetailVm.user.firstName+" "+ userDetailVm.user.lastName
-						}).then(function(res){
+							phone: userDetailVm.user.phoneNumber,
+							userId: userDetailVm.user.$id,
+							userEmail: userDetailVm.user.email,
+							userName: userDetailVm.user.firstName + " " + userDetailVm.user.lastName
+						}).then(function (res) {
 							updateUser();
 						});
-					}else{ //phone của user khác
+					} else { //phone của user khác
 						appUtils.hideLoading();
-						userDetailVm.existedPhone=true;
+						userDetailVm.existedPhone = true;
 					}
-				}else{//chưa có sdt
+				} else {//chưa có sdt
 					userService.setPhone({
-						phone:userDetailVm.user.phoneNumber,
-						userId:userDetailVm.user.$id,
-						userEmail:userDetailVm.user.email,
-						userName:userDetailVm.user.firstName+" "+ userDetailVm.user.lastName
-					}).then(function(res){
+						phone: userDetailVm.user.phoneNumber,
+						userId: userDetailVm.user.$id,
+						userEmail: userDetailVm.user.email,
+						userName: userDetailVm.user.firstName + " " + userDetailVm.user.lastName
+					}).then(function (res) {
 						updateUser();
 					});
 				}
-			}).catch(function(err){
+			}).catch(function (err) {
 				$ngBootbox.alert('Lỗi xảy ra');
-					return;
+				return;
 			});
 		};
 
 		userDetailVm.EnalblePhoneForm = function (form) {
 			/* jshint ignore:start */
 
-			userDetailVm.existedPhone=false;
+			userDetailVm.existedPhone = false;
 			/* jshint ignore:end */
 		};
 
-		userDetailVm.changeCity = function () {		
-			userDetailVm.districts = [];
-            _.forEach(userDetailVm.cacLoaiHanhChinh.capHuyen, function (item, key) {                     
-                if(key === userDetailVm.user.city) {
-                    districts = item;
-                }
-            });
-            _.forEach(districts, function (item, key) {
-                userDetailVm.districts.push({
-                    $id: key,
-                    text: item.text
-                });
-            });
-		};
-
-		userDetailVm.changeDistrict = function () {		
-			var wards;
+		userDetailVm.changeCity = function (quanHuyen, phuongXa) {
 			userDetailVm.wards = [];
-			_.forEach(userDetailVm.cacLoaiHanhChinh.capXa, function(item, key){
-				if(key === userDetailVm.user.district){
-					wards = item;
-				}
-			});
-			_.forEach(wards, function(item, key){
-				userDetailVm.wards.push({
+			userDetailVm.districts = [];
+			userDetailVm.user.ward = "notSelect";
+			userDetailVm.user.district = "notSelect";
+			if (!!quanHuyen)
+				userDetailVm.user.district = quanHuyen;
+			if (!!phuongXa)
+				userDetailVm.user.ward = phuongXa;
+			if (userDetailVm.user.thanhPho === "notSelect") {
+				return;
+			}
+			userDetailVm.districts = [];
+			_.forEach(userDetailVm.cacLoaiHanhChinh.capHuyen[userDetailVm.user.city], function (item, key) {
+				userDetailVm.districts.push({
 					$id: key,
 					text: item.text
 				});
 			});
 		};
+
+		userDetailVm.changeDistrict = function (phuongXa) {
+			userDetailVm.ward = [];
+			userDetailVm.user.ward = "notSelect";
+			if (userDetailVm.user.district === "notSelect") {
+				return;
+			}
+			userDetailVm.wards = [];
+            var capXa = !!userDetailVm.cacLoaiHanhChinh.capXa[userDetailVm.user.city] ? userDetailVm.cacLoaiHanhChinh.capXa[userDetailVm.user.city] : {};
+			_.forEach(capXa[userDetailVm.user.district], function (item, key) {
+				userDetailVm.wards.push({
+					$id: key,
+					text: item.text
+				});
+			});
+			if (!!phuongXa)
+				userDetailVm.user.ward = phuongXa;
+		};
+
+		function setUser(result) {
+			userDetailVm.user = result;
+			userDetailVm.dataLetterPic = userDetailVm.user.firstName.charAt(0).toUpperCase() + userDetailVm.user.lastName.charAt(0).toUpperCase(); //userDetailVm.user.email.charAt(0).toUpperCase();// Handle avatar    
+			userPhone = userDetailVm.user.phoneNumber;
+			userDetailVm.Phone = userDetailVm.user.phoneNumber;
+			console.log('SUER DETAIL', result);
+
+			var phuongXa = _.cloneDeep(userDetailVm.user.ward);
+			if (userDetailVm.user.city)
+				userDetailVm.changeCity(userDetailVm.user.district);
+			if (userDetailVm.user.district)
+				userDetailVm.changeDistrict(phuongXa);
+			//Get UserRole Info
+			loadRoles();
+		}
 
 		angular.element(document).ready(function () {
 			$("#avatar-file").change(function () {
@@ -300,7 +286,7 @@
 				}
 			});
 		});
-		var lstRolesDelete=[];
+		var lstRolesDelete = [];
 		userDetailVm.removeRole = function (index) {
 			lstRolesDelete.push(userDetailVm.userRoles[index].name);
 			userDetailVm.userRoles.splice(index, 1);
@@ -337,9 +323,9 @@
 				newRoles.push(val.$id);
 			});
 			updateUser.userRoles = newRoles;
-			var req = userService.updateUser(updateUser,{
-				userEmail:updateUser.email,
-				lstRolesDelete:lstRolesDelete
+			var req = userService.updateUser(updateUser, {
+				userEmail: updateUser.email,
+				lstRolesDelete: lstRolesDelete
 			});
 			req.then(function (res) {
 				if (!res.result) {

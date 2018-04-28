@@ -95,7 +95,7 @@
 								label: "Tạo mới",
 								className: "btn-success",
 								callback: function () {
-									$state.go('user.add', { linkedId: $stateParams.bdsId, khoId: $stateParams.khoId});
+									$state.go('user.addInfo', { linkedId: $stateParams.bdsId, khoId: $stateParams.khoId, phone: vm.keyword});
 									appUtils.hideLoading();
 								}
 							}
@@ -107,7 +107,7 @@
 					vm.model.phone = res.data.phone;
 					vm.userEmail = res.data.userEmail;
 					vm.model.userKey = res.data.userId;
-					vm.model.name = res.data.userName;
+					vm.model.name = res.data.name;
 					vm.model.timeCreated = Date.now();
 				}
 			});

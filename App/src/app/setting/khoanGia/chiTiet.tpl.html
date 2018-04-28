@@ -1,0 +1,49 @@
+<div class="row" id="permission">
+    <div class="col-md-12">
+        <!-- BEGIN PORTLET-->
+        <div class="portlet light bordered">
+            <div>
+                <span style="color: #697882;font-size: 22px;font-weight: 400" class="ng-binding">{{pageTitle}}</span>
+            </div>
+            <hr style="margin:9px 0px !important">
+            <div class="portlet-body form">
+                <!-- BEGIN FORM-->
+                <form ng-submit="btnSave_Click(thisForm)" role="form" id="thisForm" name="thisForm" novalidate>
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="form-group col-md-12" ng-class="{'has-error': (thisForm.tieuDe.$error.required)&&thisForm.tieuDe.$touched}">
+                                <label class="control-label">Tiêu đề <span style="color:red">*</span>:</label>
+                                <input name="text" type="text" placeholder="Tiêu đề" ng-model="model.tieuDe" class="form-control" required />
+                                <label class="control-label" ng-show="thisForm.tieuDe.$error.required">* Vui lòng nhập Tiêu đề</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6" ng-class="{'has-error': (thisForm.giaTu.$error.required)&&thisForm.giaTu.$touched}">
+                                <label class="control-label">Giá từ (VNĐ) <span style="color:red">*</span>: </label>
+                                <input name="text" type="number" min="0" placeholder="Giá từ" ng-model="model.giaTu" class="form-control" required />
+                                <label class="control-label" ng-show="thisForm.giaTu.$error.required">* Vui lòng nhập Giá từ</label>
+                            </div>
+                            <div class="form-group col-md-6" ng-class="{'has-error': (thisForm.giaDen.$error.required)&&thisForm.giaDen.$touched}">
+                                <label class="control-label">Giá đến (VNĐ) <span style="color:red">*</span>:</label>
+                                <input name="text" type="number" min="0" placeholder="Giá đến" ng-model="model.giaDen" class="form-control" required />
+                                <label class="control-label" ng-show="thisForm.giaDen.$error.required">* Vui lòng nhập Giá đến</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button type="submit" class="btn green" ng-disabled="thisForm.$invalid">
+                                    <i class="fa fa-check"></i> Lưu
+                                </button>
+                                <button type="button" class="btn default" ng-click="btnCancel_Click()">Quay lại</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- END FORM-->
+            </div>
+        </div>
+    </div>
+</div>

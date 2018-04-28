@@ -3,7 +3,8 @@
     angular.module('app.setting')
         .controller('duLieuThoCtr', duLieuThoCtr);
     /** @ngInject */
-    function duLieuThoCtr($rootScope, $scope, $state, $stateParams, $q, settingService, appUtils, $ngBootbox, toaster, nhuCauService, bdsService) {
+    function duLieuThoCtr($rootScope, $scope, $state, $stateParams, $q, settingService, appUtils,
+        $ngBootbox, toaster, nhuCauService, firebaseDataRef, $firebaseObject, bdsService, userService) {
         $rootScope.settings.layout.showSmartphone = false;
         $rootScope.settings.layout.showBreadcrumb = false;
         $rootScope.settings.layout.guestPage = false;
@@ -63,6 +64,7 @@
         }
         init();
 
+
         //-----function-----
 
         function xuLyDuLieu_NhaBan() {
@@ -99,15 +101,20 @@
             return quanHuyenKey;
         }
 
-        function getDuongKeyByText(thanhPhoKey, duongPhoText) { //Đường Phố
+        function getDuongKeyByText(thanhPhoKey, quanHuyenKey, duongPhoText) { //Đường Phố
             var duongPhoKey = '';
-            _.forEach(danhMucHanhChinh.duong[thanhPhoKey], function (item, key) {
-                if (item.text == duongPhoText) {
-                    duongPhoKey = key;
-                }
-            });
-            console.log('duongPhoKey', duongPhoKey);
-            console.log('duongPhoText', duongPhoText);
+            try {
+                _.forEach(danhMucHanhChinh.duong[thanhPhoKey][quanHuyenKey], function (item, key) {
+                    if (item.text == duongPhoText) {
+                        duongPhoKey = key;
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+            }
+
+            //console.log('duongPhoKey', duongPhoKey);
+            //console.log('duongPhoText', duongPhoText);
             return duongPhoKey;
         }
 
@@ -136,63 +143,84 @@
         function xuLyDuLieu_AddBDS(key, duLieuTho_Bds, loaiNhuCauKey, dltLoai) {
             console.log('duLieuTho_Bds', duLieuTho_Bds);
 
-            var khoBDSKey = 'Kho-So-Cap';
+            var khoBDSKey = duLieuTho_Bds.Loaitin == 'MG' ? 'Kho-Moi-Gioi' : 'Kho-So-Cap';
             var thanhPhoKey = getThanhPhoKeyByText(duLieuTho_Bds.thanhpho);
             var quanHuyenKey = getQuanHuyenKeyByText(thanhPhoKey, duLieuTho_Bds.quan);
-            var duongPhoKey = getDuongKeyByText(thanhPhoKey, duLieuTho_Bds.tenduong);
+            var duongPhoKey = getDuongKeyByText(thanhPhoKey, quanHuyenKey, duLieuTho_Bds.tenduong);
             var phuongXaKey = '';
             var soNha = '';
             var nhuCauModel = {
-                donGia: duLieuTho_Bds.Dongia,
+                tieuDe: duLieuTho_Bds.tieude,
+
+                donGia: duLieuTho_Bds.Dongia.trim(),
                 dienThoai: duLieuTho_Bds.SDT,
-                gia: duLieuTho_Bds.giatien,
+                tongGia: duLieuTho_Bds.giatien.trim(),
                 nguon: duLieuTho_Bds.nguon,
                 loaiNguon: '',
-                tieuDe: duLieuTho_Bds.tieude,
+
                 thongTinMoTa: duLieuTho_Bds.noidung,
                 tenLienHe: duLieuTho_Bds.ten,
 
-                //khoBDSKey: khoBDSKey,
-                //loaiNhuCauKey: loaiNhuCauKey,
+                khoBDSKey: khoBDSKey,
+                loaiNhuCauKey: loaiNhuCauKey
             };
             var bdsModel = {
                 thanhPho: thanhPhoKey,
                 quanHuyen: quanHuyenKey,
+                phuongXa: '',
                 duongPho: duongPhoKey,
                 soNha: '',
+                loaiBDS: '',
                 dienTich: duLieuTho_Bds.Dientich,
                 nguon: duLieuTho_Bds.nguon,
                 loaiNguon: '',
-                //quanHuyenText: duLieuTho_Bds.quan,
-
-                //thanhPhoText: duLieuTho_Bds.thanhpho,
-
-                //duongPhoText: duLieuTho_Bds.tenduong,
-
                 thongTinMoTa: duLieuTho_Bds.noidung,
                 khoBDSKey: khoBDSKey,
                 address: thanhPhoKey + quanHuyenKey + phuongXaKey + soNha
             };
+            var linkCreateUser = {
+                phone: duLieuTho_Bds.SDT,
+                name: duLieuTho_Bds.ten,
+                loaiLienKetUser: duLieuTho_Bds.Loaitin == 'MG' ? 0 : 1,
+                timeCreated: Date.now(),
+                khoBDSKey: khoBDSKey,
+                loaiNhuCauKey: loaiNhuCauKey
+            };
+            //add user to existPhone
+            var exist = userService.checkExistPhone(duLieuTho_Bds.SDT);
+            //console.log('phone exist', exist);
+            if (exist == null) {
+                var existUserPhone = {
+                    userName: duLieuTho_Bds.ten,
+                    phone: duLieuTho_Bds.SDT
+                };
+                userService.setPhone(existUserPhone);
+            }
+
             xuLyNhuCauCauTrung(duLieuTho_Bds, loaiNhuCauKey);
             nhuCauService.addNhuCauWithBDS(khoBDSKey, loaiNhuCauKey, nhuCauModel, bdsModel).then(function (res) {
-                settingService.deleteDuLieuTho(dltLoai, key);
+                nhuCauService.updateTabNhuCau('lienKetUser', linkCreateUser, res.nhuCaukey, true);
+                bdsService.updateTab(res.bdsKey, linkCreateUser, 'lienKetUser', true);
+                //settingService.deleteDuLieuTho(dltLoai, key);
             });
-            //console.log('write', key);
-            /* bdsService.create(khoBDSKey, bdsModel).then(function (res) {
-                nhuCauService.addNhuCau(khoBDSKey, loaiNhuCauKey, nhuCauModel).then(function (res) {
-                    settingService.deleteDuLieuTho(dltLoai, key);
-                });
-
-            }); */
-            /* nhuCauService.addNhuCauMua(khoBDSKey, loaiNhuCauKey, nhuCauModel).then(function (res) {
-                nhuCauService.addNhuCauBan(khoBDSKey, bdsModel, res.key).then(function (nhuCauRes) {
-
-                });
-            }); */
         }
-
+        /* var duLieuThoModel = {
+            thanhpho: 'TP Hồ Chí Minh',
+            quan: "Tân Phú",
+            tenduong: "Lê Liễu",
+            Dongia: 0,
+            SDT: "0909978219",
+            giatien: 5000,
+            nguon: "bds.com",
+            tieude: "Ban nha",
+            noidung: "nha mat tien",
+            ten: "hung",
+            Dientich: 200,
+            loaitin: 'MG'
+        }; */
         //Event
         duLieuThoVm.xuLyDuLieu = function () {
+            //settingService.addDuLieuTho(duLieuThoModel);
             if (!duLieuTho || duLieuTho == {}) return;
             appUtils.showLoading();
 
@@ -204,6 +232,12 @@
                 getAllNhuCau();
                 appUtils.hideLoading();
             }, 20000);
+
+        };
+        duLieuThoVm.inputData = "";
+        duLieuThoVm.checkInputData = function () {
+            var exist = userService.checkExistPhone(duLieuThoVm.inputData);
+            console.log(exist);
         };
     }
 })();

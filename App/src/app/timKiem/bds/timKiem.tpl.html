@@ -41,100 +41,88 @@
                                 </div>
                                 <div class="portlet-body">
                                     <div class="row">
-									  <div class="col-md-2">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Chọn Kho
+                                                </label>
+                                                <select name="khoBDSKey" ng-model="vm.cri.khoBDSKey" class="form-control" required>
+                                                    <option value="" disabled>Chọn Kho</option>
+                                                    <option ng-repeat="item in vm.khoBDSList" value="{{item.value}}" ng-selected="item.value == vm.cri.khoBDSKey">{{item.text}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Từ khóa
+                                                </label>
+                                                <input type="text" name="keyword" placeholder="Từ khóa" class="form-control" ng-model="vm.cri.keyword" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top:20px">
+                                        <div class="col-md-2">
                                             Loại nhu cầu:
-                                            <select name="thanhPho" class="form-control ng-pristine ng-untouched ng-not-empty ng-valid ng-valid-required">
-                                                <option value="" selected>Bán</option>
-                                                <option value="">Cho thuê</option>
-                                                <option value="">Ký gửi</option>
+                                            <select class="form-control" ng-model="vm.cri.loaiNhuCauKey">
+                                                <option value="All">Chọn Loại Nhu Cầu</option>
+                                                <option ng-repeat="item in vm.cacLoaiNhuCau" value="{{item.value}}">{{item.text}}</option>
                                             </select>
                                         </div>
                                         <div class="col-md-2">
                                             Loại bất động sản:
-                                            <select name="thanhPho" class="form-control ng-pristine ng-untouched ng-not-empty ng-valid ng-valid-required">
-                                                <option value="" selected>Nhà mặt tiền</option>
-                                                <option value="">Nhà trong hẻm</option>
-                                                <option value="">Biệt thự, nhà liền kề</option>
-                                                <option value="">Căn hộ chung cư</option>
-                                                <option value="">Mặt bằng</option>
-                                                <option value="">Kho xưởng</option>
-                                                <option value="">Nhà hàng khách sạn</option>
-                                                <option value="">Shop, kiot, quán</option>
-                                                <option value="">Trang tại</option>
-                                                <option value="">Phòng trọ, nhà trọ</option>
-                                                <option value="">Đất thổ cư, đất ở</option>
-                                                <option value="">Đất nền dự án</option>
-                                                <option value="">Đất nông nghiệp</option>
-                                                <option value="">Các loại khác</option>
+                                            <select class="form-control" ng-model="vm.cri.loaiBDSKey">
+                                                <option value="All">Chọn Loại Nhu Cầu</option>
+                                                <option ng-repeat="item in vm.cacLoaiBDS" value="{{item.value}}">{{item.text}}</option>
                                             </select>
                                         </div>
 
                                         <div class="col-md-2">
-                                            Tỉnh/Thành:
-                                            <select name="thanhPho" class="form-control ng-pristine ng-untouched ng-not-empty ng-valid ng-valid-required">
-                                                <option value="" selected>Tp.Hồ Chí Mình</option>
-                                                <option value="">Hà nội</option>
-                                                <option value="">Hải phòng</option>
+                                            Tỉnh/Thành Phố:
+                                            <select name="thanhPho" ng-model="vm.cri.tinhThanhPho" class="form-control" ng-change="vm.changeCity()" required>
+                                                <option value="All">Tỉnh / Thành phố</option>
+                                                <option ng-repeat="item in vm.cacTinhThanhPho" value="{{item.value}}">{{item.text}}</option>
                                             </select>
                                         </div>
 
                                         <div class="col-md-2">
-                                            Quận/Huyện:
-                                            <select name="thanhPho" class="form-control ng-pristine ng-untouched ng-not-empty ng-valid ng-valid-required">
-                                                <option value="" selected>Q1</option>
-                                                <option value="">Q2</option>
-                                                <option value="">Q3</option>
-                                                <option value="">Q4</option>
-                                                <option value="">Q5</option>
-                                                <option value="">Q6</option>
-                                                <option value="">Q7</option>
-                                                <option value="">Q8</option>
-                                                <option value="">Q9</option>
-                                                <option value="">Q10</option>
-                                                <option value="">Q11</option>
-                                                <option value="">Q12</option>
-                                                <option value="">Q. Bình Thạnh</option>
-                                                <option value="">Q. Bình Tân</option>
-                                                <option value="">Q. Gò Vấp</option>
-                                                <option value="">Q. Tân Bình</option>
-                                                <option value="">Q. Tân Phú</option>
-                                                <option value="">H. Bình Chánh</option>
-                                                <option value="">H. Củ Chi</option>
-                                                <option value="">H. Hóc Môn</option>
+                                            Quận / Huyện:
+                                            <select id="multiple" ui-select2 name="quanHuyen" ng-model="vm.cri.quanHuyen" class="select2-multiple" multiple>
+                                                <option ng-repeat="item in vm.cacQuanHuyen" value="{{item.value}}">{{item.text}}</option>
                                             </select>
                                         </div>
 
                                         <div class="col-md-2">
                                             Hướng:
-                                            <select name="thanhPho" class="form-control ng-pristine ng-untouched ng-not-empty ng-valid ng-valid-required">
-                                                <option value="" selected>Đông</option>
-                                                <option value="" selected>Đông Nam</option>
-                                                <option value="" selected>Đông Bắc</option>
-                                                <option value="">Tây</option>
-                                                <option value="">Tây Nam</option>
-                                                <option value="">Tây Bắc</option>
+                                            <select name="huongNha" ng-model="vm.cri.huongNha" class="form-control">
+                                                <option value="All">Chọn Hướng</option>
+                                                <option ng-repeat="item in vm.cacLoaiHuong " value="{{item.value}}" ng-selected="item.value == vm.cri.huongNha">{{item.text}}</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="row" style="margin-top:20px">
                                         <div class="col-md-2 ">
-                                            Diện tích từ (m2):<br>
-                                            <input class="form-control ng-pristine ng-untouched ng-valid ng-empty" type="number" max="999999" />
+                                            Diện tích từ (m2):
+                                            <br>
+                                            <input ng-model="vm.cri.dienTichTu" class="form-control ng-pristine ng-untouched ng-valid ng-empty" type="number" max="999999"
+                                            />
                                         </div>
                                         <div class="col-md-2 ">
-                                            đến (m2):<br>
-                                            <input class="form-control ng-pristine ng-untouched ng-valid ng-empty" type="number" max="999999" />
+                                            đến (m2):
+                                            <br>
+                                            <input ng-model="vm.cri.dienTichDen" class="form-control ng-pristine ng-untouched ng-valid ng-empty" type="number" max="999999"
+                                            />
                                         </div>
                                         <div class="col-md-2">
-                                            Giá từ (VND):<br>
-                                            <input class="form-control ng-pristine ng-untouched ng-valid ng-empty" type="number" max="" />
+                                            Giá từ (VND):
+                                            <br>
+                                            <input ng-model="vm.cri.giaTu" class="form-control ng-pristine ng-untouched ng-valid ng-empty" type="number" max="" />
                                         </div>
                                         <div class="col-md-2">
-                                            đến (VND):<br>
-                                            <input class="form-control ng-pristine ng-untouched ng-valid ng-empty" type="number" max="" />
+                                            đến (VND):
+                                            <br>
+                                            <input ng-model="vm.cri.giaDen" class="form-control ng-pristine ng-untouched ng-valid ng-empty" type="number" max="" />
                                         </div>
                                         <div class="col-md-2" style="margin-top:19px">
-                                            <button class="btn btn-primary">Tìm kiếm</button>
+                                            <button class="btn btn-primary" ng-click="vm.search()">Tìm kiếm</button>
                                         </div>
                                     </div>
                                 </div>
@@ -173,9 +161,21 @@
                                                         <span class="mt-comment-author" style="font-size:18px;color:#0094ff">Bán gấp nhà mặt tiền đượng Mạc Đỉnh Chi, Q.1, tp.HCM</span>
                                                         <span class="mt-comment-date" style="color:#ff0000">Hôm nay, 10:30AM</span>
                                                     </div>
-                                                    <div class="mt-comment-text"><span>Kích thước: <b style="color:#060606">4x20</b></span>  -  <span>Diện tích: <b style="color:#060606">100m2</b></span>  -  <span>Hướng: <b style="color:#060606">Đông</b></span></div>
+                                                    <div class="mt-comment-text">
+                                                        <span>Kích thước:
+                                                            <b style="color:#060606">4x20</b>
+                                                        </span> -
+                                                        <span>Diện tích:
+                                                            <b style="color:#060606">100m2</b>
+                                                        </span> -
+                                                        <span>Hướng:
+                                                            <b style="color:#060606">Đông</b>
+                                                        </span>
+                                                    </div>
                                                     <div class="mt-comment-details">
-                                                        <span class="mt-comment-status mt-comment-status-rejected"><b>1 tỷ 200 triệu</b></span>
+                                                        <span class="mt-comment-status mt-comment-status-rejected">
+                                                            <b>1 tỷ 200 triệu</b>
+                                                        </span>
                                                         <ul class="mt-comment-actions" style="display:block !important">
                                                             <li>
                                                                 <a href="#" style="color:#0026ff !important;text-transform:none">Xem chi tiết</a>
@@ -195,9 +195,21 @@
                                                         <span class="mt-comment-author" style="font-size:18px;color:#0094ff">Bán gấp nhà mặt tiền đường Trần Hưng Đạo, Q.1, tp.HCM</span>
                                                         <span class="mt-comment-date" style="color:#ff0000">Hôm nay, 11:30AM</span>
                                                     </div>
-                                                    <div class="mt-comment-text"><span>Kích thước: <b style="color:#060606">4x30</b></span>  -  <span>Diện tích: <b style="color:#060606">120m2</b></span>  -  <span>Hướng: <b style="color:#060606">Tây</b></span></div>
+                                                    <div class="mt-comment-text">
+                                                        <span>Kích thước:
+                                                            <b style="color:#060606">4x30</b>
+                                                        </span> -
+                                                        <span>Diện tích:
+                                                            <b style="color:#060606">120m2</b>
+                                                        </span> -
+                                                        <span>Hướng:
+                                                            <b style="color:#060606">Tây</b>
+                                                        </span>
+                                                    </div>
                                                     <div class="mt-comment-details">
-                                                        <span class="mt-comment-status mt-comment-status-rejected"><b>900 triệu</b></span>
+                                                        <span class="mt-comment-status mt-comment-status-rejected">
+                                                            <b>900 triệu</b>
+                                                        </span>
                                                         <ul class="mt-comment-actions" style="display:block !important">
                                                             <li>
                                                                 <a href="#" style="color:#0026ff !important;text-transform:none">Xem chi tiết</a>
@@ -217,9 +229,21 @@
                                                         <span class="mt-comment-author" style="font-size:18px;color:#0094ff">Bán gấp nhà mặt tiền đượng Mạc Đỉnh Chi, Q.1, tp.HCM</span>
                                                         <span class="mt-comment-date" style="color:#ff0000">Hôm nay, 10:30AM</span>
                                                     </div>
-                                                    <div class="mt-comment-text"><span>Kích thước: <b style="color:#060606">4x20</b></span>  -  <span>Diện tích: <b style="color:#060606">100m2</b></span>  -  <span>Hướng: <b style="color:#060606">Đông</b></span></div>
+                                                    <div class="mt-comment-text">
+                                                        <span>Kích thước:
+                                                            <b style="color:#060606">4x20</b>
+                                                        </span> -
+                                                        <span>Diện tích:
+                                                            <b style="color:#060606">100m2</b>
+                                                        </span> -
+                                                        <span>Hướng:
+                                                            <b style="color:#060606">Đông</b>
+                                                        </span>
+                                                    </div>
                                                     <div class="mt-comment-details">
-                                                        <span class="mt-comment-status mt-comment-status-rejected"><b>1 tỷ 200 triệu</b></span>
+                                                        <span class="mt-comment-status mt-comment-status-rejected">
+                                                            <b>1 tỷ 200 triệu</b>
+                                                        </span>
                                                         <ul class="mt-comment-actions" style="display:block !important">
                                                             <li>
                                                                 <a href="#" style="color:#0026ff !important;text-transform:none">Xem chi tiết</a>
@@ -239,9 +263,21 @@
                                                         <span class="mt-comment-author" style="font-size:18px;color:#0094ff">Bán gấp nhà mặt tiền đượng Mạc Đỉnh Chi, Q.1, tp.HCM</span>
                                                         <span class="mt-comment-date" style="color:#ff0000">Hôm nay, 10:30AM</span>
                                                     </div>
-                                                    <div class="mt-comment-text"><span>Kích thước: <b style="color:#060606">4x20</b></span>  -  <span>Diện tích: <b style="color:#060606">100m2</b></span>  -  <span>Hướng: <b style="color:#060606">Đông</b></span></div>
+                                                    <div class="mt-comment-text">
+                                                        <span>Kích thước:
+                                                            <b style="color:#060606">4x20</b>
+                                                        </span> -
+                                                        <span>Diện tích:
+                                                            <b style="color:#060606">100m2</b>
+                                                        </span> -
+                                                        <span>Hướng:
+                                                            <b style="color:#060606">Đông</b>
+                                                        </span>
+                                                    </div>
                                                     <div class="mt-comment-details">
-                                                        <span class="mt-comment-status mt-comment-status-rejected"><b>1 tỷ 200 triệu</b></span>
+                                                        <span class="mt-comment-status mt-comment-status-rejected">
+                                                            <b>1 tỷ 200 triệu</b>
+                                                        </span>
                                                         <ul class="mt-comment-actions" style="display:block !important">
                                                             <li>
                                                                 <a href="#" style="color:#0026ff !important;text-transform:none">Xem chi tiết</a>
@@ -261,9 +297,21 @@
                                                         <span class="mt-comment-author" style="font-size:18px;color:#0094ff">Bán gấp nhà mặt tiền đượng Mạc Đỉnh Chi, Q.1, tp.HCM</span>
                                                         <span class="mt-comment-date" style="color:#ff0000">Hôm nay, 10:30AM</span>
                                                     </div>
-                                                    <div class="mt-comment-text"><span>Kích thước: <b style="color:#060606">4x20</b></span>  -  <span>Diện tích: <b style="color:#060606">100m2</b></span>  -  <span>Hướng: <b style="color:#060606">Đông</b></span></div>
+                                                    <div class="mt-comment-text">
+                                                        <span>Kích thước:
+                                                            <b style="color:#060606">4x20</b>
+                                                        </span> -
+                                                        <span>Diện tích:
+                                                            <b style="color:#060606">100m2</b>
+                                                        </span> -
+                                                        <span>Hướng:
+                                                            <b style="color:#060606">Đông</b>
+                                                        </span>
+                                                    </div>
                                                     <div class="mt-comment-details">
-                                                        <span class="mt-comment-status mt-comment-status-rejected"><b>1 tỷ 200 triệu</b></span>
+                                                        <span class="mt-comment-status mt-comment-status-rejected">
+                                                            <b>1 tỷ 200 triệu</b>
+                                                        </span>
                                                         <ul class="mt-comment-actions" style="display:block !important">
                                                             <li>
                                                                 <a href="#" style="color:#0026ff !important;text-transform:none">Xem chi tiết</a>
@@ -306,7 +354,7 @@
         </div>
     </div>
 </div>
-    </div>
+</div>
 
 <script>
     loadChart_1();
@@ -372,87 +420,87 @@
     loadChart_2()
     function loadChart_2() {
         var chartData = [
-           {
-               "lineColor": "#ffc321",
-               "key": "300",
-               "value": 408
-           }, {
-               "key": "300 - 400",
-               "value": 482
-           }, {
-               "key": "400-500",
-               "value": 562
-           }, {
-               "key": "500-600",
-               "value": 379
-           }, {
-               "key": "600-700",
-               "value": 501
-           }, {
-               "key": "800-900",
-               "value": 443
-           }, {
-               "key": "900-1000",
-               "value": 405
-           }, {
-               "key": "2000",
-               "value": 309,
-           },
-           // group 2
-           {
-               "lineColor": "#fd813c",
-               "key": "300",
-               "value": 345
-           }, {
-               "key": "300 - 400",
-               "value": 123
-           }, {
-               "key": "400-500",
-               "value": 232
-           }, {
-               "key": "500-600",
-               "value": 32
-           }, {
-               "key": "600-700",
-               "value": 435
-           }, {
-               "key": "800-900",
-               "value": 23
-           }, {
-               "key": "900-1000",
-               "value": 43
-           }, {
-               "key": "2000",
-               "value": 234,
-           },
+            {
+                "lineColor": "#ffc321",
+                "key": "300",
+                "value": 408
+            }, {
+                "key": "300 - 400",
+                "value": 482
+            }, {
+                "key": "400-500",
+                "value": 562
+            }, {
+                "key": "500-600",
+                "value": 379
+            }, {
+                "key": "600-700",
+                "value": 501
+            }, {
+                "key": "800-900",
+                "value": 443
+            }, {
+                "key": "900-1000",
+                "value": 405
+            }, {
+                "key": "2000",
+                "value": 309,
+            },
+            // group 2
+            {
+                "lineColor": "#fd813c",
+                "key": "300",
+                "value": 345
+            }, {
+                "key": "300 - 400",
+                "value": 123
+            }, {
+                "key": "400-500",
+                "value": 232
+            }, {
+                "key": "500-600",
+                "value": 32
+            }, {
+                "key": "600-700",
+                "value": 435
+            }, {
+                "key": "800-900",
+                "value": 23
+            }, {
+                "key": "900-1000",
+                "value": 43
+            }, {
+                "key": "2000",
+                "value": 234,
+            },
             // group 3
-           {
-               "lineColor": "#95a5a6",
-               "key": "300",
-               "value": 322,
-           }, {
-               "key": "300 - 400",
-               "value": 323
-           }, {
-               "key": "400-500",
-               "value": 122
-           }, {
-               "key": "500-600",
-               "value": 123
-           }, {
-               "key": "600-700",
-               "value": 332
-           }, {
-               "key": "800-900",
-               "value": 232
-           }, {
-               "key": "900-1000",
-               "value": 405
-           }, {
-               "key": "2000",
-               "value": 232,
-               "lineColor": "#CC0000"
-           },
+            {
+                "lineColor": "#95a5a6",
+                "key": "300",
+                "value": 322,
+            }, {
+                "key": "300 - 400",
+                "value": 323
+            }, {
+                "key": "400-500",
+                "value": 122
+            }, {
+                "key": "500-600",
+                "value": 123
+            }, {
+                "key": "600-700",
+                "value": 332
+            }, {
+                "key": "800-900",
+                "value": 232
+            }, {
+                "key": "900-1000",
+                "value": 405
+            }, {
+                "key": "2000",
+                "value": 232,
+                "lineColor": "#CC0000"
+            },
         ];
 
         // SERIAL CHART
@@ -517,102 +565,102 @@
     loadChart_3()
     function loadChart_3() {
         var chartData = [
-           {
-               "lineColor": "#8e44ad",
-               "key": "1",
-               "value": 408
-           }, {
-               "key": "2",
-               "value": 482
-           }, {
-               "key": "3",
-               "value": 562
-           }, {
-               "key": "4",
-               "value": 379
-           }, {
-               "key": "5",
-               "value": 501
-           }, {
-               "key": "6",
-               "value": 443
-           }, {
-               "key": "7",
-               "value": 405
-           }, {
-               "key": "8",
-               "value": 309,
-           }, {
-               "key": "9",
-               "value": 345
-           }, {
-               "key": "10",
-               "value": 123
-           }, {
-               "key": "11",
-               "value": 232
-           }, {
-               "key": "12",
-               "value": 32
-           }, {
-               "key": "13",
-               "value": 435
-           }, {
-               "key": "14",
-               "value": 23
-           }, {
-               "key": "15",
-               "value": 43
-           }, {
-               "key": "16",
-               "value": 234,
-           }, {
-               "key": "17",
-               "value": 322,
-           }, {
-               "key": "18",
-               "value": 323
-           }, {
-               "key": "19",
-               "value": 122
-           }, {
-               "key": "20",
-               "value": 123
-           }, {
-               "key": "21",
-               "value": 332
-           }, {
-               "key": "22",
-               "value": 232
-           }, {
-               "key": "23",
-               "value": 405
-           }, {
-               "key": "24",
-               "value": 232,
-           }, {
-               "key": "25",
-               "value": 122
-           }, {
-               "key": "26",
-               "value": 123
-           }, {
-               "key": "27",
-               "value": 332
-           }, {
-               "key": "28",
-               "value": 232
-           }, {
-               "key": "29",
-               "value": 405
-           }, {
-               "key": "30",
-               "value": 232,
+            {
+                "lineColor": "#8e44ad",
+                "key": "1",
+                "value": 408
+            }, {
+                "key": "2",
+                "value": 482
+            }, {
+                "key": "3",
+                "value": 562
+            }, {
+                "key": "4",
+                "value": 379
+            }, {
+                "key": "5",
+                "value": 501
+            }, {
+                "key": "6",
+                "value": 443
+            }, {
+                "key": "7",
+                "value": 405
+            }, {
+                "key": "8",
+                "value": 309,
+            }, {
+                "key": "9",
+                "value": 345
+            }, {
+                "key": "10",
+                "value": 123
+            }, {
+                "key": "11",
+                "value": 232
+            }, {
+                "key": "12",
+                "value": 32
+            }, {
+                "key": "13",
+                "value": 435
+            }, {
+                "key": "14",
+                "value": 23
+            }, {
+                "key": "15",
+                "value": 43
+            }, {
+                "key": "16",
+                "value": 234,
+            }, {
+                "key": "17",
+                "value": 322,
+            }, {
+                "key": "18",
+                "value": 323
+            }, {
+                "key": "19",
+                "value": 122
+            }, {
+                "key": "20",
+                "value": 123
+            }, {
+                "key": "21",
+                "value": 332
+            }, {
+                "key": "22",
+                "value": 232
+            }, {
+                "key": "23",
+                "value": 405
+            }, {
+                "key": "24",
+                "value": 232,
+            }, {
+                "key": "25",
+                "value": 122
+            }, {
+                "key": "26",
+                "value": 123
+            }, {
+                "key": "27",
+                "value": 332
+            }, {
+                "key": "28",
+                "value": 232
+            }, {
+                "key": "29",
+                "value": 405
+            }, {
+                "key": "30",
+                "value": 232,
 
-           }, {
-               "key": "31",
-               "value": 232,
-           }
+            }, {
+                "key": "31",
+                "value": 232,
+            }
         ];
 
         var chart = new AmCharts.AmSerialChart();
@@ -674,102 +722,102 @@
     loadChart_4()
     function loadChart_4() {
         var chartData = [
-           {
-               "lineColor": "#2ecc71",
-               "key": "1",
-               "value": 408
-           }, {
-               "key": "2",
-               "value": 482
-           }, {
-               "key": "3",
-               "value": 562
-           }, {
-               "key": "4",
-               "value": 379
-           }, {
-               "key": "5",
-               "value": 501
-           }, {
-               "key": "6",
-               "value": 443
-           }, {
-               "key": "7",
-               "value": 405
-           }, {
-               "key": "8",
-               "value": 309,
-           }, {
-               "key": "9",
-               "value": 345
-           }, {
-               "key": "10",
-               "value": 123
-           }, {
-               "key": "11",
-               "value": 232
-           }, {
-               "key": "12",
-               "value": 32
-           }, {
-               "key": "13",
-               "value": 435
-           }, {
-               "key": "14",
-               "value": 23
-           }, {
-               "key": "15",
-               "value": 43
-           }, {
-               "key": "16",
-               "value": 234,
-           }, {
-               "key": "17",
-               "value": 322,
-           }, {
-               "key": "18",
-               "value": 323
-           }, {
-               "key": "19",
-               "value": 122
-           }, {
-               "key": "20",
-               "value": 123
-           }, {
-               "key": "21",
-               "value": 332
-           }, {
-               "key": "22",
-               "value": 232
-           }, {
-               "key": "23",
-               "value": 405
-           }, {
-               "key": "24",
-               "value": 232,
-           }, {
-               "key": "25",
-               "value": 122
-           }, {
-               "key": "26",
-               "value": 123
-           }, {
-               "key": "27",
-               "value": 332
-           }, {
-               "key": "28",
-               "value": 232
-           }, {
-               "key": "29",
-               "value": 405
-           }, {
-               "key": "30",
-               "value": 232,
+            {
+                "lineColor": "#2ecc71",
+                "key": "1",
+                "value": 408
+            }, {
+                "key": "2",
+                "value": 482
+            }, {
+                "key": "3",
+                "value": 562
+            }, {
+                "key": "4",
+                "value": 379
+            }, {
+                "key": "5",
+                "value": 501
+            }, {
+                "key": "6",
+                "value": 443
+            }, {
+                "key": "7",
+                "value": 405
+            }, {
+                "key": "8",
+                "value": 309,
+            }, {
+                "key": "9",
+                "value": 345
+            }, {
+                "key": "10",
+                "value": 123
+            }, {
+                "key": "11",
+                "value": 232
+            }, {
+                "key": "12",
+                "value": 32
+            }, {
+                "key": "13",
+                "value": 435
+            }, {
+                "key": "14",
+                "value": 23
+            }, {
+                "key": "15",
+                "value": 43
+            }, {
+                "key": "16",
+                "value": 234,
+            }, {
+                "key": "17",
+                "value": 322,
+            }, {
+                "key": "18",
+                "value": 323
+            }, {
+                "key": "19",
+                "value": 122
+            }, {
+                "key": "20",
+                "value": 123
+            }, {
+                "key": "21",
+                "value": 332
+            }, {
+                "key": "22",
+                "value": 232
+            }, {
+                "key": "23",
+                "value": 405
+            }, {
+                "key": "24",
+                "value": 232,
+            }, {
+                "key": "25",
+                "value": 122
+            }, {
+                "key": "26",
+                "value": 123
+            }, {
+                "key": "27",
+                "value": 332
+            }, {
+                "key": "28",
+                "value": 232
+            }, {
+                "key": "29",
+                "value": 405
+            }, {
+                "key": "30",
+                "value": 232,
 
-           }, {
-               "key": "31",
-               "value": 232,
-           }
+            }, {
+                "key": "31",
+                "value": 232,
+            }
         ];
 
         var chart = new AmCharts.AmSerialChart();

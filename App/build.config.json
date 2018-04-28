@@ -139,7 +139,8 @@
         "bootstrap-fileinput/*.*",
 		"metronic/theme/assets/global/plugins/amcharts/amcharts/amcharts.js",
 		"metronic/theme/assets/global/plugins/amcharts/amcharts/serial.js",
-		"metronic/theme/assets/global/plugins/amcharts/amcharts/pie.js"
+        "metronic/theme/assets/global/plugins/amcharts/amcharts/pie.js",
+        "metronic/theme/assets/global/plugins/amcharts/amcharts/images/**"
     ],
     "inject_css_files": [
     ],

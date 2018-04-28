@@ -62,7 +62,8 @@
                                     <!-- <select name="loaiBDS" ng-model="vm.model.loaiBDS" class="form-control" ng-change="vm.changeLoaiBDS(vm.model.loaiBDS)">
                                             <option ng-repeat="item in vm.loaiBDSList" value="{{item.value}}" ng-selected="item.$id == vm.model.loaiBDS">{{item.text}}</option>
                                         </select> -->
-                                    <select class="form-control" ng-model="vm.model.loaiBDS" ng-options="item.value as item.text for item in vm.loaiBDSList" ng-change="vm.changeLoaiBDS(vm.model.loaiBDS)"></select>
+                                    <select class="form-control" ng-model="vm.model.loaiBDS" ng-options="item.value as item.text for item in vm.loaiBDSList"
+                                        ng-change="vm.changeLoaiBDS(vm.model.loaiBDS)"></select>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -484,14 +485,14 @@
                         </div>
                         <h3 class="form-section">Khác</h3>
                         <div class="row">
-                            <div class="col-md-6">
+                            <!-- <div class="col-md-6">
                                 <div class="form-group  ">
                                     <label class="control-label">Số đăng ký
 
                                     </label>
                                     <input type="text" name="soDangKy" placeholder="Số đăng ký" class="form-control" ng-model="vm.model.soDangKy" />
                                 </div>
-                            </div>
+                            </div> -->
                             <!--/span-->
                             <div class="col-md-6">
                                 <div class="form-group  ">
@@ -504,9 +505,6 @@
                                     </select>
                                 </div>
                             </div>
-                            <!--/span-->
-                        </div>
-                        <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group  ">
                                     <label class="control-label">Trung tâm thương mại
@@ -517,18 +515,10 @@
                                 </div>
                             </div>
                             <!--/span-->
-                            <div class="col-md-6">
-                                <div class="form-group  ">
-                                    <label class="control-label">CV môi giới
-
-                                    </label>
-                                    <input type="text" name="cvMoiGioi" placeholder="CV môi giới" class="form-control" ng-model="vm.model.cvMoiGioi" />
-                                </div>
-                            </div>
-                            <!--/span-->
                         </div>
+
                         <div class="row">
-                            <div class="col-md-6">
+                            <!-- <div class="col-md-6">
                                 <div class="form-group  ">
                                     <label class="control-label">Phí MG (VNĐ)
 
@@ -536,7 +526,7 @@
                                     <input type="text" name="phiMG" placeholder="Phí MG" class="form-control" ng-model="vm.model.phiMG" ng-pattern="currencyRegx"
                                     />
                                 </div>
-                            </div>
+                            </div> -->
                             <!--/span-->
                             <div class="col-md-6">
                                 <div class="form-group  ">
@@ -547,9 +537,6 @@
                                     />
                                 </div>
                             </div>
-                            <!--/span-->
-                        </div>
-                        <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group  ">
                                     <label class="control-label">Pháp lý
@@ -559,19 +546,11 @@
                                 </div>
                             </div>
                             <!--/span-->
-                            <div class="col-md-6">
-                                <div class="form-group  ">
-                                    <label class="control-label">Tỷ lệ MG
-
-                                    </label>
-                                    <input type="text" name="tyLeMG" placeholder="Tỷ lệ MG" class="form-control" ng-model="vm.model.tyLeMG" />
-                                </div>
-                            </div>
-                            <!--/span-->
                         </div>
+
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form-group  " >
+                                <div class="form-group  ">
                                     <label class="control-label">Diễn giải
                                         <!--   -->
                                     </label>
@@ -580,17 +559,17 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group" >
                                     <label class="control-label">Nội Thất
-                                        <!--   -->
+                                        
                                     </label>
                                     <textarea rows="5" type="text" name="noiThat" placeholder="Thông Tin Nội Thất" class="form-control" ng-model="vm.model.noiThat"
                                     />
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <!-- END FORM-->
                 </div>

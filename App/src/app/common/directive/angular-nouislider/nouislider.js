@@ -47,7 +47,6 @@
           });
           scope.$watch('ngFrom', function (newVal, oldVal) {
             if (newVal !== fromParsed) {
-              console.log('NGFROM', newVal);
               return slider.noUiSlider.set([
                 newVal,
                 null

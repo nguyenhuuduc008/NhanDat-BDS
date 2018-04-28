@@ -26,15 +26,6 @@
                                 <!-- PERSONAL INFO TAB -->
                                 <div class="tab-pane active row" id="tab_1_1">
                                     <form role="form" id="createUserForm" name="createUserForm" novalidate ng-submit="userAddVm.checkDupLinked(createUserForm)">
-                                        <div class="form-group col-md-12" ng-if="!!userAddVm.linked.pLinkedKey">
-                                            <label class="control-label">Loại liên kết
-                                                <span class="required-field">*</span>
-                                            </label>
-                                            <select name="city" ng-model="userAddVm.linked.loaiLienKetUser" class="form-control" required>
-                                                <option value="" disabled>Chọn loại liên kết</option>
-                                                <option ng-repeat="item in userAddVm.cacLoaiLienKetUser " value="{{item.value}}" ng-selected="item.value == userAddVm.linked.loaiLienKetUser">{{item.text}}</option>
-                                            </select>
-                                        </div>
                                         <div class="form-group col-md-12" ng-class="{'has-error': (userAddVm.showInvalid && createUserForm.username.$error.required) || createUserForm.username.$error.pattern}">
                                             <label class="control-label">Tên đăng nhập
                                                 <span class="required-field">*</span>
@@ -92,7 +83,7 @@
                                         <div class="form-group col-md-6" ng-class="{'has-error': userAddVm.showInvalid && createUserForm.city.$error.required}">
                                             <label class="control-label">Tỉnh / Thành phố </label>
                                             <select name="city" ng-model="userAddVm.user.city" class="form-control" ng-change="userAddVm.changeCity()">
-                                                <option value="" disabled>Tỉnh / Thành phố</option>
+                                                <option value="notSelect" >Tỉnh / Thành phố</option>
                                                 <option ng-repeat="item in userAddVm.cities" value="{{item.$id}}" ng-selected="item.$id == userAddVm.user.city">{{item.text}}</option>
                                             </select>
                                             <!--<label class="control-label" ng-show="userAddVm.showInvalid && createUserForm.state.$error.required">* This field is required</label>-->
@@ -100,7 +91,7 @@
                                         <div class="form-group col-md-6" ng-class="{'has-error': userAddVm.showInvalid && createUserForm.district.$error.required}">
                                             <label class="control-label">Quận / Huyện </label>
                                             <select name="district" ng-model="userAddVm.user.district" class="form-control" ng-change="userAddVm.changeDistrict()">
-                                                <option value="" disabled>Quận / Huyện </option>
+                                                <option value="notSelect" >Quận / Huyện </option>
                                                 <option ng-repeat="item in userAddVm.districts" value="{{item.$id}}" ng-selected="item.$id == userAddVm.user.district">{{item.text}}</option>
                                             </select>
                                             <!--<label class="control-label" ng-show="userAddVm.showInvalid && createUserForm.state.$error.required">* This field is required</label>-->
@@ -108,7 +99,7 @@
                                         <div class="form-group col-md-6" ng-class="{'has-error': userAddVm.showInvalid && createUserForm.ward.$error.required}">
                                             <label class="control-label">Phường / Xã </label>
                                             <select name="ward" ng-model="userAddVm.user.ward" class="form-control">
-                                                <option value="" disabled>Phường / Xã</option>
+                                                <option value="notSelect" >Phường / Xã</option>
                                                 <option ng-repeat="item in userAddVm.wards" value="{{item.$id}}" ng-selected="item.$id == userAddVm.user.ward">{{item.text}}</option>
                                             </select>
                                             <!--<label class="control-label" ng-show="userAddVm.showInvalid && createUserForm.state.$error.required">* This field is required</label>-->

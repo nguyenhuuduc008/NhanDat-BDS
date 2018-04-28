@@ -9,7 +9,7 @@
                 url: '/bds',
                 templateUrl: 'app/timKiem/bds/timKiem.tpl.html',
                 controller: 'timKiemCtr',
-                controllerAs: 'timKiemCtrVm',
+                controllerAs: 'vm',
                 data: {
 					pageTitle: 'Tìm kiếm BĐS',
 					module: 'timKiem',

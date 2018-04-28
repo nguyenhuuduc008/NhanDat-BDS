@@ -1,15 +1,15 @@
-(function(){
+(function () {
     'use strict';
     angular.module('app.nhuCau')
-    .controller('nhuCauLienKetUsersCtr', nhuCauLienKetUsersCtr);
-    	/** @ngInject */
-    function nhuCauLienKetUsersCtr($rootScope, $scope, $state, $stateParams,$window, $q,nhuCauService,appUtils,$ngBootbox,toaster, settingService, userService){
+        .controller('nhuCauLienKetUsersCtr', nhuCauLienKetUsersCtr);
+    /** @ngInject */
+    function nhuCauLienKetUsersCtr($rootScope, $scope, $state, $stateParams, $window, $q, nhuCauService, appUtils, $ngBootbox, toaster, settingService, userService) {
         $rootScope.settings.layout.showSmartphone = false;
         $rootScope.settings.layout.showBreadcrumb = false;
         $rootScope.settings.layout.guestPage = false;
-        var appSettings = $rootScope.storage.appSettings;    
+        var appSettings = $rootScope.storage.appSettings;
         var currentUser = $rootScope.storage.currentUser;
-        var nhuCauLienKetUsersVm =this;// jshint ignore:line
+        var nhuCauLienKetUsersVm = this; // jshint ignore:line
         //
         nhuCauLienKetUsersVm.model = {};
         nhuCauLienKetUsersVm.userLinkedList = [];
@@ -18,13 +18,56 @@
         nhuCauLienKetUsersVm.cacLoaiLienKetUser = appSettings.cacLoaiLienKetUser;
 
         //Function 
-        nhuCauLienKetUsersVm.searchUserByPhone = function() {
+        nhuCauLienKetUsersVm.searchUserByPhone = function () {
+            console.log(nhuCauLienKetUsersVm.keyword);
             appUtils.showLoading();
-            if(nhuCauLienKetUsersVm.keyword === '' || nhuCauLienKetUsersVm.keyword === null || nhuCauLienKetUsersVm.keyword === undefined) {
+            if (nhuCauLienKetUsersVm.keyword === '' || nhuCauLienKetUsersVm.keyword === null || nhuCauLienKetUsersVm.keyword === undefined) {
                 appUtils.hideLoading();
                 return;
             }
-            userService.getExitedPhone(nhuCauLienKetUsersVm.keyword).then(function(res) {
+            var res = userService.checkExistPhone(nhuCauLienKetUsersVm.keyword);
+            console.log(res);
+            if (res == null) {
+
+                $ngBootbox.customDialog({
+                    message: 'Số Điện Thoại Chưa Được Đăng Ký!',
+                    buttons: {
+                        danger: {
+                            label: "Huỷ",
+                            className: "btn-default",
+                            callback: function () {
+                                console.log('cancel');
+                                nhuCauLienKetUsersVm.isUserExit = false;
+                                $scope.$apply();
+                                appUtils.hideLoading();
+                            }
+                        },
+                        success: {
+                            label: "Tạo mới",
+                            className: "btn-success",
+                            callback: function () {
+                                //$window.location.href = '#/user/add';
+                                $state.go('user.addInfo', {
+                                    linkedId: $stateParams.nhuCauId,
+                                    loaiId: $stateParams.loaiId,
+                                    khoId: $stateParams.khoId,
+                                    phone: nhuCauLienKetUsersVm.keyword
+                                });
+                                appUtils.hideLoading();
+                            }
+                        }
+                    }
+                });
+            } else {
+                appUtils.hideLoading();
+                nhuCauLienKetUsersVm.isUserExit = true;
+                nhuCauLienKetUsersVm.model.phone = res.phone;
+                //nhuCauLienKetUsersVm.userEmail = res.userEmail;
+                nhuCauLienKetUsersVm.model.userKey = res.phone;
+                nhuCauLienKetUsersVm.model.name = res.name;
+                nhuCauLienKetUsersVm.model.timeCreated = Date.now();
+            }
+            /* userService.getExitedPhone(nhuCauLienKetUsersVm.keyword).then(function(res) {
                 if(res.data.userId === undefined || res.data.userId === null) {
                     $ngBootbox.customDialog({
                         message: 'Số Điện Thoại Chưa Được Đăng Ký!',
@@ -44,7 +87,7 @@
                                 className: "btn-success",
                                 callback: function () {
                                     //$window.location.href = '#/user/add';
-                                    $state.go('user.add', { linkedId: $stateParams.nhuCauId , loaiId: $stateParams.loaiId, khoId: $stateParams.khoId});
+                                    $state.go('user.addInfo', { linkedId: $stateParams.nhuCauId , loaiId: $stateParams.loaiId, khoId: $stateParams.khoId, phone: nhuCauLienKetUsersVm.keyword});
                                     appUtils.hideLoading();
                                 }
                             }
@@ -57,26 +100,27 @@
                     nhuCauLienKetUsersVm.model.phone = res.data.phone;
                     nhuCauLienKetUsersVm.userEmail = res.data.userEmail;
                     nhuCauLienKetUsersVm.model.userKey = res.data.userId;
-                    nhuCauLienKetUsersVm.model.name = res.data.userName;
+                    nhuCauLienKetUsersVm.model.name = res.data.name;
                     nhuCauLienKetUsersVm.model.timeCreated = Date.now();
                 }
-            });
+            }); */
+
         };
 
-        nhuCauLienKetUsersVm.displayLoaiLienKet = function(lienKetUserId) {
-            var find  = _.find(nhuCauLienKetUsersVm.cacLoaiLienKetUser, function(o) {
+        nhuCauLienKetUsersVm.displayLoaiLienKet = function (lienKetUserId) {
+            var find = _.find(nhuCauLienKetUsersVm.cacLoaiLienKetUser, function (o) {
                 return o.value == lienKetUserId;
             });
-            if(lienKetUserId === 'createUserUniq')
+            if (lienKetUserId === 'createUserUniq')
                 return 'Người Tạo BDS';
-            else if(find === undefined || find === null)
+            else if (find === undefined || find === null)
                 return '';
             else
                 return find.text;
         };
 
         //Function remove item
-        nhuCauLienKetUsersVm.removeLinkedUser = function(linkedKey) {
+        nhuCauLienKetUsersVm.removeLinkedUser = function (linkedKey) {
             $ngBootbox.customDialog({
                 message: 'Bạn Muốn Dừng Liên Kết Với User Này?',
                 buttons: {
@@ -101,11 +145,11 @@
         };
 
         function removeLinked(nhuCauTab, nhuCauKey, linkedKey) {
-            nhuCauService.removeTabNhuCau(nhuCauTab, nhuCauKey, linkedKey).then(function(res) {
+            nhuCauService.removeTabNhuCau(nhuCauTab, nhuCauKey, linkedKey).then(function (res) {
                 if (res.result) {
                     appUtils.hideLoading();
                     $scope.$apply(function () {
-                        _.remove(nhuCauLienKetUsersVm.userLinkedList, function(o) {
+                        _.remove(nhuCauLienKetUsersVm.userLinkedList, function (o) {
                             return o.linkedKey == linkedKey;
                         });
                     });
@@ -147,8 +191,7 @@
                         }
                     }
                 });
-            }
-            else {
+            } else {
                 $ngBootbox.customDialog({
                     message: 'Bạn Có Muốn Liên Kết Với User Này?',
                     buttons: {
@@ -177,6 +220,7 @@
         };
 
         function editLinked(nhuCauTab, nhuCauModel, nhuCauKey, isLinked) {
+            console.log(nhuCauKey);
             nhuCauService.updateTabNhuCau(nhuCauTab, nhuCauModel, nhuCauKey, isLinked).then(function (res) {
                 if (res.result) {
                     appUtils.hideLoading();
@@ -207,12 +251,12 @@
             var d = new Date(timestamp);
             return d.toLocaleString();
         }
-        
+
         nhuCauLienKetUsersVm.keyword = '';
         nhuCauLienKetUsersVm.phoneValid = function (e) {
             var iKeyCode = (e.which) ? e.which : e.keyCode;
             if (iKeyCode < 48 || iKeyCode > 57)
-                e.preventDefault();    
+                e.preventDefault();
         };
 
         if (!!$stateParams.nhuCauId) {
@@ -247,5 +291,5 @@
             //xét trường hợp vào trang vào trang thêm mới
             //$stateParams.item.loaiNhuCauKey  --> //key loại nhu cầu dung để lưu dữ liệu
         }
-    } 
+    }
 })();

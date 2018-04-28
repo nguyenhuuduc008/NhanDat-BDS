@@ -1,0 +1,41 @@
+<style>
+    .group-user-list-btn {
+        padding-top: 2px !important;
+        padding-bottom: 2px !important;
+        margin: 5px !important;
+        width: 147px !important;
+    }
+</style>
+<div class="portlet light bordered tasks-widget">
+    <div class="portlet-title">
+        <div class="caption row">
+            <div class="col-md-3 text-center">
+                <a type="button" href="#" ng-click="btnAddNew_Click()" class="btn blue">Thêm mới</a>
+            </div>
+        </div>
+    </div>
+    <div class="table-scrollable table-scrollable-borderless">
+        <table class="table table-hover table-light">
+            <thead class="flip-content">
+                <tr class="uppercase">
+                    <th style="text-align:center">Tiêu đề </th>
+                    <th style="text-align:center">Từ giá </th>
+                    <th style="text-align:center">Đến giá</th>
+                    <th style="text-align:center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="x in DanhSachKhoanGia | orderBy : 'tieuDe'">
+                    <td>
+                        <a href="#/setting/khoanGia/chiTiet/{{x.$id}}">{{x.tieuDe}}</a>
+                    </td>
+                    <td style="text-align:center">{{x.giaTu}} VNĐ</td>
+                    <td style="text-align:center">{{x.giaDen}} VNĐ</td>
+                    <td style="text-align:center">
+                        <button  type="button" class="btn red group-user-list-btn" ng-click="btnDelKhoanGia_Click(x.$id)">Xóa</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

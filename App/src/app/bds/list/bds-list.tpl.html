@@ -1,6 +1,6 @@
 ﻿<div class="portlet light bordered tasks-widget">
     <div class="portlet-title">
-        <div class="col-sm-6 padding-top-5 no-padding-left no-padding-right" >
+        <div class="col-sm-6 padding-top-5 no-padding-left no-padding-right">
             <select name="khoBDSKey" ng-model="vm.khoBDSKey" class="form-control" required ng-change="vm.executeSearchItems(vm.keyword)">
                 <option value="" disabled>Chọn Kho</option>
                 <option ng-repeat="item in vm.khoBDSList" value="{{item.value}}" ng-selected="item.value == vm.khoBDSKey">{{item.text}}</option>
@@ -10,7 +10,8 @@
             <div class="portlet-input input-inline" style="float: right;">
                 <div class="input-icon right">
                     <i class="icon-magnifier" ng-click="vm.executeSearchItems(vm.keyword)"></i>
-                    <input style="width: 280px;" type="text" class="form-control form-control-solid" ng-model="vm.keyword" placeholder="tìm kiếm" ng-keydown="$event.keyCode === 13 && vm.executeSearchItems(vm.keyword)">
+                    <input style="width: 280px;" type="text" class="form-control form-control-solid" ng-model="vm.keyword" placeholder="tìm kiếm"
+                        ng-keydown="$event.keyCode === 13 && vm.executeSearchItems(vm.keyword)">
                 </div>
             </div>
         </div>
@@ -62,13 +63,18 @@
                     </td>
                     <td>
                         <a class="primary-link" href="#" ng-click="vm.edit(item.$id)">
-                           {{vm.getFullAddress(item)}}
+                            {{vm.getFullAddress(item)}}
                         </a>
                     </td>
                     <td>
-                        Ngang: <span class="font-green-sharp bold">{{item.ngang|number:1}} m</span> <br>
-                        Dài: <span class="font-green-sharp bold">{{item.dai|number:1}} m</span> <br>
-                        Diện tích: <span class="font-green-sharp bold">{{item.dienTich|number:1}} m<sup>2</sup></span>
+                        Ngang:
+                        <span class="font-green-sharp bold">{{item.ngang|number:1}} m</span>
+                        <br> Dài:
+                        <span class="font-green-sharp bold">{{item.dai|number:1}} m</span>
+                        <br> Diện tích:
+                        <span class="font-green-sharp bold">{{item.dienTich|number:1}} m
+                            <sup>2</sup>
+                        </span>
                     </td>
                 </tr>
             </tbody>

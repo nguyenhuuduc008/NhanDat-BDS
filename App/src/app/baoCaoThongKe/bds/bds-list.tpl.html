@@ -12,17 +12,7 @@
 </style>
 <div class="row" id="permission">
     <div class="col-md-12">
-        <div class="portlet light portlet-fit bordered">
-            <!--<div class="portlet-title">
-                <div class="caption">
-                    <div class="col-md-10 no-padding-right">
-                        <select class="bs-select form-control" id="action-list" ng-model="permissionVm.selectAction">
-                            <option>Bulk Actions</option>
-                            <option>Delete</option>
-                        </select>
-                    </div>
-                </div>
-            </div>-->
+        <div class="portlet light portlet-fit bordered">           
             <div class="portlet-body">
                 <div class="table-scrollable table-scrollable-borderless">
                     <div class="row">
@@ -192,66 +182,7 @@
 </div>
 
 <script>
-    loadChart_1();
-    function loadChart_1() {
-        var chartData = [{
-            "key": 'Nhà Phố',
-            "value": 100,
-        }, {
-            "key": "Căn Hộ",
-            "value": 253,
-            "expenses": 22.8
-        }, {
-            "key": "Đất Nền",
-            "value": 456,
-        }, {
-            "key": "Dự Án",
-            "value": 234,
-        }, {
-            "key": "Kho Xưởng",
-            "value": 124,
-            "expenses": 25
-        }, {
-            "key": "Đất Thổ Cư",
-            "value": 312,
-        }];
-
-        var chart = new AmCharts.AmSerialChart();
-        chart.dataProvider = chartData;
-        chart.categoryField = "key";
-        chart.startDuration = 1;
-        chart.rotate = false;
-
-        // AXES
-        // category
-        var categoryAxis = chart.categoryAxis;
-        categoryAxis.gridPosition = "start";
-        categoryAxis.axisColor = "#67b7dc";
-        categoryAxis.dashLength = 1;
-
-        // GRAPHS
-        var graph1 = new AmCharts.AmGraph();
-        graph1.type = "column";
-        graph1.title = "Tổng số";
-        graph1.valueField = "value";
-        graph1.lineAlpha = 0;
-        graph1.fillColors = "#67b7dc";
-        graph1.fillAlphas = 0.8;
-        graph1.balloonText = "<span style='font-size:13px;'>[[title]] [[category]]:<b>[[value]]</b></span>";
-        graph1.labelPosition = 'top';
-        graph1.labelOffset = 1;
-        graph1.labelText = "[[value]]";
-        chart.addGraph(graph1);
-
-        // LEGEND
-        var legend = new AmCharts.AmLegend();
-        legend.useGraphSettings = true;
-        chart.addLegend(legend);
-
-        // WRITE
-        chart.write("chartdiv1");
-    }
-
+ 
     loadChart_2()
     function loadChart_2() {
         var chartData = [
@@ -717,7 +648,6 @@
         var legend;
 
         var chartData = [{
-
             key: "Thuê",
             value: 43
         }, {

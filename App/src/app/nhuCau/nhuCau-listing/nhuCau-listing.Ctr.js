@@ -1,31 +1,30 @@
-(function(){
+(function () {
     'use strict';
     angular.module('app.nhuCau')
-    .controller('nhuCauListingCtr', nhuCauListingCtr);
-    	/** @ngInject */
-    function nhuCauListingCtr($rootScope, $scope, $state,$q, $filter,nhuCauService,appUtils,$ngBootbox,toaster, settingService, bdsService){
+        .controller('nhuCauListingCtr', nhuCauListingCtr);
+    /** @ngInject */
+    function nhuCauListingCtr($rootScope, $scope, $state, $q, $filter, $stateParams, nhuCauService, appUtils, $ngBootbox, toaster, settingService, bdsService) {
         $rootScope.settings.layout.showSmartphone = false;
         $rootScope.settings.layout.showBreadcrumb = false;
         $rootScope.settings.layout.guestPage = false;
-        var appSettings = $rootScope.storage.appSettings;    
+        var appSettings = $rootScope.storage.appSettings;
         var currentUser = $rootScope.storage.currentUser;
-        var vm =this;// jshint ignore:line
+        var vm = this;// jshint ignore:line
 
         var huongNhaList = appSettings.cacLoaiHuong;
         var tinhThanhList = appSettings.cacLoaiHanhChinh.capTinh;
         console.log('APP SETING', appSettings);
 
         vm.item = {};
+        vm.item.nhuCauKey = 'allTrangThai';
         vm.cacKhoBDS = appSettings.cacKhoBDS;
         vm.cacLoaiNhuCau = appSettings.cacLoaiNhuCau;
         vm.cacLoaiCapDo = appSettings.cacLoaiCapDo;
         vm.khoBDSList = [];
-        console.log(vm.cacKhoBDS);
-        vm.item.nhuCauKey ='allTrangThai';
 
         //Load data
-        _.forEach(vm.cacKhoBDS, function(item, key) {
-            if(key != 'khoDefault') {
+        _.forEach(vm.cacKhoBDS, function (item, key) {
+            if (key != 'khoDefault') {
                 vm.khoBDSList.push({
                     $id: key,
                     text: item.text
@@ -34,8 +33,11 @@
                 vm.item.khoBDSKey = item;
             }
         });
-            // vm.khoBDSDefault = _.find(data, ['$id', 'khoDefault']);
-            // vm.item.khoBDSKey = !!vm.khoBDSDefault ? vm.khoBDSDefault.$value : 'allDanhMuc';
+
+        if (!!$stateParams.loaiId && !!$stateParams.khoId) {
+            vm.item.nhuCauKey = $stateParams.loaiId;
+            vm.item.khoBDSKey = $stateParams.khoId;
+        }
 
         //page
         vm.groupedItems = [];
@@ -60,44 +62,44 @@
         };
         //end page
 
-        function textAdress(soNha, duongPhoId, quanHuyenId, tinhThanhId ) {
+        function textAdress(soNha, duongPhoId, quanHuyenId, tinhThanhId) {
             soNha = !!soNha ? soNha + ', ' : '';
             var duongPho, quanHuyen, tinhThanh;
-            tinhThanh = _.find(tinhThanhList, function(o, k) {
+            tinhThanh = _.find(tinhThanhList, function (o, k) {
                 return k === tinhThanhId;
             });
             tinhThanh = (tinhThanh === undefined) ? '' : tinhThanh.text;
             var quanHuyenList = appSettings.cacLoaiHanhChinh.capHuyen[tinhThanhId];
-            quanHuyen = _.find(quanHuyenList, function(o, k) {
+            quanHuyen = _.find(quanHuyenList, function (o, k) {
                 return k === quanHuyenId;
             });
             quanHuyen = (quanHuyen === undefined) ? '' : quanHuyen.text + ', ';
-            var duongPhoList = appSettings.cacLoaiHanhChinh.duong[quanHuyenId];
-            duongPho = _.find(duongPhoList, function(o, k) {
-                return k === duongPhoId;
-            });
-            duongPho = (duongPho === undefined) ? '' : duongPho.text + ', ';
+            // var duongPhoList = appSettings.cacLoaiHanhChinh.duong[tinhThanhId][quanHuyenId];
+            // duongPho = _.find(duongPhoList, function(o, k) {
+            //     return k === duongPhoId;
+            // });
+            // duongPho = (duongPho === undefined) ? '' : duongPho.text + ', ';
 
             return (soNha + duongPho + quanHuyen + tinhThanh);
         }
 
         function textGia(giaFrom, giaTo) {
-            if(!!giaFrom && !!giaTo) {
-                if(giaFrom == giaTo && giaFrom == 100000000)
-                    return 'Dưới ' + $filter('currency')(giaFrom, "", 0); 
+            if (!!giaFrom && !!giaTo) {
+                if (giaFrom == giaTo && giaFrom == 100000000)
+                    return 'Dưới ' + $filter('currency')(giaFrom, "", 0);
                 if (giaFrom == giaTo && giaTo == 10000000000)
-                    return 'Trên ' + $filter('currency')(giaTo, "", 0);   
-                return 'Từ ' + $filter('currency')(giaFrom, "", 0) + ' Đến ' + $filter('currency')(giaTo, "", 0); 
+                    return 'Trên ' + $filter('currency')(giaTo, "", 0);
+                return 'Từ ' + $filter('currency')(giaFrom, "", 0) + ' Đến ' + $filter('currency')(giaTo, "", 0);
             }
         }
 
         function textDienTich(dtFrom, dtTo) {
-            if(!!dtFrom && !!dtTo) {
-                if(dtFrom == dtTo && dtFrom == 50)
-                return 'Dưới ' + $filter('number')(dtFrom, 1); 
-            if (dtFrom == dtTo && dtTo == 500)
-                return 'Trên ' + $filter('number')(dtTo, 1);   
-            return 'Từ ' + $filter('number')(dtFrom, 1) + ' Đến ' + $filter('number')(dtTo, 1); 
+            if (!!dtFrom && !!dtTo) {
+                if (dtFrom == dtTo && dtFrom == 50)
+                    return 'Dưới ' + $filter('number')(dtFrom, 1);
+                if (dtFrom == dtTo && dtTo == 500)
+                    return 'Trên ' + $filter('number')(dtTo, 1);
+                return 'Từ ' + $filter('number')(dtFrom, 1) + ' Đến ' + $filter('number')(dtTo, 1);
             }
         }
 
@@ -110,30 +112,34 @@
                 return 'Thoả Thuận';
         }
 
-        vm.selectAllItem = function(controlId, name){
-            appUtils.checkAllCheckBox(controlId,name);
+        vm.selectAllItem = function (controlId, name) {
+            appUtils.checkAllCheckBox(controlId, name);
         };
+
         vm.appDung = function (idDanhMuc, idTrangThai) {
-            //check valid
             if (idTrangThai == 'allTrangThai') {
                 toaster.warning("Bạn cần lựa chọn Trạng Thái!");
                 return;
             }
+            $state.go('nhuCauListing', { khoId: idDanhMuc, loaiId: idTrangThai });
+        };
+
+        function loadNhuCauList(idDanhMuc, idTrangThai) {
             appUtils.showLoading();
             // get data
             nhuCauService.getNhuCauByKhoLoai(idDanhMuc, idTrangThai).then(function (data) {
                 var result = [];
                 _.forEach(data, function (item, key) {
                     if (_.isObject(item)) {
-                        if(idTrangThai === 'ban' || idTrangThai === 'cho-thue') {
-                            bdsService.getBDS(idDanhMuc, item.bdsKey).then(function(bdsRs) {
-                                if(!!bdsRs) {
+                        if (idTrangThai === 'ban' || idTrangThai === 'cho-thue') {
+                            bdsService.getBDS(idDanhMuc, item.bdsKey).then(function (bdsRs) {
+                                if (!!bdsRs) {
                                     console.log('BDS', item);
                                     item.dienTich = $filter('number')(bdsRs.dienTich, 1);
                                     item.ngang = bdsRs.ngang;
                                     item.dai = bdsRs.dai;
                                     item.soTang = bdsRs.soTang;
-                                    var huong = _.find(huongNhaList, function(o, k) {
+                                    var huong = _.find(huongNhaList, function (o, k) {
                                         return k === bdsRs.huongNha;
                                     });
                                     item.huongNha = !!huong ? huong.text : '';
@@ -145,9 +151,9 @@
                                     appUtils.hideLoading();
                                 }
                             });
-                        } 
+                        }
                         else {
-                            var huong = _.find(huongNhaList, function(o, k) {
+                            var huong = _.find(huongNhaList, function (o, k) {
                                 return k === item.huongNha;
                             });
                             item.huongNha = !!huong ? huong.text : '';
@@ -179,21 +185,32 @@
             }).catch(function (err) {
                 toaster.warning(err);
             });
-        };
+        }
         //xoa nhu cau
-        vm.appDungLuaChon=function(selectedCheckBox,idLuaChon){
+        vm.appDungLuaChon = function (selectedCheckBox, idLuaChon) {
             //xoa, disable...
-            var idLuaChonValue=$('#'+idLuaChon).val();
-            var idLuaChonText=$('#'+idLuaChon).text();
-            if (idLuaChonValue =='0') {
+            var idLuaChonValue = $('#' + idLuaChon).val();
+            var idLuaChonText = $('#' + idLuaChon).text();
+            if (idLuaChonValue == '0') {
                 toaster.warning("Lựa Chọn chưa được chọn!");
                 return;
             }
-           
+
         };
         vm.chiTietnhuCau = function (item) {
-            $state.go('nhuCauEdit', { nhuCauId: item.$id, loaiId: item.loaiNhuCauKey, khoId: item.khoBDSKey});
+            $state.go('nhuCauEdit', { nhuCauId: item.$id, loaiId: item.loaiNhuCauKey, khoId: item.khoBDSKey });
         };
-        
-    } 
+
+        function pageInIt() {
+            if (!!vm.item.nhuCauKey && !!vm.item.khoBDSKey) {
+                loadNhuCauList(vm.item.khoBDSKey, vm.item.nhuCauKey);
+            }
+            else {
+                $state.go('nhuCauListing');
+            }
+        }
+
+        pageInIt();
+
+    }
 })();

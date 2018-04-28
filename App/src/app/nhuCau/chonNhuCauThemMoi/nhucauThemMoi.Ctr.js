@@ -1,40 +1,39 @@
-(function(){
+(function () {
     'use strict';
     angular.module('app.nhuCau')
-    .controller('nhuCauThemMoiCtr', nhuCauThemMoiCtr);
-    	/** @ngInject */
-    function nhuCauThemMoiCtr($rootScope, $scope, $state, $stateParams, $q,nhuCauService,appUtils,$ngBootbox,toaster, settingService){
+        .controller('nhuCauThemMoiCtr', nhuCauThemMoiCtr);
+    /** @ngInject */
+    function nhuCauThemMoiCtr($rootScope, $scope, $state, $stateParams, $location, $q, nhuCauService, appUtils, $ngBootbox, toaster, settingService) {
         $rootScope.settings.layout.showSmartphone = false;
         $rootScope.settings.layout.showBreadcrumb = false;
         $rootScope.settings.layout.guestPage = false;
-        var appSettings = $rootScope.storage.appSettings;    
+        var appSettings = $rootScope.storage.appSettings;
         var currentUser = $rootScope.storage.currentUser;
 
-        var nhuCauThemMoiVm =this;// jshint ignore:line
+        var nhuCauThemMoiVm = this;// jshint ignore:line
 
         console.log('NEW PARAM S', $stateParams);
-        //
 
         //Function
-            function loadFormTitle() {
-                switch ($stateParams.loaiId) {
-                    case 'ban':
-                        nhuCauThemMoiVm.formTitle = nhuCauThemMoiVm.isEdit ? 'Sửa Nhu Cầu Bán Bất Động Sản' : 'Thêm Nhu Cầu Bán Bất Động Sản';
-                        break;
-                    case 'mua':
-                        nhuCauThemMoiVm.formTitle = nhuCauThemMoiVm.isEdit ? 'Sửa Nhu Cầu Mua Bất Động Sản' : 'Thêm Nhu Cầu Mua Bất Động Sản';
-                        break;
-                    case 'thue':
-                        nhuCauThemMoiVm.formTitle = nhuCauThemMoiVm.isEdit ? 'Sửa Nhu Cầu Thuê Bất Động Sản' : 'Thêm Nhu Cầu Thuê Bất Động Sản';
-                        break;
-                    case 'cho-thue':
-                        nhuCauThemMoiVm.formTitle = nhuCauThemMoiVm.isEdit ? 'Sửa Nhu Cầu Cho Thuê Bất Động Sản' : 'Thêm Nhu Cầu Cho Thuê Bất Động Sản';
-                        break;
-                }
+        function loadFormTitle() {
+            switch ($stateParams.loaiId) {
+                case 'ban':
+                    nhuCauThemMoiVm.formTitle = nhuCauThemMoiVm.isEdit ? 'Sửa Nhu Cầu Bán Bất Động Sản' : 'Thêm Nhu Cầu Bán Bất Động Sản';
+                    break;
+                case 'mua':
+                    nhuCauThemMoiVm.formTitle = nhuCauThemMoiVm.isEdit ? 'Sửa Nhu Cầu Mua Bất Động Sản' : 'Thêm Nhu Cầu Mua Bất Động Sản';
+                    break;
+                case 'thue':
+                    nhuCauThemMoiVm.formTitle = nhuCauThemMoiVm.isEdit ? 'Sửa Nhu Cầu Thuê Bất Động Sản' : 'Thêm Nhu Cầu Thuê Bất Động Sản';
+                    break;
+                case 'cho-thue':
+                    nhuCauThemMoiVm.formTitle = nhuCauThemMoiVm.isEdit ? 'Sửa Nhu Cầu Cho Thuê Bất Động Sản' : 'Thêm Nhu Cầu Cho Thuê Bất Động Sản';
+                    break;
             }
+        }
 
         function tabInit() {
-            if($stateParams.nhuCauId === undefined || $stateParams.nhuCauId === null) {
+            if ($stateParams.nhuCauId === undefined || $stateParams.nhuCauId === null) {
                 nhuCauThemMoiVm.tab = {
                     tabs: {
                         thongTin: {
@@ -43,7 +42,7 @@
                         }
                     }
                 };
-            } 
+            }
             else {
                 nhuCauThemMoiVm.tab = {
                     tabs: {
@@ -92,14 +91,17 @@
                             url: './app/nhuCau/nhuCau-form/lichSuGia-tab.tpl.html'
                         },
                     }
-                };   
+                };
             }
         }
 
+        nhuCauThemMoiVm.historyBack = function () {
+            $state.go('nhuCauListing', { khoId: $stateParams.khoId || '', loaiId: $stateParams.loaiId || '' });
+        };
 
-        nhuCauThemMoiVm.loadTab = function(tab, loaiId) {
+        nhuCauThemMoiVm.loadTab = function (tab, loaiId) {
             nhuCauThemMoiVm.item.activeTab = tab;
-            $state.go(tab + 'NhuCau', {khoId: $stateParams.khoId || '', loaiId: loaiId || $stateParams.loaiId, nhuCauId: $stateParams.nhuCauId || '', item: nhuCauThemMoiVm.item});
+            $state.go(tab + 'NhuCau', { khoId: $stateParams.khoId || '', loaiId: loaiId || $stateParams.loaiId, nhuCauId: $stateParams.nhuCauId || '', item: nhuCauThemMoiVm.item });
         };
 
         nhuCauThemMoiVm.changeForm = function (key) {
@@ -125,7 +127,7 @@
             }
         };
 
-        nhuCauThemMoiVm.cancel = function() {
+        nhuCauThemMoiVm.cancel = function () {
             $state.go('nhuCauListing');
         };
 
@@ -151,7 +153,7 @@
         // }
 
         if (!!$stateParams.nhuCauId && !!$stateParams.loaiId && !!$stateParams.khoId) {
-            if($stateParams.item != null)
+            if ($stateParams.item != null)
                 nhuCauThemMoiVm.item = $stateParams.item;
             nhuCauThemMoiVm.isEdit = true;
             if (nhuCauThemMoiVm.item.activeTab == undefined)
@@ -181,7 +183,7 @@
         }
 
         pageInit();
-        
 
-    } 
+
+    }
 })();
